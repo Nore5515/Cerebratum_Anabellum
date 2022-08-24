@@ -7,6 +7,7 @@ public class CubeMaker : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     public GameObject prefab;
+    public GameObject unit;
     public int maxCount;
     bool thingy;
 
@@ -30,8 +31,10 @@ public class CubeMaker : MonoBehaviour
                     thingy = true;
                     GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
                     objs.Add(obj);
+                    unit.GetComponent<Unit>().AddPoint(obj);
                     if (objs.Count >= maxCount)
                     {
+                        unit.GetComponent<Unit>().RemovePoint(obj);
                         GameObject.Destroy(objs[0]);
                         objs.RemoveAt(0);
                     }
