@@ -25,35 +25,38 @@ public class CubeMaker : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                    objs.Add(obj);
-                    foreach (GameObject unit in units)
+                    if (hit.collider.gameObject.tag == "floor")
                     {
-                        if (unit != null)
+                        GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                        objs.Add(obj);
+                        foreach (GameObject unit in units)
                         {
-                            unit.GetComponent<Unit>().AddPoint(obj);
+                            if (unit != null)
+                            {
+                                unit.GetComponent<Unit>().AddPoint(obj);
+                            }
+                            else
+                            {
+                                toRemoveUnits.Add(unit);
+                            }
                         }
-                        else
+                        foreach (GameObject markedUnit in toRemoveUnits)
                         {
-                            toRemoveUnits.Add(unit);
+                            units.Remove(markedUnit);
                         }
-                    }
-                    foreach (GameObject markedUnit in toRemoveUnits)
-                    {
-                        units.Remove(markedUnit);
-                    }
-                    toRemoveUnits = new List<GameObject>();
-                    if (objs.Count >= maxCount)
-                    {
-                        RemovePoint(objs[0]);
+                        toRemoveUnits = new List<GameObject>();
+                        if (objs.Count >= maxCount)
+                        {
+                            RemovePoint(objs[0]);
+                        }
                     }
                 }
             }
         }
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            thingy = false;
-        }
+        // if (Input.GetKeyUp(KeyCode.Mouse0))
+        // {
+        // thingy = false;
+        // }
     }
 
     public void AddUnit(GameObject newUnit)
@@ -68,7 +71,7 @@ public class CubeMaker : MonoBehaviour
 
     public void RemovePoint(GameObject obj)
     {
-        thingy = true;
+        // thingy = true;
         objs.Remove(obj);
         foreach (GameObject unit in units)
         {

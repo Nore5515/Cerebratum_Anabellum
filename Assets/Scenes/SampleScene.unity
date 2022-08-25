@@ -235,7 +235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &890777237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
-  spawnTime: 5
+  spawnTime: 1
   cm: {fileID: 963194229}
   instances: []
   markedInstances: []
@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 2822049802233959069, guid: 918bfc0b0df8042cbb65fecc9e72380b, type: 3}
-  maxCount: 5
+  maxCount: 15
   objs: []
   units: []
   toRemoveUnits: []
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 1397274701}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
