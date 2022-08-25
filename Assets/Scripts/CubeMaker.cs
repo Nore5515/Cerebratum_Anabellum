@@ -7,11 +7,13 @@ public class CubeMaker : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     public GameObject prefab;
-    public GameObject unit;
     public int maxCount;
     bool thingy;
 
     public List<GameObject> objs = new List<GameObject>();
+    public List<GameObject> units = new List<GameObject>();
+    public List<GameObject> toRemoveUnits = new List<GameObject>();
+
 
     // Update is called once per frame
     void Update()
@@ -25,7 +27,22 @@ public class CubeMaker : MonoBehaviour
                 {
                     GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
                     objs.Add(obj);
-                    unit.GetComponent<Unit>().AddPoint(obj);
+                    foreach (GameObject unit in units)
+                    {
+                        if (unit != null)
+                        {
+                            unit.GetComponent<Unit>().AddPoint(obj);
+                        }
+                        else
+                        {
+                            toRemoveUnits.Add(unit);
+                        }
+                    }
+                    foreach (GameObject markedUnit in toRemoveUnits)
+                    {
+                        units.Remove(markedUnit);
+                    }
+                    toRemoveUnits = new List<GameObject>();
                     if (objs.Count >= maxCount)
                     {
                         RemovePoint(objs[0]);
@@ -39,6 +56,11 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
+    public void AddUnit(GameObject newUnit)
+    {
+        units.Add(newUnit);
+    }
+
     public void AddPoint(GameObject obj)
     {
         objs.Add(obj);
@@ -48,7 +70,13 @@ public class CubeMaker : MonoBehaviour
     {
         thingy = true;
         objs.Remove(obj);
-        unit.GetComponent<Unit>().RemovePoint(obj);
+        foreach (GameObject unit in units)
+        {
+            if (unit != null)
+            {
+                unit.GetComponent<Unit>().RemovePoint(obj);
+            }
+        }
         GameObject.Destroy(obj);
     }
 

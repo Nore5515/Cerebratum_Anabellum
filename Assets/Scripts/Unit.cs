@@ -9,10 +9,23 @@ public class Unit : MonoBehaviour
     double MaxDist = 1.2;
     int MinDist = 1;
     bool removing = false;
+    public float survivalTime = 5.0f;
 
     public CubeMaker cm;
 
     public List<GameObject> objs = new List<GameObject>();
+
+    void Start()
+    {
+        IEnumerator coroutine = SelfDestruct();
+        StartCoroutine(coroutine);
+    }
+
+    IEnumerator SelfDestruct()
+    {
+        yield return new WaitForSeconds(survivalTime);
+        Destroy(gameObject);
+    }
 
     // Update is called once per frame
     void Update()
