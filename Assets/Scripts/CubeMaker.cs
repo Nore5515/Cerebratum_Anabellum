@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CubeMaker : MonoBehaviour
 {
     Ray ray;
     RaycastHit hit;
-    public GameObject prefab;
+    public GameObject prefabRed;
+    public GameObject prefabBlue;
     public int maxCount;
     bool thingy;
+
+    public string teamColor = "RED";
+    public Text teamColorText;
 
     public List<GameObject> objs = new List<GameObject>();
     public List<GameObject> units = new List<GameObject>();
@@ -18,6 +23,16 @@ public class CubeMaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            teamColor = "RED";
+            teamColorText.text = teamColor;
+        }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            teamColor = "BLUE";
+            teamColorText.text = teamColor;
+        }
         if (thingy == false)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -27,7 +42,15 @@ public class CubeMaker : MonoBehaviour
                 {
                     if (hit.collider.gameObject.tag == "floor")
                     {
-                        GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                        GameObject obj;
+                        if (teamColor == "RED")
+                        {
+                            obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                        }
+                        else
+                        {
+                            obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                        }
                         objs.Add(obj);
                         foreach (GameObject unit in units)
                         {

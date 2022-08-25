@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2658266620401193136}
   - component: {fileID: 1459869228185298178}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: BlueSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 518e7b3e4cde34d9186b9add940eb605, type: 2}
+  - {fileID: 2100000, guid: cc88918c2e04d4b9fa0a2af75c7ef1ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
