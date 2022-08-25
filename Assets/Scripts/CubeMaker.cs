@@ -35,8 +35,8 @@ public class CubeMaker : MonoBehaviour
                     if (objs.Count >= maxCount)
                     {
                         unit.GetComponent<Unit>().RemovePoint(obj);
-                        GameObject.Destroy(objs[0]);
-                        objs.RemoveAt(0);
+                        // GameObject.Destroy(objs[0]);
+                        // objs.RemoveAt(0);
                     }
                 }
             }
@@ -45,5 +45,12 @@ public class CubeMaker : MonoBehaviour
         {
             thingy = false;
         }
+    }
+
+    public void annihilateObj(GameObject obj)
+    {
+        // unit.GetComponent<Unit>().RemovePoint(obj);
+        GameObject.Destroy(objs[0]);
+        objs.RemoveAt(0);
     }
 }
