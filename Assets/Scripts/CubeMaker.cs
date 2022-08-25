@@ -15,7 +15,8 @@ public class CubeMaker : MonoBehaviour
     public string teamColor = "RED";
     public Text teamColorText;
 
-    public List<GameObject> objs = new List<GameObject>();
+    public List<GameObject> redObjs = new List<GameObject>();
+    public List<GameObject> blueObjs = new List<GameObject>();
     public List<GameObject> units = new List<GameObject>();
     public List<GameObject> toRemoveUnits = new List<GameObject>();
 
@@ -46,12 +47,13 @@ public class CubeMaker : MonoBehaviour
                         if (teamColor == "RED")
                         {
                             obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                            redObjs.Add(obj);
                         }
                         else
                         {
                             obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                            blueObjs.Add(obj);
                         }
-                        objs.Add(obj);
                         foreach (GameObject unit in units)
                         {
                             if (unit != null)
@@ -68,9 +70,13 @@ public class CubeMaker : MonoBehaviour
                             units.Remove(markedUnit);
                         }
                         toRemoveUnits = new List<GameObject>();
-                        if (objs.Count >= maxCount)
+                        if (redObjs.Count >= maxCount)
                         {
-                            RemovePoint(objs[0]);
+                            RemoveRedPoint(redObjs[0]);
+                        }
+                        if (blueObjs.Count >= maxCount)
+                        {
+                            RemoveBluePoint(blueObjs[0]);
                         }
                     }
                 }
@@ -87,15 +93,32 @@ public class CubeMaker : MonoBehaviour
         units.Add(newUnit);
     }
 
-    public void AddPoint(GameObject obj)
+    public void AddRedPoint(GameObject obj)
     {
-        objs.Add(obj);
+        redObjs.Add(obj);
+    }
+    public void AddBluePoint(GameObject obj)
+    {
+        blueObjs.Add(obj);
     }
 
-    public void RemovePoint(GameObject obj)
+    public void RemoveRedPoint(GameObject obj)
     {
         // thingy = true;
-        objs.Remove(obj);
+        redObjs.Remove(obj);
+        foreach (GameObject unit in units)
+        {
+            if (unit != null)
+            {
+                unit.GetComponent<Unit>().RemovePoint(obj);
+            }
+        }
+        GameObject.Destroy(obj);
+    }
+    public void RemoveBluePoint(GameObject obj)
+    {
+        // thingy = true;
+        blueObjs.Remove(obj);
         foreach (GameObject unit in units)
         {
             if (unit != null)

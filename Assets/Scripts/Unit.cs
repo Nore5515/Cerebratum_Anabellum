@@ -13,6 +13,8 @@ public class Unit : MonoBehaviour
 
     public CubeMaker cm;
 
+    public string team = "RED";
+
     public List<GameObject> objs = new List<GameObject>();
 
     void Start()
