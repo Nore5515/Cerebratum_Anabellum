@@ -29,7 +29,6 @@ public class CubeMaker : MonoBehaviour
                     if (objs.Count >= maxCount)
                     {
                         RemovePoint(objs[0]);
-                        //unit.GetComponent<Unit>().RemovePoint(obj);
                     }
                 }
             }
@@ -49,6 +48,7 @@ public class CubeMaker : MonoBehaviour
     {
         thingy = true;
         objs.Remove(obj);
+        unit.GetComponent<Unit>().RemovePoint(obj);
         GameObject.Destroy(obj);
     }
 

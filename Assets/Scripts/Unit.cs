@@ -14,12 +14,6 @@ public class Unit : MonoBehaviour
 
     public List<GameObject> objs = new List<GameObject>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -56,7 +50,8 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            Dest = objs[objs.Count - 1];
+            Dest = objs[0];
+            // Dest = objs[objs.Count - 1];
         }
     }
 
