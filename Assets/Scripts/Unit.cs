@@ -29,7 +29,10 @@ public class Unit : MonoBehaviour
         {
             objs.Add(obj);
         }
-        Dest = objs[0];
+        if (objs.Count > 0)
+        {
+            Dest = objs[0];
+        }
     }
 
     IEnumerator SelfDestruct()

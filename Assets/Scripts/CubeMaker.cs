@@ -58,7 +58,10 @@ public class CubeMaker : MonoBehaviour
                         {
                             if (unit != null)
                             {
-                                unit.GetComponent<Unit>().AddPoint(obj);
+                                if (unit.GetComponent<Unit>().team == teamColor)
+                                {
+                                    unit.GetComponent<Unit>().AddPoint(obj);
+                                }
                             }
                             else
                             {
