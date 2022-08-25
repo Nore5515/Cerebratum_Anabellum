@@ -27,8 +27,10 @@ public class Unit : MonoBehaviour
                 if (Vector3.Distance(transform.position, Dest.transform.position) <= MaxDist && removing == false)
                 {
                     removing = true;
-                    Debug.Log("Gotem");
-                    RemovePoint(Dest);
+                    if (Dest != null)
+                    {
+                        RemovePoint(Dest);
+                    }
                 }
 
             }
@@ -38,40 +40,26 @@ public class Unit : MonoBehaviour
     public void AddPoint(GameObject point)
     {
         objs.Add(point);
-        Debug.Log("Adding! Now has");
-        Debug.Log(objs.Count);
-        if (objs.Count == 1)
+        if (Dest == null)
         {
             Dest = objs[0];
-        }
-        else if (objs.Count == 0)
-        {
-            Dest = null;
-        }
-        else
-        {
-            Dest = objs[0];
-            // Dest = objs[objs.Count - 1];
         }
     }
 
     public void RemovePoint(GameObject point)
     {
         objs.Remove(point);
-        Debug.Log("Removing! Now has");
-        Debug.Log(objs.Count);
         removing = false;
-        if (objs.Count == 1)
+        if (Dest != null)
         {
-            Dest = objs[0];
-        }
-        else if (objs.Count == 0)
-        {
-            Dest = null;
-        }
-        else
-        {
-            Dest = objs[objs.Count - 1];
+            if (objs.Count <= 0)
+            {
+                Dest = null;
+            }
+            else
+            {
+                Dest = objs[0];
+            }
         }
     }
 
