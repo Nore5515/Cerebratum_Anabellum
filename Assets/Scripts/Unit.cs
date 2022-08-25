@@ -63,7 +63,6 @@ public class Unit : MonoBehaviour
     public void RemovePoint(GameObject point)
     {
         objs.Remove(point);
-        cm.annihilateObj(point);
         Debug.Log("Removing! Now has");
         Debug.Log(objs.Count);
         removing = false;

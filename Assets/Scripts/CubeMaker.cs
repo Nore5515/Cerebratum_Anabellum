@@ -11,12 +11,7 @@ public class CubeMaker : MonoBehaviour
     public int maxCount;
     bool thingy;
 
-    List<GameObject> objs = new List<GameObject>();
-
-    // Use this for initialization
-    void Start()
-    {
-    }
+    public List<GameObject> objs = new List<GameObject>();
 
     // Update is called once per frame
     void Update()
@@ -28,15 +23,13 @@ public class CubeMaker : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    thingy = true;
                     GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
                     objs.Add(obj);
                     unit.GetComponent<Unit>().AddPoint(obj);
                     if (objs.Count >= maxCount)
                     {
-                        unit.GetComponent<Unit>().RemovePoint(obj);
-                        // GameObject.Destroy(objs[0]);
-                        // objs.RemoveAt(0);
+                        RemovePoint(objs[0]);
+                        //unit.GetComponent<Unit>().RemovePoint(obj);
                     }
                 }
             }
@@ -47,10 +40,16 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    public void annihilateObj(GameObject obj)
+    public void AddPoint(GameObject obj)
     {
-        // unit.GetComponent<Unit>().RemovePoint(obj);
-        GameObject.Destroy(objs[0]);
-        objs.RemoveAt(0);
+        objs.Add(obj);
     }
+
+    public void RemovePoint(GameObject obj)
+    {
+        thingy = true;
+        objs.Remove(obj);
+        GameObject.Destroy(obj);
+    }
+
 }
