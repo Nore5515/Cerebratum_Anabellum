@@ -23,8 +23,9 @@ public class Unit : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    public void Initalize(List<GameObject> newObjs)
+    public void Initalize(List<GameObject> newObjs, string newTeam)
     {
+        team = newTeam;
         foreach (GameObject obj in newObjs)
         {
             objs.Add(obj);

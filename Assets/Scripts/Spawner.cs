@@ -7,9 +7,13 @@ public class Spawner : MonoBehaviour
     public GameObject prefab;
     public float spawnTime = 3.0f;
     public CubeMaker cm;
+    public Material redMat;
+    public Material blueMat;
 
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
+
+    public string team = "RED";
 
     void Start()
     {
@@ -39,9 +43,16 @@ public class Spawner : MonoBehaviour
         GameObject obj = Instantiate(prefab, this.transform.position, Quaternion.identity) as GameObject;
         instances.Add(obj);
 
-        // TODO: LATER ADD TEAMS
-        // TODO; LATER ADD TEAMS
-        obj.GetComponent<Unit>().Initalize(cm.redObjs);
+        if (team == "RED")
+        {
+            obj.GetComponent<Unit>().Initalize(cm.redObjs, team);
+            obj.GetComponent<MeshRenderer>().material = redMat;
+        }
+        else
+        {
+            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team);
+            obj.GetComponent<MeshRenderer>().material = blueMat;
+        }
         cm.AddUnit(obj);
         StartCoroutine(SpawnPrefab());
     }
