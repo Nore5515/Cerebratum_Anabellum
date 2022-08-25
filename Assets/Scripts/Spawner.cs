@@ -38,6 +38,7 @@ public class Spawner : MonoBehaviour
 
         GameObject obj = Instantiate(prefab, this.transform.position, Quaternion.identity) as GameObject;
         instances.Add(obj);
+        obj.GetComponent<Unit>().Initalize(cm.objs);
         cm.AddUnit(obj);
         StartCoroutine(SpawnPrefab());
     }

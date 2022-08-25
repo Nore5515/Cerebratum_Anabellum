@@ -21,6 +21,15 @@ public class Unit : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
+    public void Initalize(List<GameObject> newObjs)
+    {
+        foreach (GameObject obj in newObjs)
+        {
+            objs.Add(obj);
+        }
+        Dest = objs[0];
+    }
+
     IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(survivalTime);
