@@ -113,7 +113,9 @@ MonoBehaviour:
   survivalTime: 15
   cm: {fileID: 0}
   team: RED
+  bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
   objs: []
+  targetsInRange: []
 --- !u!1 &6028329326266340841
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alliedTeam: 
   bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
+  unit: {fileID: 0}
 --- !u!54 &8885089173988304938
 Rigidbody:
   m_ObjectHideFlags: 0

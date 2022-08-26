@@ -7,11 +7,13 @@ public class KillSphere : MonoBehaviour
 
     public string alliedTeam;
     public GameObject bullet;
+    public Unit unit;
 
     // Start is called before the first frame update
     void Start()
     {
         alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
+        unit = transform.parent.gameObject.GetComponent<Unit>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,6 +25,7 @@ public class KillSphere : MonoBehaviour
                 GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
                 obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
                 obj.GetComponent<Projectile>().Init(alliedTeam);
+                unit.AddTargetInRange(other.gameObject);
             }
         }
         if (other.gameObject.GetComponent<Spawner>() != null)
@@ -32,8 +35,14 @@ public class KillSphere : MonoBehaviour
                 GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
                 obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
                 obj.GetComponent<Projectile>().Init(alliedTeam);
+                unit.AddTargetInRange(other.gameObject);
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        unit.RemoveTargetInRange(other.gameObject);
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)

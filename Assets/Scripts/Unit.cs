@@ -15,7 +15,10 @@ public class Unit : MonoBehaviour
 
     public string team = "RED";
 
+    public GameObject bullet;
+
     public List<GameObject> objs = new List<GameObject>();
+    public List<GameObject> targetsInRange = new List<GameObject>();
 
     void Start()
     {
@@ -65,6 +68,57 @@ public class Unit : MonoBehaviour
                 }
 
             }
+        }
+        if (targetsInRange.Count > 0)
+        {
+            ClearTargets();
+            if (targetsInRange.Count > 0)
+            {
+                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.5f));
+                obj.GetComponent<Projectile>().Init(team);
+            }
+        }
+    }
+
+    private Vector3 GetPositionNearTransform(Transform trans, float randomness)
+    {
+        float randomX = trans.position.x + Random.Range(-randomness, randomness);
+        float randomY = trans.position.y + Random.Range(-randomness, randomness);
+        float randomZ = trans.position.z + Random.Range(-randomness, randomness);
+        Vector3 random = new Vector3(randomX, randomY, randomZ);
+        return random;
+    }
+
+    public void ClearTargets()
+    {
+        List<GameObject> toRemoveObjs = new List<GameObject>();
+        foreach (GameObject obj in targetsInRange)
+        {
+            if (obj == null)
+            {
+                toRemoveObjs.Add(obj);
+            }
+        }
+        foreach (GameObject markedUnit in toRemoveObjs)
+        {
+            targetsInRange.Remove(markedUnit);
+        }
+    }
+
+    public void AddTargetInRange(GameObject target)
+    {
+        targetsInRange.Add(target);
+        ClearTargets();
+        Debug.Log(targetsInRange.Count);
+    }
+    public void RemoveTargetInRange(GameObject target)
+    {
+        if (targetsInRange.Contains(target))
+        {
+            targetsInRange.Remove(target);
+            ClearTargets();
+            Debug.Log(targetsInRange.Count);
         }
     }
 
