@@ -46,5 +46,14 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
+        if (other.gameObject.GetComponent<Spawner>() != null)
+        {
+            if (other.gameObject.GetComponent<Spawner>().team != team)
+            {
+                GameObject canvas = GameObject.Find("Canvas");
+                canvas.GetComponent<UI>().DecrementHealth(other.gameObject);
+                Destroy(this.gameObject);
+            }
+        }
     }
 }

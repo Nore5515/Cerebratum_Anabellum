@@ -29,10 +29,9 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
             {
-                Debug.Log("Destroying unit on team " + alliedTeam);
-                GameObject canvas = GameObject.Find("Canvas");
-                canvas.GetComponent<UI>().DecrementHealth(other.gameObject);
-                Destroy(this.gameObject);
+                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
+                obj.GetComponent<Projectile>().Init(alliedTeam);
             }
         }
     }
