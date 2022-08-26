@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     double MaxDist = 1.2;
     int MinDist = 1;
     bool removing = false;
-    public float survivalTime = 5.0f;
+    public float survivalTime = 15.0f;
 
     public CubeMaker cm;
 
@@ -26,6 +26,9 @@ public class Unit : MonoBehaviour
     public void Initalize(List<GameObject> newObjs, string newTeam)
     {
         team = newTeam;
+        KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
+        ks.alliedTeam = team;
+        Debug.Log(ks.alliedTeam);
         foreach (GameObject obj in newObjs)
         {
             objs.Add(obj);

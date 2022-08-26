@@ -6,6 +6,7 @@ public class KillSphere : MonoBehaviour
 {
 
     public string alliedTeam;
+    public GameObject bullet;
 
     // Start is called before the first frame update
     void Start()
@@ -17,12 +18,31 @@ public class KillSphere : MonoBehaviour
     {
         if (other.gameObject.GetComponent<Unit>() != null)
         {
-            // Debug.Log("Unit Found");
             if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
             {
-                // Debug.Log("Destroyed enemy.");
-                Destroy(other.gameObject);
+                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
+                obj.GetComponent<Projectile>().Init(alliedTeam);
             }
         }
+        if (other.gameObject.GetComponent<Spawner>() != null)
+        {
+            if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
+            {
+                Debug.Log("Destroying unit on team " + alliedTeam);
+                GameObject canvas = GameObject.Find("Canvas");
+                canvas.GetComponent<UI>().DecrementHealth(other.gameObject);
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    private Vector3 GetPositionNearTransform(Transform trans, float randomness)
+    {
+        float randomX = trans.position.x + Random.Range(-randomness, randomness);
+        float randomY = trans.position.y + Random.Range(-randomness, randomness);
+        float randomZ = trans.position.z + Random.Range(-randomness, randomness);
+        Vector3 random = new Vector3(randomX, randomY, randomZ);
+        return random;
     }
 }
