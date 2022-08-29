@@ -12,6 +12,9 @@ public class UI : MonoBehaviour
     int redHP = 10;
     bool gameEnding = false;
 
+    int bluePoints = 0;
+    int redPoints = 0;
+
     // Start is called before the first frame update
     void Start()
     {

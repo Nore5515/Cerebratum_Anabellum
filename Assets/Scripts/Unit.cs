@@ -30,12 +30,13 @@ public class Unit : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay)
+    public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay, float unitRange)
     {
         team = newTeam;
         fireDelay = _fireDelay;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
+        ks.GetComponent<SphereCollider>().radius = unitRange;
         Debug.Log(ks.alliedTeam);
         foreach (GameObject obj in newObjs)
         {
@@ -91,7 +92,7 @@ public class Unit : MonoBehaviour
                     Debug.Log("Shots fired!");
                     canFire = false;
                     GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                    obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.5f));
+                    obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.0f));
                     obj.GetComponent<Projectile>().Init(team);
                 }
                 else

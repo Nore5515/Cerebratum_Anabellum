@@ -16,6 +16,7 @@ public class Spawner : MonoBehaviour
     public string team = "RED";
 
     public float fireDelay = 2.0f;
+    public float unitRange = 3.0f;
 
     void Start()
     {
@@ -47,12 +48,12 @@ public class Spawner : MonoBehaviour
 
         if (team == "RED")
         {
-            obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay);
+            obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay, unitRange);
             obj.GetComponent<MeshRenderer>().material = redMat;
         }
         else
         {
-            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay);
+            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay, unitRange);
             obj.GetComponent<MeshRenderer>().material = blueMat;
         }
         cm.AddUnit(obj);
@@ -72,6 +73,14 @@ public class Spawner : MonoBehaviour
         if (fireDelay >= 0.5f)
         {
             fireDelay -= 0.25f;
+        }
+    }
+
+    public void IncreaseRange()
+    {
+        if (unitRange <= 6.0f)
+        {
+            unitRange += 0.5f;
         }
     }
 
