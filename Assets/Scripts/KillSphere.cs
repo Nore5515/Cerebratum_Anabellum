@@ -22,9 +22,9 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
             {
-                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
-                obj.GetComponent<Projectile>().Init(alliedTeam);
+                // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                // obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
+                // obj.GetComponent<Projectile>().Init(alliedTeam);
                 unit.AddTargetInRange(other.gameObject);
             }
         }
@@ -32,9 +32,9 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
             {
-                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
-                obj.GetComponent<Projectile>().Init(alliedTeam);
+                // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                // obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
+                // obj.GetComponent<Projectile>().Init(alliedTeam);
                 unit.AddTargetInRange(other.gameObject);
             }
         }

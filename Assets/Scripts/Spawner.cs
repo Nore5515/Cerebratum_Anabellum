@@ -15,6 +15,8 @@ public class Spawner : MonoBehaviour
 
     public string team = "RED";
 
+    public float fireDelay = 2.0f;
+
     void Start()
     {
         IEnumerator coroutine = SpawnPrefab();
@@ -45,16 +47,32 @@ public class Spawner : MonoBehaviour
 
         if (team == "RED")
         {
-            obj.GetComponent<Unit>().Initalize(cm.redObjs, team);
+            obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay);
             obj.GetComponent<MeshRenderer>().material = redMat;
         }
         else
         {
-            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team);
+            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay);
             obj.GetComponent<MeshRenderer>().material = blueMat;
         }
         cm.AddUnit(obj);
         StartCoroutine(SpawnPrefab());
+    }
+
+    public void IncreaseSpawnRate()
+    {
+        if (spawnTime >= 1.0f)
+        {
+            spawnTime -= 0.5f;
+        }
+    }
+
+    public void IncreaseFireRate()
+    {
+        if (fireDelay >= 0.5f)
+        {
+            fireDelay -= 0.25f;
+        }
     }
 
 }

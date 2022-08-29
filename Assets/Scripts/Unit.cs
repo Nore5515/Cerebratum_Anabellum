@@ -30,9 +30,10 @@ public class Unit : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    public void Initalize(List<GameObject> newObjs, string newTeam)
+    public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay)
     {
         team = newTeam;
+        fireDelay = _fireDelay;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
         Debug.Log(ks.alliedTeam);
@@ -87,6 +88,7 @@ public class Unit : MonoBehaviour
             {
                 if (canFire)
                 {
+                    Debug.Log("Shots fired!");
                     canFire = false;
                     GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
                     obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.5f));
