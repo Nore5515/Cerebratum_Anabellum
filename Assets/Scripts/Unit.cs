@@ -20,6 +20,10 @@ public class Unit : MonoBehaviour
     public List<GameObject> objs = new List<GameObject>();
     public List<GameObject> targetsInRange = new List<GameObject>();
 
+    public float fireDelay = 2f;
+    public bool canFire = true;
+    public bool canFireDelay = false;
+
     void Start()
     {
         IEnumerator coroutine = SelfDestruct();
@@ -48,6 +52,13 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
+    IEnumerator EnableFiring()
+    {
+        yield return new WaitForSeconds(fireDelay);
+        canFire = true;
+        canFireDelay = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -74,9 +85,21 @@ public class Unit : MonoBehaviour
             ClearTargets();
             if (targetsInRange.Count > 0)
             {
-                GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.5f));
-                obj.GetComponent<Projectile>().Init(team);
+                if (canFire)
+                {
+                    canFire = false;
+                    GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                    obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.5f));
+                    obj.GetComponent<Projectile>().Init(team);
+                }
+                else
+                {
+                    if (canFireDelay == false)
+                    {
+                        canFireDelay = true;
+                        StartCoroutine(EnableFiring());
+                    }
+                }
             }
         }
     }
