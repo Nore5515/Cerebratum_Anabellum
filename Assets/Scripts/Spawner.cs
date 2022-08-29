@@ -18,10 +18,28 @@ public class Spawner : MonoBehaviour
     public float fireDelay = 2.0f;
     public float unitRange = 3.0f;
 
+    public float pointTimer = 10.0f;
+
     void Start()
     {
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
+        StartCoroutine(GainPoints());
+    }
+
+    IEnumerator GainPoints()
+    {
+        yield return new WaitForSeconds(pointTimer);
+        GameObject canvas = GameObject.Find("Canvas");
+        if (team == "RED")
+        {
+            canvas.GetComponent<UI>().ChangePoints(1, 0);
+        }
+        else
+        {
+            canvas.GetComponent<UI>().ChangePoints(0, 1);
+        }
+        StartCoroutine(GainPoints());
     }
 
     IEnumerator SpawnPrefab()
@@ -62,26 +80,59 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseSpawnRate()
     {
-        if (spawnTime >= 1.0f)
+        if (deductTeamPoints())
         {
-            spawnTime -= 0.5f;
+            if (spawnTime >= 1.0f)
+            {
+                spawnTime -= 0.5f;
+            }
         }
     }
 
     public void IncreaseFireRate()
     {
-        if (fireDelay >= 0.5f)
+        if (deductTeamPoints())
         {
-            fireDelay -= 0.25f;
+            if (fireDelay >= 0.5f)
+            {
+                fireDelay -= 0.25f;
+            }
         }
     }
 
     public void IncreaseRange()
     {
-        if (unitRange <= 6.0f)
+        if (deductTeamPoints())
         {
-            unitRange += 0.5f;
+            if (unitRange <= 6.0f)
+            {
+                unitRange += 0.5f;
+            }
         }
     }
+
+
+    public bool deductTeamPoints()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+        if (team == "RED")
+        {
+            if (canvas.GetComponent<UI>().redPoints > 0)
+            {
+                canvas.GetComponent<UI>().ChangePoints(-1, 0);
+                return true;
+            }
+        }
+        else
+        {
+            if (canvas.GetComponent<UI>().bluePoints > 0)
+            {
+                canvas.GetComponent<UI>().ChangePoints(0, -1);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
