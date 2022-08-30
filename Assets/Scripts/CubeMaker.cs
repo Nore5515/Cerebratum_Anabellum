@@ -19,6 +19,7 @@ public class CubeMaker : MonoBehaviour
     public List<GameObject> blueObjs = new List<GameObject>();
     public List<GameObject> units = new List<GameObject>();
     public List<GameObject> toRemoveUnits = new List<GameObject>();
+    public List<Unit> controlledUnits = new List<Unit>();
 
 
     // Update is called once per frame
@@ -84,15 +85,29 @@ public class CubeMaker : MonoBehaviour
                     }
                     if (hit.collider.gameObject.tag == "unit")
                     {
-                        GameObject.Destroy(hit.collider.gameObject);
+                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                        if (unit != null)
+                        {
+                            if (controlledUnits.Count >= 1)
+                            {
+                                controlledUnits[0].beingControlled = false;
+                                controlledUnits = new List<Unit>();
+                            }
+                            unit.beingControlled = true;
+                            controlledUnits.Add(unit);
+                        }
                     }
                 }
             }
         }
-        // if (Input.GetKeyUp(KeyCode.Mouse0))
-        // {
-        // thingy = false;
-        // }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            foreach (var unit in controlledUnits)
+            {
+                unit.beingControlled = false;
+            }
+            controlledUnits = new List<Unit>();
+        }
     }
 
     public void AddUnit(GameObject newUnit)

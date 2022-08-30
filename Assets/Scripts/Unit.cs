@@ -24,6 +24,8 @@ public class Unit : MonoBehaviour
     public bool canFire = true;
     public bool canFireDelay = false;
 
+    public bool beingControlled = false;
+
     void Start()
     {
         IEnumerator coroutine = SelfDestruct();
@@ -64,7 +66,7 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Dest != null)
+        if (Dest != null && beingControlled == false)
         {
             transform.LookAt(Dest.transform);
 
