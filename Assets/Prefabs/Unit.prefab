@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4623804062567844899}
   m_Layer: 0
   m_Name: Unit
-  m_TagString: Untagged
+  m_TagString: unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,6 +116,9 @@ MonoBehaviour:
   bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
   objs: []
   targetsInRange: []
+  fireDelay: 2
+  canFire: 1
+  canFireDelay: 0
 --- !u!1 &6028329326266340841
 GameObject:
   m_ObjectHideFlags: 0

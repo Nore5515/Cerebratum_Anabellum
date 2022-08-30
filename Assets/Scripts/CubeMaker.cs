@@ -82,6 +82,10 @@ public class CubeMaker : MonoBehaviour
                             RemoveBluePoint(blueObjs[0]);
                         }
                     }
+                    if (hit.collider.gameObject.tag == "unit")
+                    {
+                        GameObject.Destroy(hit.collider.gameObject);
+                    }
                 }
             }
         }
