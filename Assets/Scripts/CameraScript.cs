@@ -9,7 +9,7 @@ public class CameraScript : MonoBehaviour
 
     public GameObject followObj;
 
-    public float MoveSpeed = 1.0f;
+    public float MoveSpeed = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +20,6 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (followObj == null)
         {
             mainCam.fieldOfView = 60;
