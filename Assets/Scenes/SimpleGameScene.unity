@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
   m_PrefabInstance: {fileID: 2827561041993554842}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1423101583}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dc01853f73114918a1bc475d666b093, type: 3}
@@ -1334,6 +1334,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980938444}
   m_CullTransparentMesh: 1
+--- !u!1 &1133578208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1133578209}
+  m_Layer: 0
+  m_Name: CameraAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1133578209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133578208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 20, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1161753854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +1908,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400429898}
   m_CullTransparentMesh: 1
+--- !u!1 &1423101583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2827561041874613995, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+  m_PrefabInstance: {fileID: 2827561041993554842}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1423101584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423101583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69106f182216a47938fc1b2db4ce44bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCam: {fileID: 1423101585}
+  anchor: {fileID: 1133578208}
+  followObj: {fileID: 0}
+  MoveSpeed: 5
+--- !u!20 &1423101585 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2827561041874613993, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+  m_PrefabInstance: {fileID: 2827561041993554842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1549290662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,6 +2747,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: camScript
+      value: 
+      objectReference: {fileID: 1423101584}
     - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
       propertyPath: teamColorText
       value: 

@@ -22,6 +22,7 @@ public class CubeMaker : MonoBehaviour
     public List<Unit> controlledUnits = new List<Unit>();
 
     public Vector3 unitDirection = new Vector3();
+    public CameraScript camScript;
 
     // Update is called once per frame
     void Update()
@@ -96,6 +97,7 @@ public class CubeMaker : MonoBehaviour
                             }
                             unit.beingControlled = true;
                             controlledUnits.Add(unit);
+                            camScript.followObj = unit.gameObject;
                         }
                     }
                 }
@@ -127,6 +129,7 @@ public class CubeMaker : MonoBehaviour
                 unit.beingControlled = false;
             }
             controlledUnits = new List<Unit>();
+            camScript.followObj = null;
         }
 
         if (controlledUnits.Count >= 1)
