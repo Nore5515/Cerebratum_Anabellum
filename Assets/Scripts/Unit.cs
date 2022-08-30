@@ -60,7 +60,15 @@ public class Unit : MonoBehaviour
 
     IEnumerator EnableFiring()
     {
-        yield return new WaitForSeconds(fireDelay);
+        // When controlled, fire 50% faster.
+        if (beingControlled)
+        {
+            yield return new WaitForSeconds(fireDelay * 0.5f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(fireDelay);
+        }
         canFire = true;
         canFireDelay = false;
     }
@@ -91,7 +99,8 @@ public class Unit : MonoBehaviour
             if (controlDirection != new Vector3(0, 0, 0))
             {
                 transform.LookAt(transform.position + controlDirection);
-                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+                // When controlled, move 25% faster.
+                transform.position += transform.forward * (MoveSpeed * 1.25f) * Time.deltaTime;
             }
         }
         if (targetsInRange.Count > 0 && beingControlled == false)
