@@ -20,6 +20,8 @@ public class Spawner : MonoBehaviour
 
     public float pointTimer = 10.0f;
 
+    public bool isAI = false;
+
     void Start()
     {
         IEnumerator coroutine = SpawnPrefab();
@@ -39,7 +41,30 @@ public class Spawner : MonoBehaviour
         {
             canvas.GetComponent<UI>().ChangePoints(0, 1);
         }
+        if (isAI)
+        {
+            AI_SpendPoints();
+        }
         StartCoroutine(GainPoints());
+    }
+
+    void AI_SpendPoints()
+    {
+        switch (Random.Range(1, 3))
+        {
+            case 3:
+                IncreaseFireRate();
+                break;
+            case 2:
+                IncreaseRange();
+                break;
+            case 1:
+                IncreaseSpawnRate();
+                break;
+            default:
+                Debug.Log("ERROR IN AI POINT SPENDING");
+                break;
+        }
     }
 
     IEnumerator SpawnPrefab()
@@ -80,9 +105,9 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseSpawnRate()
     {
-        if (deductTeamPoints())
+        if (spawnTime >= 1.0f)
         {
-            if (spawnTime >= 1.0f)
+            if (deductTeamPoints())
             {
                 spawnTime -= 0.5f;
             }
@@ -91,9 +116,9 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseFireRate()
     {
-        if (deductTeamPoints())
+        if (fireDelay >= 0.5f)
         {
-            if (fireDelay >= 0.5f)
+            if (deductTeamPoints())
             {
                 fireDelay -= 0.25f;
             }
@@ -102,9 +127,9 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseRange()
     {
-        if (deductTeamPoints())
+        if (unitRange <= 6.0f)
         {
-            if (unitRange <= 6.0f)
+            if (deductTeamPoints())
             {
                 unitRange += 0.5f;
             }
