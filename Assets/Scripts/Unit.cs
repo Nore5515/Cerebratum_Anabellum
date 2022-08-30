@@ -26,6 +26,8 @@ public class Unit : MonoBehaviour
 
     public bool beingControlled = false;
 
+    public Vector3 controlDirection = new Vector3(0, 0, 0);
+
     void Start()
     {
         IEnumerator coroutine = SelfDestruct();
@@ -82,6 +84,14 @@ public class Unit : MonoBehaviour
                     }
                 }
 
+            }
+        }
+        else if (beingControlled)
+        {
+            if (controlDirection != new Vector3(0, 0, 0))
+            {
+                transform.LookAt(transform.position + controlDirection);
+                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
             }
         }
         if (targetsInRange.Count > 0)

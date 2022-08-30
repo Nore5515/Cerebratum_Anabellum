@@ -21,6 +21,7 @@ public class CubeMaker : MonoBehaviour
     public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
 
+    public Vector3 unitDirection = new Vector3();
 
     // Update is called once per frame
     void Update()
@@ -107,6 +108,32 @@ public class CubeMaker : MonoBehaviour
                 unit.beingControlled = false;
             }
             controlledUnits = new List<Unit>();
+        }
+
+        if (controlledUnits.Count >= 1)
+        {
+            if (controlledUnits[0] != null)
+            {
+                float zMovement = Input.GetAxis("Vertical");
+                float xMovement = Input.GetAxis("Horizontal");
+                controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
+                // if (Input.GetKeyDown(KeyCode.W))
+                // {
+                //     controlledUnits[0].controlDirection = new Vector3(0, 0, -1);
+                // }
+                // if (Input.GetKeyUp(KeyCode.W))
+                // {
+                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 0);
+                // }
+                // if (Input.GetKeyDown(KeyCode.S))
+                // {
+                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 1);
+                // }
+                // if (Input.GetKeyUp(KeyCode.S))
+                // {
+                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 0);
+                // }
+            }
         }
     }
 
