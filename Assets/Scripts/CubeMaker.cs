@@ -112,7 +112,7 @@ public class CubeMaker : MonoBehaviour
                             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                             if (Physics.Raycast(ray, out hit))
                             {
-                                controlledUnits[0].FireAtPosition(new Vector3(hit.point.x, hit.point.y, hit.point.z));
+                                controlledUnits[0].ControlledFire(new Vector3(hit.point.x, hit.point.y, hit.point.z));
                             }
                             // Shoot here.
                             // TODO

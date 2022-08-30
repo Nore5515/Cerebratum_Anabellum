@@ -104,9 +104,6 @@ public class Unit : MonoBehaviour
                     Debug.Log("Shots fired!");
                     canFire = false;
                     FireAtTransform(targetsInRange[0].gameObject.transform);
-                    // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                    // obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.0f));
-                    // obj.GetComponent<Projectile>().Init(team);
                 }
                 else
                 {
@@ -120,11 +117,30 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public void ControlledFire(Vector3 target)
+    {
+        if (canFire)
+        {
+            Debug.Log("Shots fired!");
+            canFire = false;
+            FireAtPosition(target);
+        }
+        else
+        {
+            if (canFireDelay == false)
+            {
+                canFireDelay = true;
+                StartCoroutine(EnableFiring());
+            }
+        }
+    }
+
     public void FireAtPosition(Vector3 position)
     {
         GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetPositionNearPosition(position, 1.0f));
         obj.GetComponent<Projectile>().Init(team);
+
     }
 
     public void FireAtTransform(Transform trans)
