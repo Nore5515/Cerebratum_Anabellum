@@ -109,13 +109,12 @@ public class CubeMaker : MonoBehaviour
                     {
                         if (Input.GetKey(KeyCode.Mouse0))
                         {
+                            // Shoot here.
                             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                             if (Physics.Raycast(ray, out hit))
                             {
-                                controlledUnits[0].ControlledFire(new Vector3(hit.point.x, hit.point.y, hit.point.z));
+                                controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
                             }
-                            // Shoot here.
-                            // TODO
                         }
                     }
                 }

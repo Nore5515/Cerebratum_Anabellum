@@ -153,18 +153,18 @@ public class Unit : MonoBehaviour
     private Vector3 GetPositionNearPosition(Vector3 position, float randomness)
     {
         float randomX = position.x + Random.Range(-randomness, randomness);
-        float randomY = position.y + Random.Range(-randomness, randomness);
+        // float randomY = position.y + Random.Range(-randomness, randomness);
         float randomZ = position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, randomY, randomZ);
+        Vector3 random = new Vector3(randomX, 0.5f, randomZ);
         return random;
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)
     {
         float randomX = trans.position.x + Random.Range(-randomness, randomness);
-        float randomY = trans.position.y + Random.Range(-randomness, randomness);
+        // float randomY = trans.position.y + Random.Range(-randomness, randomness);
         float randomZ = trans.position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, randomY, randomZ);
+        Vector3 random = new Vector3(randomX, 0.5f, randomZ);
         return random;
     }
 
