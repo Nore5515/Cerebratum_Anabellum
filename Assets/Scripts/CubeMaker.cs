@@ -173,6 +173,16 @@ public class CubeMaker : MonoBehaviour
         blueObjs.Add(obj);
     }
 
+    public GameObject CreateRedPoint(Vector3 position)
+    {
+        return Instantiate(prefabRed, position, Quaternion.identity) as GameObject;
+    }
+
+    public GameObject CreateBluePoint(Vector3 position)
+    {
+        return Instantiate(prefabBlue, position, Quaternion.identity) as GameObject;
+    }
+
     public void RemoveRedPoint(GameObject obj)
     {
         // thingy = true;

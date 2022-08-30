@@ -2170,6 +2170,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 6997898886634222331, guid: f12a2fff6f0b24dc6b081041c3cfb64f, type: 3}
+      propertyPath: m_TagString
+      value: spawner
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f12a2fff6f0b24dc6b081041c3cfb64f, type: 3}
 --- !u!1001 &8986076936475912670
@@ -2226,6 +2230,10 @@ PrefabInstance:
     - target: {fileID: 8986076937690203210, guid: 61c0c453e3f4b49dcbc4440e5aa2c319, type: 3}
       propertyPath: m_Name
       value: BlueSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986076937690203210, guid: 61c0c453e3f4b49dcbc4440e5aa2c319, type: 3}
+      propertyPath: m_TagString
+      value: spawner
       objectReference: {fileID: 0}
     - target: {fileID: 8986076937690203211, guid: 61c0c453e3f4b49dcbc4440e5aa2c319, type: 3}
       propertyPath: cm

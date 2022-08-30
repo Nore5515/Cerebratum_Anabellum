@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
 
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
+    public List<Spawner> enemySpawners = new List<Spawner>();
 
     public string team = "RED";
 
@@ -27,6 +28,23 @@ public class Spawner : MonoBehaviour
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
+        GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
+        foreach (var spawnerObj in spawnerObjs)
+        {
+            Spawner spawner = spawnerObj.GetComponent<Spawner>();
+            if (spawner != null)
+            {
+                if (spawner.team != team)
+                {
+                    enemySpawners.Add(spawner);
+                }
+            }
+        }
+
+        if (isAI && enemySpawners.Count >= 1)
+        {
+            AI_DrawPath(enemySpawners[0].gameObject.transform.position);
+        }
     }
 
     IEnumerator GainPoints()
@@ -46,6 +64,18 @@ public class Spawner : MonoBehaviour
             AI_SpendPoints();
         }
         StartCoroutine(GainPoints());
+    }
+
+    void AI_DrawPath(Vector3 position)
+    {
+        if (team == "RED")
+        {
+            cm.AddRedPoint(cm.CreateRedPoint(position));
+        }
+        else
+        {
+            cm.AddBluePoint(cm.CreateBluePoint(position));
+        }
     }
 
     void AI_SpendPoints()
