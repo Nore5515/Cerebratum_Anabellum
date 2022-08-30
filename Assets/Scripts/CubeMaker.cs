@@ -41,7 +41,7 @@ public class CubeMaker : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                if (Input.GetKey(KeyCode.Mouse0))
+                if (Input.GetKey(KeyCode.Mouse0) && controlledUnits.Count == 0)
                 {
                     if (hit.collider.gameObject.tag == "floor")
                     {
@@ -96,6 +96,26 @@ public class CubeMaker : MonoBehaviour
                             }
                             unit.beingControlled = true;
                             controlledUnits.Add(unit);
+                        }
+                    }
+                }
+                else if (controlledUnits.Count >= 1)
+                {
+                    if (controlledUnits[0] == null)
+                    {
+                        controlledUnits = new List<Unit>();
+                    }
+                    else
+                    {
+                        if (Input.GetKey(KeyCode.Mouse0))
+                        {
+                            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                            if (Physics.Raycast(ray, out hit))
+                            {
+                                controlledUnits[0].FireAtPosition(new Vector3(hit.point.x, hit.point.y, hit.point.z));
+                            }
+                            // Shoot here.
+                            // TODO
                         }
                     }
                 }

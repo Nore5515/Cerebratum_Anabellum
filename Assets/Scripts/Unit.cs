@@ -94,7 +94,7 @@ public class Unit : MonoBehaviour
                 transform.position += transform.forward * MoveSpeed * Time.deltaTime;
             }
         }
-        if (targetsInRange.Count > 0)
+        if (targetsInRange.Count > 0 && beingControlled == false)
         {
             ClearTargets();
             if (targetsInRange.Count > 0)
@@ -103,9 +103,10 @@ public class Unit : MonoBehaviour
                 {
                     Debug.Log("Shots fired!");
                     canFire = false;
-                    GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                    obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.0f));
-                    obj.GetComponent<Projectile>().Init(team);
+                    FireAtTransform(targetsInRange[0].gameObject.transform);
+                    // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                    // obj.transform.LookAt(GetPositionNearTransform(targetsInRange[0].gameObject.transform, 1.0f));
+                    // obj.GetComponent<Projectile>().Init(team);
                 }
                 else
                 {
@@ -117,6 +118,29 @@ public class Unit : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void FireAtPosition(Vector3 position)
+    {
+        GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+        obj.transform.LookAt(GetPositionNearPosition(position, 1.0f));
+        obj.GetComponent<Projectile>().Init(team);
+    }
+
+    public void FireAtTransform(Transform trans)
+    {
+        GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+        obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
+        obj.GetComponent<Projectile>().Init(team);
+    }
+
+    private Vector3 GetPositionNearPosition(Vector3 position, float randomness)
+    {
+        float randomX = position.x + Random.Range(-randomness, randomness);
+        float randomY = position.y + Random.Range(-randomness, randomness);
+        float randomZ = position.z + Random.Range(-randomness, randomness);
+        Vector3 random = new Vector3(randomX, randomY, randomZ);
+        return random;
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)
