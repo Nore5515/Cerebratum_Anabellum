@@ -23,6 +23,8 @@ public class Spawner : MonoBehaviour
 
     public bool isAI = false;
 
+    public List<GameObject> paths;
+
     void Start()
     {
         IEnumerator coroutine = SpawnPrefab();
@@ -70,11 +72,39 @@ public class Spawner : MonoBehaviour
     {
         if (team == "RED")
         {
-            cm.AddRedPoint(cm.CreateRedPoint(position));
+            if (paths.Count > 0)
+            {
+                GameObject chosenPath = paths[Random.Range(0, paths.Count - 1)];
+                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
+                {
+                    if (orbTransform.position != new Vector3(0, 0, 0))
+                    {
+                        cm.AddRedPoint(cm.CreateRedPoint(orbTransform.position));
+                    }
+                }
+            }
+            else
+            {
+                cm.AddRedPoint(cm.CreateRedPoint(position));
+            }
         }
         else
         {
-            cm.AddBluePoint(cm.CreateBluePoint(position));
+            if (paths.Count > 0)
+            {
+                GameObject chosenPath = paths[Random.Range(0, paths.Count - 1)];
+                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
+                {
+                    if (orbTransform.position != new Vector3(0, 0, 0))
+                    {
+                        cm.AddBluePoint(cm.CreateBluePoint(orbTransform.position));
+                    }
+                }
+            }
+            else
+            {
+                cm.AddBluePoint(cm.CreateBluePoint(position));
+            }
         }
     }
 
