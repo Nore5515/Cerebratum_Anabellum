@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dest: {fileID: 0}
-  survivalTime: 15
+  survivalTime: 25
   cm: {fileID: 0}
   team: RED
   bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
@@ -119,6 +119,8 @@ MonoBehaviour:
   fireDelay: 2
   canFire: 1
   canFireDelay: 0
+  beingControlled: 0
+  controlDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &6028329326266340841
 GameObject:
   m_ObjectHideFlags: 0
