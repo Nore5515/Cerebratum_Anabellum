@@ -22,7 +22,7 @@ public class CameraScript : MonoBehaviour
     {
         if (followObj == null)
         {
-            mainCam.fieldOfView = 60;
+            mainCam.fieldOfView = 80;
             mainCam.transform.position = anchor.transform.position;
             float zMovement = Input.GetAxis("Vertical");
             float xMovement = Input.GetAxis("Horizontal");
