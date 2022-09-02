@@ -6,14 +6,27 @@ public class KillSphere : MonoBehaviour
 {
 
     public string alliedTeam;
-    public GameObject bullet;
     public Unit unit;
+    public TowerScript ts;
+
+    public bool isUnit = false;
+    public bool isTower = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
-        unit = transform.parent.gameObject.GetComponent<Unit>();
+        if (transform.parent.gameObject.GetComponent<Unit>() != null)
+        {
+            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
+            unit = transform.parent.gameObject.GetComponent<Unit>();
+            isUnit = true;
+        }
+        else if (transform.parent.gameObject.GetComponent<TowerScript>() != null)
+        {
+            alliedTeam = transform.parent.gameObject.GetComponent<TowerScript>().team;
+            ts = transform.parent.gameObject.GetComponent<TowerScript>();
+            isTower = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,27 +35,56 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
             {
-                // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                // obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
-                // obj.GetComponent<Projectile>().Init(alliedTeam);
-                unit.AddTargetInRange(other.gameObject);
+                if (isTower)
+                {
+                    ts.AddTargetInRange(other.gameObject);
+                }
+                else if (isUnit)
+                {
+                    unit.AddTargetInRange(other.gameObject);
+                }
             }
         }
         if (other.gameObject.GetComponent<Spawner>() != null)
         {
             if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
             {
-                // GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-                // obj.transform.LookAt(GetPositionNearTransform(other.gameObject.transform, 1.5f));
-                // obj.GetComponent<Projectile>().Init(alliedTeam);
-                unit.AddTargetInRange(other.gameObject);
+                if (isTower)
+                {
+                    ts.AddTargetInRange(other.gameObject);
+                }
+                else if (isUnit)
+                {
+                    unit.AddTargetInRange(other.gameObject);
+                }
+            }
+        }
+        if (other.gameObject.GetComponent<TowerScript>() != null)
+        {
+            if (other.gameObject.GetComponent<TowerScript>().team != alliedTeam)
+            {
+                if (isTower)
+                {
+                    ts.AddTargetInRange(other.gameObject);
+                }
+                else if (isUnit)
+                {
+                    unit.AddTargetInRange(other.gameObject);
+                }
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        unit.RemoveTargetInRange(other.gameObject);
+        if (isTower)
+        {
+            ts.RemoveTargetInRange(other.gameObject);
+        }
+        else if (isUnit)
+        {
+            unit.RemoveTargetInRange(other.gameObject);
+        }
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)

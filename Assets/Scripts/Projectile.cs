@@ -55,5 +55,13 @@ public class Projectile : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+        if (other.gameObject.GetComponent<TowerScript>() != null)
+        {
+            if (other.gameObject.GetComponent<TowerScript>().team != team)
+            {
+                other.gameObject.GetComponent<TowerScript>().DealDamage(1);
+                Destroy(this.gameObject);
+            }
+        }
     }
 }
