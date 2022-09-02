@@ -24,6 +24,10 @@ public class CubeMaker : MonoBehaviour
     public Vector3 unitDirection = new Vector3();
     public CameraScript camScript;
 
+    public float distancePerSphere = 0.0f;
+    public float maxDistancePerSphere = 50.0f;
+    public Vector3 oldPos = new Vector3();
+
     // Update is called once per frame
     void Update()
     {
@@ -44,8 +48,9 @@ public class CubeMaker : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.Mouse0) && controlledUnits.Count == 0)
                 {
-                    if (hit.collider.gameObject.tag == "floor")
+                    if (hit.collider.gameObject.tag == "floor" && distancePerSphere >= maxDistancePerSphere)
                     {
+                        distancePerSphere = 0.0f;
                         GameObject obj;
                         if (teamColor == "RED")
                         {
@@ -83,6 +88,18 @@ public class CubeMaker : MonoBehaviour
                         if (blueObjs.Count >= maxCount)
                         {
                             RemoveBluePoint(blueObjs[0]);
+                        }
+                    }
+                    else if (hit.collider.gameObject.tag == "floor" && distancePerSphere < maxDistancePerSphere)
+                    {
+                        if (oldPos == new Vector3())
+                        {
+                            oldPos = hit.collider.gameObject.transform.position;
+                        }
+                        else
+                        {
+                            distancePerSphere += Vector3.Distance(oldPos, hit.collider.gameObject.transform.position);
+                            oldPos = hit.collider.gameObject.transform.position;
                         }
                     }
                     if (hit.collider.gameObject.tag == "unit")
