@@ -74,7 +74,7 @@ public class Spawner : MonoBehaviour
         {
             if (paths.Count > 0)
             {
-                GameObject chosenPath = paths[Random.Range(0, paths.Count - 1)];
+                GameObject chosenPath = paths[Random.Range(0, paths.Count)];
                 foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
                 {
                     if (orbTransform.position != new Vector3(0, 0, 0))
@@ -92,7 +92,7 @@ public class Spawner : MonoBehaviour
         {
             if (paths.Count > 0)
             {
-                GameObject chosenPath = paths[Random.Range(0, paths.Count - 1)];
+                GameObject chosenPath = paths[Random.Range(0, paths.Count)];
                 foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
                 {
                     if (orbTransform.position != new Vector3(0, 0, 0))
