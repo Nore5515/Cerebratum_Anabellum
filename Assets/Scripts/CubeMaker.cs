@@ -25,7 +25,7 @@ public class CubeMaker : MonoBehaviour
     public CameraScript camScript;
 
     public float distancePerSphere = 0.0f;
-    public float maxDistancePerSphere = 50.0f;
+    public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
     // Update is called once per frame
@@ -92,14 +92,16 @@ public class CubeMaker : MonoBehaviour
                     }
                     else if (hit.collider.gameObject.tag == "floor" && distancePerSphere < maxDistancePerSphere)
                     {
-                        if (oldPos == new Vector3())
+                        if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
                         {
+                            Debug.Log("A");
                             oldPos = hit.collider.gameObject.transform.position;
                         }
                         else
                         {
-                            distancePerSphere += Vector3.Distance(oldPos, hit.collider.gameObject.transform.position);
-                            oldPos = hit.collider.gameObject.transform.position;
+                            distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                            Debug.Log(distancePerSphere);
+                            oldPos = hit.point;
                         }
                     }
                     if (hit.collider.gameObject.tag == "unit")

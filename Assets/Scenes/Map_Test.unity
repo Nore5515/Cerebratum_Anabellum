@@ -3627,6 +3627,10 @@ PrefabInstance:
       propertyPath: teamColorText
       value: 
       objectReference: {fileID: 2014875842}
+    - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: maxDistancePerSphere
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
 --- !u!1001 &6997898885745548399
