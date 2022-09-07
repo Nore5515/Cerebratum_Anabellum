@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
     public List<Spawner> enemySpawners = new List<Spawner>();
+    public List<GameObject> alliedSpawnerObjs = new List<GameObject>();
 
     public string team = "RED";
 
@@ -30,6 +31,7 @@ public class Spawner : MonoBehaviour
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
+        alliedSpawnerObjs.Add(this.gameObject);
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
         foreach (var spawnerObj in spawnerObjs)
         {
@@ -127,9 +129,8 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnPrefab()
+    public void ClearNullInstances()
     {
-        yield return new WaitForSeconds(spawnTime);
         foreach (GameObject instance in instances)
         {
             if (instance == null)
@@ -145,21 +146,31 @@ public class Spawner : MonoBehaviour
             }
             markedInstances = new List<GameObject>();
         }
+    }
 
-        GameObject obj = Instantiate(prefab, this.transform.position, Quaternion.identity) as GameObject;
-        instances.Add(obj);
+    IEnumerator SpawnPrefab()
+    {
+        yield return new WaitForSeconds(spawnTime);
+        ClearNullInstances();
 
-        if (team == "RED")
+        foreach (GameObject spawnerObj in alliedSpawnerObjs)
         {
-            obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay, unitRange);
-            obj.GetComponent<MeshRenderer>().material = redMat;
+            GameObject obj = Instantiate(prefab, spawnerObj.transform.position, Quaternion.identity) as GameObject;
+            instances.Add(obj);
+
+            if (team == "RED")
+            {
+                obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay, unitRange);
+                obj.GetComponent<MeshRenderer>().material = redMat;
+            }
+            else
+            {
+                obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay, unitRange);
+                obj.GetComponent<MeshRenderer>().material = blueMat;
+            }
+            cm.AddUnit(obj);
         }
-        else
-        {
-            obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay, unitRange);
-            obj.GetComponent<MeshRenderer>().material = blueMat;
-        }
-        cm.AddUnit(obj);
+
         StartCoroutine(SpawnPrefab());
     }
 

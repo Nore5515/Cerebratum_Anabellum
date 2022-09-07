@@ -94,13 +94,13 @@ public class CubeMaker : MonoBehaviour
                     {
                         if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
                         {
-                            Debug.Log("A");
+                            // Debug.Log("A");
                             oldPos = hit.collider.gameObject.transform.position;
                         }
                         else
                         {
                             distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                            Debug.Log(distancePerSphere);
+                            // Debug.Log(distancePerSphere);
                             oldPos = hit.point;
                         }
                     }
