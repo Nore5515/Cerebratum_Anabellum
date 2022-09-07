@@ -28,6 +28,8 @@ public class CubeMaker : MonoBehaviour
     public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
+    public bool drawStarted = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -46,64 +48,99 @@ public class CubeMaker : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
+                //
+                // ╔══════════════════════════════════════════════════╗
+                // ║  Detect if draw has started                      ║
+                // ╚══════════════════════════════════════════════════╝
+                //
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    if (hit.collider.gameObject.tag == "spawner")
+                    {
+                        drawStarted = true;
+                    }
+                }
+                else if (Input.GetKeyUp(KeyCode.Mouse0))
+                {
+                    drawStarted = false;
+                }
+
+                //
+                // ╔══════════════════════════════════════════════════╗
+                // ║  Various other things.                           ║
+                // ╚══════════════════════════════════════════════════╝
+                //
                 if (Input.GetKey(KeyCode.Mouse0) && controlledUnits.Count == 0)
                 {
-                    if (hit.collider.gameObject.tag == "floor" && distancePerSphere >= maxDistancePerSphere)
+                    //
+                    // ╔══════════════════════════════════════════════════╗
+                    // ║  Draw Paths.                                     ║
+                    // ╚══════════════════════════════════════════════════╝
+                    //
+                    if (drawStarted)
                     {
-                        distancePerSphere = 0.0f;
-                        GameObject obj;
-                        if (teamColor == "RED")
+                        if (hit.collider.gameObject.tag == "floor" && distancePerSphere >= maxDistancePerSphere)
                         {
-                            obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                            redObjs.Add(obj);
-                        }
-                        else
-                        {
-                            obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                            blueObjs.Add(obj);
-                        }
-                        foreach (GameObject unit in units)
-                        {
-                            if (unit != null)
+                            distancePerSphere = 0.0f;
+                            GameObject obj;
+                            if (teamColor == "RED")
                             {
-                                if (unit.GetComponent<Unit>().team == teamColor)
-                                {
-                                    unit.GetComponent<Unit>().AddPoint(obj);
-                                }
+                                obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                                redObjs.Add(obj);
                             }
                             else
                             {
-                                toRemoveUnits.Add(unit);
+                                obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                                blueObjs.Add(obj);
+                            }
+                            foreach (GameObject unit in units)
+                            {
+                                if (unit != null)
+                                {
+                                    if (unit.GetComponent<Unit>().team == teamColor)
+                                    {
+                                        unit.GetComponent<Unit>().AddPoint(obj);
+                                    }
+                                }
+                                else
+                                {
+                                    toRemoveUnits.Add(unit);
+                                }
+                            }
+                            foreach (GameObject markedUnit in toRemoveUnits)
+                            {
+                                units.Remove(markedUnit);
+                            }
+                            toRemoveUnits = new List<GameObject>();
+                            if (redObjs.Count >= maxCount)
+                            {
+                                RemoveRedPoint(redObjs[0]);
+                            }
+                            if (blueObjs.Count >= maxCount)
+                            {
+                                RemoveBluePoint(blueObjs[0]);
                             }
                         }
-                        foreach (GameObject markedUnit in toRemoveUnits)
+                        // If distance is less than maxdistancepersphere, add change in distance.
+                        else if (hit.collider.gameObject.tag == "floor" && distancePerSphere < maxDistancePerSphere)
                         {
-                            units.Remove(markedUnit);
-                        }
-                        toRemoveUnits = new List<GameObject>();
-                        if (redObjs.Count >= maxCount)
-                        {
-                            RemoveRedPoint(redObjs[0]);
-                        }
-                        if (blueObjs.Count >= maxCount)
-                        {
-                            RemoveBluePoint(blueObjs[0]);
-                        }
-                    }
-                    else if (hit.collider.gameObject.tag == "floor" && distancePerSphere < maxDistancePerSphere)
-                    {
-                        if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-                        {
-                            // Debug.Log("A");
-                            oldPos = hit.collider.gameObject.transform.position;
-                        }
-                        else
-                        {
-                            distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                            // Debug.Log(distancePerSphere);
-                            oldPos = hit.point;
+                            if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+                            {
+                                oldPos = hit.collider.gameObject.transform.position;
+                            }
+                            else
+                            {
+                                distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                                oldPos = hit.point;
+                            }
                         }
                     }
+
+                    //
+                    // ╔══════════════════════════════════════════════════╗
+                    // ║  Possess unit on click.                          ║
+                    // ╚══════════════════════════════════════════════════╝
+                    //
                     if (hit.collider.gameObject.tag == "unit")
                     {
                         Unit unit = hit.collider.gameObject.GetComponent<Unit>();
