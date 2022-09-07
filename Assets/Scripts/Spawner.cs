@@ -148,6 +148,17 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public void CreateNewSpawner()
+    {
+        if (alliedSpawnerObjs.Count <= 2)
+        {
+            Vector3 newPos = alliedSpawnerObjs[0].transform.position;
+            newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
+            GameObject newObj = Instantiate(alliedSpawnerObjs[0], newPos, Quaternion.identity) as GameObject;
+            alliedSpawnerObjs.Add(newObj);
+        }
+    }
+
     IEnumerator SpawnPrefab()
     {
         yield return new WaitForSeconds(spawnTime);
