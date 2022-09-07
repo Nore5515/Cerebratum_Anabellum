@@ -41,7 +41,7 @@ public class Unit : MonoBehaviour
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
         ks.GetComponent<SphereCollider>().radius = unitRange;
-        Debug.Log(ks.alliedTeam);
+        // Debug.Log(ks.alliedTeam);
         foreach (GameObject obj in newObjs)
         {
             objs.Add(obj);
@@ -110,7 +110,7 @@ public class Unit : MonoBehaviour
             {
                 if (canFire)
                 {
-                    Debug.Log("Shots fired!");
+                    // Debug.Log("Shots fired!");
                     canFire = false;
                     FireAtTransform(targetsInRange[0].gameObject.transform);
                 }
@@ -130,7 +130,7 @@ public class Unit : MonoBehaviour
     {
         if (canFire)
         {
-            Debug.Log("Shots fired!");
+            // Debug.Log("Shots fired!");
             canFire = false;
             FireAtPosition(target);
         }
@@ -197,7 +197,7 @@ public class Unit : MonoBehaviour
     {
         targetsInRange.Add(target);
         ClearTargets();
-        Debug.Log(targetsInRange.Count);
+        // Debug.Log(targetsInRange.Count);
     }
     public void RemoveTargetInRange(GameObject target)
     {
@@ -205,7 +205,7 @@ public class Unit : MonoBehaviour
         {
             targetsInRange.Remove(target);
             ClearTargets();
-            Debug.Log(targetsInRange.Count);
+            // Debug.Log(targetsInRange.Count);
         }
     }
 
