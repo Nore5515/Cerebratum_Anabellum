@@ -58,6 +58,8 @@ public class CubeMaker : MonoBehaviour
                     if (hit.collider.gameObject.tag == "spawner")
                     {
                         drawStarted = true;
+                        Debug.Log("Drawing from: ");
+                        Debug.Log(hit.collider.transform.parent.gameObject.name);
                     }
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))

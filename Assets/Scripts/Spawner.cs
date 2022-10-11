@@ -2,10 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SpawnerData
+{
+    public string name;
+    public GameObject obj;
+
+    public void Initalize(string _name, GameObject _obj)
+    {
+        name = _name;
+        obj = _obj;
+    }
+}
+
 public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
-    public float spawnTime = 3.0f;
     public CubeMaker cm;
     public Material redMat;
     public Material blueMat;
@@ -13,25 +24,23 @@ public class Spawner : MonoBehaviour
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
     public List<Spawner> enemySpawners = new List<Spawner>();
-    public List<GameObject> alliedSpawnerObjs = new List<GameObject>();
+    public List<SpawnerData> alliedSpawnerObjs = new List<SpawnerData>();
+    public List<GameObject> paths;
 
     public string team = "RED";
-
     public float fireDelay = 2.0f;
     public float unitRange = 3.0f;
-
+    public float spawnTime = 3.0f;
     public float pointTimer = 10.0f;
-
     public bool isAI = false;
 
-    public List<GameObject> paths;
 
     void Start()
     {
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
-        alliedSpawnerObjs.Add(this.gameObject);
+        alliedSpawnerObjs.Add(new SpawnerData());
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
         foreach (var spawnerObj in spawnerObjs)
         {

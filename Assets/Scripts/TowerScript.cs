@@ -34,7 +34,7 @@ public class TowerScript : MonoBehaviour
             {
                 if (canFire)
                 {
-                    Debug.Log("Shots fired!");
+                    // Debug.Log("Shots fired!");
                     canFire = false;
                     FireAtTransform(targetsInRange[0].gameObject.transform);
                 }
@@ -110,7 +110,7 @@ public class TowerScript : MonoBehaviour
     {
         targetsInRange.Add(target);
         ClearTargets();
-        Debug.Log(targetsInRange.Count);
+        // Debug.Log(targetsInRange.Count);
     }
     public void RemoveTargetInRange(GameObject target)
     {
@@ -118,7 +118,7 @@ public class TowerScript : MonoBehaviour
         {
             targetsInRange.Remove(target);
             ClearTargets();
-            Debug.Log(targetsInRange.Count);
+            // Debug.Log(targetsInRange.Count);
         }
     }
 
