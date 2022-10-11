@@ -41,6 +41,7 @@ public class Spawner : MonoBehaviour
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
         alliedSpawnerObjs.Add(new SpawnerData());
+        alliedSpawnerObjs[0].obj = this.gameObject;
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
         foreach (var spawnerObj in spawnerObjs)
         {
@@ -161,21 +162,26 @@ public class Spawner : MonoBehaviour
     {
         if (alliedSpawnerObjs.Count <= 2)
         {
-            Vector3 newPos = alliedSpawnerObjs[0].transform.position;
+            Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
             newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
-            GameObject newObj = Instantiate(alliedSpawnerObjs[0], newPos, Quaternion.identity) as GameObject;
-            alliedSpawnerObjs.Add(newObj);
+            GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
+            SpawnerData sd = new SpawnerData();
+            sd.obj = newObj;
+            alliedSpawnerObjs.Add(sd);
         }
     }
 
     IEnumerator SpawnPrefab()
     {
         yield return new WaitForSeconds(spawnTime);
+        Debug.Log("help");
         ClearNullInstances();
 
-        foreach (GameObject spawnerObj in alliedSpawnerObjs)
+        foreach (SpawnerData spawnData in alliedSpawnerObjs)
         {
-            GameObject obj = Instantiate(prefab, spawnerObj.transform.position, Quaternion.identity) as GameObject;
+            Debug.Log("Spawner: ");
+            Debug.Log(spawnData.obj);
+            GameObject obj = Instantiate(prefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
             instances.Add(obj);
 
             if (team == "RED")
