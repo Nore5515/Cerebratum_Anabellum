@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CubeMaker : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class CubeMaker : MonoBehaviour
         {
             teamColor = "BLUE";
             teamColorText.text = teamColor;
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("DemoMenu");
         }
         if (thingy == false)
         {
