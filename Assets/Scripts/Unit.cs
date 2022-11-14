@@ -28,6 +28,9 @@ public class Unit : MonoBehaviour
 
     public Vector3 controlDirection = new Vector3(0, 0, 0);
 
+    public GameObject spriteRed;
+    public GameObject spriteBlue;
+
     void Start()
     {
         IEnumerator coroutine = SelfDestruct();
@@ -37,6 +40,12 @@ public class Unit : MonoBehaviour
     public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay, float unitRange)
     {
         team = newTeam;
+        if (team == "RED"){
+            spriteBlue.SetActive(false);
+        }
+        else{
+            spriteRed.SetActive(false);
+        }
         fireDelay = _fireDelay;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
