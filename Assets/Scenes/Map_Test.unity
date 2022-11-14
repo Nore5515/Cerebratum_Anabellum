@@ -3492,7 +3492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1846899430
 Transform:
   m_ObjectHideFlags: 0
@@ -3932,6 +3932,10 @@ PrefabInstance:
       propertyPath: camScript
       value: 
       objectReference: {fileID: 1423101584}
+    - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: teamColor
+      value: RED
+      objectReference: {fileID: 0}
     - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
       propertyPath: teamColorText
       value: 
