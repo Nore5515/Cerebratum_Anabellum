@@ -459,7 +459,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: DEMO BUILD
+  m_Text: DEMO BUILD v0.0.7
 --- !u!222 &796655908
 CanvasRenderer:
   m_ObjectHideFlags: 0
