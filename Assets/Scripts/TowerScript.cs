@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerScript : MonoBehaviour
 {
@@ -17,11 +18,13 @@ public class TowerScript : MonoBehaviour
 
     public string team = "RED";
     public GameObject bullet;
+    public GameObject HPBar;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        HPBar.GetComponent<Slider>().value = health;
+        HPBar.GetComponent<Slider>().maxValue = health;
     }
 
     // Update is called once per frame
@@ -68,6 +71,7 @@ public class TowerScript : MonoBehaviour
     public void DealDamage(int damage)
     {
         health -= 1;
+        HPBar.GetComponent<Slider>().value = health;
         if (health <= 0)
         {
             Destroy(this.gameObject);
