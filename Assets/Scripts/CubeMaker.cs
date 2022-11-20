@@ -157,14 +157,18 @@ public class CubeMaker : MonoBehaviour
                         Unit unit = hit.collider.gameObject.GetComponent<Unit>();
                         if (unit != null)
                         {
-                            if (controlledUnits.Count >= 1)
+                            // Confirm unit is same team.
+                            if (unit.team == teamColor)
                             {
-                                controlledUnits[0].beingControlled = false;
-                                controlledUnits = new List<Unit>();
+                                if (controlledUnits.Count >= 1)
+                                {
+                                    controlledUnits[0].beingControlled = false;
+                                    controlledUnits = new List<Unit>();
+                                }
+                                unit.beingControlled = true;
+                                controlledUnits.Add(unit);
+                                camScript.followObj = unit.gameObject;
                             }
-                            unit.beingControlled = true;
-                            controlledUnits.Add(unit);
-                            camScript.followObj = unit.gameObject;
                         }
                     }
                 }
