@@ -40,10 +40,12 @@ public class Unit : MonoBehaviour
     public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay, float unitRange)
     {
         team = newTeam;
-        if (team == "RED"){
+        if (team == "RED")
+        {
             spriteBlue.SetActive(false);
         }
-        else{
+        else
+        {
             spriteRed.SetActive(false);
         }
         fireDelay = _fireDelay;
@@ -141,7 +143,15 @@ public class Unit : MonoBehaviour
         {
             // Debug.Log("Shots fired!");
             canFire = false;
-            FireAtPosition(target);
+            // Fire with perfect accuracy if controlled.
+            if (beingControlled)
+            {
+                FireAtPosition(target, 0.0f);
+            }
+            else
+            {
+                FireAtPosition(target, 1.0f);
+            }
         }
         else
         {
@@ -153,10 +163,10 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void FireAtPosition(Vector3 position)
+    public void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
-        obj.transform.LookAt(GetPositionNearPosition(position, 1.0f));
+        obj.transform.LookAt(GetPositionNearPosition(position, missRange));
         obj.GetComponent<Projectile>().Init(team);
 
     }
