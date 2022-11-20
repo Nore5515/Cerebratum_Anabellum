@@ -65,6 +65,10 @@ public class CubeMaker : MonoBehaviour
                         drawStarted = true;
                         Debug.Log("Drawing from: ");
                         Debug.Log(hit.collider.transform.parent.gameObject.name);
+                        while (redObjs.Count > 0)
+                        {
+                            RemoveRedPoint(redObjs[0]);
+                        }
                     }
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
