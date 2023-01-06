@@ -13,6 +13,8 @@ public class CubeMaker : MonoBehaviour
     public int maxCount;
     bool thingy;
 
+    public Slider pathBar;
+
     public string teamColor = "RED";
     public Text teamColorText;
 
@@ -30,6 +32,11 @@ public class CubeMaker : MonoBehaviour
     public Vector3 oldPos = new Vector3();
 
     public bool drawStarted = false;
+
+    public void Start()
+    {
+        pathBar.maxValue = maxCount;
+    }
 
     // Update is called once per frame
     void Update()
@@ -69,11 +76,16 @@ public class CubeMaker : MonoBehaviour
                         {
                             RemoveRedPoint(redObjs[0]);
                         }
+                        pathBar.value = 0;
+                        pathBar.gameObject.SetActive(true);
+                        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
+                        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
                     }
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     drawStarted = false;
+                    pathBar.gameObject.SetActive(false);
                 }
 
                 //
@@ -98,6 +110,12 @@ public class CubeMaker : MonoBehaviour
                             {
                                 obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
                                 redObjs.Add(obj);
+                                pathBar.value = redObjs.Count;
+                                if (redObjs.Count == maxCount)
+                                {
+                                    Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
+                                    pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
+                                }
                             }
                             else
                             {
