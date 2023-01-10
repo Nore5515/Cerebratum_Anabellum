@@ -23,6 +23,7 @@ public class CubeMaker : MonoBehaviour
     public List<GameObject> units = new List<GameObject>();
     public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
+    GameObject[] spawnerButtons;
 
     public Vector3 unitDirection = new Vector3();
     public CameraScript camScript;
@@ -35,6 +36,7 @@ public class CubeMaker : MonoBehaviour
 
     public void Start()
     {
+        spawnerButtons = GameObject.FindGameObjectsWithTag("spawner_buttons");
         pathBar.maxValue = maxCount;
     }
 
@@ -69,6 +71,14 @@ public class CubeMaker : MonoBehaviour
                 {
                     if (hit.collider.gameObject.tag == "spawner")
                     {
+
+                        // turn on all spawner option buttons
+                        // Hide all Spawner buttons
+                        foreach (var button in spawnerButtons)
+                        {
+                            button.SetActive(true);
+                        }
+
                         drawStarted = true;
                         Debug.Log("Drawing from: ");
                         Debug.Log(hit.collider.transform.parent.gameObject.name);
@@ -84,6 +94,13 @@ public class CubeMaker : MonoBehaviour
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
+
+                    // Hide all Spawner buttons
+                    foreach (var button in spawnerButtons)
+                    {
+                        button.SetActive(false);
+                    }
+
                     drawStarted = false;
                     pathBar.gameObject.SetActive(false);
                 }
