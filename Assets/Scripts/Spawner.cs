@@ -14,8 +14,7 @@ public class SpawnerData
     }
 }
 
-public class Spawner : MonoBehaviour
-{
+public class Spawner : MonoBehaviour {
     public GameObject prefab;
     public CubeMaker cm;
     public Material redMat;
@@ -35,73 +34,57 @@ public class Spawner : MonoBehaviour
     public bool isAI = false;
 
 
-    void Start()
-    {
+    void Start() {
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
         alliedSpawnerObjs.Add(new SpawnerData());
         alliedSpawnerObjs[0].obj = this.gameObject;
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
-        foreach (var spawnerObj in spawnerObjs)
-        {
+        foreach (var spawnerObj in spawnerObjs) {
             Spawner spawner = spawnerObj.GetComponent<Spawner>();
-            if (spawner != null)
-            {
-                if (spawner.team != team)
-                {
+            if (spawner != null) {
+                if (spawner.team != team) {
                     enemySpawners.Add(spawner);
                 }
             }
         }
 
-        if (isAI && enemySpawners.Count >= 1)
-        {
+        if (isAI && enemySpawners.Count >= 1) {
             AI_DrawPath(enemySpawners[0].gameObject.transform.position);
         }
     }
 
-    IEnumerator GainPoints()
-    {
+    IEnumerator GainPoints() {
         yield return new WaitForSeconds(pointTimer);
         GameObject canvas = GameObject.Find("Canvas");
-        if (team == "RED")
-        {
+        if (team == "RED") {
             canvas.GetComponent<UI>().ChangePoints(1, 0);
         }
-        else
-        {
+        else {
             canvas.GetComponent<UI>().ChangePoints(0, 1);
         }
-        if (isAI)
-        {
+        if (isAI) {
             AI_SpendPoints();
         }
         StartCoroutine(GainPoints());
     }
 
-    void AI_DrawPath(Vector3 position)
-    {
-        if (team == "RED")
-        {
-            if (paths.Count > 0)
-            {
+    void AI_DrawPath(Vector3 position) {
+        if (team == "RED") {
+            if (paths.Count > 0) {
                 GameObject chosenPath = paths[Random.Range(0, paths.Count)];
-                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
-                {
-                    if (orbTransform.position != new Vector3(0, 0, 0))
-                    {
+                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>()) {
+                    if (orbTransform.position != new Vector3(0, 0, 0)) {
                         cm.AddRedPoint(cm.CreateRedPoint(orbTransform.position));
                     }
                 }
             }
-            else
-            {
+            else {
                 cm.AddRedPoint(cm.CreateRedPoint(position));
             }
         }
-        else
-        {
+        else {
             if (paths.Count > 0)
             {
                 GameObject chosenPath = paths[Random.Range(0, paths.Count)];

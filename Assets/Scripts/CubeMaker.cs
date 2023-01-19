@@ -91,15 +91,18 @@ public class CubeMaker : MonoBehaviour
                         Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
                         pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
                     }
+                    else{
+                        // Hide all Spawner buttons
+                        foreach (var button in spawnerButtons)
+                        {
+                            button.SetActive(false);
+                        }
+                    }
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
 
-                    // Hide all Spawner buttons
-                    foreach (var button in spawnerButtons)
-                    {
-                        button.SetActive(false);
-                    }
+                    
 
                     drawStarted = false;
                     pathBar.gameObject.SetActive(false);
