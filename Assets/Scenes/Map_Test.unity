@@ -4205,7 +4205,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1890622237
 GameObject:
@@ -4647,63 +4647,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
---- !u!1001 &5370804392509186752
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4780993649744800026, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_Name
-      value: SpiderTank
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 9.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8275002659838705051, guid: 375080f562b6445e694e55c9f9804580, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 375080f562b6445e694e55c9f9804580, type: 3}
 --- !u!1001 &6997898885745548399
 PrefabInstance:
   m_ObjectHideFlags: 0

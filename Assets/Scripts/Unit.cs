@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -31,14 +32,24 @@ public class Unit : MonoBehaviour
     public GameObject spriteRed;
     public GameObject spriteBlue;
 
+    public Slider hpSlider;
+
     public int maxHP = 1;
     public int HP = 1;
 
     void Start()
     {
         HP = maxHP;
-        IEnumerator coroutine = SelfDestruct();
-        StartCoroutine(coroutine);
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = maxHP;
+            hpSlider.value = HP;
+        }
+        if (survivalTime > 0)
+        {
+            IEnumerator coroutine = SelfDestruct();
+            StartCoroutine(coroutine);
+        }
     }
 
     public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay, float unitRange)
@@ -65,6 +76,16 @@ public class Unit : MonoBehaviour
         {
             Dest = objs[0];
         }
+    }
+
+    public int DealDamage(int damage)
+    {
+        HP -= damage;
+        if (hpSlider != null)
+        {
+            hpSlider.value = HP;
+        }
+        return HP;
     }
 
     IEnumerator SelfDestruct()
