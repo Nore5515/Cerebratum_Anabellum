@@ -41,7 +41,14 @@ public class Projectile : MonoBehaviour
                 if (other.gameObject.GetComponent<Unit>().team != team)
                 {
                     // Debug.Log("Destroying " + other.gameObject.GetComponent<Unit>().team + "'s unit (via " + team + "'s projectile)");
-                    Destroy(other.gameObject);
+                    if (other.gameObject.GetComponent<Unit>().HP > 1)
+                    {
+                        other.gameObject.GetComponent<Unit>().HP -= 1;
+                    }
+                    else
+                    {
+                        Destroy(other.gameObject);
+                    }
                     Destroy(this.gameObject);
                 }
             }

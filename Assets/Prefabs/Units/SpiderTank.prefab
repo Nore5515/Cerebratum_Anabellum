@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3437386734065181101}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 6001008202588781352}
   - {fileID: 6976449449776608063}
@@ -141,8 +141,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.6286383, y: 1, z: 4.4448733}
+  m_Center: {x: -0.015506864, y: 0, z: -0.21593833}
 --- !u!114 &4623804062567844899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dest: {fileID: 0}
+  MoveSpeed: 1
   survivalTime: 25
   cm: {fileID: 0}
   team: RED
@@ -169,6 +170,8 @@ MonoBehaviour:
   controlDirection: {x: 0, y: 0, z: 0}
   spriteRed: {fileID: 7301550883347599530}
   spriteBlue: {fileID: 9034834148569807388}
+  maxHP: 20
+  HP: 20
 --- !u!1 &6028329326266340841
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +216,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8646230950262295469
 MonoBehaviour:

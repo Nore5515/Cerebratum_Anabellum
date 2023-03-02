@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public GameObject Dest;
-    int MoveSpeed = 4;
+    public int MoveSpeed = 4;
     double MaxDist = 1.2;
     int MinDist = 1;
     bool removing = false;
@@ -31,8 +31,12 @@ public class Unit : MonoBehaviour
     public GameObject spriteRed;
     public GameObject spriteBlue;
 
+    public int maxHP = 1;
+    public int HP = 1;
+
     void Start()
     {
+        HP = maxHP;
         IEnumerator coroutine = SelfDestruct();
         StartCoroutine(coroutine);
     }
