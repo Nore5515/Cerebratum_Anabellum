@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 4623804062567844893}
   - component: {fileID: 4623804062567844894}
   - component: {fileID: 4623804062567844895}
-  - component: {fileID: 4623804062567844899}
+  - component: {fileID: 4050803231927158503}
   m_Layer: 0
   m_Name: SpiderTank
   m_TagString: unit
@@ -430,7 +430,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.6286383, y: 1, z: 4.4448733}
   m_Center: {x: -0.015506864, y: 0, z: -0.21593833}
---- !u!114 &4623804062567844899
+--- !u!114 &4050803231927158503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,24 +439,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 4623804062567844888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728f3ca8d4fa14e0a85096a6eb09dd23, type: 3}
+  m_Script: {fileID: 11500000, guid: 9084f394bb5de42ef95da21e9261ff8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Dest: {fileID: 0}
-  MoveSpeed: 0
+  MoveSpeed: 1
+  MaxDist: 0
+  MinDist: 0
+  removing: 0
   survivalTime: 0
   cm: {fileID: 0}
-  bullet: {fileID: 0}
+  bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
   objs: []
   targetsInRange: []
   fireDelay: 0
   canFire: 0
   canFireDelay: 0
-  spriteRed: {fileID: 0}
-  spriteBlue: {fileID: 0}
-  hpSlider: {fileID: 0}
-  maxHP: 0
-  HP: 0
+  spriteRed: {fileID: 7301550883347599530}
+  spriteBlue: {fileID: 9034834148569807388}
+  hpSlider: {fileID: 1659311101258336037}
+  maxHP: 20
+  HP: 20
 --- !u!1 &5595524532269203499
 GameObject:
   m_ObjectHideFlags: 0
