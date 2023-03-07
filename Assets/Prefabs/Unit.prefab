@@ -152,23 +152,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4623804062567844888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d3dcd7ecca34157ade842b77e6d5f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 728f3ca8d4fa14e0a85096a6eb09dd23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Dest: {fileID: 0}
-  survivalTime: 25
+  MoveSpeed: 4
+  survivalTime: -1
   cm: {fileID: 0}
-  team: RED
   bullet: {fileID: 9172172192567566883, guid: e245e61614484493fb5fe573d48212d1, type: 3}
   objs: []
   targetsInRange: []
   fireDelay: 2
-  canFire: 1
+  canFire: 0
   canFireDelay: 0
-  beingControlled: 0
-  controlDirection: {x: 0, y: 0, z: 0}
   spriteRed: {fileID: 7301550883347599530}
   spriteBlue: {fileID: 5899760427183908123}
+  hpSlider: {fileID: 0}
+  maxHP: 1
+  HP: 1
 --- !u!1 &5899760427183908123
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +311,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alliedTeam: 
-  unit: {fileID: 0}
   ts: {fileID: 0}
   isUnit: 0
   isTower: 0

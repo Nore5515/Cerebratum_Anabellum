@@ -282,7 +282,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alliedTeam: 
-  unit: {fileID: 0}
   ts: {fileID: 0}
   isUnit: 0
   isTower: 0
@@ -4684,7 +4683,7 @@ PrefabInstance:
       objectReference: {fileID: 963194229}
     - target: {fileID: 6997898886634222326, guid: f12a2fff6f0b24dc6b081041c3cfb64f, type: 3}
       propertyPath: spawnTime
-      value: 2.5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6997898886634222326, guid: f12a2fff6f0b24dc6b081041c3cfb64f, type: 3}
       propertyPath: spiderPrefab
@@ -5023,7 +5022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986076937690203211, guid: 61c0c453e3f4b49dcbc4440e5aa2c319, type: 3}
       propertyPath: spawnTime
-      value: 2.5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8986076937690203211, guid: 61c0c453e3f4b49dcbc4440e5aa2c319, type: 3}
       propertyPath: pointTimer
