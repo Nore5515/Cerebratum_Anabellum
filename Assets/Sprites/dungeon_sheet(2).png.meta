@@ -705,7 +705,7 @@ TextureImporter:
       213: 8668634434402087783
     second: dungeon_sheet(2)_233
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -726,6 +726,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -764,6 +765,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -791,6 +793,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -5728,6 +5742,241 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      dungeon_sheet(2)_1: -4365228158604295570
+      dungeon_sheet(2)_10: 7925735740139639196
+      dungeon_sheet(2)_100: -6324947393818662972
+      dungeon_sheet(2)_101: 4744698893631919648
+      dungeon_sheet(2)_102: 3783860830951113792
+      dungeon_sheet(2)_103: -7263223692729786590
+      dungeon_sheet(2)_104: 6798757828516208965
+      dungeon_sheet(2)_105: -4967572267780752506
+      dungeon_sheet(2)_106: -4411418966508203816
+      dungeon_sheet(2)_107: 3242612612094413204
+      dungeon_sheet(2)_108: -6570128919347890386
+      dungeon_sheet(2)_109: 86104628312431063
+      dungeon_sheet(2)_11: 441882462723188608
+      dungeon_sheet(2)_110: -6622110689339855141
+      dungeon_sheet(2)_111: -7297499388726081872
+      dungeon_sheet(2)_112: -1338631861015378096
+      dungeon_sheet(2)_113: -8638992205157972485
+      dungeon_sheet(2)_114: 8772602809978601019
+      dungeon_sheet(2)_115: 6600439909826321336
+      dungeon_sheet(2)_116: 5931180986801877304
+      dungeon_sheet(2)_117: -3523062232214858002
+      dungeon_sheet(2)_118: -6150666306077791767
+      dungeon_sheet(2)_119: -2621325185907877083
+      dungeon_sheet(2)_12: -7701299917153615649
+      dungeon_sheet(2)_120: 5944994858058162256
+      dungeon_sheet(2)_121: -7527603866002113434
+      dungeon_sheet(2)_122: 3656527060517681711
+      dungeon_sheet(2)_123: -8707938418833680221
+      dungeon_sheet(2)_124: -8521194773463506461
+      dungeon_sheet(2)_125: -4839560235985608834
+      dungeon_sheet(2)_126: -8289474284069446309
+      dungeon_sheet(2)_127: 410952696330995896
+      dungeon_sheet(2)_128: -6095225848754219334
+      dungeon_sheet(2)_129: 3552888805861263572
+      dungeon_sheet(2)_13: 5712279758765181074
+      dungeon_sheet(2)_130: 2774488286548772384
+      dungeon_sheet(2)_131: 8588125134313598619
+      dungeon_sheet(2)_132: 6825873060576113971
+      dungeon_sheet(2)_133: 5310638791216214193
+      dungeon_sheet(2)_134: -8970759896027464447
+      dungeon_sheet(2)_135: -2572357709290842600
+      dungeon_sheet(2)_136: -1739244836755130662
+      dungeon_sheet(2)_137: 4358704710272860534
+      dungeon_sheet(2)_138: 8848057202435904639
+      dungeon_sheet(2)_139: -1895837977875354557
+      dungeon_sheet(2)_14: -4546468206731513220
+      dungeon_sheet(2)_140: 6667621643224505208
+      dungeon_sheet(2)_141: -3751657008818091257
+      dungeon_sheet(2)_142: -903057873812497603
+      dungeon_sheet(2)_143: -8815741910741031982
+      dungeon_sheet(2)_144: -1870687048598253412
+      dungeon_sheet(2)_145: 1859929271307329375
+      dungeon_sheet(2)_146: 4188334854541399347
+      dungeon_sheet(2)_147: -1134325280842996397
+      dungeon_sheet(2)_148: -5302227246727454052
+      dungeon_sheet(2)_149: -6048424967895185219
+      dungeon_sheet(2)_15: 7391472681685594472
+      dungeon_sheet(2)_150: -570885076732305721
+      dungeon_sheet(2)_151: -8535433926304792951
+      dungeon_sheet(2)_152: 1383297930350074786
+      dungeon_sheet(2)_153: 5964382454287915468
+      dungeon_sheet(2)_154: -5092323647273460579
+      dungeon_sheet(2)_155: -646493795334136132
+      dungeon_sheet(2)_156: 4968466670903194768
+      dungeon_sheet(2)_157: -3212387620619254357
+      dungeon_sheet(2)_158: -269390815184231416
+      dungeon_sheet(2)_159: -8223797119122656789
+      dungeon_sheet(2)_16: 8022795568368438208
+      dungeon_sheet(2)_160: 5724445132498702274
+      dungeon_sheet(2)_161: 7851180908385999414
+      dungeon_sheet(2)_162: 4640689737623357040
+      dungeon_sheet(2)_163: -4209165860071809392
+      dungeon_sheet(2)_164: -2080557649801671000
+      dungeon_sheet(2)_165: 7540486828329950992
+      dungeon_sheet(2)_166: -5826727201509994114
+      dungeon_sheet(2)_167: 6668584139186177172
+      dungeon_sheet(2)_168: 4493954343078906569
+      dungeon_sheet(2)_169: 5895964440572155530
+      dungeon_sheet(2)_17: 4627972755255038614
+      dungeon_sheet(2)_170: 308355827376404475
+      dungeon_sheet(2)_171: 6282838243270819495
+      dungeon_sheet(2)_172: 1556411594261258777
+      dungeon_sheet(2)_173: -4119716456891112052
+      dungeon_sheet(2)_174: -278920941493650367
+      dungeon_sheet(2)_175: 2478769034909001223
+      dungeon_sheet(2)_176: -8682202564397164790
+      dungeon_sheet(2)_177: 5872123286465268005
+      dungeon_sheet(2)_178: 7048848940512928546
+      dungeon_sheet(2)_179: 5265702804219601973
+      dungeon_sheet(2)_18: -267859332443483519
+      dungeon_sheet(2)_180: 5674416671883987127
+      dungeon_sheet(2)_181: 4385743196029184684
+      dungeon_sheet(2)_182: -8777516011149744434
+      dungeon_sheet(2)_183: -7731930699371849363
+      dungeon_sheet(2)_184: -1312631659642517074
+      dungeon_sheet(2)_185: -160477712449524574
+      dungeon_sheet(2)_186: -2987103440976960969
+      dungeon_sheet(2)_187: -1904016198112048045
+      dungeon_sheet(2)_188: -791689077434916733
+      dungeon_sheet(2)_189: -6024702698834945982
+      dungeon_sheet(2)_19: 4942826151197050921
+      dungeon_sheet(2)_190: -869305452703672672
+      dungeon_sheet(2)_191: 7892853426357172478
+      dungeon_sheet(2)_192: 7064180234058945362
+      dungeon_sheet(2)_193: -2047233126916008824
+      dungeon_sheet(2)_194: 1848584567579632722
+      dungeon_sheet(2)_195: 1235801885022972618
+      dungeon_sheet(2)_196: -1727175821675435207
+      dungeon_sheet(2)_197: -3648816670010026910
+      dungeon_sheet(2)_198: -583461682269047648
+      dungeon_sheet(2)_199: 328053543698894524
+      dungeon_sheet(2)_2: -7023868782471591567
+      dungeon_sheet(2)_20: 1363681959644977529
+      dungeon_sheet(2)_200: -8431770604281533037
+      dungeon_sheet(2)_201: 8286379333598274899
+      dungeon_sheet(2)_202: 750542594064130909
+      dungeon_sheet(2)_203: -7800870300319563671
+      dungeon_sheet(2)_204: -3646447685986202227
+      dungeon_sheet(2)_205: -813262901637634381
+      dungeon_sheet(2)_206: 1091442326819096441
+      dungeon_sheet(2)_207: -774667289022160000
+      dungeon_sheet(2)_208: 6311796216335738600
+      dungeon_sheet(2)_209: -2780664068412607924
+      dungeon_sheet(2)_21: -8998364445278566697
+      dungeon_sheet(2)_210: 1178847912899893229
+      dungeon_sheet(2)_211: 239045535540415231
+      dungeon_sheet(2)_212: 5452474114520459117
+      dungeon_sheet(2)_213: -2131680838018297792
+      dungeon_sheet(2)_214: -3062634569582204755
+      dungeon_sheet(2)_215: -1535790915445581812
+      dungeon_sheet(2)_216: -5249591248251436718
+      dungeon_sheet(2)_217: 1616492412499062086
+      dungeon_sheet(2)_218: 1574121375417261325
+      dungeon_sheet(2)_219: -1440141355401571265
+      dungeon_sheet(2)_22: 3378400577834441560
+      dungeon_sheet(2)_220: -3294528943588488499
+      dungeon_sheet(2)_221: 4941025571481903370
+      dungeon_sheet(2)_222: -1297682568075592158
+      dungeon_sheet(2)_223: 691091996140623056
+      dungeon_sheet(2)_224: 6535438977331783547
+      dungeon_sheet(2)_225: 5753171955839100426
+      dungeon_sheet(2)_226: 1580721823822779848
+      dungeon_sheet(2)_227: -5363784947989454
+      dungeon_sheet(2)_228: 1141448927602664595
+      dungeon_sheet(2)_229: -3423632644002095330
+      dungeon_sheet(2)_23: 4911004647128668706
+      dungeon_sheet(2)_230: 3431745762482254297
+      dungeon_sheet(2)_231: 5205233424347618220
+      dungeon_sheet(2)_232: -8831190820539484400
+      dungeon_sheet(2)_233: 8668634434402087783
+      dungeon_sheet(2)_24: -8471226896983782708
+      dungeon_sheet(2)_25: -8099174406611290569
+      dungeon_sheet(2)_26: 2503928365673148257
+      dungeon_sheet(2)_27: 7750997946119939767
+      dungeon_sheet(2)_28: -7843406906963313888
+      dungeon_sheet(2)_29: -1493758324799988770
+      dungeon_sheet(2)_3: -1466342793194900820
+      dungeon_sheet(2)_30: 8153276186380292372
+      dungeon_sheet(2)_31: 9101329967342902333
+      dungeon_sheet(2)_32: 4144817172984252800
+      dungeon_sheet(2)_33: 9053020084720340598
+      dungeon_sheet(2)_34: 8968880115727775451
+      dungeon_sheet(2)_35: 3183945977901262429
+      dungeon_sheet(2)_36: 3151419425941536661
+      dungeon_sheet(2)_37: 6199721977344881380
+      dungeon_sheet(2)_38: -2781605269064482290
+      dungeon_sheet(2)_39: -4298155050560169969
+      dungeon_sheet(2)_4: -3931037058357190791
+      dungeon_sheet(2)_40: 5159569450774644161
+      dungeon_sheet(2)_41: 2968188703125178990
+      dungeon_sheet(2)_42: 7032645524505237783
+      dungeon_sheet(2)_43: -2357906217900457227
+      dungeon_sheet(2)_44: 7446116895931408917
+      dungeon_sheet(2)_45: 6860553126796342632
+      dungeon_sheet(2)_46: -1451022716201860421
+      dungeon_sheet(2)_47: 2445579127532604406
+      dungeon_sheet(2)_48: 6065921790131430583
+      dungeon_sheet(2)_49: 2840494365026356833
+      dungeon_sheet(2)_5: -2356115665024434650
+      dungeon_sheet(2)_50: -7140251117712138092
+      dungeon_sheet(2)_51: -7162628219685646990
+      dungeon_sheet(2)_52: -480984801193475964
+      dungeon_sheet(2)_53: 1137669775108977115
+      dungeon_sheet(2)_54: 5559477793246775144
+      dungeon_sheet(2)_55: -4763151420058264981
+      dungeon_sheet(2)_56: -8457572037642004013
+      dungeon_sheet(2)_57: 7824673169482190109
+      dungeon_sheet(2)_58: -6684848215270117081
+      dungeon_sheet(2)_59: 6304079401539306510
+      dungeon_sheet(2)_6: -7886979889932853932
+      dungeon_sheet(2)_60: 3062485414353469457
+      dungeon_sheet(2)_61: 2282455813575539731
+      dungeon_sheet(2)_62: 3129597414781148942
+      dungeon_sheet(2)_63: -1091078676752699567
+      dungeon_sheet(2)_64: 4025109360993134988
+      dungeon_sheet(2)_65: -5446399134027496533
+      dungeon_sheet(2)_66: -821441563796066015
+      dungeon_sheet(2)_67: 4920244803038751568
+      dungeon_sheet(2)_68: 2854782876378640684
+      dungeon_sheet(2)_69: -654126888098379082
+      dungeon_sheet(2)_7: 2171728595801553637
+      dungeon_sheet(2)_70: 5091083541073243045
+      dungeon_sheet(2)_71: -5975092072739248605
+      dungeon_sheet(2)_72: 1766689865832542452
+      dungeon_sheet(2)_73: 761069649522122750
+      dungeon_sheet(2)_74: 1543959642662256290
+      dungeon_sheet(2)_75: 8913167828292630952
+      dungeon_sheet(2)_76: -905261594443417172
+      dungeon_sheet(2)_77: 8939602948307691714
+      dungeon_sheet(2)_78: -8809135219138683082
+      dungeon_sheet(2)_79: 3603885377879997676
+      dungeon_sheet(2)_8: -298992261081132355
+      dungeon_sheet(2)_80: -3344347884537781377
+      dungeon_sheet(2)_81: -3276079650829291441
+      dungeon_sheet(2)_82: 7581235613982710336
+      dungeon_sheet(2)_83: 4747370419391667143
+      dungeon_sheet(2)_84: -2689333832742083928
+      dungeon_sheet(2)_85: 2457237302581547608
+      dungeon_sheet(2)_86: -1300462462353855440
+      dungeon_sheet(2)_87: 138820673954549627
+      dungeon_sheet(2)_88: -4235646733494343827
+      dungeon_sheet(2)_89: -2995884286098573932
+      dungeon_sheet(2)_9: 6036232146743852279
+      dungeon_sheet(2)_90: -5732121991409635259
+      dungeon_sheet(2)_91: 642690612031665275
+      dungeon_sheet(2)_92: -2886469483502494743
+      dungeon_sheet(2)_93: -7831037405395002460
+      dungeon_sheet(2)_94: -7425925764226004539
+      dungeon_sheet(2)_95: 4804352059352301511
+      dungeon_sheet(2)_96: -2287305436810097212
+      dungeon_sheet(2)_97: 6970129581327873348
+      dungeon_sheet(2)_98: 2871896303363245326
+      dungeon_sheet(2)_99: 3941289138757593153
+      dungeon_sheet_sliced: -6939695353535072830
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
