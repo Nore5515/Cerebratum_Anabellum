@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public interface Unit
 {
+    // Core unit stats
+    public int hp { get; set;}
+    public int dmg { get; set;}
+    public int speed { get; set;}
+    public float rof { get; set;}
+    public int threatLevel { get; set;}
+
     public string team { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }

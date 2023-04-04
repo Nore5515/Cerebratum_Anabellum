@@ -5,8 +5,17 @@ using UnityEngine.UI;
 
 public class Infantry : MonoBehaviour, Unit
 {
+
+    // Core unit stats
+    public int hp { get; set;}
+    public int maxHP;
+    public int dmg { get; set;}
+    public int speed { get; set;}
+    public float rof { get; set;}
+    public int threatLevel { get; set;}
+
+
     public GameObject Dest;
-    public int MoveSpeed = 4;
     public double MaxDist = 1.6;
     public int MinDist = 1;
     public bool removing = false;
@@ -26,7 +35,6 @@ public class Infantry : MonoBehaviour, Unit
     public List<GameObject> objs = new List<GameObject>();
     public List<GameObject> targetsInRange = new List<GameObject>();
 
-    public float fireDelay = 2f;
     public bool canFire = true;
     public bool canFireDelay = false;
 
@@ -36,8 +44,6 @@ public class Infantry : MonoBehaviour, Unit
 
     public Slider hpSlider;
 
-    public int maxHP = 1;
-    public int HP = 1;
 
     public Infantry(string _team)
     {
@@ -46,16 +52,23 @@ public class Infantry : MonoBehaviour, Unit
         controlDirection = new Vector3(0, 0, 0);
         MaxDist = 1.4;
         MinDist = 1;
+        
+        // Core stat initialization
+        hp = 1;
+        maxHP = hp;
+        dmg = 1;
+        speed = 4;
+        rof = 2f;
     }
 
 
     void Start()
     {
-        HP = maxHP;
+        hp = maxHP;
         if (hpSlider != null)
         {
             hpSlider.maxValue = maxHP;
-            hpSlider.value = HP;
+            hpSlider.value = hp;
         }
         if (survivalTime > 0)
         {
@@ -64,7 +77,7 @@ public class Infantry : MonoBehaviour, Unit
         }
     }
 
-    public void Initalize(List<GameObject> newObjs, string newTeam, float _fireDelay, float unitRange)
+    public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float unitRange)
     {
         MaxDist = 1.4;
         MinDist = 1;
@@ -77,7 +90,7 @@ public class Infantry : MonoBehaviour, Unit
         {
             spriteRed.SetActive(false);
         }
-        fireDelay = _fireDelay;
+        rof = _rof;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
         ks.GetComponent<SphereCollider>().radius = unitRange;
@@ -94,12 +107,12 @@ public class Infantry : MonoBehaviour, Unit
 
     public int DealDamage(int damage)
     {
-        HP -= damage;
+        hp -= damage;
         if (hpSlider != null)
         {
-            hpSlider.value = HP;
+            hpSlider.value = hp;
         }
-        return HP;
+        return hp;
     }
 
     IEnumerator SelfDestruct()
@@ -113,11 +126,11 @@ public class Infantry : MonoBehaviour, Unit
         // When controlled, fire 50% faster.
         if (beingControlled)
         {
-            yield return new WaitForSeconds(fireDelay * 0.5f);
+            yield return new WaitForSeconds(rof * 0.5f);
         }
         else
         {
-            yield return new WaitForSeconds(fireDelay);
+            yield return new WaitForSeconds(rof);
         }
         canFire = true;
         canFireDelay = false;
@@ -132,7 +145,7 @@ public class Infantry : MonoBehaviour, Unit
 
             if (Vector3.Distance(transform.position, Dest.transform.position) >= MinDist)
             {
-                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+                transform.position += transform.forward * speed * Time.deltaTime;
                 if (Vector3.Distance(transform.position, Dest.transform.position) <= MaxDist && removing == false)
                 {
                     Debug.Log("Yep yep!");
@@ -151,7 +164,7 @@ public class Infantry : MonoBehaviour, Unit
             {
                 transform.LookAt(transform.position + controlDirection);
                 // When controlled, move 25% faster.
-                transform.position += transform.forward * (MoveSpeed * 1.25f) * Time.deltaTime;
+                transform.position += transform.forward * (speed * 1.25f) * Time.deltaTime;
             }
         }
         if (targetsInRange.Count > 0 && beingControlled == false)
@@ -207,7 +220,7 @@ public class Infantry : MonoBehaviour, Unit
     {
         GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetPositionNearPosition(position, missRange));
-        obj.GetComponent<Projectile>().Init(team);
+        obj.GetComponent<Projectile>().Init(team, dmg);
 
     }
 
@@ -215,7 +228,7 @@ public class Infantry : MonoBehaviour, Unit
     {
         GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
-        obj.GetComponent<Projectile>().Init(team);
+        obj.GetComponent<Projectile>().Init(team, dmg);
     }
 
     public Vector3 GetPositionNearPosition(Vector3 position, float randomness)

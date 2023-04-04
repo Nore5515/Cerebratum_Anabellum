@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float survivalTime = 5f;
     public float moveSpeed = 16f;
+    public int damage = 1;
 
     public string team = "NIL";
 
@@ -15,9 +16,10 @@ public class Projectile : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    public void Init(string newTeam)
+    public void Init(string newTeam, int _damage)
     {
         team = newTeam;
+        damage = _damage;
     }
 
     IEnumerator SelfDestruct()
@@ -41,7 +43,7 @@ public class Projectile : MonoBehaviour
                 if (other.gameObject.GetComponent<Unit>().team != team)
                 {
                     // Debug.Log("Destroying " + other.gameObject.GetComponent<Unit>().team + "'s unit (via " + team + "'s projectile)");
-                    if (other.gameObject.GetComponent<Unit>().DealDamage(1) <= 0)
+                    if (other.gameObject.GetComponent<Unit>().DealDamage(damage) <= 0)
                     {
                         Destroy(other.gameObject);
                     }
