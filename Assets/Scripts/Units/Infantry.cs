@@ -22,6 +22,7 @@ public class Infantry : Unit
         dmg = 1;
         speed = 4;
         rof = 2f;
+        threatLevel = 3;
     }
 
     void Start()

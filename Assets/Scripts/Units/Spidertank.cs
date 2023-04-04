@@ -22,6 +22,7 @@ public class Spidertank : Unit
         dmg = 1;
         speed = 2;
         rof = 2f;
+        threatLevel = 20;
     }
 
     void Start()
