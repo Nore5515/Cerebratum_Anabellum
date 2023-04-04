@@ -178,8 +178,8 @@ public class Spawner : MonoBehaviour
     {
         foreach (SpawnerData spawnData in alliedSpawnerObjs)
         {
-            Debug.Log("Spawner: ");
-            Debug.Log(spawnData.obj);
+            // Debug.Log("Spawner: ");
+            // Debug.Log(spawnData.obj);
             GameObject obj = Instantiate(spiderPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
             instances.Add(obj);
 
@@ -201,13 +201,13 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnPrefab()
     {
         yield return new WaitForSeconds(spawnTime);
-        Debug.Log("help");
+        // Debug.Log("help");
         ClearNullInstances();
 
         foreach (SpawnerData spawnData in alliedSpawnerObjs)
         {
-            Debug.Log("Spawner: ");
-            Debug.Log(spawnData.obj);
+            // Debug.Log("Spawner: ");
+            // Debug.Log(spawnData.obj);
             GameObject obj = Instantiate(prefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
             instances.Add(obj);
 
