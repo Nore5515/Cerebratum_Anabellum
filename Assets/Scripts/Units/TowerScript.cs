@@ -5,16 +5,18 @@ using UnityEngine.UI;
 
 public class TowerScript : MonoBehaviour
 {
+    // Core unit stats
+    public int hp { get; set;}
+    public int maxHP;
+    public int dmg { get; set;}
+    public int speed { get; set;}
+    public float rof { get; set;}
+    public int threatLevel { get; set;}
 
     public List<GameObject> targetsInRange = new List<GameObject>();
     public bool beingControlled = false;
     public bool canFire = true;
     public bool canFireDelay = false;
-
-    public float fireDelay = 0.5f;
-
-    public int health = 20;
-    public int maxHealth = 20;
 
     public string team = "RED";
     public GameObject bullet;
@@ -23,8 +25,15 @@ public class TowerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HPBar.GetComponent<Slider>().value = health;
-        HPBar.GetComponent<Slider>().maxValue = health;
+        // Core stat initialization
+        hp = 20;
+        maxHP = hp;
+        dmg = 1;
+        speed = 0;
+        rof = 0.5f;
+        
+        HPBar.GetComponent<Slider>().value = hp;
+        HPBar.GetComponent<Slider>().maxValue = maxHP;
     }
 
     // Update is called once per frame
@@ -58,11 +67,11 @@ public class TowerScript : MonoBehaviour
         // When controlled, fire 50% faster.
         if (beingControlled)
         {
-            yield return new WaitForSeconds(fireDelay * 0.5f);
+            yield return new WaitForSeconds(rof * 0.5f);
         }
         else
         {
-            yield return new WaitForSeconds(fireDelay);
+            yield return new WaitForSeconds(rof);
         }
         canFire = true;
         canFireDelay = false;
@@ -70,9 +79,9 @@ public class TowerScript : MonoBehaviour
 
     public void DealDamage(int damage)
     {
-        health -= 1;
-        HPBar.GetComponent<Slider>().value = health;
-        if (health <= 0)
+        hp -= 1;
+        HPBar.GetComponent<Slider>().value = hp;
+        if (hp <= 0)
         {
             Destroy(this.gameObject);
         }
@@ -82,7 +91,7 @@ public class TowerScript : MonoBehaviour
     {
         GameObject obj = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
-        obj.GetComponent<Projectile>().Init(team);
+        obj.GetComponent<Projectile>().Init(team, dmg);
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)

@@ -30,7 +30,7 @@ public class UI : MonoBehaviour
 
     public void ChangePoints(int redChange, int blueChange)
     {
-        Debug.Log("Points Changed!");
+        // Debug.Log("Points Changed!");
         redPoints += redChange;
         bluePoints += blueChange;
         pointsText.text = "RED: " + redPoints.ToString() + "               BLUE: " + bluePoints.ToString();
