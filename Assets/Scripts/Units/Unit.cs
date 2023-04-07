@@ -19,8 +19,8 @@ public class Unit : MonoBehaviour
 
     // UI
     public Slider hpSlider;
-    public GameObject spriteRed;
-    public GameObject spriteBlue;
+    // public GameObject spriteRed;
+    // public GameObject spriteBlue;
 
     public string team { get; set; }
     public bool beingControlled { get; set; }
@@ -28,18 +28,23 @@ public class Unit : MonoBehaviour
     public GameObject bullet {get; set;}
     public Vector3 controlDirection { get; set; }
 
+    string path = "Asset_Projectile";
+
+    IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
+
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float unitRange)
     {
+        bullet = Resources.Load(path) as GameObject;
         MaxDist = 1.4;
         MinDist = 1;
         team = newTeam;
         if (team == "RED")
         {
-            spriteBlue.SetActive(false);
+            // nothing
         }
         else
         {
-            spriteRed.SetActive(false);
+            gameObject.GetComponentInChildren<SpriteRighter>().Flip();
         }
         rof = _rof;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
@@ -54,6 +59,10 @@ public class Unit : MonoBehaviour
         {
             Dest = objs[0];
         }
+
+        // Sprite Stuff
+        UnitSprites.Add("Walking",transform.Find("SpriteRighter/Sprite").gameObject);
+        UnitSprites.Add("Shooting",transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
 
     // Firing Stuff
@@ -104,9 +113,11 @@ public class Unit : MonoBehaviour
 
     public void FireAtTransform(Transform trans)
     {
-        GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
-        obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
-        obj.GetComponent<Projectile>().Init(team, dmg);
+        if (trans != null){
+            GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
+            obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
+            obj.GetComponent<Projectile>().Init(team, dmg);
+        }
     }
 
     public void ControlledFire(Vector3 target)
@@ -140,6 +151,18 @@ public class Unit : MonoBehaviour
     {
         targetsInRange.Add(target);
         ClearTargets();
+        // Sprite = Firing
+        if (UnitSprites["Shooting"] != null){
+            DisableAllSprites();
+            UnitSprites["Shooting"].SetActive(true);
+        }
+    }
+
+    public void DisableAllSprites(){
+        foreach (string sprite in UnitSprites.Keys)
+        {
+            UnitSprites[sprite].SetActive(false);
+        }
     }
 
     public void RemoveTargetInRange(GameObject target)
@@ -148,6 +171,13 @@ public class Unit : MonoBehaviour
         {
             targetsInRange.Remove(target);
             ClearTargets();
+        }
+        if (targetsInRange.Count <= 0){
+            // Sprite = Walking
+            if (UnitSprites["Walking"] != null){
+                DisableAllSprites();
+                UnitSprites["Walking"].SetActive(true);
+            }
         }
     }
     
