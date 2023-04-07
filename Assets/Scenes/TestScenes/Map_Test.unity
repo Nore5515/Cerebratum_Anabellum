@@ -4378,6 +4378,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 711979014}
     - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: maxCount
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
       propertyPath: camScript
       value: 
       objectReference: {fileID: 1423101584}
@@ -4706,6 +4710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1884cc2baad2b4818951da639ed4b1a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipped: 0
 --- !u!1001 &8827216605461356110
 PrefabInstance:
   m_ObjectHideFlags: 0

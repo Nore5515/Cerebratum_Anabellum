@@ -50,22 +50,41 @@ public class Infantry : Unit
     // Update is called once per frame
     void Update()
     {
-        if (Dest != null && beingControlled == false)
+        //
+        //   ╔══════════════════════════════════════════════╗
+        // ╔══════════════════════════════════════════════════╗
+        // ║                                                  ║
+        // ║  MOVEMENT                                        ║
+        // ║                                                  ║
+        // ╚══════════════════════════════════════════════════╝
+        //   ╚══════════════════════════════════════════════╝
+        //
+
+        if (beingControlled == false)
         {
-            transform.LookAt(Dest.transform);
-
-            if (Vector3.Distance(transform.position, Dest.transform.position) >= MinDist)
+            // If dest exists
+            if (Dest != null)
             {
-                transform.position += transform.forward * speed * Time.deltaTime;
-                if (Vector3.Distance(transform.position, Dest.transform.position) <= MaxDist && removing == false)
+                // Get movement direction.
+                var heading = Dest.transform.position - this.transform.position;
+                var distance = heading.magnitude;
+                var direction = heading / distance;
+                
+                float distToDest = Vector3.Distance(transform.position, Dest.transform.position);
+                if (distToDest >= MinDist)
                 {
-                    removing = true;
-                    if (Dest != null)
+                    // Translate movement.
+                    transform.Translate(direction * speed * Time.deltaTime);
+                    if (distToDest <= MaxDist && removing == false)
                     {
-                        RemovePoint(Dest);
+                        removing = true;
+                        if (Dest != null)
+                        {
+                            RemovePoint(Dest);
+                        }
                     }
-                }
 
+                }
             }
         }
         else if (beingControlled)
