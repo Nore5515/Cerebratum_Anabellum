@@ -108,7 +108,7 @@ public class Unit : MonoBehaviour
     public void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
-        obj.transform.LookAt(GetPositionNearPosition(position, missRange));
+        obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
         obj.GetComponent<Projectile>().Init(team, dmg);
     }
 
@@ -116,7 +116,7 @@ public class Unit : MonoBehaviour
     {
         if (trans != null){
             GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
-            obj.transform.LookAt(GetPositionNearTransform(trans, 1.0f));
+            obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 1.0f));
             obj.GetComponent<Projectile>().Init(team, dmg);
         }
     }
@@ -199,12 +199,19 @@ public class Unit : MonoBehaviour
     }
 
 
-    // Point Logic
+    //
+    //   ╔══════════════════════════════════════════════╗
+    // ╔══════════════════════════════════════════════════╗
+    // ║                                                  ║
+    // ║  Point Logic                                     ║
+    // ║                                                  ║
+    // ╚══════════════════════════════════════════════════╝
+    //   ╚══════════════════════════════════════════════╝
+    //
     public void AddPoint(GameObject point)
     {
         objs.Add(point);
-        if (Dest == null)
-        {
+        if (objs.Count == 1){
             Dest = objs[0];
         }
     }
@@ -213,34 +220,24 @@ public class Unit : MonoBehaviour
     {
         objs.Remove(point);
         removing = false;
-        if (Dest != null)
+        if (objs.Count == 0)
         {
-            if (objs.Count <= 0)
-            {
-                Dest = null;
-            }
-            else
-            {
-                Dest = objs[0];
-            }
+            Dest = null;
+        }
+        else 
+        {
+            Dest = objs[0];    
         }
     }
 
-
-    // Getting Dest for Bullets
-    public Vector3 GetPositionNearPosition(Vector3 position, float randomness)
+    // Takes in a position and a float (representing randomness)
+    // Generates a random position up to randomness away
+    // Returns it
+    public Vector3 GetRandomAdjacentPosition(Vector3 position, float randomness)
     {
         float randomX = position.x + Random.Range(-randomness, randomness);
         float randomZ = position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, 0.5f, randomZ);
-        return random;
-    }
-
-    public Vector3 GetPositionNearTransform(Transform trans, float randomness)
-    {
-        float randomX = trans.position.x + Random.Range(-randomness, randomness);
-        float randomZ = trans.position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, 0.5f, randomZ);
+        Vector3 random = new Vector3(randomX, position.y, randomZ);
         return random;
     }
 
