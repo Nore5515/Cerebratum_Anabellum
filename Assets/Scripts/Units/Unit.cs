@@ -151,7 +151,7 @@ public class Unit : MonoBehaviour
     public void AddTargetInRange(GameObject target)
     {
         targetsInRange.Add(target);
-        ClearTargets();
+        ClearNullTargets();
         // Sprite = Firing
         if (UnitSprites["Shooting"] != null){
             DisableAllSprites();
@@ -171,7 +171,7 @@ public class Unit : MonoBehaviour
         if (targetsInRange.Contains(target))
         {
             targetsInRange.Remove(target);
-            ClearTargets();
+            ClearNullTargets();
         }
         if (targetsInRange.Count <= 0){
             // Sprite = Walking
@@ -182,7 +182,7 @@ public class Unit : MonoBehaviour
         }
     }
     
-    public void ClearTargets()
+    public void ClearNullTargets()
     {
         List<GameObject> toRemoveObjs = new List<GameObject>();
         foreach (GameObject obj in targetsInRange)
@@ -242,5 +242,94 @@ public class Unit : MonoBehaviour
         float randomZ = trans.position.z + Random.Range(-randomness, randomness);
         Vector3 random = new Vector3(randomX, 0.5f, randomZ);
         return random;
+    }
+
+
+    //
+    //   ╔══════════════════════════════════════════════╗
+    // ╔══════════════════════════════════════════════════╗
+    // ║                                                  ║
+    // ║  MOVEMENT                                        ║
+    // ║                                                  ║
+    // ╚══════════════════════════════════════════════════╝
+    //   ╚══════════════════════════════════════════════╝
+    //
+    public void AIMovement()
+    {
+        // If dest exists, cus otherwise you're just stayin' still.
+        if (Dest != null)
+        {
+            // Get movement direction.
+            var heading = Dest.transform.position - this.transform.position;
+            var distance = heading.magnitude;
+            var direction = heading / distance;
+            
+            float distToDest = Vector3.Distance(transform.position, Dest.transform.position);
+            
+            // If you are not close enough to your dest, keep moving towards it.
+            if (distToDest >= MinDist)
+            {
+                // Translate movement.
+                transform.Translate(direction * speed * Time.deltaTime);
+            }
+
+            // Once you get too close to your destination, remove it from your movement path and go towards the next one.
+            if (distToDest <= MaxDist)
+            {
+                if (removing == false)
+                {
+                    removing = true;
+                    RemovePoint(Dest);
+                }
+            }
+        }
+    }
+
+    public void PossessedMovement(){
+        if (controlDirection != new Vector3(0, 0, 0))
+        {
+            transform.LookAt(transform.position + controlDirection);
+            // When controlled, move 50% faster.
+            transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
+        }
+    }
+
+    public void AIFire() {
+        if (canFire)
+        {
+            canFire = false;
+            FireAtTransform(targetsInRange[0].gameObject.transform);
+        }
+        else
+        {
+            if (canFireDelay == false)
+            {
+                canFireDelay = true;
+                StartCoroutine(EnableFiring());
+            }
+        }
+    }
+
+    public void MovementUpdate() {
+        if (beingControlled == false)
+        {
+            AIMovement();
+            
+            // If there's a valid target within range!
+            if (targetsInRange.Count > 0){
+            
+                ClearNullTargets();
+
+                // Are there any targets left after the purge?
+                if (targetsInRange.Count > 0)
+                {
+                    AIFire();
+                }
+            }
+        }
+        else if (beingControlled)
+        {
+            PossessedMovement();
+        }
     }
 }

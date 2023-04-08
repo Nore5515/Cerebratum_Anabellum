@@ -79,7 +79,7 @@ public class Spidertank : Unit
         }
         if (targetsInRange.Count > 0 && beingControlled == false)
         {
-            ClearTargets();
+            ClearNullTargets();
             if (targetsInRange.Count > 0)
             {
                 if (canFire)
