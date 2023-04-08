@@ -288,7 +288,7 @@ public class Unit : MonoBehaviour
     public void PossessedMovement(){
         if (controlDirection != new Vector3(0, 0, 0))
         {
-            transform.LookAt(transform.position + controlDirection);
+            Debug.Log(controlDirection);
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
         }
