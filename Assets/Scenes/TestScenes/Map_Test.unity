@@ -627,8 +627,6 @@ MonoBehaviour:
   healthText: {fileID: 1161753856}
   pointsText: {fileID: 1327902033}
   gameOverText: {fileID: 1890622239}
-  bluePoints: 0
-  redPoints: 3
 --- !u!1 &191056552
 GameObject:
   m_ObjectHideFlags: 0

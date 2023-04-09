@@ -17,9 +17,7 @@ public class CubeMaker : MonoBehaviour
     public string teamColor = "RED";
     public Text teamColorText;
 
-    public List<GameObject> redObjs = new List<GameObject>();
-    public List<GameObject> blueObjs = new List<GameObject>();
-    public List<GameObject> units = new List<GameObject>();
+    
     public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
     GameObject[] spawnerButtons;
@@ -31,13 +29,13 @@ public class CubeMaker : MonoBehaviour
     public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
-    public bool drawStarted = false;
-
     // NEW STUFF
     Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
 
     public Slider pathBar;
     private Image pathBarFill;
+
+    GameObject spawnerSource;
 
     public void Start()
     {
@@ -85,12 +83,13 @@ public class CubeMaker : MonoBehaviour
                             button.SetActive(true);
                         }
 
-                        drawStarted = true;
-                        Debug.Log("Drawing from: ");
-                        // Debug.Log(hit.collider.transform.parent.gameObject.name);
-                        while (redObjs.Count > 0)
+                        spawnerSource = hit.collider.gameObject;
+                        // Debug.Log("Drawing from: ");
+                        // Debug.Log(hit.collider.gameObject.name);
+                        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                        while (spawnerClass.spheres.Count > 0)
                         {
-                            RemoveRedPoint(redObjs[0]);
+                            spawnerClass.RemovePoint(spawnerClass.spheres[0]);
                         }
                         pathBar.value = 0;
                         pathBar.gameObject.SetActive(true);
@@ -109,7 +108,7 @@ public class CubeMaker : MonoBehaviour
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     // You ain't drawing if your not pressing down
-                    drawStarted = false;
+                    spawnerSource = null;
                     // Hide pathbar when not in use
                     pathBar.gameObject.SetActive(false);
                 }
@@ -126,20 +125,23 @@ public class CubeMaker : MonoBehaviour
                     // ║  Draw Paths.                                     ║
                     // ╚══════════════════════════════════════════════════╝
                     //
-                    if (drawStarted)
+                    if (spawnerSource != null)
                     {
                         if (hit.collider.gameObject.tag == "floor")
                         {
                             if (distancePerSphere >= maxDistancePerSphere)
                             {
+                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                                
                                 distancePerSphere = 0.0f;
                                 GameObject obj;
+
                                 if (teamColor == "RED")
                                 {
                                     obj = Instantiate(prefabRed, hit.point, Quaternion.identity) as GameObject;
-                                    redObjs.Add(obj);
-                                    pathBar.value = redObjs.Count;
-                                    if (redObjs.Count == maxCount)
+                                    spawnerClass.spheres.Add(obj);
+                                    pathBar.value = spawnerClass.spheres.Count;
+                                    if (spawnerClass.spheres.Count == maxCount)
                                     {
                                         pathBarFill.color = red;
                                     }
@@ -147,9 +149,9 @@ public class CubeMaker : MonoBehaviour
                                 else
                                 {
                                     obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                                    blueObjs.Add(obj);
+                                    spawnerClass.spheres.Add(obj);
                                 }
-                                foreach (GameObject unit in units)
+                                foreach (GameObject unit in spawnerClass.instances)
                                 {
                                     if (unit != null)
                                     {
@@ -165,18 +167,15 @@ public class CubeMaker : MonoBehaviour
                                 }
                                 foreach (GameObject markedUnit in toRemoveUnits)
                                 {
-                                    units.Remove(markedUnit);
+                                    spawnerClass.instances.Remove(markedUnit);
                                 }
                                 toRemoveUnits = new List<GameObject>();
-                                if (redObjs.Count >= maxCount)
-                                {
-                                    RemoveRedPoint(redObjs[0]);
-                                }
-                                if (blueObjs.Count >= maxCount)
-                                {
-                                    RemoveBluePoint(blueObjs[0]);
+
+                                if (spawnerClass.spheres.Count >= maxCount){
+                                    spawnerClass.RemovePoint(spawnerClass.spheres[0]);
                                 }
                             }
+
                             // If distance is less than maxdistancepersphere, add change in distance.
                             else
                             {
@@ -262,20 +261,6 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    public void AddUnit(GameObject newUnit)
-    {
-        units.Add(newUnit);
-    }
-
-    public void AddRedPoint(GameObject obj)
-    {
-        redObjs.Add(obj);
-    }
-    public void AddBluePoint(GameObject obj)
-    {
-        blueObjs.Add(obj);
-    }
-
     public GameObject CreateRedPoint(Vector3 position)
     {
         return Instantiate(prefabRed, position, Quaternion.identity) as GameObject;
@@ -284,33 +269,6 @@ public class CubeMaker : MonoBehaviour
     public GameObject CreateBluePoint(Vector3 position)
     {
         return Instantiate(prefabBlue, position, Quaternion.identity) as GameObject;
-    }
-
-    public void RemoveRedPoint(GameObject obj)
-    {
-        // thingy = true;
-        redObjs.Remove(obj);
-        foreach (GameObject unit in units)
-        {
-            if (unit != null)
-            {
-                unit.GetComponent<Unit>().RemovePoint(obj);
-            }
-        }
-        GameObject.Destroy(obj);
-    }
-    public void RemoveBluePoint(GameObject obj)
-    {
-        // thingy = true;
-        blueObjs.Remove(obj);
-        foreach (GameObject unit in units)
-        {
-            if (unit != null)
-            {
-                unit.GetComponent<Unit>().RemovePoint(obj);
-            }
-        }
-        GameObject.Destroy(obj);
     }
 
 }

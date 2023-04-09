@@ -100,12 +100,12 @@ public class Spawner : MonoBehaviour
             if (orbTransform.position != new Vector3(0, 0, 0))
             {
                 if (color == "RED"){
-                    cm.AddRedPoint(cm.CreateRedPoint(orbTransform.position));
                     // TODO: This feels smart but i dont know why
-                    // spheres.Add(cm.CreateRedPoint(orbTransform.position));
+                    // It was :)
+                    spheres.Add(cm.CreateRedPoint(orbTransform.position));
                 }
                 else{
-                    cm.AddBluePoint(cm.CreateBluePoint(orbTransform.position));
+                    spheres.Add(cm.CreateBluePoint(orbTransform.position));
                 }
             }
         }
@@ -121,7 +121,7 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                cm.AddRedPoint(cm.CreateRedPoint(position));
+                spheres.Add(cm.CreateRedPoint(position));
             }
         }
         else
@@ -132,7 +132,7 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                cm.AddBluePoint(cm.CreateBluePoint(position));
+                spheres.Add(cm.CreateRedPoint(position));
             }
         }
     }
@@ -189,29 +189,28 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    // MAKE THIS AN INTERFACE TODO; TODO: PLEASE
     public void CreateSpidertank()
+    {
+        CreatePrefab(spiderPrefab);
+    }
+
+    private void CreatePrefab(GameObject reqPrefab)
     {
         foreach (SpawnerData spawnData in alliedSpawnerObjs)
         {
-            // Debug.Log("Spawner: ");
-            // Debug.Log(spawnData.obj);
-            GameObject obj = Instantiate(spiderPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
+            GameObject obj = Instantiate(reqPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
             instances.Add(obj);
 
+            obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
             if (team == "RED")
             {
-                obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay, unitRange);
                 obj.GetComponent<MeshRenderer>().material = redMat;
             }
             else
             {
-                obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay, unitRange);
                 obj.GetComponent<MeshRenderer>().material = blueMat;
             }
-            cm.AddUnit(obj);
         }
-
     }
 
     IEnumerator SpawnPrefab()
@@ -219,25 +218,7 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(spawnTime);
         ClearNullInstances();
 
-        foreach (SpawnerData spawnData in alliedSpawnerObjs)
-        {
-            // Debug.Log("Spawner: ");
-            // Debug.Log(spawnData.obj);
-            GameObject obj = Instantiate(prefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
-            instances.Add(obj);
-
-            if (team == "RED")
-            {
-                obj.GetComponent<Unit>().Initalize(cm.redObjs, team, fireDelay, unitRange);
-                obj.GetComponent<MeshRenderer>().material = redMat;
-            }
-            else
-            {
-                obj.GetComponent<Unit>().Initalize(cm.blueObjs, team, fireDelay, unitRange);
-                obj.GetComponent<MeshRenderer>().material = blueMat;
-            }
-            cm.AddUnit(obj);
-        }
+        CreatePrefab(prefab);
 
         StartCoroutine(SpawnPrefab());
     }
@@ -296,6 +277,22 @@ public class Spawner : MonoBehaviour
             }
         }
         return false;
+    }
+
+
+    // NEW STUFF
+
+    public void RemovePoint(GameObject obj)
+    {
+        spheres.Remove(obj);
+        foreach (GameObject unit in instances)
+        {
+            if (unit != null)
+            {
+                unit.GetComponent<Unit>().RemovePoint(obj);
+            }
+        }
+        GameObject.Destroy(obj);
     }
 
 
