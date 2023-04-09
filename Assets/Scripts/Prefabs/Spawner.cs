@@ -35,9 +35,14 @@ public class Spawner : MonoBehaviour
     public float pointTimer = 10.0f;
     public bool isAI = false;
 
+    // NEW STUFF
+    public List<GameObject> spheres = new List<GameObject>();
+    GameObject canvas;
 
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
+        
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         StartCoroutine(GainPoints());
@@ -56,6 +61,9 @@ public class Spawner : MonoBehaviour
             }
         }
 
+        // // OH THIS WORKS BC IT NEEDS TO COMPILE
+        // Debug.Log(TeamStats.Kills);
+
         if (isAI && enemySpawners.Count >= 1)
         {
             AI_DrawPath(enemySpawners[0].gameObject.transform.position);
@@ -65,20 +73,42 @@ public class Spawner : MonoBehaviour
     IEnumerator GainPoints()
     {
         yield return new WaitForSeconds(pointTimer);
-        GameObject canvas = GameObject.Find("Canvas");
+        
         if (team == "RED")
         {
-            canvas.GetComponent<UI>().ChangePoints(1, 0);
+            TeamStats.RedPoints += 1;
         }
         else
         {
-            canvas.GetComponent<UI>().ChangePoints(0, 1);
+            TeamStats.BluePoints += 1;
         }
+
         if (isAI)
         {
             AI_SpendPoints();
         }
+
         StartCoroutine(GainPoints());
+    }
+    
+    // TODO; RENAME TOMORROW WHEN I KNOW WHAT IM DOING
+    void AddSomePoints(string color)
+    {
+        GameObject chosenPath = paths[Random.Range(0, paths.Count)];
+        foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
+        {
+            if (orbTransform.position != new Vector3(0, 0, 0))
+            {
+                if (color == "RED"){
+                    cm.AddRedPoint(cm.CreateRedPoint(orbTransform.position));
+                    // TODO: This feels smart but i dont know why
+                    // spheres.Add(cm.CreateRedPoint(orbTransform.position));
+                }
+                else{
+                    cm.AddBluePoint(cm.CreateBluePoint(orbTransform.position));
+                }
+            }
+        }
     }
 
     void AI_DrawPath(Vector3 position)
@@ -87,14 +117,7 @@ public class Spawner : MonoBehaviour
         {
             if (paths.Count > 0)
             {
-                GameObject chosenPath = paths[Random.Range(0, paths.Count)];
-                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
-                {
-                    if (orbTransform.position != new Vector3(0, 0, 0))
-                    {
-                        cm.AddRedPoint(cm.CreateRedPoint(orbTransform.position));
-                    }
-                }
+                AddSomePoints("RED");
             }
             else
             {
@@ -105,14 +128,7 @@ public class Spawner : MonoBehaviour
         {
             if (paths.Count > 0)
             {
-                GameObject chosenPath = paths[Random.Range(0, paths.Count)];
-                foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
-                {
-                    if (orbTransform.position != new Vector3(0, 0, 0))
-                    {
-                        cm.AddBluePoint(cm.CreateBluePoint(orbTransform.position));
-                    }
-                }
+                AddSomePoints("BLUE");
             }
             else
             {
@@ -201,7 +217,6 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnPrefab()
     {
         yield return new WaitForSeconds(spawnTime);
-        // Debug.Log("help");
         ClearNullInstances();
 
         foreach (SpawnerData spawnData in alliedSpawnerObjs)
@@ -231,7 +246,7 @@ public class Spawner : MonoBehaviour
     {
         if (spawnTime >= 1.0f)
         {
-            if (deductTeamPoints())
+            if (deductTeamPoints(1))
             {
                 spawnTime -= 0.5f;
             }
@@ -242,7 +257,7 @@ public class Spawner : MonoBehaviour
     {
         if (fireDelay >= 0.5f)
         {
-            if (deductTeamPoints())
+            if (deductTeamPoints(1))
             {
                 fireDelay -= 0.25f;
             }
@@ -253,7 +268,7 @@ public class Spawner : MonoBehaviour
     {
         if (unitRange <= 6.0f)
         {
-            if (deductTeamPoints())
+            if (deductTeamPoints(1))
             {
                 unitRange += 0.5f;
             }
@@ -261,22 +276,22 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public bool deductTeamPoints()
+    public bool deductTeamPoints(int cost)
     {
         GameObject canvas = GameObject.Find("Canvas");
         if (team == "RED")
         {
-            if (canvas.GetComponent<UI>().redPoints > 0)
+            if (TeamStats.RedPoints >= cost)
             {
-                canvas.GetComponent<UI>().ChangePoints(-1, 0);
+                TeamStats.RedPoints -= cost;
                 return true;
             }
         }
         else
         {
-            if (canvas.GetComponent<UI>().bluePoints > 0)
+            if (TeamStats.BluePoints >= cost)
             {
-                canvas.GetComponent<UI>().ChangePoints(0, -1);
+                TeamStats.BluePoints -= cost;
                 return true;
             }
         }

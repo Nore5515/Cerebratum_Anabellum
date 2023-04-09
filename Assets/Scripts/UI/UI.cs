@@ -13,9 +13,6 @@ public class UI : MonoBehaviour
     int redHP = 10;
     bool gameEnding = false;
 
-    public int bluePoints = 0;
-    public int redPoints = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -28,12 +25,9 @@ public class UI : MonoBehaviour
         healthText.text = "RED: " + redHP2.ToString() + "             BLUE: " + blueHP2.ToString();
     }
 
-    public void ChangePoints(int redChange, int blueChange)
+    void Update() 
     {
-        // Debug.Log("Points Changed!");
-        redPoints += redChange;
-        bluePoints += blueChange;
-        pointsText.text = "RED: " + redPoints.ToString() + "               BLUE: " + bluePoints.ToString();
+        pointsText.text = "RED: " + TeamStats.RedPoints.ToString() + "               BLUE: " + TeamStats.BluePoints.ToString();
     }
 
     public void DecrementHealth(GameObject obj)
