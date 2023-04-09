@@ -121,29 +121,17 @@ public class Unit : MonoBehaviour
         }
     }
 
+    // While controlled, fire as fast as you want.
     public void ControlledFire(Vector3 target)
     {
-        if (canFire)
+        // Fire with perfect accuracy if controlled.
+        if (beingControlled)
         {
-            // Debug.Log("Shots fired!");
-            canFire = false;
-            // Fire with perfect accuracy if controlled.
-            if (beingControlled)
-            {
-                FireAtPosition(target, 0.0f);
-            }
-            else
-            {
-                FireAtPosition(target, 1.0f);
-            }
+            FireAtPosition(target, 0.0f);
         }
         else
         {
-            if (canFireDelay == false)
-            {
-                canFireDelay = true;
-                StartCoroutine(EnableFiring());
-            }
+            FireAtPosition(target, 1.0f);
         }
     }
 

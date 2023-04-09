@@ -13,7 +13,6 @@ public class CubeMaker : MonoBehaviour
     public int maxCount;
     bool thingy;
 
-    public Slider pathBar;
 
     public string teamColor = "RED";
     public Text teamColorText;
@@ -34,10 +33,17 @@ public class CubeMaker : MonoBehaviour
 
     public bool drawStarted = false;
 
+    // NEW STUFF
+    Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
+
+    public Slider pathBar;
+    private Image pathBarFill;
+
     public void Start()
     {
         spawnerButtons = GameObject.FindGameObjectsWithTag("spawner_buttons");
         pathBar.maxValue = maxCount;
+        pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -102,10 +108,9 @@ public class CubeMaker : MonoBehaviour
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
-
-
-
+                    // You ain't drawing if your not pressing down
                     drawStarted = false;
+                    // Hide pathbar when not in use
                     pathBar.gameObject.SetActive(false);
                 }
 
@@ -114,7 +119,7 @@ public class CubeMaker : MonoBehaviour
                 // ║  Various other things.                           ║
                 // ╚══════════════════════════════════════════════════╝
                 //
-                if (Input.GetKey(KeyCode.Mouse0) && controlledUnits.Count == 0)
+                if (Input.GetKey(KeyCode.Mouse0))
                 {
                     //
                     // ╔══════════════════════════════════════════════════╗
@@ -123,65 +128,67 @@ public class CubeMaker : MonoBehaviour
                     //
                     if (drawStarted)
                     {
-                        if (hit.collider.gameObject.tag == "floor" && distancePerSphere >= maxDistancePerSphere)
+                        if (hit.collider.gameObject.tag == "floor")
                         {
-                            distancePerSphere = 0.0f;
-                            GameObject obj;
-                            if (teamColor == "RED")
+                            if (distancePerSphere >= maxDistancePerSphere)
                             {
-                                obj = Instantiate(prefabRed, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                                redObjs.Add(obj);
-                                pathBar.value = redObjs.Count;
-                                if (redObjs.Count == maxCount)
+                                distancePerSphere = 0.0f;
+                                GameObject obj;
+                                if (teamColor == "RED")
                                 {
-                                    Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
-                                    pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
-                                }
-                            }
-                            else
-                            {
-                                obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                                blueObjs.Add(obj);
-                            }
-                            foreach (GameObject unit in units)
-                            {
-                                if (unit != null)
-                                {
-                                    if (unit.GetComponent<Unit>().team == teamColor)
+                                    obj = Instantiate(prefabRed, hit.point, Quaternion.identity) as GameObject;
+                                    redObjs.Add(obj);
+                                    pathBar.value = redObjs.Count;
+                                    if (redObjs.Count == maxCount)
                                     {
-                                        unit.GetComponent<Unit>().AddPoint(obj);
+                                        pathBarFill.color = red;
                                     }
                                 }
                                 else
                                 {
-                                    toRemoveUnits.Add(unit);
+                                    obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
+                                    blueObjs.Add(obj);
+                                }
+                                foreach (GameObject unit in units)
+                                {
+                                    if (unit != null)
+                                    {
+                                        if (unit.GetComponent<Unit>().team == teamColor)
+                                        {
+                                            unit.GetComponent<Unit>().AddPoint(obj);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        toRemoveUnits.Add(unit);
+                                    }
+                                }
+                                foreach (GameObject markedUnit in toRemoveUnits)
+                                {
+                                    units.Remove(markedUnit);
+                                }
+                                toRemoveUnits = new List<GameObject>();
+                                if (redObjs.Count >= maxCount)
+                                {
+                                    RemoveRedPoint(redObjs[0]);
+                                }
+                                if (blueObjs.Count >= maxCount)
+                                {
+                                    RemoveBluePoint(blueObjs[0]);
                                 }
                             }
-                            foreach (GameObject markedUnit in toRemoveUnits)
-                            {
-                                units.Remove(markedUnit);
-                            }
-                            toRemoveUnits = new List<GameObject>();
-                            if (redObjs.Count >= maxCount)
-                            {
-                                RemoveRedPoint(redObjs[0]);
-                            }
-                            if (blueObjs.Count >= maxCount)
-                            {
-                                RemoveBluePoint(blueObjs[0]);
-                            }
-                        }
-                        // If distance is less than maxdistancepersphere, add change in distance.
-                        else if (hit.collider.gameObject.tag == "floor" && distancePerSphere < maxDistancePerSphere)
-                        {
-                            if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-                            {
-                                oldPos = hit.collider.gameObject.transform.position;
-                            }
+                            // If distance is less than maxdistancepersphere, add change in distance.
                             else
                             {
-                                distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                                oldPos = hit.point;
+                                if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+                                {
+                                    oldPos = hit.collider.gameObject.transform.position;
+                                }
+                                else
+                                {
+                                    distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                                    oldPos = hit.point;
+                                }
                             }
                         }
                     }
@@ -191,22 +198,24 @@ public class CubeMaker : MonoBehaviour
                     // ║  Possess unit on click.                          ║
                     // ╚══════════════════════════════════════════════════╝
                     //
-                    if (hit.collider.gameObject.tag == "unit")
-                    {
-                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                        if (unit != null)
+                    if (controlledUnits.Count == 0){
+                        if (hit.collider.gameObject.tag == "unit")
                         {
-                            // Confirm unit is same team.
-                            if (unit.team == teamColor)
+                            Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                            if (unit != null)
                             {
-                                if (controlledUnits.Count >= 1)
+                                // Confirm unit is same team.
+                                if (unit.team == teamColor)
                                 {
-                                    controlledUnits[0].beingControlled = false;
-                                    controlledUnits = new List<Unit>();
+                                    if (controlledUnits.Count >= 1)
+                                    {
+                                        controlledUnits[0].beingControlled = false;
+                                        controlledUnits = new List<Unit>();
+                                    }
+                                    unit.beingControlled = true;
+                                    controlledUnits.Add(unit);
+                                    camScript.followObj = unit.unitObj;
                                 }
-                                unit.beingControlled = true;
-                                controlledUnits.Add(unit);
-                                camScript.followObj = unit.unitObj;
                             }
                         }
                     }
@@ -249,22 +258,6 @@ public class CubeMaker : MonoBehaviour
                 float zMovement = Input.GetAxis("Vertical");
                 float xMovement = Input.GetAxis("Horizontal");
                 controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
-                // if (Input.GetKeyDown(KeyCode.W))
-                // {
-                //     controlledUnits[0].controlDirection = new Vector3(0, 0, -1);
-                // }
-                // if (Input.GetKeyUp(KeyCode.W))
-                // {
-                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 0);
-                // }
-                // if (Input.GetKeyDown(KeyCode.S))
-                // {
-                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 1);
-                // }
-                // if (Input.GetKeyUp(KeyCode.S))
-                // {
-                //     controlledUnits[0].controlDirection = new Vector3(0, 0, 0);
-                // }
             }
         }
     }
