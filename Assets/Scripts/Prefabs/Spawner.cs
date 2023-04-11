@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnerData
 {
@@ -38,10 +39,16 @@ public class Spawner : MonoBehaviour
     // NEW STUFF
     public List<GameObject> spheres = new List<GameObject>();
     GameObject canvas;
+    public GameObject pathMarker;
+    string path = "Asset_PathMarker";
+    public GameObject spawnerUI;
 
     void Start()
     {
+        pathMarker = Resources.Load(path) as GameObject;
         canvas = GameObject.Find("Canvas");
+        spawnerUI = this.gameObject.transform.Find("UI").gameObject;
+        InitalizeUI(spawnerUI);
         
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -68,6 +75,19 @@ public class Spawner : MonoBehaviour
         {
             AI_DrawPath(enemySpawners[0].gameObject.transform.position);
         }
+
+    }
+
+    private void InitalizeUI(GameObject ui)
+    {
+        Button spawnrateButton = ui.transform.Find("RSpawn").gameObject.GetComponent<Button>();
+        Button firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
+        Button rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
+        Button pathButton = ui.transform.Find("RPath").gameObject.GetComponent<Button>();
+
+        spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate();});
+        firerateButton.onClick.AddListener(delegate { IncreaseFireRate();});
+        rangeButton.onClick.AddListener(delegate { IncreaseRange();});
     }
 
     IEnumerator GainPoints()
@@ -99,16 +119,24 @@ public class Spawner : MonoBehaviour
         {
             if (orbTransform.position != new Vector3(0, 0, 0))
             {
-                if (color == "RED"){
-                    // TODO: This feels smart but i dont know why
-                    // It was :)
-                    spheres.Add(cm.CreateRedPoint(orbTransform.position));
-                }
-                else{
-                    spheres.Add(cm.CreateBluePoint(orbTransform.position));
-                }
+                AddPathMarker(color, orbTransform.position);
             }
         }
+    }
+
+    public GameObject AddPathMarker(string color, Vector3 loc)
+    {
+            GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
+            if (color == "RED"){
+                // TODO: This feels smart but i dont know why
+                // It was :)
+                obj.GetComponent<MeshRenderer>().material = redMat;
+            }
+            else{
+                obj.GetComponent<MeshRenderer>().material = blueMat;
+            }
+            spheres.Add(obj);
+            return obj;
     }
 
     void AI_DrawPath(Vector3 position)
@@ -121,7 +149,9 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                spheres.Add(cm.CreateRedPoint(position));
+                GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
+                obj.GetComponent<MeshRenderer>().material = redMat;
+                spheres.Add(obj);
             }
         }
         else
@@ -132,7 +162,9 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                spheres.Add(cm.CreateRedPoint(position));
+                GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
+                obj.GetComponent<MeshRenderer>().material = redMat;
+                spheres.Add(obj);
             }
         }
     }

@@ -138,8 +138,8 @@ public class CubeMaker : MonoBehaviour
 
                                 if (teamColor == "RED")
                                 {
-                                    obj = Instantiate(prefabRed, hit.point, Quaternion.identity) as GameObject;
-                                    spawnerClass.spheres.Add(obj);
+                                    obj = spawnerSource.GetComponent<Spawner>().AddPathMarker("RED", hit.point);
+
                                     pathBar.value = spawnerClass.spheres.Count;
                                     if (spawnerClass.spheres.Count == maxCount)
                                     {
@@ -148,8 +148,7 @@ public class CubeMaker : MonoBehaviour
                                 }
                                 else
                                 {
-                                    obj = Instantiate(prefabBlue, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity) as GameObject;
-                                    spawnerClass.spheres.Add(obj);
+                                    obj = spawnerSource.GetComponent<Spawner>().AddPathMarker("BLUE", hit.point);
                                 }
                                 foreach (GameObject unit in spawnerClass.instances)
                                 {
