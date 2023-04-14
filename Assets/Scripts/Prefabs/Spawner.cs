@@ -42,13 +42,25 @@ public class Spawner : MonoBehaviour
     public GameObject pathMarker;
     string path = "Asset_PathMarker";
     public GameObject spawnerUI;
+    
+    // UI
+    Button spawnrateButton;
+    Button firerateButton;
+    Button rangeButton;
+    Button pathButton;
 
     void Start()
     {
         pathMarker = Resources.Load(path) as GameObject;
         canvas = GameObject.Find("Canvas");
-        spawnerUI = this.gameObject.transform.Find("UI").gameObject;
-        InitalizeUI(spawnerUI);
+        if (this.gameObject.transform.Find("UI") != null){
+            spawnerUI = this.gameObject.transform.Find("UI").gameObject;
+            InitalizeUI(spawnerUI);
+        }
+        else
+        {
+            spawnerUI = null;    
+        }
         
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -80,14 +92,39 @@ public class Spawner : MonoBehaviour
 
     private void InitalizeUI(GameObject ui)
     {
-        Button spawnrateButton = ui.transform.Find("RSpawn").gameObject.GetComponent<Button>();
-        Button firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
-        Button rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
-        Button pathButton = ui.transform.Find("RPath").gameObject.GetComponent<Button>();
+        ui.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        spawnrateButton = ui.transform.Find("RSpawn").gameObject.GetComponent<Button>();
+        firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
+        rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
+        pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
 
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate();});
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate();});
         rangeButton.onClick.AddListener(delegate { IncreaseRange();});
+    }
+
+    // For these two, we only use spawnrateButton.
+    // This is because, if it doesn't have spawnrate...
+    // ...it won't have anything else :\
+    public void SetUIVisible(bool isVis)
+    {
+        if (spawnrateButton != null)
+        {
+            Debug.Log("Flippin' UI to " + isVis);
+            spawnrateButton.gameObject.SetActive(isVis);
+            firerateButton.gameObject.SetActive(isVis);
+            rangeButton.gameObject.SetActive(isVis);
+            pathButton.gameObject.SetActive(isVis);
+        }
+        else
+        {
+            Debug.LogError("SPAWN RATE BUTTON");
+        }
+    }
+    public bool GetUIVisible(){
+        Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
+        return spawnrateButton.gameObject.activeSelf;
     }
 
     IEnumerator GainPoints()

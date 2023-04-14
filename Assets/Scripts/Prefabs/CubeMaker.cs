@@ -75,22 +75,23 @@ public class CubeMaker : MonoBehaviour
                 {
                     if (hit.collider.gameObject.tag == "spawner")
                     {
-
-                        // turn on all spawner option buttons
-                        // Hide all Spawner buttons
-                        foreach (var button in spawnerButtons)
-                        {
-                            button.SetActive(true);
-                        }
-
                         spawnerSource = hit.collider.gameObject;
-                        // Debug.Log("Drawing from: ");
-                        // Debug.Log(hit.collider.gameObject.name);
+
+                        // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
+
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                        
+                        // UI FLIP
+                        spawnerClass.SetUIVisible(!spawnerClass.GetUIVisible());
+                        
+                        // TODO: Move this INTO the spawner.
+                        // TODO: Also have this only happen when DrawPath is pressed.
+                        // Clear Path
                         while (spawnerClass.spheres.Count > 0)
                         {
                             spawnerClass.RemovePoint(spawnerClass.spheres[0]);
                         }
+
                         pathBar.value = 0;
                         pathBar.gameObject.SetActive(true);
                         Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
