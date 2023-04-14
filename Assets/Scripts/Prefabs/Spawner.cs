@@ -159,13 +159,23 @@ public class Spawner : MonoBehaviour
     public void DrawPath() 
     {
         ClearPoints();
-        pathDrawingMode = true;
+        SetIsDrawable(true);
     }
 
     public bool GetIsDrawable(){
         return pathDrawingMode;
     }
     public void SetIsDrawable(bool _newMode){
+        if (_newMode == true)
+        {
+            Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
+            this.transform.Find("Hut").GetComponent<SpriteRenderer>().color = dim;
+        }
+        else
+        {
+            Color white = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+            this.transform.Find("Hut").GetComponent<SpriteRenderer>().color = white;
+        }
         pathDrawingMode = _newMode;
     }
 
