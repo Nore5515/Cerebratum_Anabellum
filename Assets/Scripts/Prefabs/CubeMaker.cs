@@ -87,8 +87,9 @@ public class CubeMaker : MonoBehaviour
 
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
-                        pathDrawingMode = true;
-                        
+                        // pathDrawingMode = true;
+                        pathDrawingMode = spawnerClass.GetIsDrawable();
+
                         // UI FLIP
                         spawnerClass.SetUIVisible(!spawnerClass.GetUIVisible());
 
@@ -99,7 +100,7 @@ public class CubeMaker : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Missed! " + hit.collider);
+                        // Debug.Log("Missed! " + hit.collider);
                         if (spawnerSource != null){
                             Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                             spawnerClass.SetUIVisible(false);
@@ -111,6 +112,10 @@ public class CubeMaker : MonoBehaviour
                     // You ain't drawing if your not pressing down
                     // spawnerSource = null;
                     pathDrawingMode = false;
+                    if (spawnerSource != null)
+                    {
+                        spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                    }
                     // Hide pathbar when not in use
                     pathBar.gameObject.SetActive(false);
                 }

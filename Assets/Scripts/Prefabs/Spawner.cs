@@ -42,6 +42,7 @@ public class Spawner : MonoBehaviour
     public GameObject pathMarker;
     string path = "Asset_PathMarker";
     public GameObject spawnerUI;
+    public bool pathDrawingMode = false;
     
     // UI
     Button spawnrateButton;
@@ -158,6 +159,14 @@ public class Spawner : MonoBehaviour
     public void DrawPath() 
     {
         ClearPoints();
+        pathDrawingMode = true;
+    }
+
+    public bool GetIsDrawable(){
+        return pathDrawingMode;
+    }
+    public void SetIsDrawable(bool _newMode){
+        pathDrawingMode = _newMode;
     }
 
     // TODO: Move maxCount to spawners
