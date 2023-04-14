@@ -32,6 +32,8 @@ public class CubeMaker : MonoBehaviour
     // NEW STUFF
     Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
 
+    public bool pathDrawingMode = false;
+
     public Slider pathBar;
     private Image pathBarFill;
 
@@ -39,9 +41,13 @@ public class CubeMaker : MonoBehaviour
 
     public void Start()
     {
-        spawnerButtons = GameObject.FindGameObjectsWithTag("spawner_buttons");
         pathBar.maxValue = maxCount;
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+    }
+    
+    public void SetPathDrawingMode(bool newMode)
+    {
+        pathDrawingMode = newMode;
     }
 
     // Update is called once per frame
@@ -80,17 +86,11 @@ public class CubeMaker : MonoBehaviour
                         // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                        // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
+                        pathDrawingMode = true;
                         
                         // UI FLIP
                         spawnerClass.SetUIVisible(!spawnerClass.GetUIVisible());
-                        
-                        // TODO: Move this INTO the spawner.
-                        // TODO: Also have this only happen when DrawPath is pressed.
-                        // Clear Path
-                        while (spawnerClass.spheres.Count > 0)
-                        {
-                            spawnerClass.RemovePoint(spawnerClass.spheres[0]);
-                        }
 
                         pathBar.value = 0;
                         pathBar.gameObject.SetActive(true);
@@ -99,17 +99,18 @@ public class CubeMaker : MonoBehaviour
                     }
                     else
                     {
-                        // Hide all Spawner buttons
-                        foreach (var button in spawnerButtons)
-                        {
-                            button.SetActive(false);
+                        Debug.Log("Missed! " + hit.collider);
+                        if (spawnerSource != null){
+                            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                            spawnerClass.SetUIVisible(false);
                         }
                     }
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     // You ain't drawing if your not pressing down
-                    spawnerSource = null;
+                    // spawnerSource = null;
+                    pathDrawingMode = false;
                     // Hide pathbar when not in use
                     pathBar.gameObject.SetActive(false);
                 }
@@ -128,65 +129,31 @@ public class CubeMaker : MonoBehaviour
                     //
                     if (spawnerSource != null)
                     {
-                        if (hit.collider.gameObject.tag == "floor")
+                        if (pathDrawingMode)
                         {
-                            if (distancePerSphere >= maxDistancePerSphere)
+                            if (hit.collider.gameObject.tag == "floor")
                             {
-                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                                
-                                distancePerSphere = 0.0f;
-                                GameObject obj;
-
-                                if (teamColor == "RED")
+                                if (distancePerSphere >= maxDistancePerSphere)
                                 {
-                                    obj = spawnerSource.GetComponent<Spawner>().AddPathMarker("RED", hit.point);
+                                    Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                                    
+                                    distancePerSphere = 0.0f;
 
-                                    pathBar.value = spawnerClass.spheres.Count;
-                                    if (spawnerClass.spheres.Count == maxCount)
-                                    {
-                                        pathBarFill.color = red;
-                                    }
+                                    spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
                                 }
+
+                                // If distance is less than maxdistancepersphere, add change in distance.
                                 else
                                 {
-                                    obj = spawnerSource.GetComponent<Spawner>().AddPathMarker("BLUE", hit.point);
-                                }
-                                foreach (GameObject unit in spawnerClass.instances)
-                                {
-                                    if (unit != null)
+                                    if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
                                     {
-                                        if (unit.GetComponent<Unit>().team == teamColor)
-                                        {
-                                            unit.GetComponent<Unit>().AddPoint(obj);
-                                        }
+                                        oldPos = hit.collider.gameObject.transform.position;
                                     }
                                     else
                                     {
-                                        toRemoveUnits.Add(unit);
+                                        distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                                        oldPos = hit.point;
                                     }
-                                }
-                                foreach (GameObject markedUnit in toRemoveUnits)
-                                {
-                                    spawnerClass.instances.Remove(markedUnit);
-                                }
-                                toRemoveUnits = new List<GameObject>();
-
-                                if (spawnerClass.spheres.Count >= maxCount){
-                                    spawnerClass.RemovePoint(spawnerClass.spheres[0]);
-                                }
-                            }
-
-                            // If distance is less than maxdistancepersphere, add change in distance.
-                            else
-                            {
-                                if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-                                {
-                                    oldPos = hit.collider.gameObject.transform.position;
-                                }
-                                else
-                                {
-                                    distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                                    oldPos = hit.point;
                                 }
                             }
                         }

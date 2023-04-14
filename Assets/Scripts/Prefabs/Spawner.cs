@@ -102,6 +102,7 @@ public class Spawner : MonoBehaviour
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate();});
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate();});
         rangeButton.onClick.AddListener(delegate { IncreaseRange();});
+        pathButton.onClick.AddListener(delegate { DrawPath();});
     }
 
     // For these two, we only use spawnrateButton.
@@ -111,7 +112,7 @@ public class Spawner : MonoBehaviour
     {
         if (spawnrateButton != null)
         {
-            Debug.Log("Flippin' UI to " + isVis);
+            // Debug.Log("Flippin' UI to " + isVis);
             spawnrateButton.gameObject.SetActive(isVis);
             firerateButton.gameObject.SetActive(isVis);
             rangeButton.gameObject.SetActive(isVis);
@@ -123,7 +124,7 @@ public class Spawner : MonoBehaviour
         }
     }
     public bool GetUIVisible(){
-        Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
+        // Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
         return spawnrateButton.gameObject.activeSelf;
     }
 
@@ -146,6 +147,74 @@ public class Spawner : MonoBehaviour
         }
 
         StartCoroutine(GainPoints());
+    }
+
+    // TODO fuck it ill figure it out tomorrow
+    // um
+    // make it so that when you push
+    // THE BUTTON ON SPAWNER
+    // it tells the cube maker to start making cubes
+    // but also try to avoid assiging CM? I'm kinda likin the top-down heiarchy
+    public void DrawPath() 
+    {
+        ClearPoints();
+    }
+
+    // TODO: Move maxCount to spawners
+    public void DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
+    {
+
+        GameObject obj;
+        List<GameObject> toRemoveUnits = new List<GameObject>();
+
+        // TEAM.
+        if (team == "RED")
+        {
+            obj = AddPathMarker("RED", point);
+
+            pathBar.value = spheres.Count;
+            if (spheres.Count == maxCount)
+            {
+                Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
+                pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
+            }
+        }
+        else
+        {
+            obj = AddPathMarker("BLUE", point);
+        }
+
+        foreach (GameObject unit in instances)
+        {
+            if (unit != null)
+            {
+                if (unit.GetComponent<Unit>().team == team)
+                {
+                    unit.GetComponent<Unit>().AddPoint(obj);
+                }
+            }
+            else
+            {
+                toRemoveUnits.Add(unit);
+            }
+        }
+        foreach (GameObject markedUnit in toRemoveUnits)
+        {
+            instances.Remove(markedUnit);
+        }
+
+        if (spheres.Count >= maxCount){
+            RemovePoint(spheres[0]);
+        }
+    }
+
+    // TODO: Also have this only happen when DrawPath is pressed.
+    public void ClearPoints()
+    {
+        while (spheres.Count > 0)
+        {
+            RemovePoint(spheres[0]);
+        }
     }
     
     // TODO; RENAME TOMORROW WHEN I KNOW WHAT IM DOING
