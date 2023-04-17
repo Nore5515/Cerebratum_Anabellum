@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     public Text healthText;
-    public Text pointsText;
+    public Text nanitesText;
+    public Text nanitesPerMinuteText;
     public Text gameOverText;
     int blueHP = 10;
     int redHP = 10;
@@ -16,8 +17,11 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        nanitesText = GameObject.Find("NanitesText").GetComponent<Text>();
+        nanitesPerMinuteText = GameObject.Find("NaniteGainText").GetComponent<Text>();
         healthText.text = "RED: 10             BLUE: 10";
-        pointsText.text = "RED: 0               BLUE: 0";
+        nanitesText.text = "RED: 0               BLUE: 0";
+        nanitesPerMinuteText.text = "RED: 0               BLUE: 0";
     }
 
     public void SetNewHealth(int redHP2, int blueHP2)
@@ -27,7 +31,8 @@ public class UI : MonoBehaviour
 
     void Update() 
     {
-        pointsText.text = "RED: " + TeamStats.RedPoints.ToString() + "               BLUE: " + TeamStats.BluePoints.ToString();
+        nanitesText.text = "RED: " + TeamStats.RedPoints.ToString() + "               BLUE: " + TeamStats.BluePoints.ToString();
+        nanitesPerMinuteText.text = "RED: " + TeamStats.RedNaniteGain.ToString() + "               BLUE: " + TeamStats.BlueNaniteGain.ToString();
     }
 
     public void DecrementHealth(GameObject obj)

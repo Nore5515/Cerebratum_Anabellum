@@ -65,7 +65,7 @@ public class Spawner : MonoBehaviour
         
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
-        StartCoroutine(GainPoints());
+        
         alliedSpawnerObjs.Add(new SpawnerData());
         alliedSpawnerObjs[0].obj = this.gameObject;
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
@@ -129,26 +129,26 @@ public class Spawner : MonoBehaviour
         return spawnrateButton.gameObject.activeSelf;
     }
 
-    IEnumerator GainPoints()
-    {
-        yield return new WaitForSeconds(pointTimer);
+    // IEnumerator GainPoints()
+    // {
+    //     yield return new WaitForSeconds(pointTimer);
         
-        if (team == "RED")
-        {
-            TeamStats.RedPoints += 1;
-        }
-        else
-        {
-            TeamStats.BluePoints += 1;
-        }
+    //     if (team == "RED")
+    //     {
+    //         TeamStats.RedPoints += 1;
+    //     }
+    //     else
+    //     {
+    //         TeamStats.BluePoints += 1;
+    //     }
 
-        if (isAI)
-        {
-            AI_SpendPoints();
-        }
+    //     if (isAI)
+    //     {
+    //         AI_SpendPoints();
+    //     }
 
-        StartCoroutine(GainPoints());
-    }
+    //     StartCoroutine(GainPoints());
+    // }
 
     // TODO fuck it ill figure it out tomorrow
     // um

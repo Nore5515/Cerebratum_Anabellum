@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScenes/Map_Test.unity
     guid: 992d274aed1b54be18f87dd9aedaa96a
+  - enabled: 1
+    path: Assets/Scenes/Menus/MainMenu.unity
+    guid: 48d253a6478584d74b1e3a6befaa286c
   m_configObjects: {}

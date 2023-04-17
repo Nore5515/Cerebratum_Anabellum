@@ -33,9 +33,11 @@ public class CubeMaker : MonoBehaviour
     Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
 
     public bool pathDrawingMode = false;
+    public bool possessionReady = false;
 
     public Slider pathBar;
     private Image pathBarFill;
+    public GameObject possessionButton;
 
     GameObject spawnerSource;
 
@@ -43,11 +45,24 @@ public class CubeMaker : MonoBehaviour
     {
         pathBar.maxValue = maxCount;
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+
+        possessionButton = GameObject.Find("PossessButton");
     }
     
     public void SetPathDrawingMode(bool newMode)
     {
         pathDrawingMode = newMode;
+    }
+
+    public void SetPossession(bool newPossession)
+    {
+        possessionReady = newPossession;
+        if (possessionReady){
+            possessionButton.GetComponent<Button>().interactable = false;
+        }
+        else{
+            possessionButton.GetComponent<Button>().interactable = true;
+        }
     }
 
     // Update is called once per frame
@@ -65,7 +80,11 @@ public class CubeMaker : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Escape))
         {
-            SceneManager.LoadScene("DemoMenu");
+            SceneManager.LoadScene("MainMenu");
+        }
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            SetPossession(true);
         }
         if (thingy == false)
         {
@@ -169,23 +188,25 @@ public class CubeMaker : MonoBehaviour
                     // ║  Possess unit on click.                          ║
                     // ╚══════════════════════════════════════════════════╝
                     //
-                    if (controlledUnits.Count == 0){
-                        if (hit.collider.gameObject.tag == "unit")
-                        {
-                            Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                            if (unit != null)
-                            {
-                                // Confirm unit is same team.
-                                if (unit.team == teamColor)
+                    if (possessionReady){
+                        SetPossession(false);
+                        if (controlledUnits.Count == 0){
+                            if (hit.collider.gameObject.tag == "unit"){
+                                Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                                if (unit != null)
                                 {
-                                    if (controlledUnits.Count >= 1)
+                                    // Confirm unit is same team.
+                                    if (unit.team == teamColor)
                                     {
-                                        controlledUnits[0].beingControlled = false;
-                                        controlledUnits = new List<Unit>();
+                                        if (controlledUnits.Count >= 1)
+                                        {
+                                            controlledUnits[0].beingControlled = false;
+                                            controlledUnits = new List<Unit>();
+                                        }
+                                        unit.beingControlled = true;
+                                        controlledUnits.Add(unit);
+                                        camScript.followObj = unit.unitObj;
                                     }
-                                    unit.beingControlled = true;
-                                    controlledUnits.Add(unit);
-                                    camScript.followObj = unit.unitObj;
                                 }
                             }
                         }
