@@ -332,17 +332,42 @@ public class Spawner : MonoBehaviour
         }
     }
 
-
     public void CreateNewSpawner()
     {
         if (alliedSpawnerObjs.Count <= 2)
         {
-            Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
-            newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
-            GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
-            SpawnerData sd = new SpawnerData();
-            sd.obj = newObj;
-            alliedSpawnerObjs.Add(sd);
+            if (TeamStats.RedPoints >= 10)
+            {
+                TeamStats.RedPoints -= 10;
+                Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
+                newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
+                GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
+                SpawnerData sd = new SpawnerData();
+                sd.obj = newObj;
+                alliedSpawnerObjs.Add(sd);
+            }
+        }
+    }
+
+    public void DEBUG_BreakEcon()
+    {
+        GameObject.Find("Economy").GetComponent<Economy>().SetCycleMax(1);
+    }
+
+    public void CreateNaniteGenerator()
+    {
+        if (alliedSpawnerObjs.Count <= 2)
+        {
+            if (TeamStats.RedPoints >= 3)
+            {
+                TeamStats.RedPoints -= 3;
+                Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
+                newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
+                GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
+                SpawnerData sd = new SpawnerData();
+                sd.obj = newObj;
+                alliedSpawnerObjs.Add(sd);
+            }
         }
     }
 

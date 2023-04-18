@@ -14,7 +14,7 @@ public class Economy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cycleMax = 15;
+        SetCycleMax(15);
         cycleVal = 0;
         
         // TODO: make better cyclemax parse too lasy
@@ -23,6 +23,11 @@ public class Economy : MonoBehaviour
         TeamStats.BlueNaniteGain = 1;
 
         TimeTracker = GameObject.Find("TimeTracker");
+    }
+
+    public void SetCycleMax(float newMax)
+    {
+        cycleMax = newMax;
     }
 
     void Update()
