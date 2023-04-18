@@ -7,11 +7,13 @@ public class SpawnerData
 {
     public string name;
     public GameObject obj;
+    public string type;
 
-    public void Initalize(string _name, GameObject _obj)
+    public void Initalize(string _name, GameObject _obj, string _type)
     {
         name = _name;
         obj = _obj;
+        type = _type;
     }
 }
 
@@ -43,6 +45,9 @@ public class Spawner : MonoBehaviour
     string path = "Asset_PathMarker";
     public GameObject spawnerUI;
     public bool pathDrawingMode = false;
+    public GameObject naniteGenPrefab;
+    string naniteGenPrefab_path = "Asset_NaniteGen";
+    public bool rootSpawner = false;
     
     // UI
     Button spawnrateButton;
@@ -53,6 +58,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         pathMarker = Resources.Load(path) as GameObject;
+        naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
         if (this.gameObject.transform.Find("UI") != null){
             spawnerUI = this.gameObject.transform.Find("UI").gameObject;
@@ -66,8 +72,11 @@ public class Spawner : MonoBehaviour
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         
+        // Spawner Obj List
         alliedSpawnerObjs.Add(new SpawnerData());
         alliedSpawnerObjs[0].obj = this.gameObject;
+
+        int count = 0;
         GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
         foreach (var spawnerObj in spawnerObjs)
         {
@@ -78,7 +87,19 @@ public class Spawner : MonoBehaviour
                 {
                     enemySpawners.Add(spawner);
                 }
+                else
+                {
+                    // Spawner is of same team.
+                    count += 1;
+                }
             }
+        }
+
+        // Root spawner behaves different than every other.
+        if (count == 1)
+        {
+            rootSpawner = true;
+            alliedSpawnerObjs[0].type = "spawn";
         }
 
         // // OH THIS WORKS BC IT NEEDS TO COMPILE
@@ -344,6 +365,7 @@ public class Spawner : MonoBehaviour
                 GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
                 SpawnerData sd = new SpawnerData();
                 sd.obj = newObj;
+                sd.type = "spawn";
                 alliedSpawnerObjs.Add(sd);
             }
         }
@@ -360,13 +382,20 @@ public class Spawner : MonoBehaviour
         {
             if (TeamStats.RedPoints >= 3)
             {
-                TeamStats.RedPoints -= 3;
                 Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
                 newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
-                GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
+                newPos.y += 0.2f; // TODO: Why no work without? Fix later.
+                GameObject newObj = Instantiate(naniteGenPrefab, newPos, Quaternion.identity) as GameObject;
                 SpawnerData sd = new SpawnerData();
                 sd.obj = newObj;
+                sd.type = "nanite";
                 alliedSpawnerObjs.Add(sd);
+
+                // Costs 3 nanites.
+                TeamStats.RedPoints -= 3;
+
+                // Raise nanite production.
+                TeamStats.RedNaniteGain += 1;
             }
         }
     }
@@ -380,17 +409,21 @@ public class Spawner : MonoBehaviour
     {
         foreach (SpawnerData spawnData in alliedSpawnerObjs)
         {
-            GameObject obj = Instantiate(reqPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
-            instances.Add(obj);
+            // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
+            if (spawnData.type == "spawn")
+            {
+                GameObject obj = Instantiate(reqPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
+                instances.Add(obj);
 
-            obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
-            if (team == "RED")
-            {
-                obj.GetComponent<MeshRenderer>().material = redMat;
-            }
-            else
-            {
-                obj.GetComponent<MeshRenderer>().material = blueMat;
+                obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
+                if (team == "RED")
+                {
+                    obj.GetComponent<MeshRenderer>().material = redMat;
+                }
+                else
+                {
+                    obj.GetComponent<MeshRenderer>().material = blueMat;
+                }
             }
         }
     }

@@ -48,6 +48,14 @@ public class MainMenu : MonoBehaviour
                 Scenarios_Back_Button.SetActive(true);
                 break;
 
+            // Load Scenarios
+            case "EASYMODE":
+                SceneManager.LoadScene("Scenes/Scenarios/EasyMode");
+                break;
+            case "NOTOWER":
+                SceneManager.LoadScene("Scenes/Scenarios/NoTower");
+                break;
+
             default:
                 Debug.LogError("WRONG STATE SET; MainMenu.cs");
                 break;

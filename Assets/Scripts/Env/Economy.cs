@@ -11,6 +11,10 @@ public class Economy : MonoBehaviour
     public float cycleMax;
     private float cycleVal;
 
+    // Starting Conditions
+    public int redNaniteBoost = 0;
+    public int blueNaniteBoost = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,9 +22,12 @@ public class Economy : MonoBehaviour
         cycleVal = 0;
         
         // TODO: make better cyclemax parse too lasy
+        // Starting Conds
         TeamStats.CycleLength = 15;
         TeamStats.RedNaniteGain = 1;
         TeamStats.BlueNaniteGain = 1;
+        TeamStats.RedPoints = redNaniteBoost;
+        TeamStats.BluePoints = blueNaniteBoost;
 
         TimeTracker = GameObject.Find("TimeTracker");
     }
