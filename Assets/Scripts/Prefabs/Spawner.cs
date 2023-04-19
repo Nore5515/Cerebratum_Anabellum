@@ -3,21 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpawnerData
-{
-    public string name;
-    public GameObject obj;
-    public string type;
-
-    public void Initalize(string _name, GameObject _obj, string _type)
-    {
-        name = _name;
-        obj = _obj;
-        type = _type;
-    }
-}
-
-public class Spawner : MonoBehaviour
+public class Spawner : Structure
 {
     public GameObject prefab;
     public GameObject spiderPrefab;
@@ -28,7 +14,7 @@ public class Spawner : MonoBehaviour
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
     public List<Spawner> enemySpawners = new List<Spawner>();
-    public List<SpawnerData> alliedSpawnerObjs = new List<SpawnerData>();
+    
     public List<GameObject> paths;
 
     public string team = "RED";
@@ -54,6 +40,7 @@ public class Spawner : MonoBehaviour
     Button firerateButton;
     Button rangeButton;
     Button pathButton;
+    Button deleteButton;
 
     void Start()
     {
@@ -73,33 +60,25 @@ public class Spawner : MonoBehaviour
         StartCoroutine(coroutine);
         
         // Spawner Obj List
-        alliedSpawnerObjs.Add(new SpawnerData());
-        alliedSpawnerObjs[0].obj = this.gameObject;
-
-        int count = 0;
-        GameObject[] spawnerObjs = GameObject.FindGameObjectsWithTag("spawner");
-        foreach (var spawnerObj in spawnerObjs)
+        if (team == "RED")
         {
-            Spawner spawner = spawnerObj.GetComponent<Spawner>();
-            if (spawner != null)
-            {
-                if (spawner.team != team)
-                {
-                    enemySpawners.Add(spawner);
-                }
-                else
-                {
-                    // Spawner is of same team.
-                    count += 1;
-                }
-            }
+            SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
+        }
+        else
+        {
+            SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
+        }
+
+        foreach (GameObject spawner in SpawnerTracker.blueSpawnerObjs)
+        {
+            enemySpawners.Add(spawner.GetComponent<Spawner>());
         }
 
         // Root spawner behaves different than every other.
-        if (count == 1)
+        if (SpawnerTracker.redSpawnerObjs.Count == 1)
         {
             rootSpawner = true;
-            alliedSpawnerObjs[0].type = "spawn";
+            type = "spawn";
         }
 
         // // OH THIS WORKS BC IT NEEDS TO COMPILE
@@ -107,6 +86,8 @@ public class Spawner : MonoBehaviour
 
         if (isAI && enemySpawners.Count >= 1)
         {
+            type = "spawn";
+            rootSpawner = true;
             AI_DrawPath(enemySpawners[0].gameObject.transform.position);
         }
 
@@ -120,11 +101,21 @@ public class Spawner : MonoBehaviour
         firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
         rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
+        deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
 
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate();});
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate();});
         rangeButton.onClick.AddListener(delegate { IncreaseRange();});
         pathButton.onClick.AddListener(delegate { DrawPath();});
+        deleteButton.onClick.AddListener(delegate { RemoveSpawner();});
+    }
+
+    public void RemoveSpawner()
+    {
+        if (!rootSpawner)
+        {
+            
+        }
     }
 
     // For these two, we only use spawnrateButton.
@@ -355,18 +346,16 @@ public class Spawner : MonoBehaviour
 
     public void CreateNewSpawner()
     {
-        if (alliedSpawnerObjs.Count <= 2)
+        if (SpawnerTracker.redSpawnerObjs.Count <= 2)
         {
             if (TeamStats.RedPoints >= 10)
             {
                 TeamStats.RedPoints -= 10;
-                Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
-                newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
-                GameObject newObj = Instantiate(alliedSpawnerObjs[0].obj, newPos, Quaternion.identity) as GameObject;
-                SpawnerData sd = new SpawnerData();
-                sd.obj = newObj;
-                sd.type = "spawn";
-                alliedSpawnerObjs.Add(sd);
+                Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
+                newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
+                GameObject newObj = Instantiate(SpawnerTracker.redSpawnerObjs[0], newPos, Quaternion.identity) as GameObject;
+                newObj.GetComponent<Structure>().type = "spawn";
+                SpawnerTracker.redSpawnerObjs.Add(newObj);
             }
         }
     }
@@ -378,18 +367,16 @@ public class Spawner : MonoBehaviour
 
     public void CreateNaniteGenerator()
     {
-        if (alliedSpawnerObjs.Count <= 2)
+        if (SpawnerTracker.redSpawnerObjs.Count <= 2)
         {
             if (TeamStats.RedPoints >= 3)
             {
-                Vector3 newPos = alliedSpawnerObjs[0].obj.transform.position;
-                newPos.z += (16.0f * (alliedSpawnerObjs.Count - 1.5f));
+                Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
+                newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
                 newPos.y += 0.2f; // TODO: Why no work without? Fix later.
                 GameObject newObj = Instantiate(naniteGenPrefab, newPos, Quaternion.identity) as GameObject;
-                SpawnerData sd = new SpawnerData();
-                sd.obj = newObj;
-                sd.type = "nanite";
-                alliedSpawnerObjs.Add(sd);
+                newObj.GetComponent<Structure>().type = "nanite";
+                SpawnerTracker.redSpawnerObjs.Add(newObj);
 
                 // Costs 3 nanites.
                 TeamStats.RedPoints -= 3;
@@ -407,12 +394,21 @@ public class Spawner : MonoBehaviour
 
     private void CreatePrefab(GameObject reqPrefab)
     {
-        foreach (SpawnerData spawnData in alliedSpawnerObjs)
+        List<GameObject> spawns = new List<GameObject>();
+        if (team == "RED")
+        {
+            spawns = SpawnerTracker.redSpawnerObjs;
+        }
+        else
+        {
+            spawns = SpawnerTracker.blueSpawnerObjs;
+        }
+        foreach (GameObject spawnData in spawns)
         {
             // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
-            if (spawnData.type == "spawn")
+            if (spawnData.GetComponent<Structure>().type == "spawn")
             {
-                GameObject obj = Instantiate(reqPrefab, spawnData.obj.transform.position, Quaternion.identity) as GameObject;
+                GameObject obj = Instantiate(reqPrefab, spawnData.transform.position, Quaternion.identity) as GameObject;
                 instances.Add(obj);
 
                 obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
