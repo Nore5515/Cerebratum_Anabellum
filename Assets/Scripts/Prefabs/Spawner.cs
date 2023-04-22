@@ -18,10 +18,13 @@ public class Spawner : Structure
     public List<GameObject> paths;
 
     public string team = "RED";
-    // Max max  versions later for better fill count
-    public float fireDelay = 2.0f;
-    public float unitRange = 3.0f;
-    public float spawnTime = 3.0f;
+    // TODO: Max max  versions later for better fill count
+    public float startingFireDelay = 2.0f;
+    public float startingUnitRange = 3.0f;
+    public float startingSpawnTime = 3.0f;
+    public float fireDelay;
+    public float unitRange;
+    public float spawnTime;
     public float pointTimer = 10.0f;
     public bool isAI = false;
 
@@ -54,6 +57,10 @@ public class Spawner : Structure
 
     void Start()
     {
+        fireDelay = startingFireDelay;
+        unitRange = startingUnitRange;
+        spawnTime = startingSpawnTime;
+
         pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
@@ -473,8 +480,12 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 spawnTime -= 0.5f;
-                spawnFill.fillAmount = calculateFill(3.5f, 0.5f, spawnTime);
+                spawnFill.fillAmount = calculateFill(startingSpawnTime, 0.5f, spawnTime);
             }
+        }
+        if (spawnTime < 1.0f)
+        {
+            spawnrateButton.interactable = false;
         }
     }
 
@@ -485,8 +496,12 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 fireDelay -= 0.25f;
-                fireRateFill.fillAmount = calculateFill(2.0f, 0.25f, fireDelay);
+                fireRateFill.fillAmount = calculateFill(startingFireDelay, 0.25f, fireDelay);
             }
+        }
+        if (fireDelay < 0.5f)
+        {
+            firerateButton.interactable = false;
         }
     }
 
@@ -497,8 +512,11 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 unitRange += 0.5f;
-                rangeFill.fillAmount = calculateFill(3.0f, 6.5f, unitRange);
+                rangeFill.fillAmount = calculateFill(startingUnitRange, 6.5f, unitRange);
             }
+        }
+        if (unitRange > 6.0f){
+            rangeButton.interactable = false;
         }
     }
 
