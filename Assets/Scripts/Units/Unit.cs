@@ -29,6 +29,14 @@ public class Unit : MonoBehaviour
     public GameObject bullet {get; set;}
     public Vector3 controlDirection { get; set; }
 
+    // STATE
+    // TODO: Enum this?
+    public string threatState {get; set;}
+    
+    // WALK - No threats of equal or higher level.
+    // STAND - Threats of equal level, but not higher.
+    // FLEE - Threats of higher level.
+
     string path = "Asset_Projectile";
 
     IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
@@ -39,6 +47,7 @@ public class Unit : MonoBehaviour
         MaxDist = 1.4;
         MinDist = 1;
         team = newTeam;
+        threatState = "WALK";
         if (team == "RED")
         {
             // nothing
@@ -140,10 +149,35 @@ public class Unit : MonoBehaviour
     {
         targetsInRange.Add(target);
         ClearNullTargets();
+        UpdateThreatState();
         // Sprite = Firing
         if (UnitSprites["Shooting"] != null){
             DisableAllSprites();
             UnitSprites["Shooting"].SetActive(true);
+        }
+    }
+
+    public void UpdateThreatState() 
+    {
+        int highestThreat = -1;
+        foreach (GameObject target in targetsInRange)
+        {
+            if (target.GetComponent<Unit>().threatLevel > highestThreat)
+            {
+                highestThreat = target.GetComponent<Unit>().threatLevel;
+            }
+        }
+        if (highestThreat < threatLevel)
+        {
+            threatState = "WALK";
+        }
+        else if (highestThreat == threatLevel)
+        {
+            threatState = "STAND";
+        }
+        else
+        {
+            threatState = "FLEE";
         }
     }
 
@@ -160,6 +194,7 @@ public class Unit : MonoBehaviour
         {
             targetsInRange.Remove(target);
             ClearNullTargets();
+            UpdateThreatState();
         }
         if (targetsInRange.Count <= 0){
             // Sprite = Walking

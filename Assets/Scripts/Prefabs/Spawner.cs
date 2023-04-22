@@ -18,6 +18,7 @@ public class Spawner : Structure
     public List<GameObject> paths;
 
     public string team = "RED";
+    // Max max  versions later for better fill count
     public float fireDelay = 2.0f;
     public float unitRange = 3.0f;
     public float spawnTime = 3.0f;
@@ -41,6 +42,15 @@ public class Spawner : Structure
     Button rangeButton;
     Button pathButton;
     Button deleteButton;
+
+    public Image rangeFill;
+    public Image fireRateFill;
+    public Image spawnFill;
+
+    float rangeStep;
+    float firerateStep;
+    float spawnStep;
+
 
     void Start()
     {
@@ -97,6 +107,7 @@ public class Spawner : Structure
     {
         ui.GetComponent<Canvas>().worldCamera = Camera.main;
 
+        // Buttons
         spawnrateButton = ui.transform.Find("RSpawn").gameObject.GetComponent<Button>();
         firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
         rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
@@ -108,6 +119,16 @@ public class Spawner : Structure
         rangeButton.onClick.AddListener(delegate { IncreaseRange();});
         pathButton.onClick.AddListener(delegate { DrawPath();});
         deleteButton.onClick.AddListener(delegate { RemoveSpawner();});
+
+        // Fills
+        GameObject infhutCanvas = this.transform.Find("InfHut").transform.Find("Canvas").gameObject;
+        rangeFill = infhutCanvas.transform.Find("range").gameObject.GetComponent<Image>();
+        fireRateFill = infhutCanvas.transform.Find("firerate").gameObject.GetComponent<Image>();
+        spawnFill = infhutCanvas.transform.Find("spawn").gameObject.GetComponent<Image>();
+
+        rangeFill.fillAmount = 0;
+        fireRateFill.fillAmount = 0;
+        spawnFill.fillAmount = 0;
     }
 
     public void RemoveSpawner()
@@ -434,6 +455,17 @@ public class Spawner : Structure
         StartCoroutine(SpawnPrefab());
     }
 
+    float calculateFill(float min, float max, float target){
+        float diff = (max - min);
+        float result = (target - min) / diff;
+        Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
+        return result;
+    }
+
+// calculateDelay(min: 3, max: 0.5, target: 0.5)
+// calculateDelay(min: 3, max: 0.5, target: 3)
+// calculateDelay(min: 3, max: 0.5, target: 1.75)
+
     public void IncreaseSpawnRate()
     {
         if (spawnTime >= 1.0f)
@@ -441,6 +473,7 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 spawnTime -= 0.5f;
+                spawnFill.fillAmount = calculateFill(3.5f, 0.5f, spawnTime);
             }
         }
     }
@@ -452,6 +485,7 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 fireDelay -= 0.25f;
+                fireRateFill.fillAmount = calculateFill(2.0f, 0.25f, fireDelay);
             }
         }
     }
@@ -463,6 +497,7 @@ public class Spawner : Structure
             if (deductTeamPoints(1))
             {
                 unitRange += 0.5f;
+                rangeFill.fillAmount = calculateFill(3.0f, 6.5f, unitRange);
             }
         }
     }
