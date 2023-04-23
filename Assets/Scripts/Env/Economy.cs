@@ -15,6 +15,8 @@ public class Economy : MonoBehaviour
     public int redNaniteBoost = 0;
     public int blueNaniteBoost = 0;
 
+    public GameObject fuckoff;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +52,8 @@ public class Economy : MonoBehaviour
             GainPoints();   
             cycleVal = 0;
         }
+
+        fuckoff.GetComponent<Text>().text = SpawnerTracker.redSpawnerObjs.Count.ToString();
     }
 
     private void GainPoints()

@@ -37,7 +37,6 @@ public class Spawner : Structure
     public bool pathDrawingMode = false;
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
-    public bool rootSpawner = false;
     
     // UI
     Button spawnrateButton;
@@ -53,6 +52,8 @@ public class Spawner : Structure
     float rangeStep;
     float firerateStep;
     float spawnStep;
+
+    public float count;
 
 
     void Start()
@@ -76,36 +77,33 @@ public class Spawner : Structure
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
         
-        // Spawner Obj List
-        if (team == "RED")
-        {
-            SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
-        }
-        else
-        {
-            SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
-        }
+        
 
+        // TODO: REMOVE?
         foreach (GameObject spawner in SpawnerTracker.blueSpawnerObjs)
         {
             enemySpawners.Add(spawner.GetComponent<Spawner>());
         }
 
         // Root spawner behaves different than every other.
-        if (SpawnerTracker.redSpawnerObjs.Count == 1)
+        if (SpawnerTracker.redRootSpawner == null && team == "RED")
         {
-            rootSpawner = true;
+            Debug.Log("Root spawner declared! " + this.name);
+            SpawnerTracker.redRootSpawner = this.gameObject;
             type = "spawn";
+
+            Debug.Log("YEP");
+            SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
         }
-
-        // // OH THIS WORKS BC IT NEEDS TO COMPILE
-        // Debug.Log(TeamStats.Kills);
-
-        if (isAI && enemySpawners.Count >= 1)
+        if (SpawnerTracker.blueRootSpawner == null && team == "BLUE")
         {
+            Debug.Log("Root spawner declared! " + this.name);
+            SpawnerTracker.blueRootSpawner = this.gameObject;
             type = "spawn";
-            rootSpawner = true;
-            AI_DrawPath(enemySpawners[0].gameObject.transform.position);
+
+            // Spawner Obj List
+            SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
+            AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
         }
 
     }
@@ -140,10 +138,26 @@ public class Spawner : Structure
 
     public void RemoveSpawner()
     {
-        if (!rootSpawner)
+        // if (!rootSpawner)
+        if (true)
         {
-            
+            if (team == "RED")
+            {
+                StartCoroutine(removeSpawn());
+                Debug.Log("Main:" + SpawnerTracker.redSpawnerObjs.Count);
+                TeamStats.RedPoints += 10;
+                // Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
+            }
         }
+    }
+
+    public IEnumerator removeSpawn()
+    {
+        // SpawnerTracker.redSpawnerObjs.Remove(this.gameObject);
+        SpawnerTracker.redSpawnerObjs.RemoveAt(1);
+        Debug.Log("Threat:" + SpawnerTracker.redSpawnerObjs.Count);
+        yield return 0;
     }
 
     // For these two, we only use spawnrateButton.
@@ -374,16 +388,19 @@ public class Spawner : Structure
 
     public void CreateNewSpawner()
     {
+        Debug.Log("Creating new spawner! Count is : " + SpawnerTracker.redSpawnerObjs.Count);
         if (SpawnerTracker.redSpawnerObjs.Count <= 2)
         {
             if (TeamStats.RedPoints >= 10)
             {
                 TeamStats.RedPoints -= 10;
+                Debug.Log("New spawner about to be added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
                 Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
                 newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
                 GameObject newObj = Instantiate(SpawnerTracker.redSpawnerObjs[0], newPos, Quaternion.identity) as GameObject;
                 newObj.GetComponent<Structure>().type = "spawn";
                 SpawnerTracker.redSpawnerObjs.Add(newObj);
+                Debug.Log("New spawner added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
             }
         }
     }
@@ -405,6 +422,7 @@ public class Spawner : Structure
                 GameObject newObj = Instantiate(naniteGenPrefab, newPos, Quaternion.identity) as GameObject;
                 newObj.GetComponent<Structure>().type = "nanite";
                 SpawnerTracker.redSpawnerObjs.Add(newObj);
+                Debug.Log("Adding nanite");
 
                 // Costs 3 nanites.
                 TeamStats.RedPoints -= 3;

@@ -162,9 +162,11 @@ public class Unit : MonoBehaviour
         int highestThreat = -1;
         foreach (GameObject target in targetsInRange)
         {
-            if (target.GetComponent<Unit>().threatLevel > highestThreat)
-            {
-                highestThreat = target.GetComponent<Unit>().threatLevel;
+            if (target.GetComponent<Unit>() != null){
+                if (target.GetComponent<Unit>().threatLevel > highestThreat)
+                {
+                    highestThreat = target.GetComponent<Unit>().threatLevel;
+                }
             }
         }
         if (highestThreat < threatLevel)
