@@ -76,8 +76,6 @@ public class Spawner : Structure
         
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
-        
-        
 
         // TODO: REMOVE?
         foreach (GameObject spawner in SpawnerTracker.blueSpawnerObjs)
@@ -88,22 +86,16 @@ public class Spawner : Structure
         // Root spawner behaves different than every other.
         if (SpawnerTracker.redRootSpawner == null && team == "RED")
         {
-            Debug.Log("Root spawner declared! " + this.name);
             SpawnerTracker.redRootSpawner = this.gameObject;
-            type = "spawn";
-
-            Debug.Log("YEP");
             SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
+            type = "spawn";
         }
         if (SpawnerTracker.blueRootSpawner == null && team == "BLUE")
         {
-            Debug.Log("Root spawner declared! " + this.name);
             SpawnerTracker.blueRootSpawner = this.gameObject;
-            type = "spawn";
-
-            // Spawner Obj List
             SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
             AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
+            type = "spawn";
         }
 
     }
