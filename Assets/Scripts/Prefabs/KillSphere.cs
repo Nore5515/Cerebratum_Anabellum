@@ -7,10 +7,6 @@ public class KillSphere : MonoBehaviour
 
     public string alliedTeam;
     public Unit unit;
-    public TowerScript ts;
-
-    public bool isUnit = false;
-    public bool isTower = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,57 +14,28 @@ public class KillSphere : MonoBehaviour
         if (transform.parent.gameObject.GetComponent<Unit>() != null)
         {
             alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
+            Debug.Log("TEAM IS: " + alliedTeam);
             unit = transform.parent.gameObject.GetComponent<Unit>();
-            isUnit = true;
-        }
-        else if (transform.parent.gameObject.GetComponent<TowerScript>() != null)
-        {
-            alliedTeam = transform.parent.gameObject.GetComponent<TowerScript>().team;
-            ts = transform.parent.gameObject.GetComponent<TowerScript>();
-            isTower = true;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Unit>() != null)
+        // TODO; BETTER Inialization safety
+        if (alliedTeam != null)
         {
-            if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
+            if (other.gameObject.GetComponent<Unit>() != null)
             {
-                if (isTower)
-                {
-                    ts.AddTargetInRange(other.gameObject);
-                }
-                else if (isUnit)
+                if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
                 {
                     unit.AddTargetInRange(other.gameObject);
                 }
             }
-        }
-        if (other.gameObject.GetComponent<Spawner>() != null)
-        {
-            if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
+            if (other.gameObject.GetComponent<Spawner>() != null)
             {
-                if (isTower)
+                if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
                 {
-                    ts.AddTargetInRange(other.gameObject);
-                }
-                else if (isUnit)
-                {
-                    unit.AddTargetInRange(other.gameObject);
-                }
-            }
-        }
-        if (other.gameObject.GetComponent<TowerScript>() != null)
-        {
-            if (other.gameObject.GetComponent<TowerScript>().team != alliedTeam)
-            {
-                if (isTower)
-                {
-                    ts.AddTargetInRange(other.gameObject);
-                }
-                else if (isUnit)
-                {
+                    Debug.Log("FOUND SPAWNER! I am " + alliedTeam + ", they are: " +other.gameObject.GetComponent<Spawner>().team);
                     unit.AddTargetInRange(other.gameObject);
                 }
             }
@@ -77,14 +44,7 @@ public class KillSphere : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (isTower)
-        {
-            ts.RemoveTargetInRange(other.gameObject);
-        }
-        else if (isUnit)
-        {
-            unit.RemoveTargetInRange(other.gameObject);
-        }
+        unit.RemoveTargetInRange(other.gameObject);
     }
 
     private Vector3 GetPositionNearTransform(Transform trans, float randomness)

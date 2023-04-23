@@ -51,13 +51,20 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
-        if (other.gameObject.GetComponent<Spawner>() != null)
+        // TODO: Fix this later...?
+        Spawner otherSpawn = other.gameObject.GetComponent<Spawner>();
+        if (otherSpawn != null)
         {
-            if (other.gameObject.GetComponent<Spawner>().team != team)
+            if (otherSpawn.team != team)
             {
-                GameObject canvas = GameObject.Find("Canvas");
-                canvas.GetComponent<UI>().DecrementHealth(other.gameObject);
-                Destroy(this.gameObject);
+                if (otherSpawn.team == "RED")
+                {
+                    TeamStats.RedHP -= 1;
+                }
+                else
+                {
+                    TeamStats.BlueHP -= 1;
+                }
             }
         }
         if (other.gameObject.GetComponent<TowerScript>() != null)

@@ -41,6 +41,9 @@ public class Unit : MonoBehaviour
 
     IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
 
+    // Targets Stuff
+    public List<GameObject> targetsInRange = new List<GameObject>();
+
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float unitRange)
     {
         bullet = Resources.Load(path) as GameObject;
@@ -93,9 +96,6 @@ public class Unit : MonoBehaviour
         canFire = true;
         canFireDelay = false;
     }
-
-    // Targets Stuff
-    public List<GameObject> targetsInRange = new List<GameObject>();
 
     // Health and Damage Logic
     public int DealDamage(int damage)
@@ -151,7 +151,8 @@ public class Unit : MonoBehaviour
         ClearNullTargets();
         UpdateThreatState();
         // Sprite = Firing
-        if (UnitSprites["Shooting"] != null){
+        // if (UnitSprites["Shooting"] != null){
+        if (UnitSprites.ContainsKey("Shooting")){
             DisableAllSprites();
             UnitSprites["Shooting"].SetActive(true);
         }
@@ -200,7 +201,8 @@ public class Unit : MonoBehaviour
         }
         if (targetsInRange.Count <= 0){
             // Sprite = Walking
-            if (UnitSprites["Walking"] != null){
+            if (UnitSprites.ContainsKey("Walking"))
+            {
                 DisableAllSprites();
                 UnitSprites["Walking"].SetActive(true);
             }
