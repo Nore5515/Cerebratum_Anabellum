@@ -7,7 +7,7 @@ public class Spidertank : Unit
 {
     // Core unit stats
     public float survivalTime = 15.0f;
-    public CubeMaker cm;
+    public StompSphere stomp;
 
     public void CSpidertank()
     {
@@ -39,6 +39,7 @@ public class Spidertank : Unit
             IEnumerator coroutine = SelfDestruct();
             StartCoroutine(coroutine);
         }
+        
     }
     
     IEnumerator SelfDestruct()
@@ -50,6 +51,11 @@ public class Spidertank : Unit
     // Update is called once per frame
     void Update()
     {
+        // TODO: Make this better?
+        if (stomp.alliedTeam != team)
+        {
+            stomp.alliedTeam = team;
+        }
         MovementUpdate();
     }
 }

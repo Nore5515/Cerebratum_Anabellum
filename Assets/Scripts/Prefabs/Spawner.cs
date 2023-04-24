@@ -475,7 +475,7 @@ public class Spawner : Structure
     float calculateFill(float min, float max, float target){
         float diff = (max - min);
         float result = (target - min) / diff;
-        Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
+        // Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
         return result;
     }
 

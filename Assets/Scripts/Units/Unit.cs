@@ -44,6 +44,11 @@ public class Unit : MonoBehaviour
     // Targets Stuff
     public List<GameObject> targetsInRange = new List<GameObject>();
 
+     // Firing Stuff
+    public bool canFire {get; set;}
+    public bool canFireDelay {get; set;}
+
+
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float unitRange)
     {
         bullet = Resources.Load(path) as GameObject;
@@ -77,10 +82,6 @@ public class Unit : MonoBehaviour
         UnitSprites.Add("Walking",transform.Find("SpriteRighter/Sprite").gameObject);
         UnitSprites.Add("Shooting",transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
-
-    // Firing Stuff
-    public bool canFire {get; set;}
-    public bool canFireDelay {get; set;}
 
     public IEnumerator EnableFiring()
     {
@@ -197,7 +198,6 @@ public class Unit : MonoBehaviour
         {
             targetsInRange.Remove(target);
             ClearNullTargets();
-            UpdateThreatState();
         }
         if (targetsInRange.Count <= 0){
             // Sprite = Walking
@@ -223,6 +223,7 @@ public class Unit : MonoBehaviour
         {
             targetsInRange.Remove(markedUnit);
         }
+        UpdateThreatState();
     }
 
 
@@ -284,7 +285,8 @@ public class Unit : MonoBehaviour
         if (Dest != null)
         {
             // If an enemy is in range, stay still!
-            if (targetsInRange.Count > 0)
+            // if (targetsInRange.Count > 0)
+            if (threatState == "STAND")
             {
                 // Skirmish.
             }

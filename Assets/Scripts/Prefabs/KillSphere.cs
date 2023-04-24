@@ -14,7 +14,7 @@ public class KillSphere : MonoBehaviour
         if (transform.parent.gameObject.GetComponent<Unit>() != null)
         {
             alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
-            Debug.Log("TEAM IS: " + alliedTeam);
+            // Debug.Log("TEAM IS: " + alliedTeam);
             unit = transform.parent.gameObject.GetComponent<Unit>();
         }
     }
@@ -26,16 +26,23 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Unit>() != null)
             {
-                if (other.gameObject.GetComponent<Unit>().team != alliedTeam)
+                if (other.gameObject.GetComponent<Unit>().team != alliedTeam )
                 {
-                    unit.AddTargetInRange(other.gameObject);
+                    if (other.gameObject.GetComponent<Unit>().team != null)
+                    {
+                        unit.AddTargetInRange(other.gameObject);
+                    }
+                    else
+                    {
+                        Debug.Log("FUCKIGN NULL TEAM: " + other.gameObject.name);
+                    }
                 }
             }
             if (other.gameObject.GetComponent<Spawner>() != null)
             {
                 if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
                 {
-                    Debug.Log("FOUND SPAWNER! I am " + alliedTeam + ", they are: " +other.gameObject.GetComponent<Spawner>().team);
+                    // Debug.Log("FOUND SPAWNER! I am " + alliedTeam + ", they are: " +other.gameObject.GetComponent<Spawner>().team);
                     unit.AddTargetInRange(other.gameObject);
                 }
             }

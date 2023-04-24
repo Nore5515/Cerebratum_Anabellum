@@ -65,6 +65,7 @@ public class Projectile : MonoBehaviour
                 {
                     TeamStats.BlueHP -= 1;
                 }
+                Destroy(this.gameObject);
             }
         }
         if (other.gameObject.GetComponent<TowerScript>() != null)
