@@ -102,7 +102,7 @@ public class CubeMaker : MonoBehaviour
                     {
                         spawnerSource = hit.collider.gameObject;
 
-                        // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
+                        Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.

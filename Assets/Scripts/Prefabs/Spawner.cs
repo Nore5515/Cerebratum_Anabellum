@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class Spawner : Structure
 {
     public GameObject prefab;
-    public GameObject spiderPrefab;
-    public CubeMaker cm;
     public Material redMat;
     public Material blueMat;
 
@@ -174,27 +172,6 @@ public class Spawner : Structure
         // Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
         return spawnrateButton.gameObject.activeSelf;
     }
-
-    // IEnumerator GainPoints()
-    // {
-    //     yield return new WaitForSeconds(pointTimer);
-        
-    //     if (team == "RED")
-    //     {
-    //         TeamStats.RedPoints += 1;
-    //     }
-    //     else
-    //     {
-    //         TeamStats.BluePoints += 1;
-    //     }
-
-    //     if (isAI)
-    //     {
-    //         AI_SpendPoints();
-    //     }
-
-    //     StartCoroutine(GainPoints());
-    // }
 
     // TODO fuck it ill figure it out tomorrow
     // um
@@ -423,11 +400,6 @@ public class Spawner : Structure
                 TeamStats.RedNaniteGain += 1;
             }
         }
-    }
-
-    public void CreateSpidertank()
-    {
-        CreatePrefab(spiderPrefab);
     }
 
     private void CreatePrefab(GameObject reqPrefab)

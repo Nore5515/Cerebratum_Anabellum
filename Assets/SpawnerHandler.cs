@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class SpawnerHandler : MonoBehaviour
 {
     Button spidertankSpawner;
+    public GameObject spidertankSpawnerPrefab;
+
+    int stSpawnerCost;
 
     // Start is called before the first frame update
     void Start()
@@ -28,13 +31,13 @@ public class SpawnerHandler : MonoBehaviour
 
         if (SpawnerTracker.redSpawnerObjs.Count <= 2)
         {
-            if (TeamStats.RedPoints >= 10)
+            if (TeamStats.RedPoints >= stSpawnerCost)
             {
-                TeamStats.RedPoints -= 10;
+                TeamStats.RedPoints -= stSpawnerCost;
                 Debug.Log("New spawner about to be added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
                 Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
                 newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
-                GameObject newObj = Instantiate(SpawnerTracker.redSpawnerObjs[0], newPos, Quaternion.identity) as GameObject;
+                GameObject newObj = Instantiate(spidertankSpawnerPrefab, newPos, Quaternion.identity) as GameObject;
                 newObj.GetComponent<Structure>().type = "spawn";
                 SpawnerTracker.redSpawnerObjs.Add(newObj);
                 Debug.Log("New spawner added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
