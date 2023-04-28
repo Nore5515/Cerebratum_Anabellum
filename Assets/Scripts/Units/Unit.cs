@@ -115,7 +115,7 @@ public class Unit : MonoBehaviour
     public bool removing = false;
 
     // FireAt Logic
-    public void FireAtPosition(Vector3 position, float missRange)
+    public virtual void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
@@ -286,7 +286,7 @@ public class Unit : MonoBehaviour
         {
             // If an enemy is in range, stay still!
             // if (targetsInRange.Count > 0)
-            if (threatState == "STAND")
+            if (threatState == "STAND" || threatState == "FLEE")
             {
                 // Skirmish.
             }
