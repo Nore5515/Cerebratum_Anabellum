@@ -23,6 +23,8 @@ public class Spidertank : Unit
         speed = 2;
         rof = 2f;
         threatLevel = 20;
+
+        stomp = this.gameObject.transform.Find("StompRadius").gameObject.GetComponent<StompSphere>();
     }
 
     void Start()

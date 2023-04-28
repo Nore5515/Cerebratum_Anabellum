@@ -660,7 +660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6196386319415676577}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -707,7 +707,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.5, z: 2}
+  m_Size: {x: 1, y: 0.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6625024119715113049
 GameObject:
@@ -1043,8 +1043,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4623804062567844888, guid: 43c089224c84544c38e9827433a91ace, type: 3}
-  spiderPrefab: {fileID: 0}
-  cm: {fileID: 0}
   redMat: {fileID: 2100000, guid: 619d35543f16f440eabf034948818bff, type: 2}
   blueMat: {fileID: 2100000, guid: 22ce6dd4caa534a138ed8a95318a61b4, type: 2}
   instances: []
@@ -1052,9 +1050,9 @@ MonoBehaviour:
   enemySpawners: []
   paths: []
   team: RED
-  startingFireDelay: 2
+  startingFireDelay: 1
   startingUnitRange: 3
-  startingSpawnTime: 3
+  startingSpawnTime: 15
   fireDelay: 2
   unitRange: 3
   spawnTime: 3.5

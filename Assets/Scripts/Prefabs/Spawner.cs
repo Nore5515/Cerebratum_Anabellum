@@ -192,12 +192,12 @@ public class Spawner : Structure
         if (_newMode == true)
         {
             Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
-            this.transform.Find("Hut").GetComponent<SpriteRenderer>().color = dim;
+            this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = dim;
         }
         else
         {
             Color white = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            this.transform.Find("Hut").GetComponent<SpriteRenderer>().color = white;
+            this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
         }
         pathDrawingMode = _newMode;
     }
