@@ -115,6 +115,7 @@ public class Unit : MonoBehaviour
     public bool removing = false;
 
     // FireAt Logic
+    // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
@@ -122,7 +123,8 @@ public class Unit : MonoBehaviour
         obj.GetComponent<Projectile>().Init(team, dmg);
     }
 
-    public void FireAtTransform(Transform trans)
+    // CALLED WHEN AI
+    public virtual void FireAtTransform(Transform trans)
     {
         if (trans != null){
             GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;

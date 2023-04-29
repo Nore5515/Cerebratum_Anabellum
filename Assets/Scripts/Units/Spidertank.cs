@@ -8,6 +8,8 @@ public class Spidertank : Unit
     // Core unit stats
     public float survivalTime = 15.0f;
     public StompSphere stomp;
+    public GameObject spidertankBullet;
+    public GameObject spidertankBulletShadow;
 
     public void CSpidertank()
     {
@@ -59,6 +61,36 @@ public class Spidertank : Unit
             stomp.alliedTeam = team;
         }
         MovementUpdate();
+    }
+
+    // Possessed
+    public override void FireAtPosition(Vector3 position, float missRange)
+    {
+        GameObject obj = GameObject.Instantiate(spidertankBullet, position, Quaternion.identity) as GameObject;
+        obj.transform.LookAt(GetRandomAdjacentPosition(position, 0.0f));
+        obj.GetComponent<Projectile>().Init(team, dmg);
+        
+    }
+
+    // This will create the traditional shadow!
+    void ShadowShot(Vector3 pos, GameObject pairedBullet)
+    {
+        pos.y += 0.05f;
+        GameObject shadow = GameObject.Instantiate(spidertankBulletShadow, pos, Quaternion.identity) as GameObject;
+        shadow.GetComponent<ShadowScript>().pairedBullet = pairedBullet;
+    }
+
+
+    public override void FireAtTransform(Transform trans)
+    {
+        if (trans != null){
+            Vector3 newPos = trans.position;
+            newPos.y += 30;
+            GameObject obj = GameObject.Instantiate(spidertankBullet, newPos, Quaternion.identity) as GameObject;
+            obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 0.0f));
+            obj.GetComponent<Projectile>().Init(team, dmg);
+            ShadowShot(trans.position, obj);
+        }
     }
 }
 

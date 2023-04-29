@@ -539,6 +539,8 @@ MonoBehaviour:
   removing: 0
   survivalTime: 0
   stomp: {fileID: 0}
+  spidertankBullet: {fileID: 9172172192567566883, guid: 331ac5748d2bf4ebb8f6364aba3f6ece, type: 3}
+  spidertankBulletShadow: {fileID: 7515769519202470248, guid: ff58c6f4f40c34818a67208884055ae2, type: 3}
 --- !u!1 &5595524532269203499
 GameObject:
   m_ObjectHideFlags: 0

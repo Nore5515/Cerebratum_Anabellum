@@ -1050,12 +1050,12 @@ MonoBehaviour:
   enemySpawners: []
   paths: []
   team: RED
-  startingFireDelay: 1
-  startingUnitRange: 3
-  startingSpawnTime: 15
+  startingFireDelay: 0.1
+  startingUnitRange: 10
+  startingSpawnTime: 5
   fireDelay: 2
   unitRange: 3
-  spawnTime: 3.5
+  spawnTime: 100
   pointTimer: 10
   isAI: 0
   spheres: []
