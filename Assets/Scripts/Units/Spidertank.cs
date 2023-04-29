@@ -10,6 +10,7 @@ public class Spidertank : Unit
     public StompSphere stomp;
     public GameObject spidertankBullet;
     public GameObject spidertankBulletShadow;
+    public GameObject explosionAnim;
 
     public void CSpidertank()
     {
@@ -27,6 +28,8 @@ public class Spidertank : Unit
         threatLevel = 20;
 
         stomp = this.gameObject.transform.Find("StompRadius").gameObject.GetComponent<StompSphere>();
+        explosionAnim = this.gameObject.transform.Find("ExplosionAnim").gameObject;
+        explosionAnim.SetActive(false);
     }
 
     void Start()
@@ -84,6 +87,7 @@ public class Spidertank : Unit
     public override void FireAtTransform(Transform trans)
     {
         if (trans != null){
+            StartCoroutine(TriggerFireAnim());
             Vector3 newPos = trans.position;
             newPos.y += 30;
             GameObject obj = GameObject.Instantiate(spidertankBullet, newPos, Quaternion.identity) as GameObject;
@@ -91,6 +95,13 @@ public class Spidertank : Unit
             obj.GetComponent<Projectile>().Init(team, dmg);
             ShadowShot(trans.position, obj);
         }
+    }
+
+    IEnumerator TriggerFireAnim()
+    {
+        explosionAnim.SetActive(true);
+        yield return new WaitForSeconds(0.25f);
+        explosionAnim.SetActive(false);
     }
 }
 
