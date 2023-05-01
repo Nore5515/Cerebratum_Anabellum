@@ -18,6 +18,7 @@ public class TowerScript : Unit
         speed = 0;
         rof = 0.5f;
         threatLevel = 0;
+        unitType = "Tower";
         
         HPBar.GetComponent<Slider>().value = hp;
         HPBar.GetComponent<Slider>().maxValue = maxHP;

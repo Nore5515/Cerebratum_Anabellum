@@ -26,6 +26,7 @@ public class Spidertank : Unit
         speed = 2;
         rof = 2f;
         threatLevel = 20;
+        unitType = "Spidertank";
 
         stomp = this.gameObject.transform.Find("StompRadius").gameObject.GetComponent<StompSphere>();
         explosionAnim = this.gameObject.transform.Find("ExplosionAnim").gameObject;

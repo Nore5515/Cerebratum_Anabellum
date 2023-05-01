@@ -24,6 +24,7 @@ public class Unit : MonoBehaviour
     // public GameObject spriteBlue;
 
     public string team { get; set; }
+    public string unitType { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
     public GameObject bullet {get; set;}
