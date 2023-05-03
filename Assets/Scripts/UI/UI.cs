@@ -53,6 +53,8 @@ public class UI : MonoBehaviour
     IEnumerator EndGame()
     {
         yield return new WaitForSeconds(5.0f);
+        SpawnerTracker.NewGame();
+        TeamStats.ResetGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

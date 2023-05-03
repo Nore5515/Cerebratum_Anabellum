@@ -21,4 +21,14 @@ public static class TeamStats
         BlueHP = 10;
         RedHP = 10;
     }
+
+    public static void ResetGame()
+    {
+        BlueHP = 10;
+        RedHP = 10;
+        BluePoints = 0;
+        RedPoints = 0;
+        BlueNaniteGain = 0;
+        RedNaniteGain = 0;
+    }
 }

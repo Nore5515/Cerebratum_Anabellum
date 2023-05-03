@@ -11,8 +11,7 @@ public class Spawner : Structure
 
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
-    public List<Spawner> enemySpawners = new List<Spawner>();
-    
+ 
     public List<GameObject> paths;
 
     public string team = "RED";
@@ -75,12 +74,6 @@ public class Spawner : Structure
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
 
-        // TODO: REMOVE?
-        foreach (GameObject spawner in SpawnerTracker.blueSpawnerObjs)
-        {
-            enemySpawners.Add(spawner.GetComponent<Spawner>());
-        }
-
         // Root spawner behaves different than every other.
         if (SpawnerTracker.redRootSpawner == null && team == "RED")
         {
@@ -90,10 +83,18 @@ public class Spawner : Structure
         }
         if (SpawnerTracker.blueRootSpawner == null && team == "BLUE")
         {
+            Debug.Log("1");
             SpawnerTracker.blueRootSpawner = this.gameObject;
+            Debug.Log("2");
             SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
-            AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
+            if (this.gameObject != null)
+            {
+                Debug.Log("3");
+                AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
+                Debug.Log("4");
+            }
             type = "spawn";
+            Debug.Log("5");
         }
 
     }

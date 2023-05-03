@@ -17,6 +17,15 @@ public static class SpawnerTracker
     public static GameObject redRootSpawner;
     public static GameObject blueRootSpawner;
 
+    public static void NewGame()
+    {
+        alliedSpawnerObjs = new List<GameObject>();
+        redSpawnerObjs = new List<GameObject>();
+        blueSpawnerObjs = new List<GameObject>();
+        redRootSpawner = null;
+        blueRootSpawner = null;
+    }
+
     // // ADD / REMOVE
     // public static void AddSpawner(GameObject newSpawn)
     // {
