@@ -11,8 +11,6 @@ public class CubeMaker : MonoBehaviour
     public GameObject prefabRed;
     public GameObject prefabBlue;
     public int maxCount;
-    bool thingy;
-
 
     public string teamColor = "RED";
     public Text teamColorText;
@@ -88,17 +86,31 @@ public class CubeMaker : MonoBehaviour
         {
             SetPossession(true);
         }
-        if (thingy == false)
+
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            //
+            // ╔══════════════════════════════════════════════════╗
+            // ║  Detect if draw has started                      ║
+            // ╚══════════════════════════════════════════════════╝
+            //
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                //
-                // ╔══════════════════════════════════════════════════╗
-                // ║  Detect if draw has started                      ║
-                // ╚══════════════════════════════════════════════════╝
-                //
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (controlledUnits.Count >= 1)
+                {
+                    Debug.Log("Controlling unit");
+                    if (controlledUnits[0] == null)
+                    {
+                        Debug.Log("Controlled units [0] == null");
+                        controlledUnits = new List<Unit>();
+                    }
+                    else
+                    {
+                        controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
+                    }
+                }
+                else
                 {
                     if (hit.collider.gameObject.tag == "spawner")
                     {
@@ -128,113 +140,95 @@ public class CubeMaker : MonoBehaviour
                         }
                     }
                 }
-                else if (Input.GetKeyUp(KeyCode.Mouse0))
+            }
+            else if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                // You ain't drawing if your not pressing down
+                // spawnerSource = null;
+                pathDrawingMode = false;
+                if (spawnerSource != null)
                 {
-                    // You ain't drawing if your not pressing down
-                    // spawnerSource = null;
-                    pathDrawingMode = false;
-                    if (spawnerSource != null)
+                    spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                }
+                // Hide pathbar when not in use
+                pathBar.gameObject.SetActive(false);
+            }
+
+            //
+            // ╔══════════════════════════════════════════════════╗
+            // ║  Various other things.                           ║
+            // ╚══════════════════════════════════════════════════╝
+            //
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                //
+                // ╔══════════════════════════════════════════════════╗
+                // ║  Draw Paths.                                     ║
+                // ╚══════════════════════════════════════════════════╝
+                //
+                if (spawnerSource != null)
+                {
+                    if (pathDrawingMode)
                     {
-                        spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                        if (hit.collider.gameObject.tag == "floor")
+                        {
+                            if (distancePerSphere >= maxDistancePerSphere)
+                            {
+                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                                
+                                distancePerSphere = 0.0f;
+
+                                spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
+                            }
+
+                            // If distance is less than maxdistancepersphere, add change in distance.
+                            else
+                            {
+                                if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+                                {
+                                    oldPos = hit.collider.gameObject.transform.position;
+                                }
+                                else
+                                {
+                                    distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                                    oldPos = hit.point;
+                                }
+                            }
+                        }
                     }
-                    // Hide pathbar when not in use
-                    pathBar.gameObject.SetActive(false);
                 }
 
                 //
                 // ╔══════════════════════════════════════════════════╗
-                // ║  Various other things.                           ║
+                // ║  Possess unit on click.                          ║
                 // ╚══════════════════════════════════════════════════╝
                 //
-                if (Input.GetKey(KeyCode.Mouse0))
-                {
-                    //
-                    // ╔══════════════════════════════════════════════════╗
-                    // ║  Draw Paths.                                     ║
-                    // ╚══════════════════════════════════════════════════╝
-                    //
-                    if (spawnerSource != null)
-                    {
-                        if (pathDrawingMode)
-                        {
-                            if (hit.collider.gameObject.tag == "floor")
+                if (possessionReady){
+                    SetPossession(false);
+                    if (controlledUnits.Count == 0){
+                        if (hit.collider.gameObject.tag == "unit"){
+                            Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                            if (unit != null)
                             {
-                                if (distancePerSphere >= maxDistancePerSphere)
+                                // Confirm unit is same team.
+                                if (unit.team == teamColor)
                                 {
-                                    Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                                    
-                                    distancePerSphere = 0.0f;
-
-                                    spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
-                                }
-
-                                // If distance is less than maxdistancepersphere, add change in distance.
-                                else
-                                {
-                                    if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+                                    if (controlledUnits.Count >= 1)
                                     {
-                                        oldPos = hit.collider.gameObject.transform.position;
+                                        controlledUnits[0].beingControlled = false;
+                                        controlledUnits = new List<Unit>();
                                     }
-                                    else
-                                    {
-                                        distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                                        oldPos = hit.point;
-                                    }
+                                    unit.beingControlled = true;
+                                    controlledUnits.Add(unit);
+                                    camScript.followObj = unit.unitObj;
+                                    ph.setPossessed(unit);
                                 }
-                            }
-                        }
-                    }
-
-                    //
-                    // ╔══════════════════════════════════════════════════╗
-                    // ║  Possess unit on click.                          ║
-                    // ╚══════════════════════════════════════════════════╝
-                    //
-                    if (possessionReady){
-                        SetPossession(false);
-                        if (controlledUnits.Count == 0){
-                            if (hit.collider.gameObject.tag == "unit"){
-                                Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                                if (unit != null)
-                                {
-                                    // Confirm unit is same team.
-                                    if (unit.team == teamColor)
-                                    {
-                                        if (controlledUnits.Count >= 1)
-                                        {
-                                            controlledUnits[0].beingControlled = false;
-                                            controlledUnits = new List<Unit>();
-                                        }
-                                        unit.beingControlled = true;
-                                        controlledUnits.Add(unit);
-                                        camScript.followObj = unit.unitObj;
-                                        ph.setPossessed(unit);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (controlledUnits.Count >= 1)
-                {
-                    if (controlledUnits[0] == null)
-                    {
-                        controlledUnits = new List<Unit>();
-                    }
-                    else
-                    {
-                        if (Input.GetKey(KeyCode.Mouse0))
-                        {
-                            // Shoot here.
-                            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                            if (Physics.Raycast(ray, out hit))
-                            {
-                                controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
                             }
                         }
                     }
                 }
             }
+            
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {

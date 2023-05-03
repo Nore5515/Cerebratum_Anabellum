@@ -121,6 +121,7 @@ public class Unit : MonoBehaviour
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
+        Debug.Log("Firing!");
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
         obj.GetComponent<Projectile>().Init(team, dmg);
@@ -139,6 +140,7 @@ public class Unit : MonoBehaviour
     // While controlled, fire as fast as you want.
     public void ControlledFire(Vector3 target)
     {
+        Debug.Log("Controlled Fire!");
         // Fire with perfect accuracy if controlled.
         if (beingControlled)
         {
