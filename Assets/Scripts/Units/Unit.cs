@@ -25,6 +25,7 @@ public class Unit : MonoBehaviour
 
     public string team { get; set; }
     public string unitType { get; set; }
+    public float unitRange { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
     public GameObject bullet {get; set;}
@@ -50,7 +51,7 @@ public class Unit : MonoBehaviour
     public bool canFireDelay {get; set;}
 
 
-    public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float unitRange)
+    public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
     {
         bullet = Resources.Load(path) as GameObject;
         MaxDist = 1.4;
@@ -68,7 +69,8 @@ public class Unit : MonoBehaviour
         rof = _rof;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
-        ks.GetComponent<SphereCollider>().radius = unitRange;
+        ks.GetComponent<SphereCollider>().radius = _unitRange;
+        unitRange = _unitRange;
         // Debug.Log(ks.alliedTeam);
         foreach (GameObject obj in newObjs)
         {
