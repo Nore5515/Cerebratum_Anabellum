@@ -39,8 +39,6 @@ public class CubeMaker : MonoBehaviour
 
     GameObject spawnerSource;
 
-    public PossessionHandler ph;
-
     public void Start()
     {
         pathBar.maxValue = maxCount;
@@ -99,10 +97,10 @@ public class CubeMaker : MonoBehaviour
             {
                 if (controlledUnits.Count >= 1)
                 {
-                    Debug.Log("Controlling unit");
+                    // Debug.Log("Controlling unit");
                     if (controlledUnits[0] == null)
                     {
-                        Debug.Log("Controlled units [0] == null");
+                        // Debug.Log("Controlled units [0] == null");
                         controlledUnits = new List<Unit>();
                     }
                     else
@@ -221,7 +219,7 @@ public class CubeMaker : MonoBehaviour
                                     unit.beingControlled = true;
                                     controlledUnits.Add(unit);
                                     camScript.followObj = unit.unitObj;
-                                    ph.setPossessed(unit);
+                                    PossessionHandler.setPossessed(unit);
                                 }
                             }
                         }
@@ -238,7 +236,7 @@ public class CubeMaker : MonoBehaviour
             }
             controlledUnits = new List<Unit>();
             camScript.followObj = null;
-            ph.setPossessed(null);
+            PossessionHandler.setPossessed(null);
         }
 
         if (controlledUnits.Count >= 1)

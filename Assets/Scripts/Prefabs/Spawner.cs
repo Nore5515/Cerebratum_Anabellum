@@ -83,18 +83,13 @@ public class Spawner : Structure
         }
         if (SpawnerTracker.blueRootSpawner == null && team == "BLUE")
         {
-            Debug.Log("1");
             SpawnerTracker.blueRootSpawner = this.gameObject;
-            Debug.Log("2");
             SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
             if (this.gameObject != null)
             {
-                Debug.Log("3");
                 AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
-                Debug.Log("4");
             }
             type = "spawn";
-            Debug.Log("5");
         }
 
     }

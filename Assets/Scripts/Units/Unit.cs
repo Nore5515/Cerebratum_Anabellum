@@ -121,7 +121,7 @@ public class Unit : MonoBehaviour
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
-        Debug.Log("Firing!");
+        // Debug.Log("Firing!");
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
         obj.GetComponent<Projectile>().Init(team, dmg);
@@ -140,16 +140,36 @@ public class Unit : MonoBehaviour
     // While controlled, fire as fast as you want.
     public void ControlledFire(Vector3 target)
     {
-        Debug.Log("Controlled Fire!");
-        // Fire with perfect accuracy if controlled.
-        if (beingControlled)
+        // Debug.Log("Controlled Fire!");
+        
+        if (canFire)
         {
-            FireAtPosition(target, 0.0f);
+            canFire = false;
+            // Fire with perfect accuracy if controlled.
+            // PossessionHandler.shared.PossessedUnitFired();
+            PossessionHandler.instance.PossessedUnitFired();
+            
+            if (beingControlled)
+            {
+                FireAtPosition(target, 0.0f);
+            }
+            else
+            {
+                // TODO: REMOVE?
+                Debug.Log("...what?");
+                FireAtPosition(target, 1.0f);
+            }
         }
         else
         {
-            FireAtPosition(target, 1.0f);
+            if (canFireDelay == false)
+            {
+                canFireDelay = true;
+                StartCoroutine(EnableFiring());
+            }
         }
+        
+        
     }
 
     // Target Logic 
