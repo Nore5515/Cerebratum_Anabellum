@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -38,6 +39,8 @@ public class CubeMaker : MonoBehaviour
     public GameObject possessionButton;
 
     GameObject spawnerSource;
+
+    public GameObject line;
 
     public void Start()
     {
@@ -152,6 +155,9 @@ public class CubeMaker : MonoBehaviour
                 pathBar.gameObject.SetActive(false);
             }
 
+
+            DrawLine(hit.point);
+
             //
             // ╔══════════════════════════════════════════════════╗
             // ║  Various other things.                           ║
@@ -246,6 +252,22 @@ public class CubeMaker : MonoBehaviour
                 float zMovement = Input.GetAxis("Vertical");
                 float xMovement = Input.GetAxis("Horizontal");
                 controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
+
+                
+            }
+        }
+    }
+
+    public void DrawLine(Vector3 target)
+    {
+        if (target != null){
+            if (controlledUnits.Count > 0){
+                if (controlledUnits[0] != null){
+                    Vector3 pos1 = controlledUnits[0].transform.position;
+                    Vector3 pos2 = target;
+                    Vector3[] poss = {pos1, pos2};
+                    line.GetComponent<LineRenderer>().SetPositions(poss);
+                }
             }
         }
     }
