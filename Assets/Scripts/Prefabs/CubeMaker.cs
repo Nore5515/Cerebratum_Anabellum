@@ -42,12 +42,16 @@ public class CubeMaker : MonoBehaviour
 
     public GameObject line;
 
+    public GameObject unitStatUI;
+
     public void Start()
     {
         pathBar.maxValue = maxCount;
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
 
         possessionButton = GameObject.Find("PossessButton");
+        PossessionHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStats"));
+        GameObject.Find("Canvas/UnitStats").SetActive(false);
     }
     
     public void SetPathDrawingMode(bool newMode)
@@ -60,9 +64,13 @@ public class CubeMaker : MonoBehaviour
         possessionReady = newPossession;
         if (possessionReady){
             possessionButton.GetComponent<Button>().interactable = false;
+            // possessionButton.SetActive(false);
+            // unitStatUI.SetActive(true);
         }
         else{
             possessionButton.GetComponent<Button>().interactable = true;
+            // possessionButton.SetActive(true);
+            // unitStatUI.SetActive(false);
         }
     }
 
@@ -226,6 +234,8 @@ public class CubeMaker : MonoBehaviour
                                     controlledUnits.Add(unit);
                                     camScript.followObj = unit.unitObj;
                                     PossessionHandler.setPossessed(unit);
+                                    unitStatUI.SetActive(true);
+                                    possessionButton.SetActive(false);
                                 }
                             }
                         }
@@ -242,6 +252,8 @@ public class CubeMaker : MonoBehaviour
             }
             controlledUnits = new List<Unit>();
             camScript.followObj = null;
+            unitStatUI.SetActive(false);
+            possessionButton.SetActive(true);
             PossessionHandler.setPossessed(null);
         }
 

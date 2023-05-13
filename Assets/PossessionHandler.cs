@@ -22,8 +22,25 @@ public class PossessionHandler
     static bool coroutineRunning = false;
 
     public delegate void UpdateCalls();
-
     public static UpdateCalls uc;
+
+    private static GameObject unitStats;
+
+    public static void setUnitStatUI(GameObject gameObject){
+        unitStats = gameObject;
+
+        // TODO MAKE THIS MORE MODULAR LATEr
+        unitHP = unitStats.transform.Find("UnitValues/UnitHP/UnitHP").gameObject.GetComponent<Text>();
+        unitRoF = unitStats.transform.Find("UnitValues/UnitROF/UnitROF").gameObject.GetComponent<Text>();
+        unitRange = unitStats.transform.Find("UnitValues/UnitRange/UnitRange").gameObject.GetComponent<Text>();
+        unitTitle = unitStats.transform.Find("UnitValues/UnitTitle/UnitTitle").gameObject.GetComponent<Text>();
+        cooldownSlider = unitStats.transform.Find("CooldownSlider").gameObject.GetComponent<Slider>();
+        coHand = GameObject.Find("EnvComponents/CoroutineHandler").GetComponent<CoroutineHandler>();
+        if (coHand is null)
+        {
+            Debug.Assert(coHand != null);
+        }
+    }
 
     public static void setPossessed(Unit u)
     {
@@ -67,20 +84,7 @@ public class PossessionHandler
     {
         uc = () => TimedUpdate();
         unitMaxDelay = 0.0f;
-        unitDelay = 0.0f;
-
-        // TODO MAKE THIS MORE MODULAR LATEr
-        GameObject unitStats = GameObject.Find("Canvas/UnitStats");
-        unitHP = unitStats.transform.Find("UnitHP").gameObject.GetComponent<Text>();
-        unitRoF = unitStats.transform.Find("UnitROF").gameObject.GetComponent<Text>();
-        unitRange = unitStats.transform.Find("UnitRange").gameObject.GetComponent<Text>();
-        unitTitle = unitStats.transform.Find("UnitTitle").gameObject.GetComponent<Text>();
-        cooldownSlider = unitStats.transform.Find("CooldownSlider").gameObject.GetComponent<Slider>();
-        coHand = GameObject.Find("EnvComponents/CoroutineHandler").GetComponent<CoroutineHandler>();
-        if (coHand is null)
-        {
-            Debug.Assert(coHand != null);
-        }
+        unitDelay = 0.0f;        
     }
 
     // Update is called once per frame
