@@ -17,16 +17,16 @@ public class UI : MonoBehaviour
     {
         nanitesText = GameObject.Find("NanitesText").GetComponent<Text>();
         nanitesPerMinuteText = GameObject.Find("NaniteGainText").GetComponent<Text>();
-        healthText.text = "RED: 10             BLUE: 10";
-        nanitesText.text = "RED: 0               BLUE: 0";
-        nanitesPerMinuteText.text = "RED: 0               BLUE: 0";
+        healthText.text = "RED: 10 --- BLUE: 10";
+        nanitesText.text = "RED: 0 --- BLUE: 0";
+        nanitesPerMinuteText.text = "RED: 0 --- BLUE: 0";
     }
 
     void Update() 
     {
-        healthText.text = "RED: " + TeamStats.RedHP.ToString() + "             BLUE: " + TeamStats.BlueHP.ToString();
-        nanitesText.text = "RED: " + TeamStats.RedPoints.ToString() + "               BLUE: " + TeamStats.BluePoints.ToString();
-        nanitesPerMinuteText.text = "RED: " + TeamStats.RedNaniteGain.ToString() + "               BLUE: " + TeamStats.BlueNaniteGain.ToString();
+        healthText.text = "RED: " + TeamStats.RedHP.ToString() + " --- BLUE: " + TeamStats.BlueHP.ToString();
+        nanitesText.text = "RED: " + TeamStats.RedPoints.ToString() + " --- BLUE: " + TeamStats.BluePoints.ToString();
+        nanitesPerMinuteText.text = "RED: " + TeamStats.RedNaniteGain.ToString() + " --- BLUE: " + TeamStats.BlueNaniteGain.ToString();
 
         // if (TeamStats.GameStarted)
         // {

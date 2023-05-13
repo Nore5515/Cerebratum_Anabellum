@@ -26,6 +26,8 @@ public class MainMenu : MonoBehaviour
     public GameObject Scenarios_NoTower_Button;
     public GameObject Scenarios_Back_Button;
 
+    public GameObject SettingsGroup;
+
     public void SetState(string newState)
     {
         HideUI();
@@ -56,6 +58,18 @@ public class MainMenu : MonoBehaviour
                 SceneManager.LoadScene("Scenes/Scenarios/NoTower");
                 break;
 
+            // System Stuff
+            case "SETTINGS":
+                SettingsGroup.SetActive(!SettingsGroup.activeSelf);
+                StartButton.SetActive(true);
+                ScenarioButton.SetActive(true);
+                SettingsButton.SetActive(true);
+                QuitButton.SetActive(true);
+                break;
+            case "QUIT":
+                Application.Quit();
+                break;
+
             default:
                 Debug.LogError("WRONG STATE SET; MainMenu.cs");
                 break;
@@ -73,6 +87,8 @@ public class MainMenu : MonoBehaviour
         Scenarios_WorldWar1_Button.SetActive(false);
         Scenarios_NoTower_Button.SetActive(false);
         Scenarios_Back_Button.SetActive(false);
+
+        SettingsGroup.SetActive(false);
     }
 
     // Start is called before the first frame update
