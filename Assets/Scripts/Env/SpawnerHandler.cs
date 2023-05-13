@@ -18,7 +18,7 @@ public class SpawnerHandler : MonoBehaviour
 
     void InitializeUI()
     {
-        GameObject buildings = GameObject.Find("Canvas/Buildings");
+        GameObject buildings = GameObject.Find("Canvas/Constructions/Buildings");
         
         // Buttons
         spidertankSpawner = buildings.transform.Find("AddSpidertankSpawner").gameObject.GetComponent<Button>();
