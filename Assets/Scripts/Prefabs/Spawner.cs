@@ -22,8 +22,6 @@ public class Spawner : Structure
     public float fireDelay;
     public float unitRange;
     public float spawnTime;
-    public float pointTimer = 10.0f;
-    public bool isAI = false;
 
     // NEW STUFF
     public List<GameObject> spheres = new List<GameObject>();
@@ -50,9 +48,6 @@ public class Spawner : Structure
     float firerateStep;
     float spawnStep;
 
-    public float count;
-
-
     void Start()
     {
         fireDelay = startingFireDelay;
@@ -64,6 +59,7 @@ public class Spawner : Structure
         canvas = GameObject.Find("Canvas");
         if (this.gameObject.transform.Find("UI") != null){
             spawnerUI = this.gameObject.transform.Find("UI").gameObject;
+            Debug.Log(spawnerUI);
             InitalizeUI(spawnerUI);
         }
         else
@@ -96,12 +92,16 @@ public class Spawner : Structure
 
     private void InitalizeUI(GameObject ui)
     {
+        Debug.Log("What");
         ui.GetComponent<Canvas>().worldCamera = Camera.main;
+        Debug.Log("What2");
+        GameObject upgrades = ui.transform.Find("Upgrades").gameObject;
+        Debug.Log("What3");
 
         // Buttons
-        spawnrateButton = ui.transform.Find("RSpawn").gameObject.GetComponent<Button>();
-        firerateButton = ui.transform.Find("RFireRate").gameObject.GetComponent<Button>();
-        rangeButton = ui.transform.Find("RRange").gameObject.GetComponent<Button>();
+        spawnrateButton = upgrades.transform.Find("RSpawn").gameObject.GetComponent<Button>();
+        firerateButton = upgrades.transform.Find("RFireRate").gameObject.GetComponent<Button>();
+        rangeButton = upgrades.transform.Find("RRange").gameObject.GetComponent<Button>();
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
         deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
 
@@ -112,7 +112,7 @@ public class Spawner : Structure
         deleteButton.onClick.AddListener(delegate { RemoveSpawner();});
 
         // Fills
-        GameObject infhutCanvas = this.transform.Find("InfHut").transform.Find("Canvas").gameObject;
+        GameObject infhutCanvas = ui.transform.Find("Canvas").gameObject;
         rangeFill = infhutCanvas.transform.Find("range").gameObject.GetComponent<Image>();
         fireRateFill = infhutCanvas.transform.Find("firerate").gameObject.GetComponent<Image>();
         spawnFill = infhutCanvas.transform.Find("spawn").gameObject.GetComponent<Image>();
@@ -177,6 +177,7 @@ public class Spawner : Structure
     // but also try to avoid assiging CM? I'm kinda likin the top-down heiarchy
     public void DrawPath() 
     {
+        Debug.Log("DRAW PATH!");
         ClearPoints();
         SetIsDrawable(true);
     }

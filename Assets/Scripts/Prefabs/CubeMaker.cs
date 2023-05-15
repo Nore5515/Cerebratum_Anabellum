@@ -64,13 +64,9 @@ public class CubeMaker : MonoBehaviour
         possessionReady = newPossession;
         if (possessionReady){
             possessionButton.GetComponent<Button>().interactable = false;
-            // possessionButton.SetActive(false);
-            // unitStatUI.SetActive(true);
         }
         else{
             possessionButton.GetComponent<Button>().interactable = true;
-            // possessionButton.SetActive(true);
-            // unitStatUI.SetActive(false);
         }
     }
 
