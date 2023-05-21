@@ -70,8 +70,7 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void KeyChecks()
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
@@ -91,7 +90,22 @@ public class CubeMaker : MonoBehaviour
         {
             SetPossession(true);
         }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            foreach (var unit in controlledUnits)
+            {
+                unit.beingControlled = false;
+            }
+            controlledUnits = new List<Unit>();
+            camScript.followObj = null;
+            unitStatUI.SetActive(false);
+            possessionButton.SetActive(true);
+            PossessionHandler.setPossessed(null);
+        }
+    }
 
+    void RayChecks()
+    {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
@@ -240,19 +254,9 @@ public class CubeMaker : MonoBehaviour
             }
             
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            foreach (var unit in controlledUnits)
-            {
-                unit.beingControlled = false;
-            }
-            controlledUnits = new List<Unit>();
-            camScript.followObj = null;
-            unitStatUI.SetActive(false);
-            possessionButton.SetActive(true);
-            PossessionHandler.setPossessed(null);
-        }
+    }
 
+    void GetPossessionMovement(){
         if (controlledUnits.Count >= 1)
         {
             if (controlledUnits[0] != null)
@@ -260,11 +264,19 @@ public class CubeMaker : MonoBehaviour
                 float zMovement = Input.GetAxis("Vertical");
                 float xMovement = Input.GetAxis("Horizontal");
                 controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
-
-                
             }
         }
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+        KeyChecks();
+        RayChecks();
+        GetPossessionMovement();
+    }
+
+
 
     public void DrawLine(Vector3 target)
     {
