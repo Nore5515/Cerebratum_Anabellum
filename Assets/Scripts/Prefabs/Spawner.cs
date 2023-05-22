@@ -11,7 +11,7 @@ public class Spawner : Structure
 
     public List<GameObject> instances = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
- 
+
     public List<GameObject> paths;
 
     public string team = "RED";
@@ -32,7 +32,7 @@ public class Spawner : Structure
     public bool pathDrawingMode = false;
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
-    
+
     // UI
     Button spawnrateButton;
     Button firerateButton;
@@ -57,16 +57,17 @@ public class Spawner : Structure
         pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
-        if (this.gameObject.transform.Find("UI") != null){
+        if (this.gameObject.transform.Find("UI") != null)
+        {
             spawnerUI = this.gameObject.transform.Find("UI").gameObject;
-            Debug.Log(spawnerUI);
+            // Debug.Log(spawnerUI);
             InitalizeUI(spawnerUI);
         }
         else
         {
-            spawnerUI = null;    
+            spawnerUI = null;
         }
-        
+
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
 
@@ -92,11 +93,11 @@ public class Spawner : Structure
 
     private void InitalizeUI(GameObject ui)
     {
-        Debug.Log("What");
+        // Debug.Log("What");
         ui.GetComponent<Canvas>().worldCamera = Camera.main;
-        Debug.Log("What2");
+        // Debug.Log("What2");
         GameObject upgrades = ui.transform.Find("Upgrades").gameObject;
-        Debug.Log("What3");
+        // Debug.Log("What3");
 
         // Buttons
         spawnrateButton = upgrades.transform.Find("RSpawn").gameObject.GetComponent<Button>();
@@ -105,11 +106,11 @@ public class Spawner : Structure
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
         deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
 
-        spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate();});
-        firerateButton.onClick.AddListener(delegate { IncreaseFireRate();});
-        rangeButton.onClick.AddListener(delegate { IncreaseRange();});
-        pathButton.onClick.AddListener(delegate { DrawPath();});
-        deleteButton.onClick.AddListener(delegate { RemoveSpawner();});
+        spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate(); });
+        firerateButton.onClick.AddListener(delegate { IncreaseFireRate(); });
+        rangeButton.onClick.AddListener(delegate { IncreaseRange(); });
+        pathButton.onClick.AddListener(delegate { DrawPath(); });
+        deleteButton.onClick.AddListener(delegate { RemoveSpawner(); });
 
         // Fills
         GameObject infhutCanvas = ui.transform.Find("Canvas").gameObject;
@@ -130,7 +131,7 @@ public class Spawner : Structure
             if (team == "RED")
             {
                 StartCoroutine(removeSpawn());
-                Debug.Log("Main:" + SpawnerTracker.redSpawnerObjs.Count);
+                // Debug.Log("Main:" + SpawnerTracker.redSpawnerObjs.Count);
                 TeamStats.RedPoints += 10;
                 // Destroy(this.gameObject);
                 this.gameObject.SetActive(false);
@@ -142,7 +143,7 @@ public class Spawner : Structure
     {
         // SpawnerTracker.redSpawnerObjs.Remove(this.gameObject);
         SpawnerTracker.redSpawnerObjs.RemoveAt(1);
-        Debug.Log("Threat:" + SpawnerTracker.redSpawnerObjs.Count);
+        // Debug.Log("Threat:" + SpawnerTracker.redSpawnerObjs.Count);
         yield return 0;
     }
 
@@ -164,7 +165,8 @@ public class Spawner : Structure
             Debug.LogError("SPAWN RATE BUTTON");
         }
     }
-    public bool GetUIVisible(){
+    public bool GetUIVisible()
+    {
         // Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
         return spawnrateButton.gameObject.activeSelf;
     }
@@ -175,17 +177,19 @@ public class Spawner : Structure
     // THE BUTTON ON SPAWNER
     // it tells the cube maker to start making cubes
     // but also try to avoid assiging CM? I'm kinda likin the top-down heiarchy
-    public void DrawPath() 
+    public void DrawPath()
     {
         Debug.Log("DRAW PATH!");
         ClearPoints();
         SetIsDrawable(true);
     }
 
-    public bool GetIsDrawable(){
+    public bool GetIsDrawable()
+    {
         return pathDrawingMode;
     }
-    public void SetIsDrawable(bool _newMode){
+    public void SetIsDrawable(bool _newMode)
+    {
         if (_newMode == true)
         {
             Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
@@ -242,7 +246,8 @@ public class Spawner : Structure
             instances.Remove(markedUnit);
         }
 
-        if (spheres.Count >= maxCount){
+        if (spheres.Count >= maxCount)
+        {
             RemovePoint(spheres[0]);
         }
     }
@@ -255,7 +260,7 @@ public class Spawner : Structure
             RemovePoint(spheres[0]);
         }
     }
-    
+
     // TODO; RENAME TOMORROW WHEN I KNOW WHAT IM DOING
     void AddSomePoints(string color)
     {
@@ -271,17 +276,19 @@ public class Spawner : Structure
 
     public GameObject AddPathMarker(string color, Vector3 loc)
     {
-            GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
-            if (color == "RED"){
-                // TODO: This feels smart but i dont know why
-                // It was :)
-                obj.GetComponent<MeshRenderer>().material = redMat;
-            }
-            else{
-                obj.GetComponent<MeshRenderer>().material = blueMat;
-            }
-            spheres.Add(obj);
-            return obj;
+        GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
+        if (color == "RED")
+        {
+            // TODO: This feels smart but i dont know why
+            // It was :)
+            obj.GetComponent<MeshRenderer>().material = redMat;
+        }
+        else
+        {
+            obj.GetComponent<MeshRenderer>().material = blueMat;
+        }
+        spheres.Add(obj);
+        return obj;
     }
 
     void AI_DrawPath(Vector3 position)
@@ -388,7 +395,7 @@ public class Spawner : Structure
                 GameObject newObj = Instantiate(naniteGenPrefab, newPos, Quaternion.identity) as GameObject;
                 newObj.GetComponent<Structure>().type = "nanite";
                 SpawnerTracker.redSpawnerObjs.Add(newObj);
-                Debug.Log("Adding nanite");
+                // Debug.Log("Adding nanite");
 
                 // Costs 3 nanites.
                 TeamStats.RedPoints -= 3;
@@ -441,16 +448,17 @@ public class Spawner : Structure
         StartCoroutine(SpawnPrefab());
     }
 
-    float calculateFill(float min, float max, float target){
+    float calculateFill(float min, float max, float target)
+    {
         float diff = (max - min);
         float result = (target - min) / diff;
         // Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
         return result;
     }
 
-// calculateDelay(min: 3, max: 0.5, target: 0.5)
-// calculateDelay(min: 3, max: 0.5, target: 3)
-// calculateDelay(min: 3, max: 0.5, target: 1.75)
+    // calculateDelay(min: 3, max: 0.5, target: 0.5)
+    // calculateDelay(min: 3, max: 0.5, target: 3)
+    // calculateDelay(min: 3, max: 0.5, target: 1.75)
 
     public void IncreaseSpawnRate()
     {
@@ -494,7 +502,8 @@ public class Spawner : Structure
                 rangeFill.fillAmount = calculateFill(startingUnitRange, 6.5f, unitRange);
             }
         }
-        if (unitRange > 6.0f){
+        if (unitRange > 6.0f)
+        {
             rangeButton.interactable = false;
         }
     }
