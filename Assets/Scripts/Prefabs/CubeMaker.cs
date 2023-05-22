@@ -106,6 +106,7 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
+    // Attempt to place a sphere down on where the raycast hits the world.
     void TryPlaceFollowSphere()
     {
         if (distancePerSphere >= maxDistancePerSphere)
@@ -132,25 +133,35 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
+    // Returns true if you are controlling a unit, and false otherwise.
+    bool IsControlling()
+    {
+        if (controlledUnits.Count >= 1)
+        {
+            if (controlledUnits[0] == null)
+            {
+                controlledUnits = new List<Unit>();
+                return false;
+            }
+            else
+            {
+                Debug.Log("TRUE");
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Things that happen when you click mouse down.
     void MouseDownFuncs()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (controlledUnits.Count >= 1)
+            if (IsControlling())
             {
-                // Debug.Log("Controlling unit");
-                if (controlledUnits[0] == null)
+                if (hit.collider != null)
                 {
-                    // Debug.Log("Controlled units [0] == null");
-                    controlledUnits = new List<Unit>();
-                }
-                else
-                {
-                    if (hit.collider != null)
-                    {
-                        controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
-                    }
+                    controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
                 }
             }
             else
