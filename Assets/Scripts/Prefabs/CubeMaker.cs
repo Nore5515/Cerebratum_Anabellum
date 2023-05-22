@@ -16,7 +16,7 @@ public class CubeMaker : MonoBehaviour
     public string teamColor = "RED";
     public Text teamColorText;
 
-    
+
     public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
     GameObject[] spawnerButtons;
@@ -53,7 +53,7 @@ public class CubeMaker : MonoBehaviour
         PossessionHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStats"));
         GameObject.Find("Canvas/UnitStats").SetActive(false);
     }
-    
+
     public void SetPathDrawingMode(bool newMode)
     {
         pathDrawingMode = newMode;
@@ -62,10 +62,12 @@ public class CubeMaker : MonoBehaviour
     public void SetPossession(bool newPossession)
     {
         possessionReady = newPossession;
-        if (possessionReady){
+        if (possessionReady)
+        {
             possessionButton.GetComponent<Button>().interactable = false;
         }
-        else{
+        else
+        {
             possessionButton.GetComponent<Button>().interactable = true;
         }
     }
@@ -104,38 +106,36 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void RayChecks()
+    // Things that happen when you click mouse down.
+    void MouseDownFuncs()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //
-            // ╔══════════════════════════════════════════════════╗
-            // ║  Detect if draw has started                      ║
-            // ╚══════════════════════════════════════════════════╝
-            //
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (controlledUnits.Count >= 1)
             {
-                if (controlledUnits.Count >= 1)
+                // Debug.Log("Controlling unit");
+                if (controlledUnits[0] == null)
                 {
-                    // Debug.Log("Controlling unit");
-                    if (controlledUnits[0] == null)
-                    {
-                        // Debug.Log("Controlled units [0] == null");
-                        controlledUnits = new List<Unit>();
-                    }
-                    else
+                    // Debug.Log("Controlled units [0] == null");
+                    controlledUnits = new List<Unit>();
+                }
+                else
+                {
+                    if (hit.collider != null)
                     {
                         controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
                     }
                 }
-                else
+            }
+            else
+            {
+                if (hit.collider != null)
                 {
                     if (hit.collider.gameObject.tag == "spawner")
                     {
                         spawnerSource = hit.collider.gameObject;
+                        // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
-                        Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
@@ -153,51 +153,56 @@ public class CubeMaker : MonoBehaviour
                     else
                     {
                         // Debug.Log("Missed! " + hit.collider);
-                        if (spawnerSource != null){
+                        if (spawnerSource != null)
+                        {
                             Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                             spawnerClass.SetUIVisible(false);
                         }
                     }
                 }
             }
-            else if (Input.GetKeyUp(KeyCode.Mouse0))
+        }
+    }
+
+    // Things that happen when you release the mouse button.
+    void MouseUpFuncs()
+    {
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            // You ain't drawing if your not pressing down
+            // spawnerSource = null;
+            pathDrawingMode = false;
+            if (spawnerSource != null)
             {
-                // You ain't drawing if your not pressing down
-                // spawnerSource = null;
-                pathDrawingMode = false;
-                if (spawnerSource != null)
-                {
-                    spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
-                }
-                // Hide pathbar when not in use
-                pathBar.gameObject.SetActive(false);
+                spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
             }
+            // Hide pathbar when not in use
+            pathBar.gameObject.SetActive(false);
+        }
+    }
 
-
-            DrawLine(hit.point);
-
+    // Things that happen while you hold down the mouse button.
+    void MouseHeldFuncs()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
             //
             // ╔══════════════════════════════════════════════════╗
-            // ║  Various other things.                           ║
+            // ║  Draw Paths.                                     ║
             // ╚══════════════════════════════════════════════════╝
             //
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (spawnerSource != null)
             {
-                //
-                // ╔══════════════════════════════════════════════════╗
-                // ║  Draw Paths.                                     ║
-                // ╚══════════════════════════════════════════════════╝
-                //
-                if (spawnerSource != null)
+                if (pathDrawingMode)
                 {
-                    if (pathDrawingMode)
+                    if (hit.collider != null)
                     {
                         if (hit.collider.gameObject.tag == "floor")
                         {
                             if (distancePerSphere >= maxDistancePerSphere)
                             {
                                 Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                                
+
                                 distancePerSphere = 0.0f;
 
                                 spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
@@ -219,44 +224,65 @@ public class CubeMaker : MonoBehaviour
                         }
                     }
                 }
+            }
 
-                //
-                // ╔══════════════════════════════════════════════════╗
-                // ║  Possess unit on click.                          ║
-                // ╚══════════════════════════════════════════════════╝
-                //
-                if (possessionReady){
-                    SetPossession(false);
-                    if (controlledUnits.Count == 0){
-                        if (hit.collider.gameObject.tag == "unit"){
-                            Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                            if (unit != null)
+            //
+            // ╔══════════════════════════════════════════════════╗
+            // ║  Possess unit on click.                          ║
+            // ╚══════════════════════════════════════════════════╝
+            //
+            if (possessionReady)
+            {
+                SetPossession(false);
+                if (controlledUnits.Count == 0)
+                {
+                    if (hit.collider.gameObject.tag == "unit")
+                    {
+                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                        if (unit != null)
+                        {
+                            // Confirm unit is same team.
+                            if (unit.team == teamColor)
                             {
-                                // Confirm unit is same team.
-                                if (unit.team == teamColor)
+                                if (controlledUnits.Count >= 1)
                                 {
-                                    if (controlledUnits.Count >= 1)
-                                    {
-                                        controlledUnits[0].beingControlled = false;
-                                        controlledUnits = new List<Unit>();
-                                    }
-                                    unit.beingControlled = true;
-                                    controlledUnits.Add(unit);
-                                    camScript.followObj = unit.unitObj;
-                                    PossessionHandler.setPossessed(unit);
-                                    unitStatUI.SetActive(true);
-                                    possessionButton.SetActive(false);
+                                    controlledUnits[0].beingControlled = false;
+                                    controlledUnits = new List<Unit>();
                                 }
+                                unit.beingControlled = true;
+                                controlledUnits.Add(unit);
+                                camScript.followObj = unit.unitObj;
+                                PossessionHandler.setPossessed(unit);
+                                unitStatUI.SetActive(true);
+                                possessionButton.SetActive(false);
                             }
                         }
                     }
                 }
             }
-            
         }
     }
 
-    void GetPossessionMovement(){
+    void RayChecks()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit);
+        MouseDownFuncs();
+        MouseUpFuncs();
+        MouseHeldFuncs();
+        DrawLine(hit.point);
+
+        // if (Physics.Raycast(ray, out hit))
+        // {
+        //     MouseDownFuncs();
+        //     MouseUpFuncs();
+        //     MouseHeldFuncs();
+        //     DrawLine(hit.point);
+        // }
+    }
+
+    void GetPossessionMovement()
+    {
         if (controlledUnits.Count >= 1)
         {
             if (controlledUnits[0] != null)
@@ -280,12 +306,15 @@ public class CubeMaker : MonoBehaviour
 
     public void DrawLine(Vector3 target)
     {
-        if (target != null){
-            if (controlledUnits.Count > 0){
-                if (controlledUnits[0] != null){
+        if (target != null)
+        {
+            if (controlledUnits.Count > 0)
+            {
+                if (controlledUnits[0] != null)
+                {
                     Vector3 pos1 = controlledUnits[0].transform.position;
                     Vector3 pos2 = target;
-                    Vector3[] poss = {pos1, pos2};
+                    Vector3[] poss = { pos1, pos2 };
                     line.GetComponent<LineRenderer>().SetPositions(poss);
                 }
             }
