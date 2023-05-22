@@ -152,11 +152,37 @@ public class CubeMaker : MonoBehaviour
         return false;
     }
 
+    // Possess the passed-in unit.
+    void PossessUnit(Unit unit)
+    {
+        SetPossession(false);
+        if (unit != null)
+        {
+            unit.beingControlled = true;
+            controlledUnits.Add(unit);
+            camScript.followObj = unit.unitObj;
+            if (PossessionHandler.setPossessed(unit))
+            {
+                unitStatUI.SetActive(true);
+                possessionButton.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("CubeMaker.cs --Possession Handler failed to set possessed unit.--");
+            }
+        }
+        else
+        {
+            Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
+        }
+    }
+
     // Things that happen when you click mouse down.
     void MouseDownFuncs()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            // While controlling a unit, clicking = firing.
             if (IsControlling())
             {
                 if (hit.collider != null)
@@ -170,25 +196,23 @@ public class CubeMaker : MonoBehaviour
                 {
                     if (hit.collider.gameObject.tag == "spawner")
                     {
+                        // Update Spawner Source.
                         spawnerSource = hit.collider.gameObject;
-                        // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
-                        // pathDrawingMode = true;
                         pathDrawingMode = spawnerClass.GetIsDrawable();
-
-                        // UI FLIP
                         spawnerClass.SetUIVisible(!spawnerClass.GetUIVisible());
 
-                        pathBar.value = 0;
-                        pathBar.gameObject.SetActive(true);
-                        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
-                        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
+                        // Prepare path-fill bar.
+                        PreparePathBar();
+                    }
+                    else if (hit.collider.gameObject.tag == "unit")
+                    {
+                        TryPossessUnit(hit.collider.gameObject);
                     }
                     else
                     {
-                        // Debug.Log("Missed! " + hit.collider);
                         if (spawnerSource != null)
                         {
                             Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
@@ -196,41 +220,54 @@ public class CubeMaker : MonoBehaviour
                         }
                     }
                 }
+                // Clicked on nothing should de-select all.
+                // else
+                // {
+                //     DeselectSpawners();
+                // }
             }
+        }
+    }
 
-            //
-            // ╔══════════════════════════════════════════════════╗
-            // ║  Possess unit on click.                          ║
-            // ╚══════════════════════════════════════════════════╝
-            //
-            if (possessionReady)
+    // void DeselectSpawners()
+    // {
+    //     if (spawnerSource != null)
+    //     {
+    //         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+    //         pathDrawingMode = false;
+    //         spawnerClass.SetUIVisible(false);
+    //     }
+    // }
+
+    void PreparePathBar()
+    {
+        pathBar.value = 0;
+        pathBar.gameObject.SetActive(true);
+        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
+        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
+    }
+
+    // Attempt to possess a unit, going through the various checks and what not.
+    void TryPossessUnit(GameObject maybePos)
+    {
+        if (possessionReady)
+        {
+            Unit unit = maybePos.GetComponent<Unit>();
+            if (unit != null)
             {
-                SetPossession(false);
-                if (controlledUnits.Count == 0)
+                if (unit.team == teamColor)
                 {
-                    if (hit.collider.gameObject.tag == "unit")
+                    if (controlledUnits.Count >= 1)
                     {
-                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                        if (unit != null)
-                        {
-                            // Confirm unit is same team.
-                            if (unit.team == teamColor)
-                            {
-                                if (controlledUnits.Count >= 1)
-                                {
-                                    controlledUnits[0].beingControlled = false;
-                                    controlledUnits = new List<Unit>();
-                                }
-                                unit.beingControlled = true;
-                                controlledUnits.Add(unit);
-                                camScript.followObj = unit.unitObj;
-                                PossessionHandler.setPossessed(unit);
-                                unitStatUI.SetActive(true);
-                                possessionButton.SetActive(false);
-                            }
-                        }
+                        controlledUnits[0].beingControlled = false;
+                        controlledUnits = new List<Unit>();
                     }
+                    PossessUnit(unit);
                 }
+            }
+            else
+            {
+                Debug.LogError("Cube Maker: TryPossessUnit --- GameObject passed did not have a unit script.");
             }
         }
     }
@@ -302,14 +339,11 @@ public class CubeMaker : MonoBehaviour
 
     void GetPossessionMovement()
     {
-        if (controlledUnits.Count >= 1)
+        if (IsControlling())
         {
-            if (controlledUnits[0] != null)
-            {
-                float zMovement = Input.GetAxis("Vertical");
-                float xMovement = Input.GetAxis("Horizontal");
-                controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
-            }
+            float zMovement = Input.GetAxis("Vertical");
+            float xMovement = Input.GetAxis("Horizontal");
+            controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
         }
     }
 
@@ -321,21 +355,16 @@ public class CubeMaker : MonoBehaviour
         GetPossessionMovement();
     }
 
-
-
     public void DrawLine(Vector3 target)
     {
         if (target != null)
         {
-            if (controlledUnits.Count > 0)
+            if (IsControlling())
             {
-                if (controlledUnits[0] != null)
-                {
-                    Vector3 pos1 = controlledUnits[0].transform.position;
-                    Vector3 pos2 = target;
-                    Vector3[] poss = { pos1, pos2 };
-                    line.GetComponent<LineRenderer>().SetPositions(poss);
-                }
+                Vector3 pos1 = controlledUnits[0].transform.position;
+                Vector3 pos2 = target;
+                Vector3[] poss = { pos1, pos2 };
+                line.GetComponent<LineRenderer>().SetPositions(poss);
             }
         }
     }

@@ -26,7 +26,8 @@ public class PossessionHandler
 
     private static GameObject unitStats;
 
-    public static void setUnitStatUI(GameObject gameObject){
+    public static void setUnitStatUI(GameObject gameObject)
+    {
         unitStats = gameObject;
 
         // TODO MAKE THIS MORE MODULAR LATEr
@@ -42,7 +43,7 @@ public class PossessionHandler
         }
     }
 
-    public static void setPossessed(Unit u)
+    public static bool setPossessed(Unit u)
     {
         posUnit = u;
         if (posUnit != null)
@@ -53,12 +54,15 @@ public class PossessionHandler
             unitRoF.text = posUnit.rof.ToString();
             unitRange.text = posUnit.unitRange.ToString();
             unitTitle.text = posUnit.unitType;
+            return true;
         }
-        else{
+        else
+        {
             unitHP.text = "NAN";
             unitRoF.text = "NAN";
             unitRange.text = "NAN";
             unitTitle.text = "NAN";
+            return false;
         }
 
     }
@@ -66,7 +70,8 @@ public class PossessionHandler
     // TODO: EVENT DELEGATE THIS
     public void PossessedUnitFired()
     {
-        if (!coroutineRunning){
+        if (!coroutineRunning)
+        {
             unitMaxDelay = posUnit.rof * 0.5f;
             unitDelay = 0.0f;
             coroutineRunning = true;
@@ -84,7 +89,7 @@ public class PossessionHandler
     {
         uc = () => TimedUpdate();
         unitMaxDelay = 0.0f;
-        unitDelay = 0.0f;        
+        unitDelay = 0.0f;
     }
 
     // Update is called once per frame
@@ -93,7 +98,8 @@ public class PossessionHandler
         Debug.Log(unitDelay);
         unitDelay += Time.deltaTime;
         cooldownSlider.value = unitDelay;
-        if (unitDelay > unitMaxDelay){
+        if (unitDelay > unitMaxDelay)
+        {
             coroutineRunning = false;
             return false;
         }
@@ -101,13 +107,13 @@ public class PossessionHandler
     }
 
     // IEnumerator TimedUpdateRoutine ()
-	// {
-	// 	while (unitDelay < unitMaxDelay) {
-	// 		yield return new WaitForSeconds(0.05f);
-	// 		TimedUpdate();
-	// 	}
+    // {
+    // 	while (unitDelay < unitMaxDelay) {
+    // 		yield return new WaitForSeconds(0.05f);
+    // 		TimedUpdate();
+    // 	}
     //     coroutineRunning = false;
-	// }
+    // }
 
 
 }
