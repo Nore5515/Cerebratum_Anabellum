@@ -106,6 +106,32 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
+    void TryPlaceFollowSphere()
+    {
+        if (distancePerSphere >= maxDistancePerSphere)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+
+            distancePerSphere = 0.0f;
+
+            spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
+        }
+
+        // If distance is less than maxdistancepersphere, add change in distance.
+        else
+        {
+            if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+            {
+                oldPos = hit.collider.gameObject.transform.position;
+            }
+            else
+            {
+                distancePerSphere += Vector3.Distance(oldPos, hit.point);
+                oldPos = hit.point;
+            }
+        }
+    }
+
     // Things that happen when you click mouse down.
     void MouseDownFuncs()
     {
@@ -160,6 +186,41 @@ public class CubeMaker : MonoBehaviour
                     }
                 }
             }
+
+            //
+            // ╔══════════════════════════════════════════════════╗
+            // ║  Possess unit on click.                          ║
+            // ╚══════════════════════════════════════════════════╝
+            //
+            if (possessionReady)
+            {
+                SetPossession(false);
+                if (controlledUnits.Count == 0)
+                {
+                    if (hit.collider.gameObject.tag == "unit")
+                    {
+                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
+                        if (unit != null)
+                        {
+                            // Confirm unit is same team.
+                            if (unit.team == teamColor)
+                            {
+                                if (controlledUnits.Count >= 1)
+                                {
+                                    controlledUnits[0].beingControlled = false;
+                                    controlledUnits = new List<Unit>();
+                                }
+                                unit.beingControlled = true;
+                                controlledUnits.Add(unit);
+                                camScript.followObj = unit.unitObj;
+                                PossessionHandler.setPossessed(unit);
+                                unitStatUI.SetActive(true);
+                                possessionButton.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -202,63 +263,7 @@ public class CubeMaker : MonoBehaviour
                         if (hit.collider.gameObject.tag == "floor")
                         {
                             Debug.Log("raycast has hit valid target");
-                            if (distancePerSphere >= maxDistancePerSphere)
-                            {
-                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-
-                                distancePerSphere = 0.0f;
-
-                                spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
-                            }
-
-                            // If distance is less than maxdistancepersphere, add change in distance.
-                            else
-                            {
-                                if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-                                {
-                                    oldPos = hit.collider.gameObject.transform.position;
-                                }
-                                else
-                                {
-                                    distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                                    oldPos = hit.point;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            //
-            // ╔══════════════════════════════════════════════════╗
-            // ║  Possess unit on click.                          ║
-            // ╚══════════════════════════════════════════════════╝
-            //
-            if (possessionReady)
-            {
-                SetPossession(false);
-                if (controlledUnits.Count == 0)
-                {
-                    if (hit.collider.gameObject.tag == "unit")
-                    {
-                        Unit unit = hit.collider.gameObject.GetComponent<Unit>();
-                        if (unit != null)
-                        {
-                            // Confirm unit is same team.
-                            if (unit.team == teamColor)
-                            {
-                                if (controlledUnits.Count >= 1)
-                                {
-                                    controlledUnits[0].beingControlled = false;
-                                    controlledUnits = new List<Unit>();
-                                }
-                                unit.beingControlled = true;
-                                controlledUnits.Add(unit);
-                                camScript.followObj = unit.unitObj;
-                                PossessionHandler.setPossessed(unit);
-                                unitStatUI.SetActive(true);
-                                possessionButton.SetActive(false);
-                            }
+                            TryPlaceFollowSphere();
                         }
                     }
                 }
