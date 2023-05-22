@@ -202,7 +202,7 @@ public class CubeMaker : MonoBehaviour
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
                         pathDrawingMode = spawnerClass.GetIsDrawable();
-                        spawnerClass.SetUIVisible(!spawnerClass.GetUIVisible());
+                        spawnerClass.SetUIVisible(true);
 
                         // Prepare path-fill bar.
                         PreparePathBar();
@@ -211,33 +211,29 @@ public class CubeMaker : MonoBehaviour
                     {
                         TryPossessUnit(hit.collider.gameObject);
                     }
-                    else
+                    else if (hit.collider.gameObject.tag == "floor")
                     {
-                        if (spawnerSource != null)
-                        {
-                            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                            spawnerClass.SetUIVisible(false);
-                        }
+                        DeselectSpawners();
                     }
                 }
                 // Clicked on nothing should de-select all.
-                // else
-                // {
-                //     DeselectSpawners();
-                // }
+                else
+                {
+                    DeselectSpawners();
+                }
             }
         }
     }
 
-    // void DeselectSpawners()
-    // {
-    //     if (spawnerSource != null)
-    //     {
-    //         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-    //         pathDrawingMode = false;
-    //         spawnerClass.SetUIVisible(false);
-    //     }
-    // }
+    void DeselectSpawners()
+    {
+        if (spawnerSource != null)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+            pathDrawingMode = false;
+            spawnerClass.SetUIVisible(false);
+        }
+    }
 
     void PreparePathBar()
     {
