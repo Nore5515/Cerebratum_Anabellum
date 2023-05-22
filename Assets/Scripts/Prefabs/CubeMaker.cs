@@ -136,7 +136,6 @@ public class CubeMaker : MonoBehaviour
                         spawnerSource = hit.collider.gameObject;
                         // Debug.Log("Drawing from: " + hit.collider.gameObject.name);
 
-
                         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                         // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
                         // pathDrawingMode = true;
@@ -193,12 +192,16 @@ public class CubeMaker : MonoBehaviour
             //
             if (spawnerSource != null)
             {
+                Debug.Log("Spawner Source is not null.");
                 if (pathDrawingMode)
                 {
+                    Debug.Log("Path drawing mode is a go.");
                     if (hit.collider != null)
                     {
+                        Debug.Log("raycast has hit something.");
                         if (hit.collider.gameObject.tag == "floor")
                         {
+                            Debug.Log("raycast has hit valid target");
                             if (distancePerSphere >= maxDistancePerSphere)
                             {
                                 Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
