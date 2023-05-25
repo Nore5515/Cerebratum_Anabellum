@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1804085195947118930}
   - component: {fileID: 8218666140721047694}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpriteRighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 4623804062567844894}
   - component: {fileID: 4623804062567844895}
   - component: {fileID: 4623804062567844899}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Unit
   m_TagString: unit
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 853347481375432439}
   - component: {fileID: 661206596746666790}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpriteBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 732885006890489367}
   - component: {fileID: 8646230950262295469}
   - component: {fileID: 8885089173988304938}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: KillRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8227560231586331070}
   - component: {fileID: 4249476660022426777}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite_dead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6001008202588781352}
   - component: {fileID: 2746989227952462479}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -509,7 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 73307139141826483}
   - component: {fileID: 976487330170224100}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite_shooting
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,10 +16,8 @@ public class CubeMaker : MonoBehaviour
     public string teamColor = "RED";
     public Text teamColorText;
 
-
     public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
-    GameObject[] spawnerButtons;
 
     public Vector3 unitDirection = new Vector3();
     public CameraScript camScript;
@@ -74,16 +72,16 @@ public class CubeMaker : MonoBehaviour
 
     void KeyChecks()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            teamColor = "RED";
-            teamColorText.text = teamColor;
-        }
-        if (Input.GetKey(KeyCode.Alpha2))
-        {
-            teamColor = "BLUE";
-            teamColorText.text = teamColor;
-        }
+        // if (Input.GetKey(KeyCode.Alpha1))
+        // {
+        //     teamColor = "RED";
+        //     teamColorText.text = teamColor;
+        // }
+        // if (Input.GetKey(KeyCode.Alpha2))
+        // {
+        //     teamColor = "BLUE";
+        //     teamColorText.text = teamColor;
+        // }
         if (Input.GetKey(KeyCode.Escape))
         {
             SceneManager.LoadScene("MainMenu");
@@ -182,45 +180,44 @@ public class CubeMaker : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            // While controlling a unit, clicking = firing.
-            if (IsControlling())
+            if (hit.collider != null)
             {
-                if (hit.collider != null)
+                // While controlling a unit, clicking = firing.
+                if (IsControlling())
                 {
                     controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
                 }
-            }
-            else
-            {
-                if (hit.collider != null)
-                {
-                    if (hit.collider.gameObject.tag == "spawner")
-                    {
-                        // Update Spawner Source.
-                        spawnerSource = hit.collider.gameObject;
-
-                        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                        // TODO; HAVE THIS CALLED WHEN "drawpath" button pressed.
-                        pathDrawingMode = spawnerClass.GetIsDrawable();
-                        spawnerClass.SetUIVisible(true);
-
-                        // Prepare path-fill bar.
-                        PreparePathBar();
-                    }
-                    else if (hit.collider.gameObject.tag == "unit")
-                    {
-                        TryPossessUnit(hit.collider.gameObject);
-                    }
-                    else if (hit.collider.gameObject.tag == "floor")
-                    {
-                        DeselectSpawners();
-                    }
-                }
-                // Clicked on nothing should de-select all.
                 else
                 {
-                    DeselectSpawners();
+                    switch (hit.collider.gameObject.tag)
+                    {
+                        case "spawner":
+                            // Update Spawner Source.
+                            spawnerSource = hit.collider.gameObject;
+
+                            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                            spawnerClass.SetIsDrawable(true);
+                            pathDrawingMode = spawnerClass.GetIsDrawable();
+                            spawnerClass.SetUIVisible(true);
+
+                            // Prepare path-fill bar.
+                            PreparePathBar();
+                            break;
+                        case "unit":
+                            TryPossessUnit(hit.collider.gameObject);
+                            break;
+                        case "floor":
+                            DeselectSpawners();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+            }
+            // Clicked on nothing should de-select all.
+            else
+            {
+                DeselectSpawners();
             }
         }
     }
@@ -317,8 +314,11 @@ public class CubeMaker : MonoBehaviour
 
     void RayChecks()
     {
+        int layerMask = 1 << 6;
+        layerMask |= (1 << 2);
+        layerMask = ~layerMask;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hit);
+        Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
         MouseDownFuncs();
         MouseUpFuncs();
         MouseHeldFuncs();

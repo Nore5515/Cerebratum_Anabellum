@@ -204,7 +204,8 @@ public class Spawner : Structure
     }
 
     // TODO: Move maxCount to spawners
-    public void DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
+    // Returns number of spheres in path now.
+    public int DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
     {
 
         GameObject obj;
@@ -250,6 +251,8 @@ public class Spawner : Structure
         {
             RemovePoint(spheres[0]);
         }
+
+        return spheres.Count;
     }
 
     // TODO: Also have this only happen when DrawPath is pressed.
