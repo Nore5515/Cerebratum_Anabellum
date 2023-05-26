@@ -192,22 +192,47 @@ public class CubeMaker : MonoBehaviour
                     switch (hit.collider.gameObject.tag)
                     {
                         case "spawner":
-                            // Update Spawner Source.
-                            spawnerSource = hit.collider.gameObject;
+                            // YOU JUST CLICKED ON A SPAWNER!!
+                            // If there is NO SELECTED SPAWNER, select it.
+                            // If there is already a selected spawner...
+                            //      If the spawner YOU CLICKED is the selected spawner...
+                            //          If the spawnerClass is Drawable, begin drawing!
+                            //          Otherwise, deselect.
+                            //      If the spawner YOU CLICKED is NOT the selected spawner, make it the selected spawner!
 
-                            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                            spawnerClass.SetIsDrawable(true);
-                            pathDrawingMode = spawnerClass.GetIsDrawable();
-                            spawnerClass.SetUIVisible(true);
+                            // Update Spawner to clicked Spawner
+                            if (spawnerSource == null)
+                            {
+                                spawnerSource = hit.collider.gameObject;
+                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                                spawnerClass.SetUIVisible(true);
+                            }
+                            else
+                            {
+                                if (spawnerSource == hit.collider.gameObject)
+                                {
+                                    Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+                                    if (spawnerClass.GetIsDrawable() == true)
+                                    {
+                                        // spawnerClass.SetIsDrawable(true);
+                                        pathDrawingMode = spawnerClass.GetIsDrawable();
 
-                            // Prepare path-fill bar.
-                            PreparePathBar();
+                                        // Prepare path-fill bar.
+                                        PreparePathBar();
+                                    }
+                                    else
+                                    {
+                                        DeselectSpawners();
+                                        spawnerSource = null;
+                                    }
+                                }
+                            }
                             break;
                         case "unit":
                             TryPossessUnit(hit.collider.gameObject);
                             break;
                         case "floor":
-                            DeselectSpawners();
+                            // DeselectSpawners();
                             break;
                         default:
                             break;
@@ -217,7 +242,7 @@ public class CubeMaker : MonoBehaviour
             // Clicked on nothing should de-select all.
             else
             {
-                DeselectSpawners();
+                // DeselectSpawners();
             }
         }
     }
@@ -323,14 +348,6 @@ public class CubeMaker : MonoBehaviour
         MouseUpFuncs();
         MouseHeldFuncs();
         DrawLine(hit.point);
-
-        // if (Physics.Raycast(ray, out hit))
-        // {
-        //     MouseDownFuncs();
-        //     MouseUpFuncs();
-        //     MouseHeldFuncs();
-        //     DrawLine(hit.point);
-        // }
     }
 
     void GetPossessionMovement()

@@ -365,6 +365,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360593358707628083, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360593358707628083, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
@@ -395,14 +399,6 @@ PrefabInstance:
     - target: {fileID: 4681735238711970604, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
-      propertyPath: spawnTime
-      value: 15.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
-      propertyPath: startingSpawnTime
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7798158772839395644, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: m_RootOrder
