@@ -190,6 +190,7 @@ public class Spawner : Structure
     }
     public void SetIsDrawable(bool _newMode)
     {
+        Debug.Log("Drawable is: " + _newMode);
         if (_newMode == true)
         {
             Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);

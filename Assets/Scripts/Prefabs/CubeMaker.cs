@@ -214,14 +214,13 @@ public class CubeMaker : MonoBehaviour
                                     Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
                                     if (spawnerClass.GetIsDrawable() == true)
                                     {
-                                        // spawnerClass.SetIsDrawable(true);
+                                        Debug.Log("Drawing!");
                                         pathDrawingMode = spawnerClass.GetIsDrawable();
-
-                                        // Prepare path-fill bar.
                                         PreparePathBar();
                                     }
                                     else
                                     {
+                                        Debug.Log("Deselecting.");
                                         DeselectSpawners();
                                         spawnerSource = null;
                                     }
@@ -295,15 +294,18 @@ public class CubeMaker : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            // You ain't drawing if your not pressing down
-            // spawnerSource = null;
-            pathDrawingMode = false;
-            if (spawnerSource != null)
+            if (pathDrawingMode == true)
             {
-                spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                // You ain't drawing if your not pressing down
+                // spawnerSource = null;
+                pathDrawingMode = false;
+                if (spawnerSource != null)
+                {
+                    spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                }
+                // Hide pathbar when not in use
+                pathBar.gameObject.SetActive(false);
             }
-            // Hide pathbar when not in use
-            pathBar.gameObject.SetActive(false);
         }
     }
 
