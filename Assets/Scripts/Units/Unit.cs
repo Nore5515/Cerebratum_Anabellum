@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     // Core unit stats
-    public int hp { get; set;}
-    public int maxHP { get; set;}
-    public int dmg { get; set;}
-    public int speed { get; set;}
-    public float rof { get; set;}
-    public int threatLevel { get; set;}
+    public int hp { get; set; }
+    public int maxHP { get; set; }
+    public int dmg { get; set; }
+    public int speed { get; set; }
+    public float rof { get; set; }
+    public int threatLevel { get; set; }
 
     // Range (REFACTOR TODO: TODO;)
     public double MaxDist = 1.6;
@@ -28,13 +28,13 @@ public class Unit : MonoBehaviour
     public float unitRange { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
-    public GameObject bullet {get; set;}
+    public GameObject bullet { get; set; }
     public Vector3 controlDirection { get; set; }
 
     // STATE
     // TODO: Enum this?
-    public string threatState {get; set;}
-    
+    public string threatState { get; set; }
+
     // WALK - No threats of equal or higher level.
     // STAND - Threats of equal level, but not higher.
     // FLEE - Threats of higher level.
@@ -46,9 +46,9 @@ public class Unit : MonoBehaviour
     // Targets Stuff
     public List<GameObject> targetsInRange = new List<GameObject>();
 
-     // Firing Stuff
-    public bool canFire {get; set;}
-    public bool canFireDelay {get; set;}
+    // Firing Stuff
+    public bool canFire { get; set; }
+    public bool canFireDelay { get; set; }
 
 
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
@@ -64,7 +64,10 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponentInChildren<SpriteRighter>().Flip();
+            if (gameObject.GetComponentInChildren<SpriteRighter>() != null)
+            {
+                gameObject.GetComponentInChildren<SpriteRighter>().Flip();
+            }
         }
         rof = _rof;
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
@@ -82,8 +85,8 @@ public class Unit : MonoBehaviour
         }
 
         // Sprite Stuff
-        UnitSprites.Add("Walking",transform.Find("SpriteRighter/Sprite").gameObject);
-        UnitSprites.Add("Shooting",transform.Find("SpriteRighter/Sprite_shooting").gameObject);
+        UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
+        UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
 
     public IEnumerator EnableFiring()
@@ -130,7 +133,8 @@ public class Unit : MonoBehaviour
     // CALLED WHEN AI
     public virtual void FireAtTransform(Transform trans)
     {
-        if (trans != null){
+        if (trans != null)
+        {
             GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
             obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 1.0f));
             obj.GetComponent<Projectile>().Init(team, dmg);
@@ -141,14 +145,14 @@ public class Unit : MonoBehaviour
     public void ControlledFire(Vector3 target)
     {
         // Debug.Log("Controlled Fire!");
-        
+
         if (canFire)
         {
             canFire = false;
             // Fire with perfect accuracy if controlled.
             // PossessionHandler.shared.PossessedUnitFired();
             PossessionHandler.instance.PossessedUnitFired();
-            
+
             if (beingControlled)
             {
                 FireAtPosition(target, 0.0f);
@@ -168,8 +172,8 @@ public class Unit : MonoBehaviour
                 StartCoroutine(EnableFiring());
             }
         }
-        
-        
+
+
     }
 
     // Target Logic 
@@ -180,18 +184,20 @@ public class Unit : MonoBehaviour
         UpdateThreatState();
         // Sprite = Firing
         // if (UnitSprites["Shooting"] != null){
-        if (UnitSprites.ContainsKey("Shooting")){
+        if (UnitSprites.ContainsKey("Shooting"))
+        {
             DisableAllSprites();
             UnitSprites["Shooting"].SetActive(true);
         }
     }
 
-    public void UpdateThreatState() 
+    public void UpdateThreatState()
     {
         int highestThreat = -1;
         foreach (GameObject target in targetsInRange)
         {
-            if (target.GetComponent<Unit>() != null){
+            if (target.GetComponent<Unit>() != null)
+            {
                 if (target.GetComponent<Unit>().threatLevel > highestThreat)
                 {
                     highestThreat = target.GetComponent<Unit>().threatLevel;
@@ -212,7 +218,8 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void DisableAllSprites(){
+    public void DisableAllSprites()
+    {
         foreach (string sprite in UnitSprites.Keys)
         {
             UnitSprites[sprite].SetActive(false);
@@ -226,7 +233,8 @@ public class Unit : MonoBehaviour
             targetsInRange.Remove(target);
             ClearNullTargets();
         }
-        if (targetsInRange.Count <= 0){
+        if (targetsInRange.Count <= 0)
+        {
             // Sprite = Walking
             if (UnitSprites.ContainsKey("Walking"))
             {
@@ -235,7 +243,7 @@ public class Unit : MonoBehaviour
             }
         }
     }
-    
+
     public void ClearNullTargets()
     {
         List<GameObject> toRemoveObjs = new List<GameObject>();
@@ -266,7 +274,8 @@ public class Unit : MonoBehaviour
     public void AddPoint(GameObject point)
     {
         objs.Add(point);
-        if (objs.Count == 1){
+        if (objs.Count == 1)
+        {
             Dest = objs[0];
         }
     }
@@ -279,9 +288,9 @@ public class Unit : MonoBehaviour
         {
             Dest = null;
         }
-        else 
+        else
         {
-            Dest = objs[0];    
+            Dest = objs[0];
         }
     }
 
@@ -323,9 +332,9 @@ public class Unit : MonoBehaviour
                 var heading = Dest.transform.position - this.transform.position;
                 var distance = heading.magnitude;
                 var direction = heading / distance;
-                
+
                 float distToDest = Vector3.Distance(transform.position, Dest.transform.position);
-                
+
                 // If you are not close enough to your dest, keep moving towards it.
                 if (distToDest >= MinDist)
                 {
@@ -346,7 +355,8 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void PossessedMovement(){
+    public void PossessedMovement()
+    {
         if (controlDirection != new Vector3(0, 0, 0))
         {
             // When controlled, move 50% faster.
@@ -354,7 +364,8 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void AIFire() {
+    public void AIFire()
+    {
         if (canFire)
         {
             canFire = false;
@@ -370,14 +381,16 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void MovementUpdate() {
+    public void MovementUpdate()
+    {
         if (beingControlled == false)
         {
             AIMovement();
-            
+
             // If there's a valid target within range!
-            if (targetsInRange.Count > 0){
-            
+            if (targetsInRange.Count > 0)
+            {
+
                 ClearNullTargets();
 
                 // Are there any targets left after the purge?

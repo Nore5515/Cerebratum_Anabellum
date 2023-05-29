@@ -48,6 +48,8 @@ public class Spawner : Structure
     float firerateStep;
     float spawnStep;
 
+    bool selected = false;
+
     void Start()
     {
         fireDelay = startingFireDelay;
@@ -62,6 +64,8 @@ public class Spawner : Structure
             spawnerUI = this.gameObject.transform.Find("UI").gameObject;
             // Debug.Log(spawnerUI);
             InitalizeUI(spawnerUI);
+            SetUIVisible(false);
+            selected = false;
         }
         else
         {
@@ -152,6 +156,7 @@ public class Spawner : Structure
     // ...it won't have anything else :\
     public void SetUIVisible(bool isVis)
     {
+        selected = isVis;
         if (spawnrateButton != null)
         {
             // Debug.Log("Flippin' UI to " + isVis);
