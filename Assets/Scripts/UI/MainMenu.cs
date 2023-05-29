@@ -14,8 +14,11 @@ public class MainMenu : MonoBehaviour
     // Start button -> 1v1
     // Settings -> Settings menu
 
+    bool settingsMenuOpen = false;
+
 
     // TODO: Just change the game object instead o_o
+    public GameObject TutorialButton;
     public GameObject StartButton;
     public GameObject ScenarioButton;
     public GameObject SettingsButton;
@@ -26,17 +29,21 @@ public class MainMenu : MonoBehaviour
     public GameObject Scenarios_NoTower_Button;
     public GameObject Scenarios_Back_Button;
 
+    public GameObject Scenario_Scene;
+
     public GameObject SettingsGroup;
 
     public void SetState(string newState)
     {
+        Debug.Log(newState);
         HideUI();
-        switch(newState) 
+        switch (newState)
         {
             case "START":
                 SceneManager.LoadScene("Scenes/TestScenes/Map_Test");
                 break;
             case "OPEN":
+                TutorialButton.SetActive(true);
                 StartButton.SetActive(true);
                 ScenarioButton.SetActive(true);
                 SettingsButton.SetActive(true);
@@ -44,10 +51,7 @@ public class MainMenu : MonoBehaviour
                 break;
 
             case "SCENARIOS":
-                Scenarios_EasyMode_Button.SetActive(true);
-                Scenarios_WorldWar1_Button.SetActive(true);
-                Scenarios_NoTower_Button.SetActive(true);
-                Scenarios_Back_Button.SetActive(true);
+                Scenario_Scene.SetActive(true);
                 break;
 
             // Load Scenarios
@@ -60,11 +64,21 @@ public class MainMenu : MonoBehaviour
 
             // System Stuff
             case "SETTINGS":
-                SettingsGroup.SetActive(!SettingsGroup.activeSelf);
+                if (settingsMenuOpen)
+                {
+                    SettingsGroup.SetActive(false);
+                    settingsMenuOpen = false;
+                }
+                else
+                {
+                    SettingsGroup.SetActive(true);
+                    settingsMenuOpen = true;
+                }
+                TutorialButton.SetActive(true);
                 StartButton.SetActive(true);
                 ScenarioButton.SetActive(true);
-                SettingsButton.SetActive(true);
                 QuitButton.SetActive(true);
+                SettingsButton.SetActive(true);
                 break;
             case "QUIT":
                 Application.Quit();
@@ -78,6 +92,7 @@ public class MainMenu : MonoBehaviour
 
     public void HideUI()
     {
+        TutorialButton.SetActive(false);
         StartButton.SetActive(false);
         ScenarioButton.SetActive(false);
         SettingsButton.SetActive(false);
@@ -89,17 +104,18 @@ public class MainMenu : MonoBehaviour
         Scenarios_Back_Button.SetActive(false);
 
         SettingsGroup.SetActive(false);
+        Scenario_Scene.SetActive(false);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
