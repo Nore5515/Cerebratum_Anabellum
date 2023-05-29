@@ -24,9 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TestScenes/Map_Test.unity
     guid: 992d274aed1b54be18f87dd9aedaa96a
   - enabled: 1
-    path: Assets/Scenes/Scenarios/NoTower.unity
+    path: Assets/Scenes/Scenarios/NoTower_dep.unity
     guid: 327747a28f12f4fa5871ebff9154f721
   - enabled: 1
-    path: Assets/Scenes/Scenarios/EasyMode.unity
+    path: Assets/Scenes/Scenarios/EasyMode_dep.unity
     guid: aef327972a4f745c694a144814a5d756
   m_configObjects: {}
