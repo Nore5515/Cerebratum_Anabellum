@@ -40,7 +40,7 @@ public class MainMenu : MonoBehaviour
         switch (newState)
         {
             case "START":
-                SceneManager.LoadScene("Scenes/TestScenes/Map_Test");
+                SceneManager.LoadScene("Scenes/PlayableScenes/Dual");
                 break;
             case "OPEN":
                 TutorialButton.SetActive(true);
@@ -60,6 +60,9 @@ public class MainMenu : MonoBehaviour
                 break;
             case "NOTOWER":
                 SceneManager.LoadScene("Scenes/Scenarios/NoTower");
+                break;
+            case "TUTORIAL":
+                SceneManager.LoadScene("Scenes/Scenarios/Tutorial");
                 break;
 
             // System Stuff

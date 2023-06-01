@@ -276,7 +276,7 @@ public class Spawner : Structure
         GameObject chosenPath = paths[Random.Range(0, paths.Count)];
         foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
         {
-            if (orbTransform.position != new Vector3(0, 0, 0))
+            if (orbTransform.position != new Vector3(0, 0.5f, 0))
             {
                 AddPathMarker(color, orbTransform.position);
             }
@@ -285,6 +285,7 @@ public class Spawner : Structure
 
     public GameObject AddPathMarker(string color, Vector3 loc)
     {
+        Debug.Log("Adding path marker!" + loc);
         GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
         if (color == "RED")
         {
