@@ -329,7 +329,8 @@ public class Unit : MonoBehaviour
             else
             {
                 // Get movement direction.
-                var heading = Dest.transform.position - this.transform.position;
+                var newDest = new Vector3(Dest.transform.position.x, this.transform.position.y, Dest.transform.position.z);
+                var heading = newDest - this.transform.position;
                 var distance = heading.magnitude;
                 var direction = heading / distance;
 

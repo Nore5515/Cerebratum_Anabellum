@@ -276,7 +276,7 @@ public class Spawner : Structure
         GameObject chosenPath = paths[Random.Range(0, paths.Count)];
         foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
         {
-            if (orbTransform.position != new Vector3(0, 0.5f, 0))
+            if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
             {
                 AddPathMarker(color, orbTransform.position);
             }
