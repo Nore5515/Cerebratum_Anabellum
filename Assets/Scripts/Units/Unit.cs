@@ -49,6 +49,7 @@ public class Unit : MonoBehaviour
     // Firing Stuff
     public bool canFire { get; set; }
     public bool canFireDelay { get; set; }
+    public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
 
 
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
@@ -70,6 +71,7 @@ public class Unit : MonoBehaviour
             }
         }
         rof = _rof;
+        firstFire = true;   // First shot ready on initializaiton!
         KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         ks.alliedTeam = team;
         ks.GetComponent<SphereCollider>().radius = _unitRange;
@@ -95,6 +97,11 @@ public class Unit : MonoBehaviour
         if (beingControlled)
         {
             yield return new WaitForSeconds(rof * 0.5f);
+        }
+        else if (firstFire)
+        {
+            firstFire = false;
+            yield return new WaitForSeconds(rof * 0.15f);
         }
         else
         {
