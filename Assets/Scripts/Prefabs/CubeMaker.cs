@@ -42,6 +42,8 @@ public class CubeMaker : MonoBehaviour
 
     public GameObject unitStatUI;
 
+    public PossessionHandler ph;
+
     public void Start()
     {
         pathBar.maxValue = maxCount;
@@ -100,7 +102,7 @@ public class CubeMaker : MonoBehaviour
             camScript.followObj = null;
             unitStatUI.SetActive(false);
             possessionButton.SetActive(true);
-            PossessionHandler.setPossessed(null);
+            ph.setPossessed(null);
         }
     }
 
@@ -159,7 +161,7 @@ public class CubeMaker : MonoBehaviour
             unit.beingControlled = true;
             controlledUnits.Add(unit);
             camScript.followObj = unit.unitObj;
-            if (PossessionHandler.setPossessed(unit))
+            if (ph.setPossessed(unit))
             {
                 unitStatUI.SetActive(true);
                 possessionButton.SetActive(false);

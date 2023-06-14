@@ -51,9 +51,12 @@ public class Unit : MonoBehaviour
     public bool canFireDelay { get; set; }
     public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
 
+    public PossessionHandler ph;
+
 
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
     {
+        ph = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
         bullet = Resources.Load(path) as GameObject;
         MaxDist = 1.4;
         MinDist = 1;
@@ -158,7 +161,7 @@ public class Unit : MonoBehaviour
             canFire = false;
             // Fire with perfect accuracy if controlled.
             // PossessionHandler.shared.PossessedUnitFired();
-            PossessionHandler.instance.PossessedUnitFired();
+            ph.PossessedUnitFired();
 
             if (beingControlled)
             {

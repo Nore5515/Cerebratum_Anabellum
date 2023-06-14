@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PossessionHandler
+public class PossessionHandler : MonoBehaviour
 {
 
-    public static PossessionHandler instance = new PossessionHandler();
-    static CoroutineHandler coHand;
+    // public static PossessionHandler instance = new PossessionHandler();
+    public CoroutineHandler coHand;
 
-    public static Text unitHP;
-    public static Text unitRoF;
-    public static Text unitRange;
-    public static Text unitTitle;
-    public static Slider cooldownSlider;
+    public Text unitHP;
+    public Text unitRoF;
+    public Text unitRange;
+    public Text unitTitle;
+    public Slider cooldownSlider;
     static Unit posUnit;
 
     static float unitMaxDelay;
@@ -31,19 +31,19 @@ public class PossessionHandler
         unitStats = gameObject;
 
         // TODO MAKE THIS MORE MODULAR LATEr
-        unitHP = unitStats.transform.Find("UnitValues/UnitHP/UnitHP").gameObject.GetComponent<Text>();
-        unitRoF = unitStats.transform.Find("UnitValues/UnitROF/UnitROF").gameObject.GetComponent<Text>();
-        unitRange = unitStats.transform.Find("UnitValues/UnitRange/UnitRange").gameObject.GetComponent<Text>();
-        unitTitle = unitStats.transform.Find("UnitValues/UnitTitle/UnitTitle").gameObject.GetComponent<Text>();
-        cooldownSlider = unitStats.transform.Find("CooldownSlider").gameObject.GetComponent<Slider>();
-        coHand = GameObject.Find("EnvComponents/CoroutineHandler").GetComponent<CoroutineHandler>();
-        if (coHand is null)
-        {
-            Debug.Assert(coHand != null);
-        }
+        // unitHP = unitStats.transform.Find("UnitValues/UnitHP/UnitHP").gameObject.GetComponent<Text>();
+        // unitRoF = unitStats.transform.Find("UnitValues/UnitROF/UnitROF").gameObject.GetComponent<Text>();
+        // unitRange = unitStats.transform.Find("UnitValues/UnitRange/UnitRange").gameObject.GetComponent<Text>();
+        // unitTitle = unitStats.transform.Find("UnitValues/UnitTitle/UnitTitle").gameObject.GetComponent<Text>();
+        // cooldownSlider = unitStats.transform.Find("CooldownSlider").gameObject.GetComponent<Slider>();
+        // coHand = GameObject.Find("EnvComponents/CoroutineHandler").GetComponent<CoroutineHandler>();
+        // if (coHand is null)
+        // {
+        //     Debug.Assert(coHand != null);
+        // }
     }
 
-    public static bool setPossessed(Unit u)
+    public bool setPossessed(Unit u)
     {
         posUnit = u;
         if (posUnit != null)
@@ -85,7 +85,7 @@ public class PossessionHandler
     }
 
     // Creates instance
-    static PossessionHandler()
+    PossessionHandler()
     {
         uc = () => TimedUpdate();
         unitMaxDelay = 0.0f;
@@ -93,7 +93,7 @@ public class PossessionHandler
     }
 
     // Update is called once per frame
-    static bool TimedUpdate()
+    bool TimedUpdate()
     {
         Debug.Log(unitDelay);
         unitDelay += Time.deltaTime;
