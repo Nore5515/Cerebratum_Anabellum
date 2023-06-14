@@ -38,7 +38,7 @@ public class Spawner : Structure
     Button firerateButton;
     Button rangeButton;
     Button pathButton;
-    Button deleteButton;
+    // Button deleteButton;
 
     public Image rangeFill;
     public Image fireRateFill;
@@ -52,6 +52,7 @@ public class Spawner : Structure
 
     void Start()
     {
+        Debug.Log("!START!");
         fireDelay = startingFireDelay;
         unitRange = startingUnitRange;
         spawnTime = startingSpawnTime;
@@ -59,22 +60,13 @@ public class Spawner : Structure
         pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
-        if (this.gameObject.transform.Find("UI") != null)
-        {
-            spawnerUI = this.gameObject.transform.Find("UI").gameObject;
-            // Debug.Log(spawnerUI);
-            InitalizeUI(spawnerUI);
-            SetUIVisible(false);
-            selected = false;
-        }
-        else
-        {
-            spawnerUI = null;
-        }
+
+        InitializeUI();
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
 
+        // TODO: What the hell is this
         // Root spawner behaves different than every other.
         if (SpawnerTracker.redRootSpawner == null && team == "RED")
         {
@@ -95,6 +87,39 @@ public class Spawner : Structure
 
     }
 
+    private void InitializeUI()
+    {
+        if (this.gameObject.transform.Find("UI") != null)
+        {
+            spawnerUI = this.gameObject.transform.Find("UI").gameObject;
+            // Debug.Log(spawnerUI);
+            InitalizeUI(spawnerUI);
+            SetUIVisible(false);
+            selected = false;
+        }
+        else
+        {
+            spawnerUI = null;
+        }
+    }
+
+    public void LateStart()
+    {
+        Debug.Log("LATE START!");
+        fireDelay = startingFireDelay;
+        unitRange = startingUnitRange;
+        spawnTime = startingSpawnTime;
+
+        pathMarker = Resources.Load(path) as GameObject;
+        naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
+        canvas = GameObject.Find("Canvas");
+
+        InitializeUI();
+
+        IEnumerator coroutine = SpawnPrefab();
+        StartCoroutine(coroutine);
+    }
+
     private void InitalizeUI(GameObject ui)
     {
         // Debug.Log("What");
@@ -108,13 +133,13 @@ public class Spawner : Structure
         firerateButton = upgrades.transform.Find("RFireRate").gameObject.GetComponent<Button>();
         rangeButton = upgrades.transform.Find("RRange").gameObject.GetComponent<Button>();
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
-        deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
+        // deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
 
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate(); });
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate(); });
         rangeButton.onClick.AddListener(delegate { IncreaseRange(); });
         pathButton.onClick.AddListener(delegate { DrawPath(); });
-        deleteButton.onClick.AddListener(delegate { RemoveSpawner(); });
+        // deleteButton.onClick.AddListener(delegate { RemoveSpawner(); });
 
         // Fills
         GameObject infhutCanvas = ui.transform.Find("Canvas").gameObject;
@@ -285,7 +310,7 @@ public class Spawner : Structure
 
     public GameObject AddPathMarker(string color, Vector3 loc)
     {
-        Debug.Log("Adding path marker!" + loc);
+        // Debug.Log("Adding path marker!" + loc);
         GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
         if (color == "RED")
         {
@@ -418,33 +443,18 @@ public class Spawner : Structure
 
     private void CreatePrefab(GameObject reqPrefab)
     {
-        List<GameObject> spawns = new List<GameObject>();
+        // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
+        GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
+        instances.Add(obj);
+
+        obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
         if (team == "RED")
         {
-            spawns = SpawnerTracker.redSpawnerObjs;
+            obj.GetComponent<MeshRenderer>().material = redMat;
         }
         else
         {
-            spawns = SpawnerTracker.blueSpawnerObjs;
-        }
-        foreach (GameObject spawnData in spawns)
-        {
-            // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
-            if (spawnData.GetComponent<Structure>().type == "spawn")
-            {
-                GameObject obj = Instantiate(reqPrefab, spawnData.transform.position, Quaternion.identity) as GameObject;
-                instances.Add(obj);
-
-                obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
-                if (team == "RED")
-                {
-                    obj.GetComponent<MeshRenderer>().material = redMat;
-                }
-                else
-                {
-                    obj.GetComponent<MeshRenderer>().material = blueMat;
-                }
-            }
+            obj.GetComponent<MeshRenderer>().material = blueMat;
         }
     }
 
@@ -465,10 +475,6 @@ public class Spawner : Structure
         // Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
         return result;
     }
-
-    // calculateDelay(min: 3, max: 0.5, target: 0.5)
-    // calculateDelay(min: 3, max: 0.5, target: 3)
-    // calculateDelay(min: 3, max: 0.5, target: 1.75)
 
     public void IncreaseSpawnRate()
     {
