@@ -53,6 +53,7 @@ public class Unit : MonoBehaviour
 
     public PossessionHandler ph;
 
+    public SpriteRenderer glow;
 
     public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
     {
@@ -64,10 +65,17 @@ public class Unit : MonoBehaviour
         threatState = "WALK";
         if (team == "RED")
         {
-            // nothing
+            // if (glow != null)
+            // {
+            glow.color = new Color(255, 0, 0, 0.3f);
+            // }
         }
         else
         {
+            // if (glow != null)
+            // {
+            glow.color = new Color(0, 0, 255, 0.3f);
+            // }
             if (gameObject.GetComponentInChildren<SpriteRighter>() != null)
             {
                 gameObject.GetComponentInChildren<SpriteRighter>().Flip();
