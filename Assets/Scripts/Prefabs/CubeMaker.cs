@@ -274,7 +274,7 @@ public class CubeMaker : MonoBehaviour
             Unit unit = maybePos.GetComponent<Unit>();
             if (unit != null)
             {
-                if (unit.team == teamColor)
+                if (unit.unitTeam == teamColor)
                 {
                     if (controlledUnits.Count >= 1)
                     {

@@ -14,7 +14,7 @@ public class StompSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Unit>() != null)
             {
-                if (other.gameObject.GetComponent<Unit>().team != alliedTeam )
+                if (other.gameObject.GetComponent<Unit>().unitTeam != alliedTeam)
                 {
                     // TODO: Fix unit destruction!!
                     other.gameObject.GetComponent<Unit>().DealDamage(99);

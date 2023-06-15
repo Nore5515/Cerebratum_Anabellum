@@ -263,7 +263,7 @@ public class Spawner : Structure
         {
             if (unit != null)
             {
-                if (unit.GetComponent<Unit>().team == team)
+                if (unit.GetComponent<Unit>().unitTeam == team)
                 {
                     unit.GetComponent<Unit>().AddPoint(obj);
                 }

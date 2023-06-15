@@ -47,9 +47,9 @@ public class Spidertank : Unit
             IEnumerator coroutine = SelfDestruct();
             StartCoroutine(coroutine);
         }
-        
+
     }
-    
+
     IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(survivalTime);
@@ -60,9 +60,9 @@ public class Spidertank : Unit
     void Update()
     {
         // TODO: Make this better?
-        if (stomp.alliedTeam != team)
+        if (stomp.alliedTeam != unitTeam)
         {
-            stomp.alliedTeam = team;
+            stomp.alliedTeam = unitTeam;
         }
         MovementUpdate();
     }
@@ -72,8 +72,8 @@ public class Spidertank : Unit
     {
         GameObject obj = GameObject.Instantiate(spidertankBullet, position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, 0.0f));
-        obj.GetComponent<Projectile>().Init(team, dmg);
-        
+        obj.GetComponent<Projectile>().Init(unitTeam, dmg);
+
     }
 
     // This will create the traditional shadow!
@@ -87,13 +87,14 @@ public class Spidertank : Unit
 
     public override void FireAtTransform(Transform trans)
     {
-        if (trans != null){
+        if (trans != null)
+        {
             StartCoroutine(TriggerFireAnim());
             Vector3 newPos = trans.position;
             newPos.y += 30;
             GameObject obj = GameObject.Instantiate(spidertankBullet, newPos, Quaternion.identity) as GameObject;
             obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 0.0f));
-            obj.GetComponent<Projectile>().Init(team, dmg);
+            obj.GetComponent<Projectile>().Init(unitTeam, dmg);
             ShadowShot(trans.position, obj);
         }
     }

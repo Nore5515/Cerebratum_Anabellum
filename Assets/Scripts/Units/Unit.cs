@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour
     // public GameObject spriteRed;
     // public GameObject spriteBlue;
 
-    public string team { get; set; }
+    public string unitTeam { get; set; }
     public string unitType { get; set; }
     public float unitRange { get; set; }
     public bool beingControlled { get; set; }
@@ -51,7 +51,7 @@ public class Unit : MonoBehaviour
     public bool canFireDelay { get; set; }
     public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
 
-    public PossessionHandler ph;
+    public PossessionHandler unitPossessionHandler;
 
     public SpriteRenderer glow;
 
@@ -67,14 +67,14 @@ public class Unit : MonoBehaviour
 
     public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     {
-        ph = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
+        unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
         bullet = Resources.Load(path) as GameObject;
         MaxDist = 1.4;
         MinDist = 1;
-        team = newTeam;
+        unitTeam = newTeam;
         threatState = "WALK";
 
-        if (team == "RED")
+        if (unitTeam == "RED")
         {
             glow.color = RED;
         }
@@ -90,13 +90,13 @@ public class Unit : MonoBehaviour
         rof = _rof;
         firstFire = true;   // First shot ready on initializaiton!
         KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
-        unitKillSphere.alliedTeam = team;
+        unitKillSphere.alliedTeam = unitTeam;
         unitKillSphere.GetComponent<SphereCollider>().radius = _unitRange;
         unitRange = _unitRange;
-        // Debug.Log(unitKillSphere.alliedTeam);
-        foreach (GameObject obj in newPoints)
+
+        foreach (GameObject newPoint in newPoints)
         {
-            points.Add(obj);
+            points.Add(newPoint);
         }
         if (points.Count > 0)
         {
@@ -146,7 +146,7 @@ public class Unit : MonoBehaviour
         // Debug.Log("Firing!");
         GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
-        obj.GetComponent<Projectile>().Init(team, dmg);
+        obj.GetComponent<Projectile>().Init(unitTeam, dmg);
     }
 
     // CALLED WHEN AI
@@ -156,7 +156,7 @@ public class Unit : MonoBehaviour
         {
             GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
             obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 1.0f));
-            obj.GetComponent<Projectile>().Init(team, dmg);
+            obj.GetComponent<Projectile>().Init(unitTeam, dmg);
         }
     }
 
@@ -170,7 +170,7 @@ public class Unit : MonoBehaviour
             canFire = false;
             // Fire with perfect accuracy if controlled.
             // PossessionHandler.shared.PossessedUnitFired();
-            ph.PossessedUnitFired();
+            unitPossessionHandler.PossessedUnitFired();
 
             if (beingControlled)
             {

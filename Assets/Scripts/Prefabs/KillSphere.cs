@@ -13,7 +13,7 @@ public class KillSphere : MonoBehaviour
     {
         if (transform.parent.gameObject.GetComponent<Unit>() != null)
         {
-            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().team;
+            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().unitTeam;
             // Debug.Log("TEAM IS: " + alliedTeam);
             unit = transform.parent.gameObject.GetComponent<Unit>();
         }
@@ -26,9 +26,9 @@ public class KillSphere : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Unit>() != null)
             {
-                if (other.gameObject.GetComponent<Unit>().team != alliedTeam )
+                if (other.gameObject.GetComponent<Unit>().unitTeam != alliedTeam)
                 {
-                    if (other.gameObject.GetComponent<Unit>().team != null)
+                    if (other.gameObject.GetComponent<Unit>().unitTeam != null)
                     {
                         unit.AddTargetInRange(other.gameObject);
                     }

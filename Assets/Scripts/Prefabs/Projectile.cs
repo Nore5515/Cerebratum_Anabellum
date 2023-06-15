@@ -38,9 +38,9 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.GetComponent<Unit>() != null)
         {
-            if (other.gameObject.GetComponent<Unit>().team != "NIL")
+            if (other.gameObject.GetComponent<Unit>().unitTeam != "NIL")
             {
-                if (other.gameObject.GetComponent<Unit>().team != team)
+                if (other.gameObject.GetComponent<Unit>().unitTeam != team)
                 {
                     // Debug.Log("Destroying " + other.gameObject.GetComponent<Unit>().team + "'s unit (via " + team + "'s projectile)");
                     if (other.gameObject.GetComponent<Unit>().DealDamage(damage) <= 0)
@@ -70,7 +70,7 @@ public class Projectile : MonoBehaviour
         }
         if (other.gameObject.GetComponent<TowerScript>() != null)
         {
-            if (other.gameObject.GetComponent<TowerScript>().team != team)
+            if (other.gameObject.GetComponent<TowerScript>().unitTeam != team)
             {
                 other.gameObject.GetComponent<TowerScript>().DealDamage(1);
                 Destroy(this.gameObject);
