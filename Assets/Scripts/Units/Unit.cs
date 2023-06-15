@@ -55,7 +55,17 @@ public class Unit : MonoBehaviour
 
     public SpriteRenderer glow;
 
-    public void Initalize(List<GameObject> newObjs, string newTeam, float _rof, float _unitRange)
+    // COLORS
+    Color RED = new Color(255, 0, 0, 0.3f);
+    Color BLUE = new Color(0, 0, 255, 0.3f);
+
+    // Point Stuff
+    public List<GameObject> points = new List<GameObject>();
+    public GameObject Dest;
+    public bool removing = false;
+
+
+    public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     {
         ph = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
         bullet = Resources.Load(path) as GameObject;
@@ -63,38 +73,34 @@ public class Unit : MonoBehaviour
         MinDist = 1;
         team = newTeam;
         threatState = "WALK";
+
         if (team == "RED")
         {
-            // if (glow != null)
-            // {
-            glow.color = new Color(255, 0, 0, 0.3f);
-            // }
+            glow.color = RED;
         }
         else
         {
-            // if (glow != null)
-            // {
-            glow.color = new Color(0, 0, 255, 0.3f);
-            // }
+            glow.color = BLUE;
             if (gameObject.GetComponentInChildren<SpriteRighter>() != null)
             {
                 gameObject.GetComponentInChildren<SpriteRighter>().Flip();
             }
         }
+
         rof = _rof;
         firstFire = true;   // First shot ready on initializaiton!
-        KillSphere ks = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
-        ks.alliedTeam = team;
-        ks.GetComponent<SphereCollider>().radius = _unitRange;
+        KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
+        unitKillSphere.alliedTeam = team;
+        unitKillSphere.GetComponent<SphereCollider>().radius = _unitRange;
         unitRange = _unitRange;
-        // Debug.Log(ks.alliedTeam);
-        foreach (GameObject obj in newObjs)
+        // Debug.Log(unitKillSphere.alliedTeam);
+        foreach (GameObject obj in newPoints)
         {
-            objs.Add(obj);
+            points.Add(obj);
         }
-        if (objs.Count > 0)
+        if (points.Count > 0)
         {
-            Dest = objs[0];
+            Dest = points[0];
         }
 
         // Sprite Stuff
@@ -132,11 +138,6 @@ public class Unit : MonoBehaviour
         }
         return hp;
     }
-
-    // Point Stuff
-    public List<GameObject> objs = new List<GameObject>();
-    public GameObject Dest;
-    public bool removing = false;
 
     // FireAt Logic
     // CALLED WHEN POSSESSED
@@ -291,24 +292,24 @@ public class Unit : MonoBehaviour
     //
     public void AddPoint(GameObject point)
     {
-        objs.Add(point);
-        if (objs.Count == 1)
+        points.Add(point);
+        if (points.Count == 1)
         {
-            Dest = objs[0];
+            Dest = points[0];
         }
     }
 
     public void RemovePoint(GameObject point)
     {
-        objs.Remove(point);
+        points.Remove(point);
         removing = false;
-        if (objs.Count == 0)
+        if (points.Count == 0)
         {
             Dest = null;
         }
         else
         {
-            Dest = objs[0];
+            Dest = points[0];
         }
     }
 
