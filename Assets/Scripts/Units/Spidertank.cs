@@ -16,8 +16,7 @@ public class Spidertank : Unit
     {
         unitObj = this.gameObject;
         controlDirection = new Vector3(0, 0, 0);
-        MaxDist = 1.4;
-        MinDist = 1;
+        MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
         hp = 20;

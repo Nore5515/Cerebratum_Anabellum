@@ -15,8 +15,7 @@ public class Unit : MonoBehaviour
     public int threatLevel { get; set; }
 
     // Range (REFACTOR TODO: TODO;)
-    public double MaxDist = 1.6;
-    public int MinDist = 1;
+    public int MIN_DIST_TO_MOVEMENT_DEST = 1;
 
     // UI
     public Slider hpSlider;
@@ -28,7 +27,7 @@ public class Unit : MonoBehaviour
     public float unitRange { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
-    public GameObject bullet { get; set; }
+    public GameObject bulletPrefab { get; set; }
     public Vector3 controlDirection { get; set; }
 
     // STATE
@@ -64,13 +63,14 @@ public class Unit : MonoBehaviour
     public GameObject Dest;
     public bool removing = false;
 
+    float MISS_RANGE_RADIUS = 1.0f;
+
 
     public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     {
         unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
-        bullet = Resources.Load(path) as GameObject;
-        MaxDist = 1.4;
-        MinDist = 1;
+        bulletPrefab = Resources.Load(path) as GameObject;
+        MIN_DIST_TO_MOVEMENT_DEST = 1;
         unitTeam = newTeam;
         threatState = "WALK";
 
@@ -144,9 +144,9 @@ public class Unit : MonoBehaviour
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
         // Debug.Log("Firing!");
-        GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
-        obj.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
-        obj.GetComponent<Projectile>().Init(unitTeam, dmg);
+        GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
+        bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
+        bulletInstance.GetComponent<Projectile>().Init(unitTeam, dmg);
     }
 
     // CALLED WHEN AI
@@ -154,9 +154,9 @@ public class Unit : MonoBehaviour
     {
         if (trans != null)
         {
-            GameObject obj = GameObject.Instantiate(bullet, unitObj.transform.position, Quaternion.identity) as GameObject;
-            obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 1.0f));
-            obj.GetComponent<Projectile>().Init(unitTeam, dmg);
+            GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
+            bulletInstance.transform.LookAt(GetRandomAdjacentPosition(trans.position, MISS_RANGE_RADIUS));
+            bulletInstance.GetComponent<Projectile>().Init(unitTeam, dmg);
         }
     }
 
@@ -164,7 +164,6 @@ public class Unit : MonoBehaviour
     public void ControlledFire(Vector3 target)
     {
         // Debug.Log("Controlled Fire!");
-
         if (canFire)
         {
             canFire = false;
@@ -191,8 +190,40 @@ public class Unit : MonoBehaviour
                 StartCoroutine(EnableFiring());
             }
         }
+    }
 
+    public void AIFire()
+    {
+        if (canFire)
+        {
+            canFire = false;
+            FireAtPosition(targetsInRange[0].gameObject.transform.position, MISS_RANGE_RADIUS);
+        }
+        else
+        {
+            if (canFireDelay == false)
+            {
+                canFireDelay = true;
+                StartCoroutine(EnableFiring());
+            }
+        }
+    }
 
+    // [PARAMS]: Vector3 targetPosition
+    public void FireAtTarget(Vector3 targetPosition)
+    {
+        if (canFire)
+        {
+            canFire = false;
+        }
+        else
+        {
+            if (canFireDelay == false)
+            {
+                canFireDelay = true;
+                StartCoroutine(EnableFiring());
+            }
+        }
     }
 
     // Target Logic 
@@ -356,14 +387,13 @@ public class Unit : MonoBehaviour
                 float distToDest = Vector3.Distance(transform.position, Dest.transform.position);
 
                 // If you are not close enough to your dest, keep moving towards it.
-                if (distToDest >= MinDist)
+                if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
                 {
                     // Translate movement.
                     transform.Translate(direction * speed * Time.deltaTime);
                 }
-
                 // Once you get too close to your destination, remove it from your movement path and go towards the next one.
-                if (distToDest <= MaxDist)
+                else
                 {
                     if (removing == false)
                     {
@@ -384,22 +414,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void AIFire()
-    {
-        if (canFire)
-        {
-            canFire = false;
-            FireAtTransform(targetsInRange[0].gameObject.transform);
-        }
-        else
-        {
-            if (canFireDelay == false)
-            {
-                canFireDelay = true;
-                StartCoroutine(EnableFiring());
-            }
-        }
-    }
+
 
     public void MovementUpdate()
     {
