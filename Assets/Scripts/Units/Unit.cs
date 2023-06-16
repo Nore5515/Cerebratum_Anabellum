@@ -64,6 +64,7 @@ public class Unit : MonoBehaviour
     public bool removing = false;
 
     float MISS_RANGE_RADIUS = 1.0f;
+    float CONTROLLED_MISS_RADIUS = 0.0f;
 
 
     public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
@@ -110,22 +111,27 @@ public class Unit : MonoBehaviour
 
     public IEnumerator EnableFiring()
     {
+        yield return FireDelay();
+        canFire = true;
+        canFireDelay = false;
+    }
+
+    private WaitForSeconds FireDelay()
+    {
         // When controlled, fire 50% faster.
         if (beingControlled)
         {
-            yield return new WaitForSeconds(rof * 0.5f);
+            return new WaitForSeconds(rof * 0.5f);
         }
         else if (firstFire)
         {
             firstFire = false;
-            yield return new WaitForSeconds(rof * 0.15f);
+            return new WaitForSeconds(rof * 0.15f);
         }
         else
         {
-            yield return new WaitForSeconds(rof);
+            return new WaitForSeconds(rof);
         }
-        canFire = true;
-        canFireDelay = false;
     }
 
     // Health and Damage Logic
@@ -149,80 +155,38 @@ public class Unit : MonoBehaviour
         bulletInstance.GetComponent<Projectile>().Init(unitTeam, dmg);
     }
 
-    // CALLED WHEN AI
-    public virtual void FireAtTransform(Transform trans)
-    {
-        if (trans != null)
-        {
-            GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
-            bulletInstance.transform.LookAt(GetRandomAdjacentPosition(trans.position, MISS_RANGE_RADIUS));
-            bulletInstance.GetComponent<Projectile>().Init(unitTeam, dmg);
-        }
-    }
-
-    // While controlled, fire as fast as you want.
-    public void ControlledFire(Vector3 target)
-    {
-        // Debug.Log("Controlled Fire!");
-        if (canFire)
-        {
-            canFire = false;
-            // Fire with perfect accuracy if controlled.
-            // PossessionHandler.shared.PossessedUnitFired();
-            unitPossessionHandler.PossessedUnitFired();
-
-            if (beingControlled)
-            {
-                FireAtPosition(target, 0.0f);
-            }
-            else
-            {
-                // TODO: REMOVE?
-                Debug.Log("...what?");
-                FireAtPosition(target, 1.0f);
-            }
-        }
-        else
-        {
-            if (canFireDelay == false)
-            {
-                canFireDelay = true;
-                StartCoroutine(EnableFiring());
-            }
-        }
-    }
-
-    public void AIFire()
-    {
-        if (canFire)
-        {
-            canFire = false;
-            FireAtPosition(targetsInRange[0].gameObject.transform.position, MISS_RANGE_RADIUS);
-        }
-        else
-        {
-            if (canFireDelay == false)
-            {
-                canFireDelay = true;
-                StartCoroutine(EnableFiring());
-            }
-        }
-    }
-
     // [PARAMS]: Vector3 targetPosition
-    public void FireAtTarget(Vector3 targetPosition)
+    // For AI, pass this as target. targetsInRange[0].gameObject.transform.position
+    public void AttemptShotAtPosition(Vector3 targetPosition)
     {
         if (canFire)
         {
-            canFire = false;
+            ValidFireAttempt(targetPosition);
         }
         else
         {
-            if (canFireDelay == false)
-            {
-                canFireDelay = true;
-                StartCoroutine(EnableFiring());
-            }
+            InvalidFireAttempt();
+        }
+    }
+
+    private void ValidFireAttempt(Vector3 targetPosition)
+    {
+        canFire = false;
+        if (beingControlled)
+        {
+            unitPossessionHandler.PossessedUnitFired();
+        }
+        // Fire with perfect accuracy if controlled.
+        float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
+        FireAtPosition(targetPosition, missRange);
+    }
+
+    private void InvalidFireAttempt()
+    {
+        if (canFireDelay == false)
+        {
+            canFireDelay = true;
+            StartCoroutine(EnableFiring());
         }
     }
 
@@ -431,7 +395,7 @@ public class Unit : MonoBehaviour
                 // Are there any targets left after the purge?
                 if (targetsInRange.Count > 0)
                 {
-                    AIFire();
+                    AttemptShotAtPosition(targetsInRange[0].gameObject.transform.position);
                 }
             }
         }

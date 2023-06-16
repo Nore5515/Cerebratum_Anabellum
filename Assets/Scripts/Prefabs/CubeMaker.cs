@@ -187,7 +187,7 @@ public class CubeMaker : MonoBehaviour
                 // While controlling a unit, clicking = firing.
                 if (IsControlling())
                 {
-                    controlledUnits[0].ControlledFire(new Vector3(hit.point.x, 0.5f, hit.point.z));
+                    controlledUnits[0].AttemptShotAtPosition(new Vector3(hit.point.x, 0.5f, hit.point.z));
                 }
                 else
                 {
