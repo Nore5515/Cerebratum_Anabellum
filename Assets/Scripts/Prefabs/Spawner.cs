@@ -10,15 +10,22 @@ public class Spawner : Structure
     public Material blueMat;
 
     public List<GameObject> unitList = new List<GameObject>();
-    // public List<GameObject> nullUnitList = new List<GameObject>();
 
     public List<GameObject> paths;
 
     public string spawnerTeam = "RED";
-    // TODO: Max max  versions later for better fill count
+
+    public class SpawnedUnitStats
+    {
+
+    }
+
     public float startingFireDelay = 2.0f;
     public float startingUnitRange = 3.0f;
     public float startingSpawnTime = 3.0f;
+    public float MAX_UNIT_FIRE_RATE = 0.5f;
+    public float MAX_UNIT_RANGE = 6.0f;
+    public float MAX_UNIT_SPAWN_RATE = 1.0f;
     public float fireDelay;
     public float unitRange;
     public float spawnTime;
@@ -55,9 +62,7 @@ public class Spawner : Structure
     void Start()
     {
         Debug.Log("!START!");
-        fireDelay = startingFireDelay;
-        unitRange = startingUnitRange;
-        spawnTime = startingSpawnTime;
+        ResetToStartingStats();
 
         pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
@@ -73,7 +78,6 @@ public class Spawner : Structure
         {
             AI_DrawPath(this.transform.position);
         }
-
     }
 
     private void InitializeUI()
@@ -95,9 +99,7 @@ public class Spawner : Structure
     public void LateStart()
     {
         Debug.Log("LATE START!");
-        fireDelay = startingFireDelay;
-        unitRange = startingUnitRange;
-        spawnTime = startingSpawnTime;
+        ResetToStartingStats();
 
         pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
@@ -107,6 +109,13 @@ public class Spawner : Structure
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
+    }
+
+    private void ResetToStartingStats()
+    {
+        fireDelay = startingFireDelay;
+        unitRange = startingUnitRange;
+        spawnTime = startingSpawnTime;
     }
 
     private void InitalizeUI(GameObject ui)
@@ -408,29 +417,6 @@ public class Spawner : Structure
         GameObject.Find("Economy").GetComponent<Economy>().SetCycleMax(1);
     }
 
-    public void CreateNaniteGenerator()
-    {
-        if (SpawnerTracker.redSpawnerObjs.Count <= 2)
-        {
-            if (TeamStats.RedPoints >= 3)
-            {
-                Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
-                newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
-                newPos.y += 0.2f; // TODO: Why no work without? Fix later.
-                GameObject newObj = Instantiate(naniteGenPrefab, newPos, Quaternion.identity) as GameObject;
-                newObj.GetComponent<Structure>().type = "nanite";
-                SpawnerTracker.redSpawnerObjs.Add(newObj);
-                // Debug.Log("Adding nanite");
-
-                // Costs 3 nanites.
-                TeamStats.RedPoints -= 3;
-
-                // Raise nanite production.
-                TeamStats.RedNaniteGain += 1;
-            }
-        }
-    }
-
     private void InstantiateUnit(GameObject reqPrefab)
     {
         // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
@@ -468,7 +454,7 @@ public class Spawner : Structure
 
     public void IncreaseSpawnRate()
     {
-        if (spawnTime >= 1.0f)
+        if (spawnTime >= MAX_UNIT_SPAWN_RATE)
         {
             if (deductTeamPoints(1))
             {
@@ -484,7 +470,7 @@ public class Spawner : Structure
 
     public void IncreaseFireRate()
     {
-        if (fireDelay >= 0.5f)
+        if (fireDelay >= MAX_UNIT_FIRE_RATE)
         {
             if (deductTeamPoints(1))
             {
@@ -500,7 +486,7 @@ public class Spawner : Structure
 
     public void IncreaseRange()
     {
-        if (unitRange <= 6.0f)
+        if (unitRange <= MAX_UNIT_RANGE)
         {
             if (deductTeamPoints(1))
             {
@@ -514,27 +500,9 @@ public class Spawner : Structure
         }
     }
 
-
     public bool deductTeamPoints(int cost)
     {
-        GameObject canvas = GameObject.Find("Canvas");
-        if (spawnerTeam == "RED")
-        {
-            if (TeamStats.RedPoints >= cost)
-            {
-                TeamStats.RedPoints -= cost;
-                return true;
-            }
-        }
-        else
-        {
-            if (TeamStats.BluePoints >= cost)
-            {
-                TeamStats.BluePoints -= cost;
-                return true;
-            }
-        }
-        return false;
+        return TeamStats.AttemptPointDeductionFromTeam(cost, spawnerTeam);
     }
 
     // NEW STUFF

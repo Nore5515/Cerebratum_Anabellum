@@ -1,20 +1,20 @@
 public static class TeamStats
 {
     // Team HP
-    public static int BlueHP {get; set;}
-    public static int RedHP {get; set;}
+    public static int BlueHP { get; set; }
+    public static int RedHP { get; set; }
     // public static bool GameStarted {get; set;}
 
     // Nanites
-    public static int BluePoints {get; set;}
-    public static int RedPoints {get; set;}
-    
+    public static int BluePoints { get; set; }
+    public static int RedPoints { get; set; }
+
     // Nanites per minute
-    public static int RedNaniteGain {get; set;}
-    public static int BlueNaniteGain {get; set;}
+    public static int RedNaniteGain { get; set; }
+    public static int BlueNaniteGain { get; set; }
 
     // Cycle length.
-    public static int CycleLength {get; set;}
+    public static int CycleLength { get; set; }
 
     static TeamStats()
     {
@@ -30,5 +30,26 @@ public static class TeamStats
         RedPoints = 0;
         BlueNaniteGain = 0;
         RedNaniteGain = 0;
+    }
+
+    public static bool AttemptPointDeductionFromTeam(int pointDeduction, string teamToDeduct)
+    {
+        if (teamToDeduct == "RED")
+        {
+            if (RedPoints >= pointDeduction)
+            {
+                RedPoints -= pointDeduction;
+                return true;
+            }
+        }
+        else
+        {
+            if (BluePoints >= pointDeduction)
+            {
+                BluePoints -= pointDeduction;
+                return true;
+            }
+        }
+        return false;
     }
 }
