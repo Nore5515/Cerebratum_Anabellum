@@ -249,15 +249,13 @@ public class Spawner : Structure
     public int DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
     {
         GameObject obj;
-        List<GameObject> toRemoveUnits = new List<GameObject>();
         ClearNullInstances();
 
         // TEAM.
+        // Create and add a team path marker.
+        obj = AddPathMarker(spawnerTeam, point);
         if (spawnerTeam == "RED")
         {
-            // Create and add a red path marker.
-            obj = AddPathMarker("RED", point);
-
             // Update the path bar value/progress with the current spheres count.
             pathBar.value = spheres.Count;
             // If we hit the max count, color the bar red.
@@ -265,10 +263,6 @@ public class Spawner : Structure
             {
                 TintSliderRed(ref pathBar);
             }
-        }
-        else
-        {
-            obj = AddPathMarker("BLUE", point);
         }
 
         // Update each unit instance with the new point IF they match the team
@@ -281,16 +275,9 @@ public class Spawner : Structure
                     unit.GetComponent<Unit>().AddPoint(obj);
                 }
             }
-            else
-            {
-                toRemoveUnits.Add(unit);
-            }
-        }
-        foreach (GameObject markedUnit in toRemoveUnits)
-        {
-            unitList.Remove(markedUnit);
         }
 
+        // If you're over your max, start removing them from the front of the line.
         if (spheres.Count >= maxCount)
         {
             RemovePoint(spheres[0]);
@@ -570,9 +557,7 @@ public class Spawner : Structure
         return false;
     }
 
-
     // NEW STUFF
-
     public void RemovePoint(GameObject obj)
     {
         spheres.Remove(obj);
