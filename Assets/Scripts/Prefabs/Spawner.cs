@@ -9,7 +9,8 @@ public class Spawner : Structure
     public Material redMat;
     public Material blueMat;
 
-    public List<GameObject> instances = new List<GameObject>();
+    // Rename to something WAY better.
+    public List<GameObject> units = new List<GameObject>();
     public List<GameObject> markedInstances = new List<GameObject>();
 
     public List<GameObject> paths;
@@ -254,13 +255,15 @@ public class Spawner : Structure
         // TEAM.
         if (spawnerTeam == "RED")
         {
+            // Create and add a red path marker.
             obj = AddPathMarker("RED", point);
 
+            // Update the path bar value/progress with the current spheres count.
             pathBar.value = spheres.Count;
+            // If we hit the max count, color the bar red.
             if (spheres.Count == maxCount)
             {
-                Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
-                pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
+                TintSliderRed(ref pathBar);
             }
         }
         else
@@ -268,7 +271,8 @@ public class Spawner : Structure
             obj = AddPathMarker("BLUE", point);
         }
 
-        foreach (GameObject unit in instances)
+        // Update each unit instance with the new point IF they match the team
+        foreach (GameObject unit in units)
         {
             if (unit != null)
             {
@@ -284,7 +288,7 @@ public class Spawner : Structure
         }
         foreach (GameObject markedUnit in toRemoveUnits)
         {
-            instances.Remove(markedUnit);
+            units.Remove(markedUnit);
         }
 
         if (spheres.Count >= maxCount)
@@ -293,6 +297,12 @@ public class Spawner : Structure
         }
 
         return spheres.Count;
+    }
+
+    private void TintSliderRed(ref Slider slider)
+    {
+        Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
+        slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
     }
 
     // TODO: Also have this only happen when EnableDrawable is pressed.
@@ -317,6 +327,7 @@ public class Spawner : Structure
         }
     }
 
+    // TODO: This should NOT add to spheres. That should be its own thing.
     public GameObject AddPathMarker(string color, Vector3 loc)
     {
         // Debug.Log("Adding path marker!" + loc);
@@ -386,7 +397,7 @@ public class Spawner : Structure
 
     public void ClearNullInstances()
     {
-        foreach (GameObject instance in instances)
+        foreach (GameObject instance in units)
         {
             if (instance == null)
             {
@@ -397,7 +408,7 @@ public class Spawner : Structure
         {
             foreach (GameObject markedInstance in markedInstances)
             {
-                instances.Remove(markedInstance);
+                units.Remove(markedInstance);
             }
             markedInstances = new List<GameObject>();
         }
@@ -450,11 +461,11 @@ public class Spawner : Structure
         }
     }
 
-    private void CreatePrefab(GameObject reqPrefab)
+    private void InstantiateUnit(GameObject reqPrefab)
     {
         // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
-        instances.Add(obj);
+        units.Add(obj);
 
         obj.GetComponent<Unit>().Initalize(spheres, spawnerTeam, fireDelay, unitRange);
         if (spawnerTeam == "RED")
@@ -472,7 +483,7 @@ public class Spawner : Structure
         yield return new WaitForSeconds(spawnTime);
         ClearNullInstances();
 
-        CreatePrefab(prefab);
+        InstantiateUnit(prefab);
 
         StartCoroutine(SpawnPrefab());
     }
@@ -562,7 +573,7 @@ public class Spawner : Structure
     public void RemovePoint(GameObject obj)
     {
         spheres.Remove(obj);
-        foreach (GameObject unit in instances)
+        foreach (GameObject unit in units)
         {
             if (unit != null)
             {
