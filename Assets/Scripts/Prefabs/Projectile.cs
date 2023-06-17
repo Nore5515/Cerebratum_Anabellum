@@ -55,9 +55,9 @@ public class Projectile : MonoBehaviour
         Spawner otherSpawn = other.gameObject.GetComponent<Spawner>();
         if (otherSpawn != null)
         {
-            if (otherSpawn.team != team)
+            if (otherSpawn.spawnerTeam != team)
             {
-                if (otherSpawn.team == "RED")
+                if (otherSpawn.spawnerTeam == "RED")
                 {
                     TeamStats.RedHP -= 1;
                 }

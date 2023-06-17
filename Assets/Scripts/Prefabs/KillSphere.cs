@@ -40,7 +40,7 @@ public class KillSphere : MonoBehaviour
             }
             if (other.gameObject.GetComponent<Spawner>() != null)
             {
-                if (other.gameObject.GetComponent<Spawner>().team != alliedTeam)
+                if (other.gameObject.GetComponent<Spawner>().spawnerTeam != alliedTeam)
                 {
                     // Debug.Log("FOUND SPAWNER! I am " + alliedTeam + ", they are: " +other.gameObject.GetComponent<Spawner>().team);
                     unit.AddTargetInRange(other.gameObject);

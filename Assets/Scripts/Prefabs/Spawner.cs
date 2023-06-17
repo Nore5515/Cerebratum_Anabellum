@@ -14,7 +14,7 @@ public class Spawner : Structure
 
     public List<GameObject> paths;
 
-    public string team = "RED";
+    public string spawnerTeam = "RED";
     // TODO: Max max  versions later for better fill count
     public float startingFireDelay = 2.0f;
     public float startingUnitRange = 3.0f;
@@ -68,13 +68,13 @@ public class Spawner : Structure
 
         // TODO: What the hell is this
         // Root spawner behaves different than every other.
-        if (SpawnerTracker.redRootSpawner == null && team == "RED")
+        if (SpawnerTracker.redRootSpawner == null && spawnerTeam == "RED")
         {
             SpawnerTracker.redRootSpawner = this.gameObject;
             SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
             type = "spawn";
         }
-        if (SpawnerTracker.blueRootSpawner == null && team == "BLUE")
+        if (SpawnerTracker.blueRootSpawner == null && spawnerTeam == "BLUE")
         {
             SpawnerTracker.blueRootSpawner = this.gameObject;
             SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
@@ -138,7 +138,7 @@ public class Spawner : Structure
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate(); });
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate(); });
         rangeButton.onClick.AddListener(delegate { IncreaseRange(); });
-        pathButton.onClick.AddListener(delegate { DrawPath(); });
+        pathButton.onClick.AddListener(delegate { EnableDrawable(); });
         // deleteButton.onClick.AddListener(delegate { RemoveSpawner(); });
 
         // Fills
@@ -157,7 +157,7 @@ public class Spawner : Structure
         // if (!rootSpawner)
         if (true)
         {
-            if (team == "RED")
+            if (spawnerTeam == "RED")
             {
                 StartCoroutine(removeSpawn());
                 // Debug.Log("Main:" + SpawnerTracker.redSpawnerObjs.Count);
@@ -207,9 +207,9 @@ public class Spawner : Structure
     // THE BUTTON ON SPAWNER
     // it tells the cube maker to start making cubes
     // but also try to avoid assiging CM? I'm kinda likin the top-down heiarchy
-    public void DrawPath()
+    public void EnableDrawable()
     {
-        Debug.Log("DRAW PATH!");
+        Debug.Log("DRAWABLE ENABLED!");
         ClearPoints();
         SetIsDrawable(true);
     }
@@ -218,32 +218,41 @@ public class Spawner : Structure
     {
         return pathDrawingMode;
     }
+
     public void SetIsDrawable(bool _newMode)
     {
-        Debug.Log("Drawable is: " + _newMode);
         if (_newMode == true)
         {
-            Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
-            this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = dim;
+            DimHut();
         }
         else
         {
-            Color white = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
+            UndimHut();
         }
         pathDrawingMode = _newMode;
+    }
+
+    private void DimHut()
+    {
+        Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
+        this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = dim;
+    }
+
+    private void UndimHut()
+    {
+        Color white = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+        this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
     }
 
     // TODO: Move maxCount to spawners
     // Returns number of spheres in path now.
     public int DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
     {
-
         GameObject obj;
         List<GameObject> toRemoveUnits = new List<GameObject>();
 
         // TEAM.
-        if (team == "RED")
+        if (spawnerTeam == "RED")
         {
             obj = AddPathMarker("RED", point);
 
@@ -263,7 +272,7 @@ public class Spawner : Structure
         {
             if (unit != null)
             {
-                if (unit.GetComponent<Unit>().unitTeam == team)
+                if (unit.GetComponent<Unit>().unitTeam == spawnerTeam)
                 {
                     unit.GetComponent<Unit>().AddPoint(obj);
                 }
@@ -286,7 +295,7 @@ public class Spawner : Structure
         return spheres.Count;
     }
 
-    // TODO: Also have this only happen when DrawPath is pressed.
+    // TODO: Also have this only happen when EnableDrawable is pressed.
     public void ClearPoints()
     {
         while (spheres.Count > 0)
@@ -328,7 +337,7 @@ public class Spawner : Structure
 
     void AI_DrawPath(Vector3 position)
     {
-        if (team == "RED")
+        if (spawnerTeam == "RED")
         {
             if (paths.Count > 0)
             {
@@ -447,8 +456,8 @@ public class Spawner : Structure
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
         instances.Add(obj);
 
-        obj.GetComponent<Unit>().Initalize(spheres, team, fireDelay, unitRange);
-        if (team == "RED")
+        obj.GetComponent<Unit>().Initalize(spheres, spawnerTeam, fireDelay, unitRange);
+        if (spawnerTeam == "RED")
         {
             obj.GetComponent<MeshRenderer>().material = redMat;
         }
@@ -528,7 +537,7 @@ public class Spawner : Structure
     public bool deductTeamPoints(int cost)
     {
         GameObject canvas = GameObject.Find("Canvas");
-        if (team == "RED")
+        if (spawnerTeam == "RED")
         {
             if (TeamStats.RedPoints >= cost)
             {

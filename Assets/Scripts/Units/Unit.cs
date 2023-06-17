@@ -10,6 +10,22 @@ public class Unit : MonoBehaviour
     public class TargetHandler
     {
         public List<GameObject> targetsInRange = new List<GameObject>();
+
+        public void ClearNullTargets()
+        {
+            List<GameObject> toRemoveObjs = new List<GameObject>();
+            foreach (GameObject obj in targetsInRange)
+            {
+                if (obj == null)
+                {
+                    toRemoveObjs.Add(obj);
+                }
+            }
+            foreach (GameObject markedUnit in toRemoveObjs)
+            {
+                targetsInRange.Remove(markedUnit);
+            }
+        }
     }
 
     // Core unit stats
@@ -274,18 +290,7 @@ public class Unit : MonoBehaviour
 
     public void ClearNullTargets()
     {
-        List<GameObject> toRemoveObjs = new List<GameObject>();
-        foreach (GameObject obj in th.targetsInRange)
-        {
-            if (obj == null)
-            {
-                toRemoveObjs.Add(obj);
-            }
-        }
-        foreach (GameObject markedUnit in toRemoveObjs)
-        {
-            th.targetsInRange.Remove(markedUnit);
-        }
+        th.ClearNullTargets();
         UpdateThreatState();
     }
 
