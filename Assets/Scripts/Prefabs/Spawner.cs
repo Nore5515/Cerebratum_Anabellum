@@ -9,9 +9,8 @@ public class Spawner : Structure
     public Material redMat;
     public Material blueMat;
 
-    // Rename to something WAY better.
-    public List<GameObject> units = new List<GameObject>();
-    public List<GameObject> markedInstances = new List<GameObject>();
+    public List<GameObject> unitList = new List<GameObject>();
+    // public List<GameObject> nullUnitList = new List<GameObject>();
 
     public List<GameObject> paths;
 
@@ -251,6 +250,7 @@ public class Spawner : Structure
     {
         GameObject obj;
         List<GameObject> toRemoveUnits = new List<GameObject>();
+        ClearNullInstances();
 
         // TEAM.
         if (spawnerTeam == "RED")
@@ -272,7 +272,7 @@ public class Spawner : Structure
         }
 
         // Update each unit instance with the new point IF they match the team
-        foreach (GameObject unit in units)
+        foreach (GameObject unit in unitList)
         {
             if (unit != null)
             {
@@ -288,7 +288,7 @@ public class Spawner : Structure
         }
         foreach (GameObject markedUnit in toRemoveUnits)
         {
-            units.Remove(markedUnit);
+            unitList.Remove(markedUnit);
         }
 
         if (spheres.Count >= maxCount)
@@ -397,21 +397,24 @@ public class Spawner : Structure
 
     public void ClearNullInstances()
     {
-        foreach (GameObject instance in units)
+        List<GameObject> nullUnitList = GenerateNullUnitList();
+        foreach (GameObject nullUnit in nullUnitList)
         {
-            if (instance == null)
+            unitList.Remove(nullUnit);
+        }
+    }
+
+    private List<GameObject> GenerateNullUnitList()
+    {
+        List<GameObject> nullUnitList = new List<GameObject>();
+        foreach (GameObject unit in unitList)
+        {
+            if (unit == null)
             {
-                markedInstances.Add(instance);
+                nullUnitList.Add(unit);
             }
         }
-        if (markedInstances.Count > 0)
-        {
-            foreach (GameObject markedInstance in markedInstances)
-            {
-                units.Remove(markedInstance);
-            }
-            markedInstances = new List<GameObject>();
-        }
+        return nullUnitList;
     }
 
     public void CreateNewSpawner()
@@ -465,7 +468,7 @@ public class Spawner : Structure
     {
         // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
-        units.Add(obj);
+        unitList.Add(obj);
 
         obj.GetComponent<Unit>().Initalize(spheres, spawnerTeam, fireDelay, unitRange);
         if (spawnerTeam == "RED")
@@ -573,7 +576,7 @@ public class Spawner : Structure
     public void RemovePoint(GameObject obj)
     {
         spheres.Remove(obj);
-        foreach (GameObject unit in units)
+        foreach (GameObject unit in unitList)
         {
             if (unit != null)
             {

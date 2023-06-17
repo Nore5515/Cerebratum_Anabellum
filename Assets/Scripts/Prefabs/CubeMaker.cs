@@ -16,7 +16,7 @@ public class CubeMaker : MonoBehaviour
     public string teamColor = "RED";
     public Text teamColorText;
 
-    public List<GameObject> toRemoveUnits = new List<GameObject>();
+    // public List<GameObject> toRemoveUnits = new List<GameObject>();
     public List<Unit> controlledUnits = new List<Unit>();
 
     public Vector3 unitDirection = new Vector3();
