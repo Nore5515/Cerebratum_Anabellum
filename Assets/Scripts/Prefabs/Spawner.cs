@@ -24,7 +24,7 @@ public class Spawner : Structure
     public float spawnTime;
 
     // NEW STUFF
-    public List<GameObject> spheres = new List<GameObject>();
+    public List<GameObject> pathSpheres = new List<GameObject>();
     GameObject canvas;
     public GameObject pathMarker;
     string path = "Asset_PathMarker";
@@ -49,6 +49,8 @@ public class Spawner : Structure
     float spawnStep;
 
     bool selected = false;
+
+    public int maxPathLength;
 
     void Start()
     {
@@ -244,46 +246,53 @@ public class Spawner : Structure
         this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
     }
 
-    // TODO: Move maxCount to spawners
-    // Returns number of spheres in path now.
-    public int DrawPathAtPoint(Vector3 point, int maxCount, ref Slider pathBar)
+    // Returns number of pathSpheres in path now.
+    public int DrawPathSphereAtPoint(Vector3 point, ref Slider pathBar)
     {
-        GameObject obj;
+        GameObject newPathPoint;
         ClearNullInstances();
 
-        // TEAM.
-        // Create and add a team path marker.
-        obj = AddPathMarker(spawnerTeam, point);
+        if (pathSpheres.Count <= maxPathLength)
+        {
+            // Create and add a team path marker.
+            newPathPoint = AddPathMarker(spawnerTeam, point);
+        }
+        else
+        {
+            return -1;
+        }
+
         if (spawnerTeam == "RED")
         {
-            // Update the path bar value/progress with the current spheres count.
-            pathBar.value = spheres.Count;
-            // If we hit the max count, color the bar red.
-            if (spheres.Count == maxCount)
-            {
-                TintSliderRed(ref pathBar);
-            }
+            UpdateSlider(ref pathBar);
         }
 
-        // Update each unit instance with the new point IF they match the team
+        AddPathPointToAlliedUnits(newPathPoint);
+
+        return pathSpheres.Count;
+    }
+
+    // Update each unit instance with the new point IF they match the team
+    private void AddPathPointToAlliedUnits(GameObject newPathPoint)
+    {
         foreach (GameObject unit in unitList)
         {
-            if (unit != null)
+            if (unit.GetComponent<Unit>().unitTeam == spawnerTeam)
             {
-                if (unit.GetComponent<Unit>().unitTeam == spawnerTeam)
-                {
-                    unit.GetComponent<Unit>().AddPoint(obj);
-                }
+                unit.GetComponent<Unit>().AddPoint(newPathPoint);
             }
         }
+    }
 
-        // If you're over your max, start removing them from the front of the line.
-        if (spheres.Count >= maxCount)
+    private void UpdateSlider(ref Slider slider)
+    {
+        // Convert it to a float.
+        slider.value = (1.0f) * pathSpheres.Count / maxPathLength;
+        // If we hit the max count, color the bar red.
+        if (pathSpheres.Count == maxPathLength)
         {
-            RemovePoint(spheres[0]);
+            TintSliderRed(ref slider);
         }
-
-        return spheres.Count;
     }
 
     private void TintSliderRed(ref Slider slider)
@@ -295,9 +304,9 @@ public class Spawner : Structure
     // TODO: Also have this only happen when EnableDrawable is pressed.
     public void ClearPoints()
     {
-        while (spheres.Count > 0)
+        while (pathSpheres.Count > 0)
         {
-            RemovePoint(spheres[0]);
+            RemovePoint(pathSpheres[0]);
         }
     }
 
@@ -314,7 +323,7 @@ public class Spawner : Structure
         }
     }
 
-    // TODO: This should NOT add to spheres. That should be its own thing.
+    // TODO: This should NOT add to pathSpheres. That should be its own thing.
     public GameObject AddPathMarker(string color, Vector3 loc)
     {
         // Debug.Log("Adding path marker!" + loc);
@@ -329,7 +338,7 @@ public class Spawner : Structure
         {
             obj.GetComponent<MeshRenderer>().material = blueMat;
         }
-        spheres.Add(obj);
+        pathSpheres.Add(obj);
         return obj;
     }
 
@@ -345,7 +354,7 @@ public class Spawner : Structure
             {
                 GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
                 obj.GetComponent<MeshRenderer>().material = redMat;
-                spheres.Add(obj);
+                pathSpheres.Add(obj);
             }
         }
         else
@@ -358,7 +367,7 @@ public class Spawner : Structure
             {
                 GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
                 obj.GetComponent<MeshRenderer>().material = redMat;
-                spheres.Add(obj);
+                pathSpheres.Add(obj);
             }
         }
     }
@@ -457,7 +466,7 @@ public class Spawner : Structure
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
         unitList.Add(obj);
 
-        obj.GetComponent<Unit>().Initalize(spheres, spawnerTeam, fireDelay, unitRange);
+        obj.GetComponent<Unit>().Initalize(pathSpheres, spawnerTeam, fireDelay, unitRange);
         if (spawnerTeam == "RED")
         {
             obj.GetComponent<MeshRenderer>().material = redMat;
@@ -560,7 +569,7 @@ public class Spawner : Structure
     // NEW STUFF
     public void RemovePoint(GameObject obj)
     {
-        spheres.Remove(obj);
+        pathSpheres.Remove(obj);
         foreach (GameObject unit in unitList)
         {
             if (unit != null)

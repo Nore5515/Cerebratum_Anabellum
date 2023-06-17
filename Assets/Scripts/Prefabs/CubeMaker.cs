@@ -11,7 +11,6 @@ public class CubeMaker : MonoBehaviour
     RaycastHit hit;
     public GameObject prefabRed;
     public GameObject prefabBlue;
-    public int maxCount;
 
     public string teamColor = "RED";
     public Text teamColorText;
@@ -46,7 +45,6 @@ public class CubeMaker : MonoBehaviour
 
     public void Start()
     {
-        pathBar.maxValue = maxCount;
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
 
         possessionButton = GameObject.Find("PossessButton");
@@ -115,7 +113,7 @@ public class CubeMaker : MonoBehaviour
 
             distancePerSphere = 0.0f;
 
-            spawnerClass.DrawPathAtPoint(hit.point, maxCount, ref pathBar);
+            spawnerClass.DrawPathSphereAtPoint(hit.point, ref pathBar);
         }
 
         // If distance is less than maxdistancepersphere, add change in distance.

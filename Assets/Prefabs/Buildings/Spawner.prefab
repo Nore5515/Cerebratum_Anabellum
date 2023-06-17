@@ -1261,10 +1261,9 @@ MonoBehaviour:
   prefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
   redMat: {fileID: 2100000, guid: 619d35543f16f440eabf034948818bff, type: 2}
   blueMat: {fileID: 2100000, guid: ee47bd4f706831b4daa5d4c5a3a5be77, type: 2}
-  instances: []
-  markedInstances: []
+  unitList: []
   paths: []
-  team: RED
+  spawnerTeam: RED
   startingFireDelay: 2
   startingUnitRange: 3
   startingSpawnTime: 3
@@ -1279,6 +1278,7 @@ MonoBehaviour:
   rangeFill: {fileID: 0}
   fireRateFill: {fileID: 0}
   spawnFill: {fileID: 0}
+  maxPathLength: 30
 --- !u!136 &2041369148240088535
 CapsuleCollider:
   m_ObjectHideFlags: 0
