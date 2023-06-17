@@ -26,26 +26,4 @@ public static class SpawnerTracker
         blueRootSpawner = null;
     }
 
-    // // ADD / REMOVE
-    // public static void AddSpawner(GameObject newSpawn)
-    // {
-    //     alliedSpawnerObjs.Add(newSpawn);
-    // }
-    // public static void RemoveSpawner(GameObject removingSpawn)
-    // {
-    //     alliedSpawnerObjs.Remove(removingSpawn);
-    // }
-
-    // // GET COUNT
-    // public static int GetCount()
-    // {
-    //     return alliedSpawnerObjs.Count;
-    // }
-
-    // // GET
-    // public static GameObject GetSpawner(int index)
-    // {
-    //     return alliedSpawnerObjs[index];
-    // }
-
 }

@@ -68,23 +68,10 @@ public class Spawner : Structure
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
 
-        // TODO: What the hell is this
-        // Root spawner behaves different than every other.
-        if (SpawnerTracker.redRootSpawner == null && spawnerTeam == "RED")
+        type = "spawn";
+        if (spawnerTeam == "BLUE")
         {
-            SpawnerTracker.redRootSpawner = this.gameObject;
-            SpawnerTracker.redSpawnerObjs.Add(this.gameObject);
-            type = "spawn";
-        }
-        if (SpawnerTracker.blueRootSpawner == null && spawnerTeam == "BLUE")
-        {
-            SpawnerTracker.blueRootSpawner = this.gameObject;
-            SpawnerTracker.blueSpawnerObjs.Add(this.gameObject);
-            if (this.gameObject != null)
-            {
-                AI_DrawPath(SpawnerTracker.blueSpawnerObjs[0].transform.position);
-            }
-            type = "spawn";
+            AI_DrawPath(this.transform.position);
         }
 
     }
@@ -344,31 +331,15 @@ public class Spawner : Structure
 
     void AI_DrawPath(Vector3 position)
     {
-        if (spawnerTeam == "RED")
+        if (paths.Count > 0)
         {
-            if (paths.Count > 0)
-            {
-                AddSomePoints("RED");
-            }
-            else
-            {
-                GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
-                obj.GetComponent<MeshRenderer>().material = redMat;
-                pathSpheres.Add(obj);
-            }
+            AddSomePoints("BLUE");
         }
         else
         {
-            if (paths.Count > 0)
-            {
-                AddSomePoints("BLUE");
-            }
-            else
-            {
-                GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
-                obj.GetComponent<MeshRenderer>().material = redMat;
-                pathSpheres.Add(obj);
-            }
+            GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
+            obj.GetComponent<MeshRenderer>().material = redMat;
+            pathSpheres.Add(obj);
         }
     }
 
