@@ -3,19 +3,22 @@ using UnityEngine.UI;
 
 public enum BotCommandString
 {
-    Spring,
-    Summer,
-    Autumn,
-    Winter
+    BuildInfSpawner,
+    RaiseInfSpawn,
+    RaiseInfRange,
+    RaiseInfRof,
+    BuildNaniteGen,
+    DoNothing,
 }
 
 public class BotCommandModel
 {
+    string botCommandTeam;
+    BotCommandString botCommandString;
 
-    public BotCommandModel()
+    public BotCommandModel(string botTeam, BotCommandString botCmdString)
     {
-
+        botCommandTeam = botTeam;
+        botCommandString = botCmdString;
     }
-
-    // Remaining implementation of Person class.
 }
