@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class BotCommandExecutor : MonoBehaviour
 {
 
+    [SerializeField]
+    private List<GameObject> botBuildingSlotList = new List<GameObject>();
+
     BotCommandGenerator commandGenerator = new BotCommandGenerator();
 
     void Start()
