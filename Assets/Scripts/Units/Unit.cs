@@ -175,7 +175,7 @@ public class Unit : MonoBehaviour
         // Debug.Log("Firing!");
         GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
         bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
-        bulletInstance.GetComponent<Projectile>().Init(unitTeam, dmg);
+        bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
     }
 
     // [PARAMS]: Vector3 targetPosition
