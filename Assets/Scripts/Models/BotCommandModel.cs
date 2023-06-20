@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BotCommandString
+public enum BotCommands
 {
     BuildInfSpawner,
     RaiseInfSpawn,
@@ -13,10 +13,10 @@ public enum BotCommandString
 
 public class BotCommandModel
 {
-    string botCommandTeam;
-    BotCommandString botCommandString;
+    public string botCommandTeam;
+    public BotCommands botCommandString;
 
-    public BotCommandModel(string botTeam, BotCommandString botCmdString)
+    public BotCommandModel(string botTeam, BotCommands botCmdString)
     {
         botCommandTeam = botTeam;
         botCommandString = botCmdString;
