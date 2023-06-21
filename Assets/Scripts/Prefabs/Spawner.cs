@@ -333,6 +333,7 @@ public class Spawner : Structure
         else
         {
             obj.GetComponent<MeshRenderer>().material = blueMat;
+            obj.GetComponent<MeshRenderer>().enabled = false;
         }
         pathSpheres.Add(obj);
         return obj;

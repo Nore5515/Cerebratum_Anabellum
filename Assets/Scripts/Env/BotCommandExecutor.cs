@@ -33,6 +33,7 @@ public class BotCommandExecutor : MonoBehaviour
         }
         else if (commandModel.botCommandString == BotCommands.BuildInfSpawner)
         {
+            Debug.Log("Attempt Build Inf Spawner!");
             AttemptBuildInfSpawner();
         }
     }
