@@ -27,14 +27,63 @@ public class BotCommandExecutor : MonoBehaviour
 
     private void ExecuteCommand(BotCommandModel commandModel)
     {
-        if (commandModel.botCommandString == BotCommands.DoNothing)
+        switch (commandModel.botCommandString)
         {
-            Debug.Log("Do nothing!");
+            case BotCommands.DoNothing:
+                ExecuteDoNothingCommand();
+                break;
+            case BotCommands.BuildInfSpawner:
+                ExecuteBuildInfSpawnerCommand();
+                break;
+            case BotCommands.ChangeSpawnerPath:
+                ExecuteChangeSpawnerPathCommand();
+                break;
+            default:
+                break;
         }
-        else if (commandModel.botCommandString == BotCommands.BuildInfSpawner)
+    }
+
+    private void ExecuteChangeSpawnerPathCommand()
+    {
+        List<BuildingSlot> spawnerSlotList = GetSpawnerBuildingSlots();
+
+        if (spawnerSlotList.Count == 0)
         {
-            Debug.Log("Attempt Build Inf Spawner!");
-            AttemptBuildInfSpawner();
+            // Do nothing.
+        }
+        else if (spawnerSlotList.Count == 1)
+        {
+            // spawnerSlotList[0].
+        }
+    }
+
+    private List<BuildingSlot> GetSpawnerBuildingSlots()
+    {
+        List<BuildingSlot> spawnerSlotList = new List<BuildingSlot>();
+        foreach (BuildingSlot buildingSlot in botBuildingSlotList)
+        {
+            if (buildingSlot.state == "SPAWNER")
+            {
+                spawnerSlotList.Add(buildingSlot);
+            }
+        }
+        return spawnerSlotList;
+    }
+
+    private void ExecuteDoNothingCommand()
+    {
+        Debug.Log("Do nothing!");
+    }
+
+    private void ExecuteBuildInfSpawnerCommand()
+    {
+        Debug.Log("Attempt Build Inf Spawner!");
+        if (AttemptBuildInfSpawner())
+        {
+            if (botTeam == "BLUE")
+            {
+                TeamStats.BlueInfSpawners += 1;
+            }
         }
     }
 
@@ -42,13 +91,13 @@ public class BotCommandExecutor : MonoBehaviour
     {
         if (TeamStats.BluePoints >= CostConstants.INF_SPAWNER_COST)
         {
-            return BuildNewInfSpawner();
+            return BuildNewBotInfSpawner();
         }
         return false;
     }
 
     // TODO: Same idea as in BuildingHandler. Perhaps they can be combined?
-    private bool BuildNewInfSpawner()
+    private bool BuildNewBotInfSpawner()
     {
         foreach (BuildingSlot buildingSlot in botBuildingSlotList)
         {

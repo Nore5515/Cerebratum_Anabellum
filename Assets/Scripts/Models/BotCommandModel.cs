@@ -9,6 +9,7 @@ public enum BotCommands
     RaiseInfRof,
     BuildNaniteGen,
     DoNothing,
+    ChangeSpawnerPath,
 }
 
 public class BotCommandModel
