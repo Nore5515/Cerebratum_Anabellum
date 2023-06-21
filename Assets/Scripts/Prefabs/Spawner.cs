@@ -12,6 +12,7 @@ public class Spawner : Structure
     public List<GameObject> unitList = new List<GameObject>();
 
     public List<GameObject> paths;
+    private GameObject chosenPath;
 
     public string spawnerTeam = "RED";
 
@@ -118,36 +119,53 @@ public class Spawner : Structure
         StartCoroutine(coroutine);
     }
 
+    public void SpawnerPickPath()
+    {
+
+    }
+
     private void InitalizeUI(GameObject ui)
     {
-        // Debug.Log("What");
         ui.GetComponent<Canvas>().worldCamera = Camera.main;
-        // Debug.Log("What2");
         GameObject upgrades = ui.transform.Find("Upgrades").gameObject;
-        // Debug.Log("What3");
 
-        // Buttons
+        SetButtonInstances(upgrades, ui);
+        AddButtonListeners();
+
+        SetFills(ui);
+
+        ResetUpgradeFillAmounts();
+    }
+
+    private void SetButtonInstances(GameObject upgrades, GameObject ui)
+    {
         spawnrateButton = upgrades.transform.Find("RSpawn").gameObject.GetComponent<Button>();
         firerateButton = upgrades.transform.Find("RFireRate").gameObject.GetComponent<Button>();
         rangeButton = upgrades.transform.Find("RRange").gameObject.GetComponent<Button>();
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
-        // deleteButton = ui.transform.Find("RemoveButton").gameObject.GetComponent<Button>();
+    }
 
+    private void AddButtonListeners()
+    {
         spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate(); });
         firerateButton.onClick.AddListener(delegate { IncreaseFireRate(); });
         rangeButton.onClick.AddListener(delegate { IncreaseRange(); });
         pathButton.onClick.AddListener(delegate { EnableDrawable(); });
-        // deleteButton.onClick.AddListener(delegate { RemoveSpawner(); });
+    }
 
-        // Fills
+    private void ResetUpgradeFillAmounts()
+    {
+        rangeFill.fillAmount = 0;
+        fireRateFill.fillAmount = 0;
+        spawnFill.fillAmount = 0;
+    }
+
+    private void SetFills(GameObject ui)
+    {
         GameObject infhutCanvas = ui.transform.Find("Canvas").gameObject;
         rangeFill = infhutCanvas.transform.Find("range").gameObject.GetComponent<Image>();
         fireRateFill = infhutCanvas.transform.Find("firerate").gameObject.GetComponent<Image>();
         spawnFill = infhutCanvas.transform.Find("spawn").gameObject.GetComponent<Image>();
-
-        rangeFill.fillAmount = 0;
-        fireRateFill.fillAmount = 0;
-        spawnFill.fillAmount = 0;
     }
 
     public void RemoveSpawner()
@@ -251,7 +269,8 @@ public class Spawner : Structure
         if (pathSpheres.Count <= maxPathLength)
         {
             // Create and add a team path marker.
-            newPathPoint = AddPathMarker(spawnerTeam, point);
+            newPathPoint = CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
+            // newPathPoint = AddPathMarkerToPathSpheres(new PathMarkerModel(spawnerTeam, point));
         }
         else
         {
@@ -263,6 +282,7 @@ public class Spawner : Structure
             UpdateSlider(ref pathBar);
         }
 
+        AddPathMarkerToPathSpheres(newPathPoint);
         AddPathPointToAlliedUnits(newPathPoint);
 
         return pathSpheres.Count;
@@ -306,44 +326,64 @@ public class Spawner : Structure
         }
     }
 
-    // TODO; RENAME TOMORROW WHEN I KNOW WHAT IM DOING
-    void AddSomePoints(string color)
+    void PickAndCreatePath(string color)
     {
-        GameObject chosenPath = paths[Random.Range(0, paths.Count)];
+        SelectRandomPath();
         foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
         {
             if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
             {
-                AddPathMarker(color, orbTransform.position);
+                GameObject pathMarker = CreatePathMarker(new PathMarkerModel(color, orbTransform.position));
+                AddPathMarkerToPathSpheres(pathMarker);
             }
         }
     }
 
-    // TODO: This should NOT add to pathSpheres. That should be its own thing.
-    public GameObject AddPathMarker(string color, Vector3 loc)
+    public void SelectRandomPath()
     {
-        // Debug.Log("Adding path marker!" + loc);
-        GameObject obj = Instantiate(pathMarker, loc, Quaternion.identity) as GameObject;
-        if (color == "RED")
+        chosenPath = paths[Random.Range(0, paths.Count)];
+    }
+
+    public void AddPathMarkerToPathSpheres(GameObject pathMarker)
+    {
+        pathSpheres.Add(pathMarker);
+    }
+
+    private GameObject CreatePathMarker(PathMarkerModel pathMarkerValues)
+    {
+        if (pathMarkerValues.color == "RED")
         {
-            // TODO: This feels smart but i dont know why
-            // It was :)
-            obj.GetComponent<MeshRenderer>().material = redMat;
+            return InstantiateRedPathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
         }
         else
         {
-            obj.GetComponent<MeshRenderer>().material = blueMat;
-            obj.GetComponent<MeshRenderer>().enabled = false;
+            return InstantiateBluePathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
         }
-        pathSpheres.Add(obj);
-        return obj;
+    }
+
+    // Leaving this here as a relic. I find it amusing.
+    // TODO: This feels smart but i dont know why
+    // It was :)
+    private GameObject InstantiateRedPathMarkerAtPoint(Vector3 pathMarkerPoint)
+    {
+        GameObject redPathMarker = Instantiate(pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
+        redPathMarker.GetComponent<MeshRenderer>().material = redMat;
+        return redPathMarker;
+    }
+
+    private GameObject InstantiateBluePathMarkerAtPoint(Vector3 pathMarkerPoint)
+    {
+        GameObject bluePathMarker = Instantiate(pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
+        bluePathMarker.GetComponent<MeshRenderer>().material = blueMat;
+        bluePathMarker.GetComponent<MeshRenderer>().enabled = false;
+        return bluePathMarker;
     }
 
     void AI_DrawPath(Vector3 position)
     {
         if (paths.Count > 0)
         {
-            AddSomePoints("BLUE");
+            PickAndCreatePath("BLUE");
         }
         else
         {

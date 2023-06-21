@@ -3,7 +3,12 @@ public static class TeamStats
     // Team HP
     public static int BlueHP { get; set; }
     public static int RedHP { get; set; }
-    // public static bool GameStarted {get; set;}
+
+    public static int BlueInfSpawners { get; set; }
+    public static int RedInfSpawners { get; set; }
+
+    public static int BlueBuildingSlots { get; set; }
+    public static int RedBuildingSlots { get; set; }
 
     // Nanites
     public static int BluePoints { get; set; }
@@ -20,6 +25,10 @@ public static class TeamStats
     {
         BlueHP = 10;
         RedHP = 10;
+        BlueInfSpawners = 1;
+        RedInfSpawners = 1;
+        BlueBuildingSlots = 3;
+        RedBuildingSlots = 3;
     }
 
     public static void ResetGame()
