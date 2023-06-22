@@ -10,6 +10,7 @@ public class Spawner : Structure
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
+    public Material spawnTeamMat;
 
     public List<GameObject> unitList = new List<GameObject>();
 
@@ -47,12 +48,13 @@ public class Spawner : Structure
 
         if (spawnerTeam == "RED")
         {
-            spawnerPathManager.SetPathMat(redMat);
+            spawnTeamMat = redMat;
         }
         else
         {
-            spawnerPathManager.SetPathMat(blueMat);
+            spawnTeamMat = blueMat;
         }
+        spawnerPathManager.SetPathMat(spawnTeamMat);
 
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
@@ -315,14 +317,7 @@ public class Spawner : Structure
 
         // TODO: Pass in unit stat object
         obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats.fireDelay, spawnedUnitStats.unitRange);
-        if (spawnerTeam == "RED")
-        {
-            obj.GetComponent<MeshRenderer>().material = redMat;
-        }
-        else
-        {
-            obj.GetComponent<MeshRenderer>().material = blueMat;
-        }
+        obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
     IEnumerator SpawnPrefab()
@@ -349,11 +344,11 @@ public class Spawner : Structure
         {
             if (deductTeamPoints(1))
             {
-                spawnedUnitStats.spawnTime -= 0.5f;
+                spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
                 spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
             }
         }
-        if (spawnedUnitStats.spawnTime < 1.0f)
+        if (spawnedUnitStats.spawnTime < Constants.INF_MIN_SPAWN_TIME)
         {
             spawnrateButton.interactable = false;
         }
@@ -365,11 +360,11 @@ public class Spawner : Structure
         {
             if (deductTeamPoints(1))
             {
-                spawnedUnitStats.fireDelay -= 0.25f;
+                spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
                 fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
             }
         }
-        if (spawnedUnitStats.fireDelay < 0.5f)
+        if (spawnedUnitStats.fireDelay < Constants.INF_MIN_FIRE_DELAY)
         {
             firerateButton.interactable = false;
         }
@@ -377,15 +372,13 @@ public class Spawner : Structure
 
     public void IncreaseRange()
     {
-        if (spawnedUnitStats.unitRange <= spawnedUnitStats.MAX_UNIT_RANGE)
+        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return;
+        if (deductTeamPoints(1))
         {
-            if (deductTeamPoints(1))
-            {
-                spawnedUnitStats.unitRange += 0.5f;
-                rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
-            }
+            spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
+            rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
         }
-        if (spawnedUnitStats.unitRange > 6.0f)
+        if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE)
         {
             rangeButton.interactable = false;
         }

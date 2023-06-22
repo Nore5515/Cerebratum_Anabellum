@@ -88,7 +88,7 @@ public class BotCommandExecutor : MonoBehaviour
 
     private bool AttemptBuildInfSpawner()
     {
-        if (TeamStats.BluePoints >= CostConstants.INF_SPAWNER_COST)
+        if (TeamStats.BluePoints >= Constants.INF_SPAWNER_COST)
         {
             return BuildNewBotInfSpawner();
         }
@@ -102,7 +102,7 @@ public class BotCommandExecutor : MonoBehaviour
         {
             if (buildingSlot.state == "NONE")
             {
-                TeamStats.BluePoints -= CostConstants.INF_SPAWNER_COST;
+                TeamStats.BluePoints -= Constants.INF_SPAWNER_COST;
                 buildingSlot.setState("SPAWNER");
                 buildingSlot.infSpawner.GetComponent<Spawner>().LateStart();
                 return true;
