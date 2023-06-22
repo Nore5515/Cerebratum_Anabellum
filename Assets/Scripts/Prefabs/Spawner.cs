@@ -5,25 +5,27 @@ using UnityEngine.UI;
 
 public class Spawner : Structure
 {
+    public PathManager spawnerPathManager;
+
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
 
     public List<GameObject> unitList = new List<GameObject>();
 
-    public List<GameObject> paths;
-    private GameObject chosenPath;
+    // public List<GameObject> paths;
+    // private GameObject chosenPath;
 
     public string spawnerTeam = "RED";
 
     SpawnedUnitStats spawnedUnitStats = new SpawnedUnitStats();
 
     // NEW STUFF
-    public List<GameObject> pathSpheres = new List<GameObject>();
+    // public List<GameObject> pathSpheres = new List<GameObject>();
     GameObject canvas;
-    public GameObject pathMarker;
-    string path = "Asset_PathMarker";
-    public bool pathDrawingMode = false;
+    // public GameObject pathMarker;
+    // string path = "Asset_PathMarker";
+    // public bool pathDrawingMode = false;
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
 
@@ -51,7 +53,16 @@ public class Spawner : Structure
         Debug.Log("!START!");
         spawnedUnitStats.ResetToStartingStats();
 
-        pathMarker = Resources.Load(path) as GameObject;
+        if (spawnerTeam == "RED")
+        {
+            spawnerPathManager.SetPathMat(redMat);
+        }
+        else
+        {
+            spawnerPathManager.SetPathMat(blueMat);
+        }
+
+        // pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
 
@@ -61,9 +72,11 @@ public class Spawner : Structure
         StartCoroutine(coroutine);
 
         type = "spawn";
+        Debug.Log("SPAWN TEAM! : " + spawnerTeam);
         if (spawnerTeam == "BLUE")
         {
-            AI_DrawPath(this.transform.position);
+            Debug.Log("Blue path time");
+            spawnerPathManager.AI_DrawPath(this.transform.position);
         }
     }
 
@@ -82,7 +95,7 @@ public class Spawner : Structure
         Debug.Log("LATE START!");
         spawnedUnitStats.ResetToStartingStats();
 
-        pathMarker = Resources.Load(path) as GameObject;
+        // pathMarker = Resources.Load(path) as GameObject;
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
 
@@ -195,14 +208,14 @@ public class Spawner : Structure
     public void EnableDrawable()
     {
         Debug.Log("DRAWABLE ENABLED!");
-        ClearPoints();
+        spawnerPathManager.ClearPoints(unitList);
         SetIsDrawable(true);
     }
 
-    public bool GetIsDrawable()
-    {
-        return pathDrawingMode;
-    }
+    // public bool GetIsDrawable()
+    // {
+    //     return pathDrawingMode;
+    // }
 
     public void SetIsDrawable(bool _newMode)
     {
@@ -214,7 +227,7 @@ public class Spawner : Structure
         {
             UndimHut();
         }
-        pathDrawingMode = _newMode;
+        spawnerPathManager.pathDrawingMode = _newMode;
     }
 
     private void DimHut()
@@ -230,15 +243,16 @@ public class Spawner : Structure
     }
 
     // Returns number of pathSpheres in path now.
+    // TODO: MOVE THIS TO PATH MANAGER
     public int DrawPathSphereAtPoint(Vector3 point, ref Slider pathBar)
     {
         GameObject newPathPoint;
         ClearNullInstances();
 
-        if (pathSpheres.Count <= maxPathLength)
+        if (spawnerPathManager.pathSpheres.Count <= maxPathLength)
         {
             // Create and add a team path marker.
-            newPathPoint = CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
+            newPathPoint = spawnerPathManager.CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
             // newPathPoint = AddPathMarkerToPathSpheres(new PathMarkerModel(spawnerTeam, point));
         }
         else
@@ -251,10 +265,10 @@ public class Spawner : Structure
             UpdateSlider(ref pathBar);
         }
 
-        AddPathMarkerToPathSpheres(newPathPoint);
+        spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
         AddPathPointToAlliedUnits(newPathPoint);
 
-        return pathSpheres.Count;
+        return spawnerPathManager.pathSpheres.Count;
     }
 
     // Update each unit instance with the new point IF they match the team
@@ -272,9 +286,10 @@ public class Spawner : Structure
     private void UpdateSlider(ref Slider slider)
     {
         // Convert it to a float.
-        slider.value = (1.0f) * pathSpheres.Count / maxPathLength;
+        // slider.value = (1.0f) * pathSpheres.Count / maxPathLength;
+        slider.value = (1.0f) * spawnerPathManager.pathSpheres.Count / maxPathLength;
         // If we hit the max count, color the bar red.
-        if (pathSpheres.Count == maxPathLength)
+        if (spawnerPathManager.pathSpheres.Count == maxPathLength)
         {
             TintSliderRed(ref slider);
         }
@@ -287,86 +302,86 @@ public class Spawner : Structure
     }
 
     // TODO: Also have this only happen when EnableDrawable is pressed.
-    public void ClearPoints()
-    {
-        while (pathSpheres.Count > 0)
-        {
-            RemovePoint(pathSpheres[0]);
-        }
-    }
+    // public void ClearPoints()
+    // {
+    //     while (pathSpheres.Count > 0)
+    //     {
+    //         RemovePoint(pathSpheres[0]);
+    //     }
+    // }
 
-    public void PickAndCreateNewPath(string color)
-    {
-        ResetPathSpheres();
-        SelectRandomPath();
-        foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
-        {
-            if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
-            {
-                GameObject pathMarker = CreatePathMarker(new PathMarkerModel(color, orbTransform.position));
-                AddPathMarkerToPathSpheres(pathMarker);
-            }
-        }
-    }
+    // public void PickAndCreateNewPath(string color)
+    // {
+    //     ResetPathSpheres();
+    //     spawnerPathManager.SelectRandomPath();
+    //     foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
+    //     {
+    //         if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
+    //         {
+    //             GameObject pathMarker = CreatePathMarker(new PathMarkerModel(color, orbTransform.position));
+    //             AddPathMarkerToPathSpheres(pathMarker);
+    //         }
+    //     }
+    // }
 
-    private void ResetPathSpheres()
-    {
-        pathSpheres = new List<GameObject>();
-    }
+    // private void ResetPathSpheres()
+    // {
+    //     pathSpheres = new List<GameObject>();
+    // }
 
-    public void SelectRandomPath()
-    {
-        chosenPath = paths[Random.Range(0, paths.Count)];
-    }
+    // public void SelectRandomPath()
+    // {
+    //     chosenPath = spawnerPathManager.paths[Random.Range(0, paths.Count)];
+    // }
 
-    public void AddPathMarkerToPathSpheres(GameObject pathMarker)
-    {
-        pathSpheres.Add(pathMarker);
-    }
+    // public void AddPathMarkerToPathSpheres(GameObject pathMarker)
+    // {
+    //     pathSpheres.Add(pathMarker);
+    // }
 
-    private GameObject CreatePathMarker(PathMarkerModel pathMarkerValues)
-    {
-        if (pathMarkerValues.color == "RED")
-        {
-            return InstantiateRedPathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
-        }
-        else
-        {
-            return InstantiateBluePathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
-        }
-    }
+    // private GameObject CreatePathMarker(PathMarkerModel pathMarkerValues)
+    // {
+    //     if (pathMarkerValues.color == "RED")
+    //     {
+    //         return InstantiateRedPathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
+    //     }
+    //     else
+    //     {
+    //         return InstantiateBluePathMarkerAtPoint(pathMarkerValues.pathMarkerLoc);
+    //     }
+    // }
 
     // Leaving this here as a relic. I find it amusing.
     // TODO: This feels smart but i dont know why
     // It was :)
-    private GameObject InstantiateRedPathMarkerAtPoint(Vector3 pathMarkerPoint)
-    {
-        GameObject redPathMarker = Instantiate(pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
-        redPathMarker.GetComponent<MeshRenderer>().material = redMat;
-        return redPathMarker;
-    }
+    // private GameObject InstantiateRedPathMarkerAtPoint(Vector3 pathMarkerPoint)
+    // {
+    //     GameObject redPathMarker = Instantiate(spawnerPathManager.pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
+    //     redPathMarker.GetComponent<MeshRenderer>().material = redMat;
+    //     return redPathMarker;
+    // }
 
-    private GameObject InstantiateBluePathMarkerAtPoint(Vector3 pathMarkerPoint)
-    {
-        GameObject bluePathMarker = Instantiate(pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
-        bluePathMarker.GetComponent<MeshRenderer>().material = blueMat;
-        bluePathMarker.GetComponent<MeshRenderer>().enabled = false;
-        return bluePathMarker;
-    }
+    // private GameObject InstantiateBluePathMarkerAtPoint(Vector3 pathMarkerPoint)
+    // {
+    //     GameObject bluePathMarker = Instantiate(spawnerPathManager.pathMarker, pathMarkerPoint, Quaternion.identity) as GameObject;
+    //     bluePathMarker.GetComponent<MeshRenderer>().material = blueMat;
+    //     bluePathMarker.GetComponent<MeshRenderer>().enabled = false;
+    //     return bluePathMarker;
+    // }
 
-    void AI_DrawPath(Vector3 position)
-    {
-        if (paths.Count > 0)
-        {
-            PickAndCreateNewPath("BLUE");
-        }
-        else
-        {
-            GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
-            obj.GetComponent<MeshRenderer>().material = redMat;
-            pathSpheres.Add(obj);
-        }
-    }
+    // void AI_DrawPath(Vector3 position)
+    // {
+    //     if (paths.Count > 0)
+    //     {
+    //         PickAndCreateNewPath("BLUE");
+    //     }
+    //     else
+    //     {
+    //         GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
+    //         obj.GetComponent<MeshRenderer>().material = redMat;
+    //         pathSpheres.Add(obj);
+    //     }
+    // }
 
     void AI_SpendPoints()
     {
@@ -440,7 +455,7 @@ public class Spawner : Structure
         unitList.Add(obj);
 
         // TODO: Pass in unit stat object
-        obj.GetComponent<Unit>().Initalize(pathSpheres, spawnerTeam, spawnedUnitStats.fireDelay, spawnedUnitStats.unitRange);
+        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats.fireDelay, spawnedUnitStats.unitRange);
         if (spawnerTeam == "RED")
         {
             obj.GetComponent<MeshRenderer>().material = redMat;
@@ -523,18 +538,18 @@ public class Spawner : Structure
     }
 
     // NEW STUFF
-    public void RemovePoint(GameObject obj)
-    {
-        pathSpheres.Remove(obj);
-        foreach (GameObject unit in unitList)
-        {
-            if (unit != null)
-            {
-                unit.GetComponent<Unit>().RemovePoint(obj);
-            }
-        }
-        GameObject.Destroy(obj);
-    }
+    // public void RemovePoint(GameObject obj)
+    // {
+    //     spawnerPathManager.pathSpheres.Remove(obj);
+    //     foreach (GameObject unit in unitList)
+    //     {
+    //         if (unit != null)
+    //         {
+    //             unit.GetComponent<Unit>().RemovePoint(obj);
+    //         }
+    //     }
+    //     GameObject.Destroy(obj);
+    // }
 
 
 }

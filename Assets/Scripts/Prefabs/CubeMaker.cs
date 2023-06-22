@@ -290,9 +290,9 @@ public class CubeMaker : MonoBehaviour
     void HandleClickOnSelectedSpawner()
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-        if (spawnerClass.GetIsDrawable() == true)
+        if (spawnerClass.spawnerPathManager.GetIsDrawable() == true)
         {
-            pathDrawingMode = spawnerClass.GetIsDrawable();
+            pathDrawingMode = spawnerClass.spawnerPathManager.GetIsDrawable();
             PreparePathBar();
         }
         else

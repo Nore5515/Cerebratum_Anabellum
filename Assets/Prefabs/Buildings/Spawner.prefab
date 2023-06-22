@@ -1222,6 +1222,7 @@ GameObject:
   - component: {fileID: 7575600747995610609}
   - component: {fileID: 2041369148240088535}
   - component: {fileID: 3360593358707628083}
+  - component: {fileID: 2908551945073907242}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: spawner
@@ -1258,22 +1259,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a0d4e6d2800494abccb5d59b61fc33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerPathManager: {fileID: 2908551945073907242}
   prefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
   redMat: {fileID: 2100000, guid: 619d35543f16f440eabf034948818bff, type: 2}
   blueMat: {fileID: 2100000, guid: ee47bd4f706831b4daa5d4c5a3a5be77, type: 2}
   unitList: []
-  paths: []
   spawnerTeam: RED
-  startingFireDelay: 2
-  startingUnitRange: 3
-  startingSpawnTime: 3
-  fireDelay: 2
-  unitRange: 3
-  spawnTime: 3.5
-  spheres: []
-  pathMarker: {fileID: 0}
-  spawnerUI: {fileID: 0}
-  pathDrawingMode: 0
   naniteGenPrefab: {fileID: 0}
   rangeFill: {fileID: 0}
   fireRateFill: {fileID: 0}
@@ -1306,6 +1297,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2908551945073907242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3723304060339295256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa9bb31498fa4fd7b7b981d05f0d471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paths: []
+  pathMarker: {fileID: 8406249775468902667, guid: 40297ca2c3df64dd3be3634867c2cf0d, type: 3}
+  pathDrawingMode: 0
+  pathSpheres: []
+  pathMat: {fileID: 0}
 --- !u!1 &4452091527405456032
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,7 +51,7 @@ public class BotCommandExecutor : MonoBehaviour
         if (spawnerSlotList.Count >= 1)
         {
             int randomSlot = Random.Range(0, spawnerSlotList.Count);
-            spawnerSlotList[randomSlot].getSpawner().PickAndCreateNewPath(botTeam);
+            spawnerSlotList[randomSlot].getSpawner().spawnerPathManager.PickAndCreateNewPath(botTeam);
         }
     }
 
