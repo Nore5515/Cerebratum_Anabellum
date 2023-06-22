@@ -90,7 +90,8 @@ public class Unit : MonoBehaviour
     float CONTROLLED_MISS_RADIUS = 0.0f;
 
 
-    public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
+    // public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
+    public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
         unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
         bulletPrefab = Resources.Load(path) as GameObject;
@@ -111,12 +112,12 @@ public class Unit : MonoBehaviour
             }
         }
 
-        rof = _rof;
+        rof = newStats.fireDelay;
         firstFire = true;   // First shot ready on initializaiton!
         KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         unitKillSphere.alliedTeam = unitTeam;
-        unitKillSphere.GetComponent<SphereCollider>().radius = _unitRange;
-        unitRange = _unitRange;
+        unitKillSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
+        unitRange = newStats.unitRange;
 
         foreach (GameObject newPoint in newPoints)
         {

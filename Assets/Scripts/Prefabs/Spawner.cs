@@ -121,9 +121,9 @@ public class Spawner : Structure
 
     private void AddButtonListeners()
     {
-        spawnrateButton.onClick.AddListener(delegate { IncreaseSpawnRate(); });
-        firerateButton.onClick.AddListener(delegate { IncreaseFireRate(); });
-        rangeButton.onClick.AddListener(delegate { IncreaseRange(); });
+        spawnrateButton.onClick.AddListener(delegate { AttemptUpgradeSpawnRate(); });
+        firerateButton.onClick.AddListener(delegate { AttemptUpgradeFireRate(); });
+        rangeButton.onClick.AddListener(delegate { AttemptUpgradeRange(); });
         pathButton.onClick.AddListener(delegate { EnableDrawable(); });
     }
 
@@ -263,18 +263,18 @@ public class Spawner : Structure
         slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
     }
 
-    void AI_SpendPoints()
+    void BotSpendPoints()
     {
         switch (Random.Range(1, 3))
         {
             case 3:
-                IncreaseFireRate();
+                AttemptUpgradeFireRate();
                 break;
             case 2:
-                IncreaseRange();
+                AttemptUpgradeRange();
                 break;
             case 1:
-                IncreaseSpawnRate();
+                AttemptUpgradeSpawnRate();
                 break;
             default:
                 Debug.Log("ERROR IN AI POINT SPENDING");
@@ -315,8 +315,7 @@ public class Spawner : Structure
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
         unitList.Add(obj);
 
-        // TODO: Pass in unit stat object
-        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats.fireDelay, spawnedUnitStats.unitRange);
+        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
@@ -338,46 +337,57 @@ public class Spawner : Structure
         return result;
     }
 
-    public void IncreaseSpawnRate()
+    public void AttemptUpgradeSpawnRate()
     {
-        if (spawnedUnitStats.spawnTime >= spawnedUnitStats.MAX_UNIT_SPAWN_RATE)
+        if (spawnedUnitStats.spawnTime < spawnedUnitStats.MAX_UNIT_SPAWN_RATE) return;
+        if (deductTeamPoints(1))
         {
-            if (deductTeamPoints(1))
-            {
-                spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
-                spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
-            }
+            UpgradeSpawnRate();
         }
+    }
+
+    public void AttemptUpgradeFireRate()
+    {
+        if (spawnedUnitStats.fireDelay < spawnedUnitStats.MAX_UNIT_FIRE_RATE) return;
+        if (deductTeamPoints(1))
+        {
+            UpgradeFireRate();
+        }
+    }
+
+    public void AttemptUpgradeRange()
+    {
+        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return;
+        if (deductTeamPoints(1))
+        {
+            UpgradeRange();
+        }
+    }
+
+    private void UpgradeSpawnRate()
+    {
+        spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
+        spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
         if (spawnedUnitStats.spawnTime < Constants.INF_MIN_SPAWN_TIME)
         {
             spawnrateButton.interactable = false;
         }
     }
 
-    public void IncreaseFireRate()
+    private void UpgradeFireRate()
     {
-        if (spawnedUnitStats.fireDelay >= spawnedUnitStats.MAX_UNIT_FIRE_RATE)
-        {
-            if (deductTeamPoints(1))
-            {
-                spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
-                fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
-            }
-        }
+        spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
+        fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
         if (spawnedUnitStats.fireDelay < Constants.INF_MIN_FIRE_DELAY)
         {
             firerateButton.interactable = false;
         }
     }
 
-    public void IncreaseRange()
+    private void UpgradeRange()
     {
-        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return;
-        if (deductTeamPoints(1))
-        {
-            spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
-            rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
-        }
+        spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
+        rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
         if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE)
         {
             rangeButton.interactable = false;

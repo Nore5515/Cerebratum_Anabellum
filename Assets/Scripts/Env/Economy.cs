@@ -22,7 +22,7 @@ public class Economy : MonoBehaviour
     {
         SetCycleMax(15);
         cycleVal = 0;
-        
+
         // TODO: make better cyclemax parse too lasy
         // Starting Conds
         TeamStats.CycleLength = 15;
@@ -49,7 +49,7 @@ public class Economy : MonoBehaviour
         }
         else
         {
-            GainPoints();   
+            GainPoints();
             cycleVal = 0;
         }
 
@@ -58,13 +58,13 @@ public class Economy : MonoBehaviour
 
     private void GainPoints()
     {
-        
+
         TeamStats.RedPoints += TeamStats.RedNaniteGain;
         TeamStats.BluePoints += TeamStats.BlueNaniteGain;
 
         // if (isAI)
         // {
-        //     AI_SpendPoints();
+        //     BotSpendPoints();
         // }
     }
 }
