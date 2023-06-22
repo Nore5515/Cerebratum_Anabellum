@@ -45,15 +45,13 @@ public class BotCommandExecutor : MonoBehaviour
 
     private void ExecuteChangeSpawnerPathCommand()
     {
+        Debug.Log("Change Spawner Path!");
         List<BuildingSlot> spawnerSlotList = GetSpawnerBuildingSlots();
 
-        if (spawnerSlotList.Count == 0)
+        if (spawnerSlotList.Count >= 1)
         {
-            // Do nothing.
-        }
-        else if (spawnerSlotList.Count == 1)
-        {
-            // spawnerSlotList[0].
+            int randomSlot = Random.Range(0, spawnerSlotList.Count);
+            spawnerSlotList[randomSlot].getSpawner().PickAndCreateNewPath(botTeam);
         }
     }
 
@@ -65,6 +63,7 @@ public class BotCommandExecutor : MonoBehaviour
             if (buildingSlot.state == "SPAWNER")
             {
                 spawnerSlotList.Add(buildingSlot);
+                Debug.Log(spawnerSlotList.Count);
             }
         }
         return spawnerSlotList;

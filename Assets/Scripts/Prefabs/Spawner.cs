@@ -23,7 +23,6 @@ public class Spawner : Structure
     GameObject canvas;
     public GameObject pathMarker;
     string path = "Asset_PathMarker";
-    public GameObject spawnerUI;
     public bool pathDrawingMode = false;
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
@@ -56,7 +55,7 @@ public class Spawner : Structure
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
 
-        InitializeUI();
+        AttemptInitializeUI();
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -68,19 +67,13 @@ public class Spawner : Structure
         }
     }
 
-    private void InitializeUI()
+    private void AttemptInitializeUI()
     {
         if (this.gameObject.transform.Find("UI") != null)
         {
-            spawnerUI = this.gameObject.transform.Find("UI").gameObject;
-            // Debug.Log(spawnerUI);
-            InitalizeUI(spawnerUI);
+            InitalizeUI();
             SetUIVisible(false);
             selected = false;
-        }
-        else
-        {
-            spawnerUI = null;
         }
     }
 
@@ -93,19 +86,15 @@ public class Spawner : Structure
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
         canvas = GameObject.Find("Canvas");
 
-        InitializeUI();
+        AttemptInitializeUI();
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
     }
 
-    public void SpawnerPickPath()
+    private void InitalizeUI()
     {
-
-    }
-
-    private void InitalizeUI(GameObject ui)
-    {
+        GameObject ui = this.gameObject.transform.Find("UI").gameObject;
         ui.GetComponent<Canvas>().worldCamera = Camera.main;
         GameObject upgrades = ui.transform.Find("Upgrades").gameObject;
 
@@ -306,8 +295,9 @@ public class Spawner : Structure
         }
     }
 
-    void PickAndCreatePath(string color)
+    public void PickAndCreateNewPath(string color)
     {
+        ResetPathSpheres();
         SelectRandomPath();
         foreach (Transform orbTransform in chosenPath.transform.GetComponentsInChildren<Transform>())
         {
@@ -317,6 +307,11 @@ public class Spawner : Structure
                 AddPathMarkerToPathSpheres(pathMarker);
             }
         }
+    }
+
+    private void ResetPathSpheres()
+    {
+        pathSpheres = new List<GameObject>();
     }
 
     public void SelectRandomPath()
@@ -363,7 +358,7 @@ public class Spawner : Structure
     {
         if (paths.Count > 0)
         {
-            PickAndCreatePath("BLUE");
+            PickAndCreateNewPath("BLUE");
         }
         else
         {

@@ -41,7 +41,7 @@ public class CubeMaker : MonoBehaviour
 
     public GameObject unitStatUI;
 
-    public PossessionHandler ph;
+    public PossessionHandler cubeMakerPossessionHandler;
 
     public void Start()
     {
@@ -60,28 +60,11 @@ public class CubeMaker : MonoBehaviour
     public void SetPossession(bool newPossession)
     {
         possessionReady = newPossession;
-        if (possessionReady)
-        {
-            possessionButton.GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            possessionButton.GetComponent<Button>().interactable = true;
-        }
+        possessionButton.GetComponent<Button>().interactable = !possessionReady;
     }
 
     void KeyChecks()
     {
-        // if (Input.GetKey(KeyCode.Alpha1))
-        // {
-        //     teamColor = "RED";
-        //     teamColorText.text = teamColor;
-        // }
-        // if (Input.GetKey(KeyCode.Alpha2))
-        // {
-        //     teamColor = "BLUE";
-        //     teamColorText.text = teamColor;
-        // }
         if (Input.GetKey(KeyCode.Escape))
         {
             SceneManager.LoadScene("MainMenu");
@@ -92,16 +75,21 @@ public class CubeMaker : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            foreach (var unit in controlledUnits)
-            {
-                unit.beingControlled = false;
-            }
-            controlledUnits = new List<Unit>();
-            camScript.followObj = null;
-            unitStatUI.SetActive(false);
-            possessionButton.SetActive(true);
-            ph.setPossessed(null);
+            FreePossession();
         }
+    }
+
+    void FreePossession()
+    {
+        foreach (var unit in controlledUnits)
+        {
+            unit.beingControlled = false;
+        }
+        controlledUnits = new List<Unit>();
+        camScript.followObj = null;
+        unitStatUI.SetActive(false);
+        possessionButton.SetActive(true);
+        cubeMakerPossessionHandler.setPossessed(null);
     }
 
     // Attempt to place a sphere down on where the raycast hits the world.
@@ -159,7 +147,7 @@ public class CubeMaker : MonoBehaviour
             unit.beingControlled = true;
             controlledUnits.Add(unit);
             camScript.followObj = unit.unitObj;
-            if (ph.setPossessed(unit))
+            if (cubeMakerPossessionHandler.setPossessed(unit))
             {
                 unitStatUI.SetActive(true);
                 possessionButton.SetActive(false);
@@ -174,6 +162,107 @@ public class CubeMaker : MonoBehaviour
             Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
         }
     }
+
+    void DeselectSpawners()
+    {
+        if (spawnerSource != null)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+            pathDrawingMode = false;
+            spawnerClass.SetUIVisible(false);
+        }
+    }
+
+    void PreparePathBar()
+    {
+        pathBar.value = 0;
+        pathBar.gameObject.SetActive(true);
+        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
+        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
+    }
+
+    // Attempt to possess a unit, going through the various checks and what not.
+    void TryPossessUnit(GameObject maybePos)
+    {
+        if (possessionReady)
+        {
+            Unit unit = maybePos.GetComponent<Unit>();
+            if (unit != null)
+            {
+                if (unit.unitTeam == teamColor)
+                {
+                    if (controlledUnits.Count >= 1)
+                    {
+                        controlledUnits[0].beingControlled = false;
+                        controlledUnits = new List<Unit>();
+                    }
+                    PossessUnit(unit);
+                }
+            }
+            else
+            {
+                Debug.LogError("Cube Maker: TryPossessUnit --- GameObject passed did not have a unit script.");
+            }
+        }
+    }
+
+
+
+    void StopDrawingPath()
+    {
+        pathDrawingMode = false;
+        pathBar.gameObject.SetActive(false);
+        if (spawnerSource != null)
+        {
+            spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+        }
+    }
+
+
+    void RayChecks()
+    {
+        int layerMask = 1 << 6;
+        layerMask |= (1 << 2);
+        layerMask = ~layerMask;
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
+    }
+
+    void HandleMouseInput()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            MouseHeldFuncs();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            MouseUpFuncs();
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            MouseDownFuncs();
+        }
+    }
+
+    void MouseUpFuncs()
+    {
+        if (pathDrawingMode)
+        {
+            StopDrawingPath();
+        }
+    }
+
+    void MouseHeldFuncs()
+    {
+        if (spawnerSource == null) return;
+        if (!pathDrawingMode) return;
+        if (hit.collider == null) return;
+        if (hit.collider.gameObject.tag == "floor")
+        {
+            TryPlaceFollowSphere();
+        }
+    }
+
 
     // Things that happen when you click mouse down.
     void MouseDownFuncs()
@@ -246,109 +335,12 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void DeselectSpawners()
-    {
-        if (spawnerSource != null)
-        {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-            pathDrawingMode = false;
-            spawnerClass.SetUIVisible(false);
-        }
-    }
 
-    void PreparePathBar()
-    {
-        pathBar.value = 0;
-        pathBar.gameObject.SetActive(true);
-        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
-        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
-    }
 
-    // Attempt to possess a unit, going through the various checks and what not.
-    void TryPossessUnit(GameObject maybePos)
+    void UpdateCalledFuncs()
     {
-        if (possessionReady)
-        {
-            Unit unit = maybePos.GetComponent<Unit>();
-            if (unit != null)
-            {
-                if (unit.unitTeam == teamColor)
-                {
-                    if (controlledUnits.Count >= 1)
-                    {
-                        controlledUnits[0].beingControlled = false;
-                        controlledUnits = new List<Unit>();
-                    }
-                    PossessUnit(unit);
-                }
-            }
-            else
-            {
-                Debug.LogError("Cube Maker: TryPossessUnit --- GameObject passed did not have a unit script.");
-            }
-        }
-    }
-
-    // Things that happen when you release the mouse button.
-    void MouseUpFuncs()
-    {
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            if (pathDrawingMode == true)
-            {
-                // You ain't drawing if your not pressing down
-                // spawnerSource = null;
-                pathDrawingMode = false;
-                if (spawnerSource != null)
-                {
-                    spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
-                }
-                // Hide pathbar when not in use
-                pathBar.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    // Things that happen while you hold down the mouse button.
-    void MouseHeldFuncs()
-    {
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            //
-            // ╔══════════════════════════════════════════════════╗
-            // ║  Draw Paths.                                     ║
-            // ╚══════════════════════════════════════════════════╝
-            //
-            if (spawnerSource != null)
-            {
-                Debug.Log("Spawner Source is not null.");
-                if (pathDrawingMode)
-                {
-                    Debug.Log("Path drawing mode is a go.");
-                    if (hit.collider != null)
-                    {
-                        Debug.Log("raycast has hit something.");
-                        if (hit.collider.gameObject.tag == "floor")
-                        {
-                            Debug.Log("raycast has hit valid target");
-                            TryPlaceFollowSphere();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void RayChecks()
-    {
-        int layerMask = 1 << 6;
-        layerMask |= (1 << 2);
-        layerMask = ~layerMask;
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
-        MouseDownFuncs();
-        MouseUpFuncs();
-        MouseHeldFuncs();
+        RayChecks();
+        HandleMouseInput();
         DrawLine(hit.point);
     }
 
@@ -366,7 +358,7 @@ public class CubeMaker : MonoBehaviour
     void Update()
     {
         KeyChecks();
-        RayChecks();
+        UpdateCalledFuncs();
         GetPossessionMovement();
     }
 

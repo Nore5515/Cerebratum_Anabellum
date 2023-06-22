@@ -58,4 +58,9 @@ public class BuildingSlot : MonoBehaviour
                 break;
         }
     }
+
+    public Spawner getSpawner()
+    {
+        return infSpawner.GetComponent<Spawner>();
+    }
 }
