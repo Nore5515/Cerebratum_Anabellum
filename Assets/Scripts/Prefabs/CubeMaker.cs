@@ -263,7 +263,7 @@ public class CubeMaker : MonoBehaviour
             switch (hit.collider.gameObject.tag)
             {
                 case "spawner":
-                    ClickedOnSpawner();
+                    HandleClickOnSpawner();
                     break;
                 case "unit":
                     TryPossessUnit(hit.collider.gameObject);
@@ -274,11 +274,11 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void ClickedOnSpawner()
+    void HandleClickOnSpawner()
     {
         if (IsHitObjectSelectedSpawner())
         {
-            ClickedOnSelectedSpawner();
+            HandleClickOnSelectedSpawner();
         }
         else
         {
@@ -287,7 +287,7 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void ClickedOnSelectedSpawner()
+    void HandleClickOnSelectedSpawner()
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
         if (spawnerClass.GetIsDrawable() == true)
