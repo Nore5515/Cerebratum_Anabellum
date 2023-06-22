@@ -163,16 +163,6 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void DeselectSpawners()
-    {
-        if (spawnerSource != null)
-        {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-            pathDrawingMode = false;
-            spawnerClass.SetUIVisible(false);
-        }
-    }
-
     void PreparePathBar()
     {
         pathBar.value = 0;
@@ -206,8 +196,6 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-
-
     void StopDrawingPath()
     {
         pathDrawingMode = false;
@@ -217,7 +205,6 @@ public class CubeMaker : MonoBehaviour
             spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
         }
     }
-
 
     void RayChecks()
     {
@@ -263,79 +250,79 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-
-    // Things that happen when you click mouse down.
     void MouseDownFuncs()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (hit.collider != null)
-            {
-                // While controlling a unit, clicking = firing.
-                if (IsControlling())
-                {
-                    controlledUnits[0].AttemptShotAtPosition(new Vector3(hit.point.x, 0.5f, hit.point.z));
-                }
-                else
-                {
-                    switch (hit.collider.gameObject.tag)
-                    {
-                        case "spawner":
-                            // YOU JUST CLICKED ON A SPAWNER!!
-                            // If there is NO SELECTED SPAWNER, select it.
-                            // If there is already a selected spawner...
-                            //      If the spawner YOU CLICKED is the selected spawner...
-                            //          If the spawnerClass is Drawable, begin drawing!
-                            //          Otherwise, deselect.
-                            //      If the spawner YOU CLICKED is NOT the selected spawner, make it the selected spawner!
+        if (hit.collider == null) return;
 
-                            // Update Spawner to clicked Spawner
-                            if (spawnerSource == null)
-                            {
-                                spawnerSource = hit.collider.gameObject;
-                                Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                                spawnerClass.SetUIVisible(true);
-                            }
-                            else
-                            {
-                                if (spawnerSource == hit.collider.gameObject)
-                                {
-                                    Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-                                    if (spawnerClass.GetIsDrawable() == true)
-                                    {
-                                        Debug.Log("Drawing!");
-                                        pathDrawingMode = spawnerClass.GetIsDrawable();
-                                        PreparePathBar();
-                                    }
-                                    else
-                                    {
-                                        Debug.Log("Deselecting.");
-                                        DeselectSpawners();
-                                        spawnerSource = null;
-                                    }
-                                }
-                            }
-                            break;
-                        case "unit":
-                            TryPossessUnit(hit.collider.gameObject);
-                            break;
-                        case "floor":
-                            // DeselectSpawners();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            // Clicked on nothing should de-select all.
-            else
+        if (IsControlling())
+        {
+            controlledUnits[0].AttemptShotAtPosition(new Vector3(hit.point.x, 0.5f, hit.point.z));
+        }
+        else
+        {
+            switch (hit.collider.gameObject.tag)
             {
-                // DeselectSpawners();
+                case "spawner":
+                    ClickedOnSpawner();
+                    break;
+                case "unit":
+                    TryPossessUnit(hit.collider.gameObject);
+                    break;
+                default:
+                    break;
             }
         }
     }
 
+    void ClickedOnSpawner()
+    {
+        if (IsHitObjectSelectedSpawner())
+        {
+            ClickedOnSelectedSpawner();
+        }
+        else
+        {
+            DeselectSpawners();
+            SelectSpawner(hit.collider.gameObject);
+        }
+    }
 
+    void ClickedOnSelectedSpawner()
+    {
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerClass.GetIsDrawable() == true)
+        {
+            pathDrawingMode = spawnerClass.GetIsDrawable();
+            PreparePathBar();
+        }
+        else
+        {
+            DeselectSpawners();
+            spawnerSource = null;
+        }
+    }
+
+    void DeselectSpawners()
+    {
+        if (spawnerSource != null)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+            StopDrawingPath();
+            spawnerClass.SetUIVisible(false);
+        }
+    }
+
+    bool IsHitObjectSelectedSpawner()
+    {
+        return (spawnerSource == hit.collider.gameObject);
+    }
+
+    void SelectSpawner(GameObject spawnerGameObject)
+    {
+        spawnerSource = spawnerGameObject;
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        spawnerClass.SetUIVisible(true);
+    }
 
     void UpdateCalledFuncs()
     {
