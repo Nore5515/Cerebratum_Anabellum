@@ -38,7 +38,6 @@ public class CubeMaker : MonoBehaviour
     GameObject spawnerSource;
 
     public GameObject line;
-
     public GameObject unitStatUI;
 
     public PossessionHandler cubeMakerPossessionHandler;
@@ -141,7 +140,6 @@ public class CubeMaker : MonoBehaviour
             }
             else
             {
-                Debug.Log("TRUE");
                 return true;
             }
         }
@@ -157,25 +155,16 @@ public class CubeMaker : MonoBehaviour
             Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
             return;
         }
-        if (unit != null)
+        unit.beingControlled = true;
+        controlledUnits.Add(unit);
+        camScript.followObj = unit.unitObj;
+        if (!cubeMakerPossessionHandler.setPossessed(unit))
         {
-            unit.beingControlled = true;
-            controlledUnits.Add(unit);
-            camScript.followObj = unit.unitObj;
-            if (cubeMakerPossessionHandler.setPossessed(unit))
-            {
-                unitStatUI.SetActive(true);
-                possessionButton.SetActive(false);
-            }
-            else
-            {
-                Debug.LogError("CubeMaker.cs --Possession Handler failed to set possessed unit.--");
-            }
+            Debug.LogError("CubeMaker.cs --Possession Handler failed to set possessed unit.--");
+            return;
         }
-        else
-        {
-            Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
-        }
+        unitStatUI.SetActive(true);
+        possessionButton.SetActive(false);
     }
 
     void PreparePathBar()
@@ -189,26 +178,14 @@ public class CubeMaker : MonoBehaviour
     // Attempt to possess a unit, going through the various checks and what not.
     void TryPossessUnit(GameObject maybePos)
     {
-        if (possessionReady)
-        {
-            Unit unit = maybePos.GetComponent<Unit>();
-            if (unit != null)
-            {
-                if (unit.unitTeam == teamColor)
-                {
-                    if (controlledUnits.Count >= 1)
-                    {
-                        controlledUnits[0].beingControlled = false;
-                        controlledUnits = new List<Unit>();
-                    }
-                    PossessUnit(unit);
-                }
-            }
-            else
-            {
-                Debug.LogError("Cube Maker: TryPossessUnit --- GameObject passed did not have a unit script.");
-            }
-        }
+        if (!possessionReady) return;
+        if (maybePos.GetComponent<Unit>() == null) return;
+        Unit unit = maybePos.GetComponent<Unit>();
+        if (unit.unitTeam != teamColor) return;
+        if (controlledUnits.Count == 0) return;
+        controlledUnits[0].beingControlled = false;
+        controlledUnits = new List<Unit>();
+        PossessUnit(unit);
     }
 
     void StopDrawingPath()

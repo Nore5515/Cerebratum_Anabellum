@@ -52,20 +52,16 @@ public class SpawnerHandler : MonoBehaviour
 
     void AddSpidertankSpawner()
     {
-        Debug.Log("Creating new spawner! Count is : " + SpawnerTracker.redSpawnerObjs.Count);
-
         if (SpawnerTracker.redSpawnerObjs.Count <= 2)
         {
             if (TeamStats.RedPoints >= stSpawnerCost)
             {
                 TeamStats.RedPoints -= stSpawnerCost;
-                Debug.Log("New spawner about to be added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
                 Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
                 newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
                 GameObject newObj = Instantiate(spidertankSpawnerPrefab, newPos, Quaternion.identity) as GameObject;
                 newObj.GetComponent<Structure>().type = "spawn";
                 SpawnerTracker.redSpawnerObjs.Add(newObj);
-                Debug.Log("New spawner added. Count is : " + SpawnerTracker.redSpawnerObjs.Count);
             }
         }
     }

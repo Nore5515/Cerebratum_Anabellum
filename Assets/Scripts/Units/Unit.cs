@@ -173,7 +173,6 @@ public class Unit : MonoBehaviour
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
-        // Debug.Log("Firing!");
         GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
         bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
         bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));

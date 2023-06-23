@@ -106,14 +106,5 @@ public class PossessionHandler : MonoBehaviour
         return true;
     }
 
-    // IEnumerator TimedUpdateRoutine ()
-    // {
-    // 	while (unitDelay < unitMaxDelay) {
-    // 		yield return new WaitForSeconds(0.05f);
-    // 		TimedUpdate();
-    // 	}
-    //     coroutineRunning = false;
-    // }
-
 
 }

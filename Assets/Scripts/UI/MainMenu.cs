@@ -35,7 +35,6 @@ public class MainMenu : MonoBehaviour
 
     public void SetState(string newState)
     {
-        Debug.Log(newState);
         HideUI();
         switch (newState)
         {

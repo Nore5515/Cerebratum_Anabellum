@@ -64,10 +64,8 @@ public class Spawner : Structure
     private void SpawnDeclaration()
     {
         type = "spawn";
-        Debug.Log("SPAWN TEAM! : " + spawnerTeam);
         if (spawnerTeam == "BLUE")
         {
-            Debug.Log("Blue path time");
             spawnerPathManager.AI_DrawPath(this.transform.position);
         }
     }
@@ -146,7 +144,6 @@ public class Spawner : Structure
         selected = isVis;
         if (spawnrateButton != null)
         {
-            // Debug.Log("Flippin' UI to " + isVis);
             spawnrateButton.gameObject.SetActive(isVis);
             firerateButton.gameObject.SetActive(isVis);
             rangeButton.gameObject.SetActive(isVis);
@@ -160,19 +157,11 @@ public class Spawner : Structure
 
     public bool GetUIVisible()
     {
-        // Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
         return spawnrateButton.gameObject.activeSelf;
     }
 
-    // TODO fuck it ill figure it out tomorrow
-    // um
-    // make it so that when you push
-    // THE BUTTON ON SPAWNER
-    // it tells the cube maker to start making cubes
-    // but also try to avoid assiging CM? I'm kinda likin the top-down heiarchy
     public void EnableDrawable()
     {
-        Debug.Log("DRAWABLE ENABLED!");
         spawnerPathManager.ClearPoints(unitList);
         SetIsDrawable(true);
     }

@@ -79,15 +79,12 @@ public class PathManager : MonoBehaviour
 
     public void AI_DrawPath(Vector3 position)
     {
-        Debug.Log("YEAA");
         if (paths.Count > 0)
         {
-            Debug.Log("YEAA2");
             PickAndCreateNewPath("BLUE");
         }
         else
         {
-            Debug.Log("YEAA3");
             GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
             obj.GetComponent<MeshRenderer>().material = pathMat;
             pathSpheres.Add(obj);
