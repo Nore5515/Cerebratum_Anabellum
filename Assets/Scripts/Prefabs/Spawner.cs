@@ -46,14 +46,8 @@ public class Spawner : Structure
         Debug.Log("!START!");
         spawnedUnitStats.ResetToStartingStats();
 
-        if (spawnerTeam == "RED")
-        {
-            spawnTeamMat = redMat;
-        }
-        else
-        {
-            spawnTeamMat = blueMat;
-        }
+        spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
+
         spawnerPathManager.SetPathMat(spawnTeamMat);
 
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
@@ -64,6 +58,11 @@ public class Spawner : Structure
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
 
+        SpawnDeclaration();
+    }
+
+    private void SpawnDeclaration()
+    {
         type = "spawn";
         Debug.Log("SPAWN TEAM! : " + spawnerTeam);
         if (spawnerTeam == "BLUE")
@@ -87,9 +86,6 @@ public class Spawner : Structure
     {
         Debug.Log("LATE START!");
         spawnedUnitStats.ResetToStartingStats();
-
-        naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
-        canvas = GameObject.Find("Canvas");
 
         AttemptInitializeUI();
 
@@ -161,6 +157,7 @@ public class Spawner : Structure
             Debug.LogError("SPAWN RATE BUTTON");
         }
     }
+
     public bool GetUIVisible()
     {
         // Debug.Log("Spawnratebutton: " + spawnrateButton.gameObject.activeSelf);
@@ -212,20 +209,10 @@ public class Spawner : Structure
         GameObject newPathPoint;
         ClearNullInstances();
 
-        if (spawnerPathManager.pathSpheres.Count <= maxPathLength)
-        {
-            // Create and add a team path marker.
-            newPathPoint = spawnerPathManager.CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
-        }
-        else
-        {
-            return -1;
-        }
+        if (spawnerPathManager.pathSpheres.Count > maxPathLength) return -1;
+        newPathPoint = spawnerPathManager.CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
 
-        if (spawnerTeam == "RED")
-        {
-            UpdateSlider(ref pathBar);
-        }
+        UpdateSlider(ref pathBar);
 
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
         AddPathPointToAlliedUnits(newPathPoint);

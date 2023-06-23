@@ -152,6 +152,11 @@ public class CubeMaker : MonoBehaviour
     void PossessUnit(Unit unit)
     {
         SetPossession(false);
+        if (unit == null)
+        {
+            Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
+            return;
+        }
         if (unit != null)
         {
             unit.beingControlled = true;
