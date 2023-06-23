@@ -890,13 +890,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdbc216869994ef98221c9725631554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxDist: 1.6
-  MinDist: 1
+  MIN_DIST_TO_MOVEMENT_DEST: 1
   hpSlider: {fileID: 0}
-  targetsInRange: []
-  ph: {fileID: 0}
+  unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4210680996794550419}
-  objs: []
+  points: []
   Dest: {fileID: 0}
   removing: 0
   HPBar: {fileID: 4645800611403398225}

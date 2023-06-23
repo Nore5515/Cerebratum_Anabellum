@@ -97,25 +97,35 @@ public class CubeMaker : MonoBehaviour
     {
         if (distancePerSphere >= maxDistancePerSphere)
         {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-
-            distancePerSphere = 0.0f;
-
-            spawnerClass.DrawPathSphereAtPoint(hit.point, ref pathBar);
+            PlaceFollowSphere();
         }
 
         // If distance is less than maxdistancepersphere, add change in distance.
         else
         {
-            if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-            {
-                oldPos = hit.collider.gameObject.transform.position;
-            }
-            else
-            {
-                distancePerSphere += Vector3.Distance(oldPos, hit.point);
-                oldPos = hit.point;
-            }
+            AddSphereDistance();
+        }
+    }
+
+    void PlaceFollowSphere()
+    {
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+
+        distancePerSphere = 0.0f;
+
+        spawnerClass.DrawPathSphereAtPoint(hit.point, ref pathBar);
+    }
+
+    void AddSphereDistance()
+    {
+        if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+        {
+            oldPos = hit.collider.gameObject.transform.position;
+        }
+        else
+        {
+            distancePerSphere += Vector3.Distance(oldPos, hit.point);
+            oldPos = hit.point;
         }
     }
 
@@ -260,17 +270,22 @@ public class CubeMaker : MonoBehaviour
         }
         else
         {
-            switch (hit.collider.gameObject.tag)
-            {
-                case "spawner":
-                    HandleClickOnSpawner();
-                    break;
-                case "unit":
-                    TryPossessUnit(hit.collider.gameObject);
-                    break;
-                default:
-                    break;
-            }
+            CommandModeMouseDown();
+        }
+    }
+
+    void CommandModeMouseDown()
+    {
+        switch (hit.collider.gameObject.tag)
+        {
+            case "spawner":
+                HandleClickOnSpawner();
+                break;
+            case "unit":
+                TryPossessUnit(hit.collider.gameObject);
+                break;
+            default:
+                break;
         }
     }
 

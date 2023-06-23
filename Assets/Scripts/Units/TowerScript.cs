@@ -7,6 +7,7 @@ public class TowerScript : Unit
 {
     public GameObject HPBar;
     public string towerTeam;
+    SpawnedUnitStats towerStats;
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +20,16 @@ public class TowerScript : Unit
         rof = 0.5f;
         threatLevel = 0;
         unitType = "Tower";
-        
+        towerStats = new SpawnedUnitStats();
+        towerStats.fireDelay = rof;
+        towerStats.unitRange = 3.0f;
+
         HPBar.GetComponent<Slider>().value = hp;
         HPBar.GetComponent<Slider>().maxValue = maxHP;
 
         unitObj = this.gameObject;
 
-        Initalize(new List<GameObject>(), towerTeam, rof, 3);
+        Initalize(new List<GameObject>(), towerTeam, towerStats);
     }
 
     // Update is called once per frame

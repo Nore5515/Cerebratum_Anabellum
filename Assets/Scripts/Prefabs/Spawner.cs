@@ -367,7 +367,7 @@ public class Spawner : Structure
     private void UpgradeSpawnRate()
     {
         spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
-        spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
+        RecalculateFill();
         if (spawnedUnitStats.spawnTime < Constants.INF_MIN_SPAWN_TIME)
         {
             spawnrateButton.interactable = false;
@@ -377,7 +377,7 @@ public class Spawner : Structure
     private void UpgradeFireRate()
     {
         spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
-        fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
+        RecalculateFill();
         if (spawnedUnitStats.fireDelay < Constants.INF_MIN_FIRE_DELAY)
         {
             firerateButton.interactable = false;
@@ -387,11 +387,19 @@ public class Spawner : Structure
     private void UpgradeRange()
     {
         spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
-        rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
+        RecalculateFill();
+        // rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
         if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE)
         {
             rangeButton.interactable = false;
         }
+    }
+
+    private void RecalculateFill()
+    {
+        spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
+        fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
+        rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
     }
 
     public bool deductTeamPoints(int cost)
