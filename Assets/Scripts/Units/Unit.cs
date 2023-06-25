@@ -65,8 +65,7 @@ public class Unit : MonoBehaviour
     IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
 
     // Targets Stuff
-    // public List<GameObject> th.targetsInRange = new List<GameObject>();
-    public TargetHandler th = new TargetHandler();
+    public TargetHandler unitTargetHandler = new TargetHandler();
 
     // Firing Stuff
     public bool canFire { get; set; }
@@ -179,7 +178,7 @@ public class Unit : MonoBehaviour
     }
 
     // [PARAMS]: Vector3 targetPosition
-    // For AI, pass this as target. th.targetsInRange[0].gameObject.transform.position
+    // For AI, pass this as target. unitTargetHandler.targetsInRange[0].gameObject.transform.position
     public void AttemptShotAtPosition(Vector3 targetPosition)
     {
         if (canFire)
@@ -215,7 +214,7 @@ public class Unit : MonoBehaviour
 
     public void AddTargetInRange(GameObject target)
     {
-        th.targetsInRange.Add(target);
+        unitTargetHandler.targetsInRange.Add(target);
         ClearNullTargets();
         UpdateThreatState();
         if (UnitSprites.ContainsKey("Shooting"))
@@ -233,7 +232,7 @@ public class Unit : MonoBehaviour
     private int GetHighestThreatLevelInRange()
     {
         int highestThreat = -1;
-        foreach (GameObject target in th.targetsInRange)
+        foreach (GameObject target in unitTargetHandler.targetsInRange)
         {
             if (target.GetComponent<Unit>() != null)
             {
@@ -272,12 +271,12 @@ public class Unit : MonoBehaviour
 
     public void RemoveTargetInRange(GameObject target)
     {
-        if (th.targetsInRange.Contains(target))
+        if (unitTargetHandler.targetsInRange.Contains(target))
         {
-            th.targetsInRange.Remove(target);
+            unitTargetHandler.targetsInRange.Remove(target);
             ClearNullTargets();
         }
-        if (th.targetsInRange.Count <= 0)
+        if (unitTargetHandler.targetsInRange.Count <= 0)
         {
             // Sprite = Walking
             if (UnitSprites.ContainsKey("Walking"))
@@ -290,7 +289,7 @@ public class Unit : MonoBehaviour
 
     public void ClearNullTargets()
     {
-        th.ClearNullTargets();
+        unitTargetHandler.ClearNullTargets();
         UpdateThreatState();
     }
 
@@ -354,7 +353,7 @@ public class Unit : MonoBehaviour
         if (Dest != null)
         {
             // If an enemy is in range, stay still!
-            // if (th.targetsInRange.Count > 0)
+            // if (unitTargetHandler.targetsInRange.Count > 0)
             if (threatState == "STAND" || threatState == "FLEE")
             {
                 // Skirmish.
@@ -406,15 +405,15 @@ public class Unit : MonoBehaviour
             AIMovement();
 
             // If there's a valid target within range!
-            if (th.targetsInRange.Count > 0)
+            if (unitTargetHandler.targetsInRange.Count > 0)
             {
 
                 ClearNullTargets();
 
                 // Are there any targets left after the purge?
-                if (th.targetsInRange.Count > 0)
+                if (unitTargetHandler.targetsInRange.Count > 0)
                 {
-                    AttemptShotAtPosition(th.targetsInRange[0].gameObject.transform.position);
+                    AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position);
                 }
             }
         }

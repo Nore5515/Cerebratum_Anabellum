@@ -79,8 +79,6 @@ public class PossessionHandler : MonoBehaviour
             // This is, perhaps, oneo f the nastiest things ive ever done
             // TODO: Lord
             coHand.StartTimedUpdate(unitDelay, unitMaxDelay, TimedUpdate);
-            // MonoBehaviour mb = GameObject.Find("Canvas").GetComponent<UI>();
-            // mb.StartCoroutine(TimedUpdateRoutine());
         }
     }
 

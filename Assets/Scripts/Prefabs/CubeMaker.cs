@@ -201,10 +201,25 @@ public class CubeMaker : MonoBehaviour
     void RayChecks()
     {
         int layerMask = 1 << 6;
+        // int layerA = 1;
+        // int layerB = 12;
+
+        // int layerMaskCombined = (1 << layerA) | (1 << layerB);
         layerMask |= (1 << 2);
         layerMask = ~layerMask;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
+        // Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
+        Physics.Raycast(ray, out hit, Mathf.Infinity);
+    }
+
+    private int GenerateRayFromMasks(int[] masks)
+    {
+        int layerMask = 1;
+        foreach (int mask in masks)
+        {
+            layerMask = (1 << mask);
+        }
+        return layerMask;
     }
 
     void HandleMouseInput()
@@ -258,12 +273,14 @@ public class CubeMaker : MonoBehaviour
 
     void CommandModeMouseDown()
     {
+        Debug.Log(hit.collider.gameObject.tag);
         switch (hit.collider.gameObject.tag)
         {
             case "spawner":
                 HandleClickOnSpawner();
                 break;
             case "unit":
+                Debug.Log("Hit unit!");
                 TryPossessUnit(hit.collider.gameObject);
                 break;
             default:
