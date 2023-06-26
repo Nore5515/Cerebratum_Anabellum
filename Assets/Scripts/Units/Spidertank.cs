@@ -82,21 +82,6 @@ public class Spidertank : Unit
         shadow.GetComponent<ShadowScript>().pairedBullet = pairedBullet;
     }
 
-
-    // public override void FireAtTransform(Transform trans)
-    // {
-    //     if (trans != null)
-    //     {
-    //         StartCoroutine(TriggerFireAnim());
-    //         Vector3 newPos = trans.position;
-    //         newPos.y += 30;
-    //         GameObject obj = GameObject.Instantiate(spidertankBullet, newPos, Quaternion.identity) as GameObject;
-    //         obj.transform.LookAt(GetRandomAdjacentPosition(trans.position, 0.0f));
-    //         obj.GetComponent<Projectile>().Init(unitTeam, dmg);
-    //         ShadowShot(trans.position, obj);
-    //     }
-    // }
-
     IEnumerator TriggerFireAnim()
     {
         explosionAnim.SetActive(true);

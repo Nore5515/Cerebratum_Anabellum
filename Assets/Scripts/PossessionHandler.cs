@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class PossessionHandler : MonoBehaviour
 {
 
-    // public static PossessionHandler instance = new PossessionHandler();
-    public CoroutineHandler coHand;
-
     public Text unitHP;
     public Text unitRoF;
     public Text unitRange;
@@ -75,10 +72,6 @@ public class PossessionHandler : MonoBehaviour
             unitMaxDelay = posUnit.rof * 0.5f;
             unitDelay = 0.0f;
             coroutineRunning = true;
-
-            // This is, perhaps, oneo f the nastiest things ive ever done
-            // TODO: Lord
-            coHand.StartTimedUpdate(unitDelay, unitMaxDelay, TimedUpdate);
         }
     }
 

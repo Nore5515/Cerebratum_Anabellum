@@ -5,6 +5,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// Check for a Wall.
+// LayerMask mask = LayerMask.GetMask("Wall");
+
+// // Check if a Wall is hit.
+// if (Physics.Raycast(transform.position, transform.forward, 20.0f, mask))
+// {
+//     Debug.Log("Fired and hit a wall");
+// }
+
+class RayHandler
+{
+    Ray ray;
+    RaycastHit hit;
+
+}
+
 public class CubeMaker : MonoBehaviour
 {
     Ray ray;

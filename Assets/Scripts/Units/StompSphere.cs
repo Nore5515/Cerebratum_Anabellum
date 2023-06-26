@@ -4,23 +4,18 @@ using UnityEngine;
 
 public class StompSphere : MonoBehaviour
 {
-
     public string alliedTeam;
     public bool readyToStomp;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (readyToStomp)
+        if (!readyToStomp) return;
+        if (other.gameObject.GetComponent<Unit>() == null) return;
+        if (other.gameObject.GetComponent<Unit>().unitTeam != alliedTeam)
         {
-            if (other.gameObject.GetComponent<Unit>() != null)
-            {
-                if (other.gameObject.GetComponent<Unit>().unitTeam != alliedTeam)
-                {
-                    // TODO: Fix unit destruction!!
-                    other.gameObject.GetComponent<Unit>().DealDamage(99);
-                    Destroy(other.gameObject);
-                }
-            }
+            // TODO: Fix unit destruction!!
+            other.gameObject.GetComponent<Unit>().DealDamage(99);
+            Destroy(other.gameObject);
         }
     }
 }

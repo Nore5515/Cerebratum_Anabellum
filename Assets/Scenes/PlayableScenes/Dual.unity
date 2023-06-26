@@ -8063,7 +8063,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1124471764}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &626334091
 MonoBehaviour:
@@ -8077,7 +8077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36738dab1d311470a979dd027ec3d0b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coHand: {fileID: 1460988470}
   unitHP: {fileID: 1220300313}
   unitRoF: {fileID: 839467530}
   unitRange: {fileID: 760161826}
@@ -14848,7 +14847,6 @@ Transform:
   - {fileID: 1231627557}
   - {fileID: 792739141}
   - {fileID: 128061965}
-  - {fileID: 1460988469}
   - {fileID: 626334090}
   - {fileID: 1790530486}
   m_Father: {fileID: 0}
@@ -19195,50 +19193,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8827216604494688835, guid: 0772e6d17e57b474e8f39dc4920731dc, type: 3}
   m_PrefabInstance: {fileID: 1459631700}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1460988468
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1460988469}
-  - component: {fileID: 1460988470}
-  m_Layer: 0
-  m_Name: CoroutineHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1460988469
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460988468}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1124471764}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1460988470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460988468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3505623623f9840c6988fa682634e140, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1464914664 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5350354622917186724, guid: 0436ace312dfe4a1181504647cc13999, type: 3}
@@ -22429,7 +22383,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1124471764}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1790530487
 MonoBehaviour:

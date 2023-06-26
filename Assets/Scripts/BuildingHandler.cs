@@ -9,32 +9,17 @@ public class BuildingHandler : MonoBehaviour
 
     public int infSpawnerCost = 1;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // foreach (BuildingSlot bs in buildingSlots)
-        // {
-        //     bs.setState("SPAWNER");
-        // }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void AddInfSpawner()
     {
-        foreach (BuildingSlot bs in buildingSlots)
+        foreach (BuildingSlot buildingSlot in buildingSlots)
         {
-            if (bs.state == "NONE")
+            if (buildingSlot.state == "NONE")
             {
                 if (TeamStats.RedPoints >= infSpawnerCost)
                 {
                     TeamStats.RedPoints -= infSpawnerCost;
-                    bs.setState("SPAWNER");
-                    bs.infSpawner.GetComponent<Spawner>().LateStart();
+                    buildingSlot.setState("SPAWNER");
+                    buildingSlot.infSpawner.GetComponent<Spawner>().LateStart();
                     break;
                 }
             }

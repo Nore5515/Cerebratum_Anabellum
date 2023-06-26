@@ -108,16 +108,4 @@ public class MainMenu : MonoBehaviour
         SettingsGroup.SetActive(false);
         Scenario_Scene.SetActive(false);
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
