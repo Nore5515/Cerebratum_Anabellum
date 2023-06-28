@@ -14,17 +14,60 @@ using UnityEngine.SceneManagement;
 //     Debug.Log("Fired and hit a wall");
 // }
 
+// CREATE DATA STRUCTURE
+
+class RayObj
+{
+    public Ray ray;
+    public RaycastHit hit;
+}
+
 class RayHandler
 {
-    Ray ray;
-    RaycastHit hit;
+    RaycastHit GetMouseToWorldHit(RayObj rayObj)
+    {
+        // int layerMask = 1 << 6;
 
+        // layerMask |= (1 << 2);
+        // layerMask = ~layerMask;
+        // rayObj.ray = GenerateRayFromMouseInput();
+        // Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
+        RaycastHit caughtHit;
+        Physics.Raycast(rayObj.ray, out caughtHit, Mathf.Infinity);
+        return caughtHit;
+    }
+
+    public RayObj RayChecks()
+    {
+        RayObj rayObj = new RayObj();
+        rayObj.ray = GenerateRayFromMouseInput();
+        rayObj.hit = GetMouseToWorldHit(rayObj);
+        return rayObj;
+    }
+
+    Ray GenerateRayFromMouseInput()
+    {
+        return Camera.main.ScreenPointToRay(Input.mousePosition);
+    }
+
+    LayerMask GenerateLayerMask(string maskName)
+    {
+        LayerMask mask = LayerMask.GetMask("Wall");
+
+        // // Check if a Wall is hit.
+        // if (Physics.Raycast(transform.position, transform.forward, 20.0f, mask))
+        // {
+        //     Debug.Log("Fired and hit a wall");
+        // }
+        return mask;
+    }
 }
 
 public class CubeMaker : MonoBehaviour
 {
-    Ray ray;
-    RaycastHit hit;
+    RayHandler rayHandler;
+    RayObj rayObj = new RayObj();
+
     public GameObject prefabRed;
     public GameObject prefabBlue;
 
@@ -60,6 +103,7 @@ public class CubeMaker : MonoBehaviour
 
     public void Start()
     {
+        rayHandler = new RayHandler();
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
 
         possessionButton = GameObject.Find("PossessButton");
@@ -128,19 +172,19 @@ public class CubeMaker : MonoBehaviour
 
         distancePerSphere = 0.0f;
 
-        spawnerClass.DrawPathSphereAtPoint(hit.point, ref pathBar);
+        spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
     }
 
     void AddSphereDistance()
     {
         if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
         {
-            oldPos = hit.collider.gameObject.transform.position;
+            oldPos = rayObj.hit.collider.gameObject.transform.position;
         }
         else
         {
-            distancePerSphere += Vector3.Distance(oldPos, hit.point);
-            oldPos = hit.point;
+            distancePerSphere += Vector3.Distance(oldPos, rayObj.hit.point);
+            oldPos = rayObj.hit.point;
         }
     }
 
@@ -214,20 +258,6 @@ public class CubeMaker : MonoBehaviour
         }
     }
 
-    void RayChecks()
-    {
-        int layerMask = 1 << 6;
-        // int layerA = 1;
-        // int layerB = 12;
-
-        // int layerMaskCombined = (1 << layerA) | (1 << layerB);
-        layerMask |= (1 << 2);
-        layerMask = ~layerMask;
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
-        Physics.Raycast(ray, out hit, Mathf.Infinity);
-    }
-
     private int GenerateRayFromMasks(int[] masks)
     {
         int layerMask = 1;
@@ -266,8 +296,8 @@ public class CubeMaker : MonoBehaviour
     {
         if (spawnerSource == null) return;
         if (!pathDrawingMode) return;
-        if (hit.collider == null) return;
-        if (hit.collider.gameObject.tag == "floor")
+        if (rayObj.hit.collider == null) return;
+        if (rayObj.hit.collider.gameObject.tag == "floor")
         {
             TryPlaceFollowSphere();
         }
@@ -275,11 +305,12 @@ public class CubeMaker : MonoBehaviour
 
     void MouseDownFuncs()
     {
-        if (hit.collider == null) return;
+        rayObj = rayHandler.RayChecks();
+        if (rayObj.hit.collider == null) return;
 
         if (IsControlling())
         {
-            controlledUnits[0].AttemptShotAtPosition(new Vector3(hit.point.x, 0.5f, hit.point.z));
+            controlledUnits[0].AttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
         }
         else
         {
@@ -289,15 +320,14 @@ public class CubeMaker : MonoBehaviour
 
     void CommandModeMouseDown()
     {
-        Debug.Log(hit.collider.gameObject.tag);
-        switch (hit.collider.gameObject.tag)
+        switch (rayObj.hit.collider.gameObject.tag)
         {
             case "spawner":
                 HandleClickOnSpawner();
                 break;
             case "unit":
                 Debug.Log("Hit unit!");
-                TryPossessUnit(hit.collider.gameObject);
+                TryPossessUnit(rayObj.hit.collider.gameObject);
                 break;
             default:
                 break;
@@ -313,7 +343,7 @@ public class CubeMaker : MonoBehaviour
         else
         {
             DeselectSpawners();
-            SelectSpawner(hit.collider.gameObject);
+            SelectSpawner(rayObj.hit.collider.gameObject);
         }
     }
 
@@ -344,7 +374,7 @@ public class CubeMaker : MonoBehaviour
 
     bool IsHitObjectSelectedSpawner()
     {
-        return (spawnerSource == hit.collider.gameObject);
+        return (spawnerSource == rayObj.hit.collider.gameObject);
     }
 
     void SelectSpawner(GameObject spawnerGameObject)
@@ -356,9 +386,9 @@ public class CubeMaker : MonoBehaviour
 
     void UpdateCalledFuncs()
     {
-        RayChecks();
+        rayObj = rayHandler.RayChecks();
         HandleMouseInput();
-        DrawLine(hit.point);
+        DrawLine(rayObj.hit.point);
     }
 
     void GetPossessionMovement()
