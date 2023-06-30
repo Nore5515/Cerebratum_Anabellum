@@ -10,6 +10,8 @@ public class CubeMaker : MonoBehaviour
     RayHandler rayHandler;
     RayObj rayObj = new RayObj();
 
+    InputHandler inputHandler = new InputHandler();
+
     public GameObject prefabRed;
     public GameObject prefabBlue;
 
@@ -58,27 +60,22 @@ public class CubeMaker : MonoBehaviour
         pathDrawingMode = newMode;
     }
 
-    public void SetPossession(bool newPossession)
-    {
-        possessionReady = newPossession;
-        possessionButton.GetComponent<Button>().interactable = !possessionReady;
-    }
 
-    void KeyChecks()
-    {
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            SetPossession(true);
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            FreePossession();
-        }
-    }
+    // void KeyChecks()
+    // {
+    //     if (Input.GetKey(KeyCode.Escape))
+    //     {
+    //         SceneManager.LoadScene("MainMenu");
+    //     }
+    //     if (Input.GetKey(KeyCode.LeftControl))
+    //     {
+    //         SetPossession(true);
+    //     }
+    //     if (Input.GetKeyUp(KeyCode.Space))
+    //     {
+    //         FreePossession();
+    //     }
+    // }
 
     void FreePossession()
     {
@@ -151,7 +148,7 @@ public class CubeMaker : MonoBehaviour
     // Possess the passed-in unit.
     void PossessUnit(Unit unit)
     {
-        SetPossession(false);
+        inputHandler.SetPossession(false);
         if (unit == null)
         {
             Debug.LogError("CubeMaker.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
@@ -346,7 +343,7 @@ public class CubeMaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        KeyChecks();
+        inputHandler.KeyChecks();
         UpdateCalledFuncs();
         GetPossessionMovement();
     }
