@@ -8085,6 +8085,10 @@ MonoBehaviour:
   camScript: {fileID: 0}
   unitStatUI: {fileID: 0}
   line: {fileID: 0}
+  possessionReady: 0
+  possessionButton: {fileID: 0}
+  teamColor: RED
+  controlledUnits: []
 --- !u!1 &627341602
 GameObject:
   m_ObjectHideFlags: 0
@@ -12549,17 +12553,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3877396256286464622, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
   m_PrefabInstance: {fileID: 960158171}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &963194229 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
-  m_PrefabInstance: {fileID: 2827561041993554842}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423101583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc01853f73114918a1bc475d666b093, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &965929505
 GameObject:
   m_ObjectHideFlags: 0
@@ -13850,7 +13843,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 963194229}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CubeMaker, Assembly-CSharp
         m_MethodName: SetPossession
         m_Mode: 6
@@ -18677,6 +18670,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2827561041874613998, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
   m_PrefabInstance: {fileID: 2827561041993554842}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1423101589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423101583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84584d8f76494286803c59d4aed5490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabRed: {fileID: 2822049802233959069, guid: 918bfc0b0df8042cbb65fecc9e72380b, type: 3}
+  prefabBlue: {fileID: 2822049802233959069, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
+  pathDrawingMode: 0
+  teamColorText: {fileID: 0}
+  unitDirection: {x: 0, y: 0, z: 0}
+  distancePerSphere: 0
+  maxDistancePerSphere: 5
+  oldPos: {x: 0, y: 0, z: 0}
+  pathBar: {fileID: 711979014}
+  pathHandlerPossessionHandler: {fileID: 626334091}
 --- !u!1001 &1428737824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26580,7 +26595,8 @@ PrefabInstance:
       propertyPath: cubeMakerPossessionHandler
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2827561041874613999, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
 --- !u!1001 &3040365373673796901
 PrefabInstance:
