@@ -5,23 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Check for a Wall.
-// LayerMask mask = LayerMask.GetMask("Wall");
-
-// // Check if a Wall is hit.
-// if (Physics.Raycast(transform.position, transform.forward, 20.0f, mask))
-// {
-//     Debug.Log("Fired and hit a wall");
-// }
-
-// CREATE DATA STRUCTURE
-
-class RayObj
-{
-    public Ray ray;
-    public RaycastHit hit;
-}
-
 class RayHandler
 {
     RaycastHit GetMouseToWorldHit(RayObj rayObj)
