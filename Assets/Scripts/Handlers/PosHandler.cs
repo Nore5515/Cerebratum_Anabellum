@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PossessionHandler : MonoBehaviour
+public class PosHandler : MonoBehaviour
 {
 
     public Text unitHP;
@@ -16,7 +16,6 @@ public class PossessionHandler : MonoBehaviour
     public CameraScript camScript;
 
     public GameObject unitStatUI;
-    public PossessionHandler pathHandlerPossessionHandler;
 
     static float unitMaxDelay;
     static float unitDelay;
@@ -34,7 +33,7 @@ public class PossessionHandler : MonoBehaviour
 
     public GameObject possessionButton;
 
-    InputHandler inputHandler = new InputHandler();
+    InputHandler inputHandler;
 
     public string teamColor = "RED";
     public List<Unit> controlledUnits = new List<Unit>();
@@ -46,6 +45,7 @@ public class PossessionHandler : MonoBehaviour
 
     public void Start()
     {
+        inputHandler = new InputHandler(this.gameObject.GetComponent<PosHandler>());
         possessionButton = GameObject.Find("PossessButton");
     }
 
@@ -67,7 +67,7 @@ public class PossessionHandler : MonoBehaviour
         camScript.followObj = null;
         unitStatUI.SetActive(false);
         possessionButton.SetActive(true);
-        pathHandlerPossessionHandler.setPossessed(null);
+        setPossessed(null);
     }
 
     public static void setUnitStatUI(GameObject gameObject)
@@ -108,7 +108,6 @@ public class PossessionHandler : MonoBehaviour
             unitTitle.text = "NAN";
             return false;
         }
-
     }
 
     // TODO: EVENT DELEGATE THIS
@@ -189,7 +188,7 @@ public class PossessionHandler : MonoBehaviour
         unit.beingControlled = true;
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
-        if (!pathHandlerPossessionHandler.setPossessed(unit))
+        if (!setPossessed(unit))
         {
             Debug.LogError("PathHandler.cs --Possession Handler failed to set possessed unit.--");
             return;
@@ -199,7 +198,7 @@ public class PossessionHandler : MonoBehaviour
     }
 
     // Creates instance
-    public PossessionHandler()
+    public PosHandler()
     {
         uc = () => TimedUpdate();
         unitMaxDelay = 0.0f;

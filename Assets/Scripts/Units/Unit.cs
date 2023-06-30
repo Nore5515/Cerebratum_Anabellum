@@ -72,7 +72,7 @@ public class Unit : MonoBehaviour
     public bool canFireDelay { get; set; }
     public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
 
-    public PossessionHandler unitPossessionHandler;
+    public PosHandler unitPossessionHandler;
 
     public SpriteRenderer glow;
 
@@ -92,7 +92,7 @@ public class Unit : MonoBehaviour
     // public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
-        unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PossessionHandler>();
+        unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
         bulletPrefab = Resources.Load(path) as GameObject;
         MIN_DIST_TO_MOVEMENT_DEST = 1;
         unitTeam = newTeam;

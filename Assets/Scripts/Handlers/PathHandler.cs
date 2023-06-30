@@ -32,13 +32,13 @@ public class PathHandler : MonoBehaviour
 
     GameObject spawnerSource;
 
-    public PossessionHandler pathHandlerPossessionHandler;
+    public PosHandler pathHandlerPossessionHandler;
 
     public void Start()
     {
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
 
-        PossessionHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStats"));
+        PosHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStats"));
         GameObject.Find("Canvas/UnitStats").SetActive(false);
     }
 

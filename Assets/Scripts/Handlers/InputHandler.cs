@@ -8,7 +8,12 @@ class InputHandler
 
     public PathHandler pathHandler;
 
-    PossessionHandler posHandler = new PossessionHandler();
+    PosHandler posHandler;
+
+    public InputHandler(PosHandler _posHandler)
+    {
+        posHandler = _posHandler;
+    }
 
     public void Start()
     {
