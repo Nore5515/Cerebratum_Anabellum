@@ -13,8 +13,15 @@ public class PossessionHandler : MonoBehaviour
     public Slider cooldownSlider;
     static Unit posUnit;
 
+    public CameraScript camScript;
+
+    public GameObject unitStatUI;
+    public PossessionHandler pathHandlerPossessionHandler;
+
     static float unitMaxDelay;
     static float unitDelay;
+
+    public GameObject line;
 
     static bool coroutineRunning = false;
 
@@ -22,6 +29,46 @@ public class PossessionHandler : MonoBehaviour
     public static UpdateCalls uc;
 
     private static GameObject unitStats;
+
+    public bool possessionReady = false;
+
+    public GameObject possessionButton;
+
+    InputHandler inputHandler = new InputHandler();
+
+    public string teamColor = "RED";
+    public List<Unit> controlledUnits = new List<Unit>();
+
+    public void ControlledMouseDown(RayObj rayObj)
+    {
+        controlledUnits[0].AttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
+    }
+
+    public void Start()
+    {
+        possessionButton = GameObject.Find("PossessButton");
+    }
+
+    public void SetPossession(bool newPossession)
+    {
+        possessionReady = newPossession;
+        possessionButton.GetComponent<Button>().interactable = !possessionReady;
+    }
+
+
+
+    public void FreePossession()
+    {
+        foreach (var unit in controlledUnits)
+        {
+            unit.beingControlled = false;
+        }
+        controlledUnits = new List<Unit>();
+        camScript.followObj = null;
+        unitStatUI.SetActive(false);
+        possessionButton.SetActive(true);
+        pathHandlerPossessionHandler.setPossessed(null);
+    }
 
     public static void setUnitStatUI(GameObject gameObject)
     {
@@ -75,8 +122,84 @@ public class PossessionHandler : MonoBehaviour
         }
     }
 
+    // Attempt to possess a unit, going through the various checks and what not.
+    public void TryPossessUnit(GameObject maybePos)
+    {
+        if (!possessionReady) return;
+        if (maybePos.GetComponent<Unit>() == null) return;
+        Unit unit = maybePos.GetComponent<Unit>();
+        if (unit.unitTeam != teamColor) return;
+        if (controlledUnits.Count == 0) return;
+        controlledUnits[0].beingControlled = false;
+        controlledUnits = new List<Unit>();
+        PossessUnit(unit);
+    }
+
+    public void DrawLine(Vector3 target)
+    {
+        if (target != null)
+        {
+            if (IsControlling())
+            {
+                Vector3 pos1 = controlledUnits[0].transform.position;
+                Vector3 pos2 = target;
+                Vector3[] poss = { pos1, pos2 };
+                line.GetComponent<LineRenderer>().SetPositions(poss);
+            }
+        }
+    }
+
+    // Returns true if you are controlling a unit, and false otherwise.
+    public bool IsControlling()
+    {
+        if (controlledUnits.Count >= 1)
+        {
+            if (controlledUnits[0] == null)
+            {
+                controlledUnits = new List<Unit>();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void GetPossessionMovement()
+    {
+        if (IsControlling())
+        {
+            float zMovement = Input.GetAxis("Vertical");
+            float xMovement = Input.GetAxis("Horizontal");
+            controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
+        }
+    }
+
+    // Possess the passed-in unit.
+    void PossessUnit(Unit unit)
+    {
+        SetPossession(false);
+        if (unit == null)
+        {
+            Debug.LogError("PathHandler.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
+            return;
+        }
+        unit.beingControlled = true;
+        controlledUnits.Add(unit);
+        camScript.followObj = unit.unitObj;
+        if (!pathHandlerPossessionHandler.setPossessed(unit))
+        {
+            Debug.LogError("PathHandler.cs --Possession Handler failed to set possessed unit.--");
+            return;
+        }
+        unitStatUI.SetActive(true);
+        possessionButton.SetActive(false);
+    }
+
     // Creates instance
-    PossessionHandler()
+    public PossessionHandler()
     {
         uc = () => TimedUpdate();
         unitMaxDelay = 0.0f;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-class RayObj
+public class RayObj
 {
     public Ray ray;
     public RaycastHit hit;

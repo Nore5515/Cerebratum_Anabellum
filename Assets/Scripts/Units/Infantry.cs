@@ -7,7 +7,7 @@ public class Infantry : Unit
 {
     // Core unit stats
     public float survivalTime = 15.0f;
-    public CubeMaker cm;
+    public PathHandler cm;
     public Animation anim;
 
     public void CInfantry()

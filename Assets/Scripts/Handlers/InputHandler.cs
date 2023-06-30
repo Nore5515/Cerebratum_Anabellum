@@ -3,6 +3,18 @@ using UnityEngine.SceneManagement;
 
 class InputHandler
 {
+    RayHandler rayHandler;
+    RayObj rayObj = new RayObj();
+
+    public PathHandler pathHandler;
+
+    PossessionHandler posHandler = new PossessionHandler();
+
+    public void Start()
+    {
+        rayHandler = new RayHandler();
+    }
+
     public void KeyChecks()
     {
         if (Input.GetKey(KeyCode.Escape))
@@ -11,22 +23,24 @@ class InputHandler
         }
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            SetPossession(true);
+            posHandler.SetPossession(true);
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            FreePossession();
+            posHandler.FreePossession();
         }
     }
 
-    public void SetPossession(bool newPossession)
+    void Update()
     {
-        possessionReady = newPossession;
-        possessionButton.GetComponent<Button>().interactable = !possessionReady;
+        rayObj = rayHandler.RayChecks();
+        posHandler.DrawLine(rayObj.hit.point);
+        KeyChecks();
+        HandleMouseInput();
     }
 
 
-    void HandleMouseInput()
+    public void HandleMouseInput()
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
@@ -44,21 +58,15 @@ class InputHandler
 
     void MouseUpFuncs()
     {
-        if (pathDrawingMode)
+        if (pathHandler.pathDrawingMode)
         {
-            StopDrawingPath();
+            pathHandler.StopDrawingPath();
         }
     }
 
     void MouseHeldFuncs()
     {
-        if (spawnerSource == null) return;
-        if (!pathDrawingMode) return;
-        if (rayObj.hit.collider == null) return;
-        if (rayObj.hit.collider.gameObject.tag == "floor")
-        {
-            TryPlaceFollowSphere();
-        }
+        pathHandler.AttemptFollowSphere(rayObj);
     }
 
     void MouseDownFuncs()
@@ -66,9 +74,11 @@ class InputHandler
         rayObj = rayHandler.RayChecks();
         if (rayObj.hit.collider == null) return;
 
-        if (IsControlling())
+
+        if (posHandler.IsControlling())
         {
-            controlledUnits[0].AttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
+            posHandler.ControlledMouseDown(rayObj);
+
         }
         else
         {
@@ -76,16 +86,20 @@ class InputHandler
         }
     }
 
+
+
+
+
     void CommandModeMouseDown()
     {
         switch (rayObj.hit.collider.gameObject.tag)
         {
             case "spawner":
-                HandleClickOnSpawner();
+                pathHandler.HandleClickOnSpawner(rayObj);
                 break;
             case "unit":
                 Debug.Log("Hit unit!");
-                TryPossessUnit(rayObj.hit.collider.gameObject);
+                posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
                 break;
             default:
                 break;
