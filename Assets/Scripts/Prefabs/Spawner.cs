@@ -43,7 +43,7 @@ public class Spawner : Structure
 
     void Start()
     {
-        Debug.Log("!START!");
+        // Debug.Log("!START!");
         spawnedUnitStats.ResetToStartingStats();
 
         spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
@@ -82,7 +82,7 @@ public class Spawner : Structure
 
     public void LateStart()
     {
-        Debug.Log("LATE START!");
+        // Debug.Log("LATE START!");
         spawnedUnitStats.ResetToStartingStats();
 
         AttemptInitializeUI();

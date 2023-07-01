@@ -35,6 +35,8 @@ public class PosHandler : MonoBehaviour
 
     InputHandler inputHandler;
 
+    public PathHandler pathHandler;
+
     public string teamColor = "RED";
     public List<Unit> controlledUnits = new List<Unit>();
 
@@ -217,6 +219,11 @@ public class PosHandler : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    void Update()
+    {
+        inputHandler.UpdateFuncs();
     }
 
 

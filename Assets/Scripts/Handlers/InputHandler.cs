@@ -13,6 +13,8 @@ class InputHandler
     public InputHandler(PosHandler _posHandler)
     {
         posHandler = _posHandler;
+        pathHandler = posHandler.pathHandler;
+        rayHandler = new RayHandler();
     }
 
     public void Start()
@@ -36,7 +38,7 @@ class InputHandler
         }
     }
 
-    void Update()
+    public void UpdateFuncs()
     {
         rayObj = rayHandler.RayChecks();
         posHandler.DrawLine(rayObj.hit.point);
@@ -77,8 +79,11 @@ class InputHandler
     void MouseDownFuncs()
     {
         rayObj = rayHandler.RayChecks();
-        if (rayObj.hit.collider == null) return;
-
+        if (rayObj.hit.collider == null)
+        {
+            Debug.Log("NNo colliderfound.");
+            return;
+        }
 
         if (posHandler.IsControlling())
         {
@@ -90,10 +95,6 @@ class InputHandler
             CommandModeMouseDown();
         }
     }
-
-
-
-
 
     void CommandModeMouseDown()
     {
