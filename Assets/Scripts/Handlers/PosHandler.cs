@@ -51,13 +51,16 @@ public class PosHandler : MonoBehaviour
         possessionButton = GameObject.Find("PossessButton");
     }
 
+    void Update()
+    {
+        inputHandler.UpdateFuncs();
+    }
+
     public void SetPossession(bool newPossession)
     {
         possessionReady = newPossession;
         possessionButton.GetComponent<Button>().interactable = !possessionReady;
     }
-
-
 
     public void FreePossession()
     {
@@ -75,18 +78,6 @@ public class PosHandler : MonoBehaviour
     public static void setUnitStatUI(GameObject gameObject)
     {
         unitStats = gameObject;
-
-        // TODO MAKE THIS MORE MODULAR LATEr
-        // unitHP = unitStats.transform.Find("UnitValues/UnitHP/UnitHP").gameObject.GetComponent<Text>();
-        // unitRoF = unitStats.transform.Find("UnitValues/UnitROF/UnitROF").gameObject.GetComponent<Text>();
-        // unitRange = unitStats.transform.Find("UnitValues/UnitRange/UnitRange").gameObject.GetComponent<Text>();
-        // unitTitle = unitStats.transform.Find("UnitValues/UnitTitle/UnitTitle").gameObject.GetComponent<Text>();
-        // cooldownSlider = unitStats.transform.Find("CooldownSlider").gameObject.GetComponent<Slider>();
-        // coHand = GameObject.Find("EnvComponents/CoroutineHandler").GetComponent<CoroutineHandler>();
-        // if (coHand is null)
-        // {
-        //     Debug.Assert(coHand != null);
-        // }
     }
 
     public bool setPossessed(Unit u)
@@ -221,10 +212,5 @@ public class PosHandler : MonoBehaviour
         return true;
     }
 
-    void Update()
-    {
-        inputHandler.UpdateFuncs();
-    }
-
-
+    
 }

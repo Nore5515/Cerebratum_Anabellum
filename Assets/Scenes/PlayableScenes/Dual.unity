@@ -8087,6 +8087,7 @@ MonoBehaviour:
   line: {fileID: 965929505}
   possessionReady: 0
   possessionButton: {fileID: 1030540251}
+  pathHandler: {fileID: 1423101589}
   teamColor: RED
   controlledUnits: []
 --- !u!1 &627341602
@@ -18718,8 +18719,6 @@ MonoBehaviour:
   prefabRed: {fileID: 2822049802233959069, guid: 918bfc0b0df8042cbb65fecc9e72380b, type: 3}
   prefabBlue: {fileID: 2822049802233959069, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
   pathDrawingMode: 0
-  teamColorText: {fileID: 0}
-  unitDirection: {x: 0, y: 0, z: 0}
   distancePerSphere: 0
   maxDistancePerSphere: 5
   oldPos: {x: 0, y: 0, z: 0}

@@ -15,11 +15,33 @@ class RayHandler
         return caughtHit;
     }
 
-    public RayObj RayChecks()
+    RaycastHit GetHitAgainstLayer(RayObj rayObj, string maskName)
+    {
+        RaycastHit caughtHit;
+        if (Physics.Raycast(rayObj.ray, out caughtHit, Mathf.Infinity, GenerateLayerMask(maskName)))
+        {
+            Debug.Log("Fired and hit a wall");
+        }
+        return caughtHit;
+    }
+
+    // if (Physics.Raycast(transform.position, transform.forward, 20.0f, mask))
+    // {
+    //     Debug.Log("Fired and hit a wall");
+    // }
+
+    public RayObj RayChecks(string layerMask)
     {
         RayObj rayObj = new RayObj();
         rayObj.ray = GenerateRayFromMouseInput();
-        rayObj.hit = GetMouseToWorldHit(rayObj);
+        if (layerMask == "")
+        {
+            rayObj.hit = GetMouseToWorldHit(rayObj);
+        }
+        else
+        {
+            rayObj.hit = GetHitAgainstLayer(rayObj, layerMask);
+        }
         return rayObj;
     }
 
@@ -30,13 +52,7 @@ class RayHandler
 
     LayerMask GenerateLayerMask(string maskName)
     {
-        LayerMask mask = LayerMask.GetMask("Wall");
-
-        // // Check if a Wall is hit.
-        // if (Physics.Raycast(transform.position, transform.forward, 20.0f, mask))
-        // {
-        //     Debug.Log("Fired and hit a wall");
-        // }
+        LayerMask mask = LayerMask.GetMask(maskName);
         return mask;
     }
 }

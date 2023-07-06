@@ -7,19 +7,11 @@ using UnityEngine.SceneManagement;
 
 public class PathHandler : MonoBehaviour
 {
+
     public GameObject prefabRed;
     public GameObject prefabBlue;
 
     public bool pathDrawingMode = false;
-
-
-    public Text teamColorText;
-
-    // public List<GameObject> toRemoveUnits = new List<GameObject>();
-
-
-    public Vector3 unitDirection = new Vector3();
-
 
     public float distancePerSphere = 0.0f;
     public float maxDistancePerSphere = 5.0f;
@@ -44,9 +36,8 @@ public class PathHandler : MonoBehaviour
 
     public void SetPathDrawingMode(bool newMode)
     {
-        // pathDrawingMode = newMode;
+        pathDrawingMode = newMode;
     }
-
 
     public void DeselectSpawners()
     {
@@ -90,23 +81,6 @@ public class PathHandler : MonoBehaviour
     {
         return (spawnerSource == rayObj.hit.collider.gameObject);
     }
-
-
-    // void KeyChecks()
-    // {
-    //     if (Input.GetKey(KeyCode.Escape))
-    //     {
-    //         SceneManager.LoadScene("MainMenu");
-    //     }
-    //     if (Input.GetKey(KeyCode.LeftControl))
-    //     {
-    //         SetPossession(true);
-    //     }
-    //     if (Input.GetKeyUp(KeyCode.Space))
-    //     {
-    //         FreePossession();
-    //     }
-    // }
 
     // Attempt to place a sphere down on where the raycast hits the world.
     void TryPlaceFollowSphere(RayObj rayObj)
@@ -155,7 +129,7 @@ public class PathHandler : MonoBehaviour
 
     public void StopDrawingPath()
     {
-        // pathDrawingMode = false;
+        pathDrawingMode = false;
         pathBar.gameObject.SetActive(false);
         if (spawnerSource != null)
         {
@@ -183,115 +157,6 @@ public class PathHandler : MonoBehaviour
         }
         return layerMask;
     }
-
-    // void HandleMouseInput()
-    // {
-    //     if (Input.GetKey(KeyCode.Mouse0))
-    //     {
-    //         MouseHeldFuncs();
-    //     }
-    //     if (Input.GetKeyUp(KeyCode.Mouse0))
-    //     {
-    //         MouseUpFuncs();
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.Mouse0))
-    //     {
-    //         MouseDownFuncs();
-    //     }
-    // }
-
-    // void MouseUpFuncs()
-    // {
-    //     if (pathDrawingMode)
-    //     {
-    //         StopDrawingPath();
-    //     }
-    // }
-
-    // void MouseHeldFuncs()
-    // {
-    //     if (spawnerSource == null) return;
-    //     if (!pathDrawingMode) return;
-    //     if (rayObj.hit.collider == null) return;
-    //     if (rayObj.hit.collider.gameObject.tag == "floor")
-    //     {
-    //         TryPlaceFollowSphere();
-    //     }
-    // }
-
-    // void MouseDownFuncs()
-    // {
-    //     rayObj = rayHandler.RayChecks();
-    //     if (rayObj.hit.collider == null) return;
-
-    //     if (IsControlling())
-    //     {
-    //         controlledUnits[0].AttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
-    //     }
-    //     else
-    //     {
-    //         CommandModeMouseDown();
-    //     }
-    // }
-
-    // void CommandModeMouseDown()
-    // {
-    //     switch (rayObj.hit.collider.gameObject.tag)
-    //     {
-    //         case "spawner":
-    //             HandleClickOnSpawner();
-    //             break;
-    //         case "unit":
-    //             Debug.Log("Hit unit!");
-    //             TryPossessUnit(rayObj.hit.collider.gameObject);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
-    // void HandleClickOnSpawner()
-    // {
-    //     if (IsHitObjectSelectedSpawner())
-    //     {
-    //         HandleClickOnSelectedSpawner();
-    //     }
-    //     else
-    //     {
-    //         DeselectSpawners();
-    //         SelectSpawner(rayObj.hit.collider.gameObject);
-    //     }
-    // }
-
-    // void HandleClickOnSelectedSpawner()
-    // {
-    //     Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-    //     if (spawnerClass.spawnerPathManager.GetIsDrawable() == true)
-    //     {
-    //         pathDrawingMode = spawnerClass.spawnerPathManager.GetIsDrawable();
-    //         PreparePathBar();
-    //     }
-    //     else
-    //     {
-    //         DeselectSpawners();
-    //         spawnerSource = null;
-    //     }
-    // }
-
-    // void DeselectSpawners()
-    // {
-    //     if (spawnerSource != null)
-    //     {
-    //         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-    //         StopDrawingPath();
-    //         spawnerClass.SetUIVisible(false);
-    //     }
-    // }
-
-    // bool IsHitObjectSelectedSpawner()
-    // {
-    //     return (spawnerSource == rayObj.hit.collider.gameObject);
-    // }
 
     void SelectSpawner(GameObject spawnerGameObject)
     {
