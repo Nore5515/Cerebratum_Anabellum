@@ -35,7 +35,7 @@ class InputHandler
 
     public void UpdateFuncs()
     {
-        rayObj = rayHandler.RayChecks("");
+        rayObj = rayHandler.GenerateRayObj("");
         posHandler.DrawLine(rayObj.hit.point);
         KeyChecks();
         HandleMouseInput();
@@ -73,7 +73,7 @@ class InputHandler
 
     void MouseDownFuncs()
     {
-        rayObj = rayHandler.RayChecks("");
+        rayObj = rayHandler.GenerateRayObj("");
         if (rayObj.hit.collider == null)
         {
             Debug.Log("NNo colliderfound.");
@@ -87,7 +87,7 @@ class InputHandler
         }
         else
         {
-            rayObj = rayHandler.RayChecks("Spawner");
+            rayObj = rayHandler.GenerateRayObj("Spawner");
             if (rayObj.hit.collider == null) return;
             CommandModeMouseDown();
         }
