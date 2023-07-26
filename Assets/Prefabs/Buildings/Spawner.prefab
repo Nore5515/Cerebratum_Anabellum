@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1946324631174195909}
   - component: {fileID: 8080877115783525272}
   - component: {fileID: 279589542566605618}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 5696826909469466694}
   - component: {fileID: 7104244858089613687}
   - component: {fileID: 7461263250775618622}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 776617594937093053}
   - component: {fileID: 8261046385754090979}
   - component: {fileID: 2860512253362472073}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   - component: {fileID: 3892987772060917865}
   - component: {fileID: 143230837919490285}
   - component: {fileID: 443546260840202688}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: RemoveButton
   m_TagString: spawner_buttons
   m_Icon: {fileID: 0}
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 6673091354847020437}
   - component: {fileID: 2588863089018336170}
   - component: {fileID: 8309734365804754574}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1002,7 +1002,7 @@ GameObject:
   - component: {fileID: 6771357203393841318}
   - component: {fileID: 6187969381433798239}
   - component: {fileID: 7329103468112009069}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,10 +1220,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7798158772839395644}
   - component: {fileID: 7575600747995610609}
-  - component: {fileID: 2041369148240088535}
   - component: {fileID: 3360593358707628083}
   - component: {fileID: 2908551945073907242}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spawner
   m_TagString: spawner
   m_Icon: {fileID: 0}
@@ -1239,7 +1238,7 @@ Transform:
   m_GameObject: {fileID: 3723304060339295256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8228338482703158814}
@@ -1263,6 +1262,7 @@ MonoBehaviour:
   prefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
   redMat: {fileID: 2100000, guid: 619d35543f16f440eabf034948818bff, type: 2}
   blueMat: {fileID: 2100000, guid: ee47bd4f706831b4daa5d4c5a3a5be77, type: 2}
+  spawnTeamMat: {fileID: 0}
   unitList: []
   spawnerTeam: RED
   naniteGenPrefab: {fileID: 0}
@@ -1270,20 +1270,6 @@ MonoBehaviour:
   fireRateFill: {fileID: 0}
   spawnFill: {fileID: 0}
   maxPathLength: 30
---- !u!136 &2041369148240088535
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3723304060339295256}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &3360593358707628083
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1460,7 +1446,7 @@ GameObject:
   - component: {fileID: 4657435352672301923}
   - component: {fileID: 5321097429673597380}
   - component: {fileID: 13113845804271560}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: firerate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1522,7 @@ GameObject:
   - component: {fileID: 8293123035372404367}
   - component: {fileID: 284246266611253743}
   - component: {fileID: 6310053665412584167}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1686,7 +1672,7 @@ GameObject:
   - component: {fileID: 4781295990897205116}
   - component: {fileID: 6611105198021935055}
   - component: {fileID: 4102173414644643742}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: RDraw
   m_TagString: spawner_buttons
   m_Icon: {fileID: 0}
@@ -1820,7 +1806,7 @@ GameObject:
   - component: {fileID: 5191526680540734771}
   - component: {fileID: 7234125251967573167}
   - component: {fileID: 3634220337045081243}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: RRange_dep
   m_TagString: spawner_buttons
   m_Icon: {fileID: 0}
@@ -2076,7 +2062,7 @@ GameObject:
   - component: {fileID: 3887341615859288907}
   - component: {fileID: 8274184755177579987}
   - component: {fileID: 5266444991002183831}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: RFireRate_dep
   m_TagString: spawner_buttons
   m_Icon: {fileID: 0}
@@ -2209,7 +2195,7 @@ GameObject:
   - component: {fileID: 8059881398658813243}
   - component: {fileID: 5534619128002355693}
   - component: {fileID: 7294276084966252230}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2390,7 +2376,7 @@ GameObject:
   - component: {fileID: 7562072327204171591}
   - component: {fileID: 2137437875139934714}
   - component: {fileID: 8129927709198203931}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: RSpawn_dep
   m_TagString: spawner_buttons
   m_Icon: {fileID: 0}
@@ -2523,7 +2509,7 @@ GameObject:
   - component: {fileID: 9101427296378364134}
   - component: {fileID: 5090826586334099958}
   - component: {fileID: 8194815222247092347}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}

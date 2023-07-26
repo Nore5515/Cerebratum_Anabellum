@@ -12,14 +12,11 @@ class RayHandler
     RaycastHit GetHitAgainstLayer(RayObj rayObj, string maskName)
     {
         RaycastHit caughtHit;
-        if (Physics.Raycast(rayObj.ray, out caughtHit, Mathf.Infinity, GenerateLayerMask(maskName)))
-        {
-            Debug.Log("Fired and hit a wall");
-        }
+        Physics.Raycast(rayObj.ray, out caughtHit, Mathf.Infinity, GenerateLayerMask(maskName));
         return caughtHit;
     }
 
-    public RayObj GenerateRayObj(string layerMask)
+    public RayObj GenerateRayObj()
     {
         RayObj rayObj = new RayObj();
         rayObj.ray = GenerateRayFromMouseInput();

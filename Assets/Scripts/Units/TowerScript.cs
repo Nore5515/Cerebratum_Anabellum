@@ -36,5 +36,6 @@ public class TowerScript : Unit
     void Update()
     {
         MovementUpdate();
+        HPBar.GetComponent<Slider>().value = hp;
     }
 }

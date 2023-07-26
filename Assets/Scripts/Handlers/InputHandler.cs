@@ -35,7 +35,7 @@ class InputHandler
 
     public void UpdateFuncs()
     {
-        rayObj = rayHandler.GenerateRayObj("");
+        rayObj = rayHandler.GenerateRayObj();
         posHandler.DrawLine(rayObj.hit.point);
         KeyChecks();
         HandleMouseInput();
@@ -73,39 +73,42 @@ class InputHandler
 
     void MouseDownFuncs()
     {
-        rayObj = rayHandler.GenerateRayObj("");
-        if (rayObj.hit.collider == null)
-        {
-            Debug.Log("NNo colliderfound.");
-            return;
-        }
+        rayObj = rayHandler.GenerateRayObj();
+        if (rayObj.hit.collider == null) return;
 
         if (posHandler.IsControlling())
         {
             posHandler.ControlledMouseDown(rayObj);
-
         }
         else
         {
-            rayObj = rayHandler.GenerateRayObj("Spawner");
-            if (rayObj.hit.collider == null) return;
             CommandModeMouseDown();
         }
     }
 
     void CommandModeMouseDown()
     {
-        switch (rayObj.hit.collider.gameObject.tag)
+        rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
+        if (rayObj.hit.collider != null)
         {
-            case "spawner":
-                pathHandler.HandleClickOnSpawner(rayObj);
-                break;
-            case "unit":
-                Debug.Log("Hit unit!");
-                posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
-                break;
-            default:
-                break;
+            HitSpawner();
+            return;
         }
+        rayObj = rayHandler.GenerateLayeredRayObj("Unit");
+        if (rayObj.hit.collider != null)
+        {
+            HitUnit();
+            return;
+        }
+    }
+
+    void HitUnit()
+    {
+        Debug.Log("Hit unit!");
+        posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
+    }
+    void HitSpawner()
+    {
+        pathHandler.HandleClickOnSpawner(rayObj);
     }
 }
