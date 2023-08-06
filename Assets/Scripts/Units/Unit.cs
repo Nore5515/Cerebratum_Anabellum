@@ -35,6 +35,8 @@ public class Unit : MonoBehaviour
     public float rof { get; set; }
     public int threatLevel { get; set; }
 
+    public bool isUnitInitialized { get; set; }
+
     // Range (REFACTOR TODO: TODO;)
     public int MIN_DIST_TO_MOVEMENT_DEST = 1;
 
@@ -118,6 +120,22 @@ public class Unit : MonoBehaviour
         unitKillSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
         unitRange = newStats.unitRange;
 
+        if (newPoints.Count == 0)
+        {
+            isUnitInitialized = false;
+        }
+        else
+        {
+            InitializePoints(newPoints);
+        }
+        
+        // Sprite Stuff
+        UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
+        UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
+    }
+
+    private void InitializePoints(List<GameObject> newPoints)
+    {
         foreach (GameObject newPoint in newPoints)
         {
             pointObjects.Add(newPoint);
@@ -127,10 +145,6 @@ public class Unit : MonoBehaviour
         {
             Dest = pointVectors[0];
         }
-
-        // Sprite Stuff
-        UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
-        UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
 
     public IEnumerator EnableFiring()

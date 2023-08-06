@@ -165,6 +165,7 @@ public class Spawner : Structure
     public void EnableDrawable()
     {
         spawnerPathManager.ClearPoints(unitList);
+        //spawnerPathManager.UpdatePathlessUnits(unitList);
         SetIsDrawable(true);
     }
 
@@ -208,27 +209,7 @@ public class Spawner : Structure
         UpdateSlider(ref pathBar);
 
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
-        AddPathPointToAlliedUnits(newPathPoint);
-
         return spawnerPathManager.pathSpheres.Count;
-    }
-
-    // Update each unit instance with the new point IF they match the team
-    private void AddPathPointToAlliedUnits(GameObject newPathPoint)
-    {
-        foreach (GameObject unit in unitList)
-        {
-            if (unit.GetComponent<Unit>().unitTeam == spawnerTeam)
-            {
-                // unit.GetComponent<Unit>().AddPoint(newPathPoint);
-                // if (unit.GetComponent<Unit>().)
-                if (unit.GetComponent<Unit>().pointObjects.Count < 5)
-                {
-                    Debug.Log("What..." + unit.GetComponent<Unit>().pointObjects.Count);
-                    // unit.GetComponent<Unit>().AddPoint(newPathPoint);
-                }
-            }
-        }
     }
 
     private void UpdateSlider(ref Slider slider)
@@ -395,12 +376,6 @@ public class Spawner : Structure
 
     public void UpdateAwaitingUnits()
     {
-        foreach (GameObject unit in unitList)
-        {
-            if (unit?.GetComponent<Unit>().pointObjects.Count == 0)
-            {
-                unit.GetComponent<Unit>().UpdatePoints(spawnerPathManager.pathSpheres);
-            }
-        }
+        spawnerPathManager.UpdatePathlessUnits(unitList);
     }
 }

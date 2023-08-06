@@ -134,6 +134,28 @@ public class PathManager : MonoBehaviour
         }
     }
 
+    public void UpdatePathlessUnits(List<GameObject> unitList)
+    {
+        foreach (GameObject unit in unitList)
+        {
+            if (unit != null)
+            {
+                if (!unit.GetComponent<Unit>().isUnitInitialized)
+                {
+                    UpdateUnitWithPath(unit.GetComponent<Unit>());
+                    unit.GetComponent<Unit>().isUnitInitialized = true;
+                }
+            }
+        }
+    }
+
+    private void UpdateUnitWithPath(Unit unit)
+    {
+        foreach (GameObject pathSphere in pathSpheres) {
+            unit.AddPoint(pathSphere);
+        }
+    }
+
     private void ResetPathSpheres()
     {
         pathSpheres = new List<GameObject>();
@@ -142,13 +164,13 @@ public class PathManager : MonoBehaviour
     public void RemovePoint(GameObject obj, List<GameObject> unitList)
     {
         pathSpheres.Remove(obj);
-        foreach (GameObject unit in unitList)
-        {
-            if (unit != null)
-            {
-                unit.GetComponent<Unit>().RemovePoint(obj);
-            }
-        }
+        //foreach (GameObject unit in unitList)
+        //{
+        //    if (unit != null)
+        //    {
+        //        unit.GetComponent<Unit>().RemovePoint(obj);
+        //    }
+        //}
         GameObject.Destroy(obj);
     }
 
