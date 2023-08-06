@@ -174,12 +174,16 @@ public class Spawner : Structure
         if (_newMode == true)
         {
             DimHut();
-            pathButton.GetComponentInChildren<TMP_Text>().text = "RESET PATH";
+            pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
         }
         else
         {
+            if (spawnerPathManager.pathSpheres.Count > 0)
+            {
+                pathButton.GetComponentInChildren<TMP_Text>().text = "RESET PATH";
+            }
             UndimHut();
-            pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
+            //pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
         }
         spawnerPathManager.pathDrawingMode = _newMode;
     }
