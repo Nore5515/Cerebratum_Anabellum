@@ -45,18 +45,36 @@ public class BuildingSlot : MonoBehaviour
         switch (state)
         {
             case "SPAWNER":
-                infSpawner.SetActive(true);
-                removeButton.SetActive(true);
+                ActivateInfSpawner();
                 break;
             case "NANITE":
-                naniteGen.SetActive(true);
-                removeButton.SetActive(true);
+                ActivateNaniteGen();
                 break;
             case "NONE":
+                ClearBuildingStates();
                 break;
             default:
                 break;
         }
+    }
+
+    private void ClearBuildingStates()
+    {
+        naniteGen?.GetComponent<NaniteGen>().StopGen();
+    }
+
+    private void ActivateNaniteGen()
+    {
+        naniteGen.SetActive(true);
+        naniteGen.GetComponent<NaniteGen>().InitializeWithTeam(team);
+        naniteGen.GetComponent<NaniteGen>().StartGen();
+        removeButton.SetActive(true);
+    }
+
+    private void ActivateInfSpawner()
+    {
+        infSpawner.SetActive(true);
+        removeButton.SetActive(true);
     }
 
     public Spawner getSpawner()
