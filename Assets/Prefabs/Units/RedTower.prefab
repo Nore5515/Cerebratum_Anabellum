@@ -894,8 +894,9 @@ MonoBehaviour:
   hpSlider: {fileID: 0}
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4210680996794550419}
-  points: []
-  Dest: {fileID: 0}
+  pointObjects: []
+  pointVectors: []
+  Dest: {x: 0, y: 0, z: 0}
   removing: 0
   HPBar: {fileID: 4645800611403398225}
-  towerTeam: 
+  towerTeam: RED
