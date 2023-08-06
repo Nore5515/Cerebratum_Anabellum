@@ -66,10 +66,4 @@ public class SpawnerHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }

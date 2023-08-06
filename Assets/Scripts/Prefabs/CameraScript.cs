@@ -11,6 +11,9 @@ public class CameraScript : MonoBehaviour
 
     public float MoveSpeed = 5.0f;
 
+    private float SHIFT_SPEED = 25.0f;
+    private float BASE_SPEED = 10.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,15 @@ public class CameraScript : MonoBehaviour
             Vector3 newPos = followObj.transform.position;
             newPos.y = 20;
             mainCam.transform.position = newPos;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            MoveSpeed = SHIFT_SPEED;
+        }
+        else
+        {
+            MoveSpeed = BASE_SPEED;
         }
 
         ///////////////////////////////////////////////////

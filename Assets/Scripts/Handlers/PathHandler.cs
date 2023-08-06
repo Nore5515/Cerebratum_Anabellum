@@ -131,10 +131,8 @@ public class PathHandler : MonoBehaviour
     {
         pathDrawingMode = false;
         pathBar.gameObject.SetActive(false);
-        if (spawnerSource != null)
-        {
-            spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
-        }
+        spawnerSource?.GetComponent<Spawner>().SetIsDrawable(false);
+        spawnerSource?.GetComponent<Spawner>().UpdateAwaitingUnits();
     }
 
     public void AttemptFollowSphere(RayObj rayObj)

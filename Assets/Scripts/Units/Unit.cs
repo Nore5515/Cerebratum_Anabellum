@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
-
     public class TargetHandler
     {
         public List<GameObject> targetsInRange = new List<GameObject>();
@@ -21,9 +20,9 @@ public class Unit : MonoBehaviour
                     toRemoveObjs.Add(obj);
                 }
             }
-            foreach (GameObject markedUnit in toRemoveObjs)
+            foreach (GameObject markedObj in toRemoveObjs)
             {
-                targetsInRange.Remove(markedUnit);
+                targetsInRange.Remove(markedObj);
             }
         }
     }
@@ -81,8 +80,9 @@ public class Unit : MonoBehaviour
     Color BLUE = new Color(0, 0, 255, 0.3f);
 
     // Point Stuff
-    public List<GameObject> points = new List<GameObject>();
-    public GameObject Dest;
+    public List<GameObject> pointObjects = new List<GameObject>();
+    public List<Vector3> pointVectors = new List<Vector3>();
+    public Vector3 Dest;
     public bool removing = false;
 
     float MISS_RANGE_RADIUS = 1.0f;
@@ -120,11 +120,12 @@ public class Unit : MonoBehaviour
 
         foreach (GameObject newPoint in newPoints)
         {
-            points.Add(newPoint);
+            pointObjects.Add(newPoint);
+            pointVectors.Add(newPoint.transform.position);
         }
-        if (points.Count > 0)
+        if (pointVectors.Count > 0)
         {
-            Dest = points[0];
+            Dest = pointVectors[0];
         }
 
         // Sprite Stuff
@@ -305,24 +306,44 @@ public class Unit : MonoBehaviour
     //
     public void AddPoint(GameObject point)
     {
-        points.Add(point);
-        if (points.Count == 1)
+        pointVectors.Add(DuplicateVector(point.transform.position));
+        if (pointVectors.Count == 1)
         {
-            Dest = points[0];
+            Dest = pointVectors[0];
         }
     }
 
     public void RemovePoint(GameObject point)
     {
-        points.Remove(point);
+        pointVectors.Remove(point.transform.position);
         removing = false;
-        if (points.Count == 0)
+        if (pointVectors.Count == 0)
         {
-            Dest = null;
+            Dest = this.transform.position;
         }
         else
         {
-            Dest = points[0];
+            Dest = pointVectors[0];
+        }
+    }
+
+    public Vector3 DuplicateVector(Vector3 vector)
+    {
+        Vector3 newVector = new Vector3(vector.x, vector.y, vector.z);
+        return newVector;
+    }
+
+    public void RemovePoint(Vector3 point)
+    {
+        pointVectors.Remove(point);
+        removing = false;
+        if (pointVectors.Count == 0)
+        {
+            Dest = new Vector3(0.0f, 0.0f, 0.0f);
+        }
+        else
+        {
+            Dest = pointVectors[0];
         }
     }
 
@@ -350,7 +371,7 @@ public class Unit : MonoBehaviour
     public void AIMovement()
     {
         // If dest exists, cus otherwise you're just stayin' still.
-        if (Dest != null)
+        if (Dest != new Vector3(0.0f, 0.0f, 0.0f))
         {
             // If an enemy is in range, stay still!
             // if (unitTargetHandler.targetsInRange.Count > 0)
@@ -361,12 +382,12 @@ public class Unit : MonoBehaviour
             else
             {
                 // Get movement direction.
-                var newDest = new Vector3(Dest.transform.position.x, this.transform.position.y, Dest.transform.position.z);
+                var newDest = new Vector3(Dest.x, this.transform.position.y, Dest.z);
                 var heading = newDest - this.transform.position;
                 var distance = heading.magnitude;
                 var direction = heading / distance;
 
-                float distToDest = Vector3.Distance(transform.position, Dest.transform.position);
+                float distToDest = Vector3.Distance(transform.position, Dest);
 
                 // If you are not close enough to your dest, keep moving towards it.
                 if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
@@ -397,6 +418,15 @@ public class Unit : MonoBehaviour
     }
 
 
+    public void UpdatePoints(List<GameObject> newPoints)
+    {
+        foreach (GameObject newPoint in newPoints)
+        {
+            pointObjects.Add(newPoint);
+            pointVectors.Add(newPoint.transform.position);
+        }
+    }
+
 
     public void MovementUpdate()
     {
@@ -407,7 +437,6 @@ public class Unit : MonoBehaviour
             // If there's a valid target within range!
             if (unitTargetHandler.targetsInRange.Count > 0)
             {
-
                 ClearNullTargets();
 
                 // Are there any targets left after the purge?

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class Spawner : Structure
 {
@@ -171,10 +173,12 @@ public class Spawner : Structure
         if (_newMode == true)
         {
             DimHut();
+            pathButton.GetComponentInChildren<TMP_Text>().text = "RESET PATH";
         }
         else
         {
             UndimHut();
+            pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
         }
         spawnerPathManager.pathDrawingMode = _newMode;
     }
@@ -216,7 +220,13 @@ public class Spawner : Structure
         {
             if (unit.GetComponent<Unit>().unitTeam == spawnerTeam)
             {
-                unit.GetComponent<Unit>().AddPoint(newPathPoint);
+                // unit.GetComponent<Unit>().AddPoint(newPathPoint);
+                // if (unit.GetComponent<Unit>().)
+                if (unit.GetComponent<Unit>().pointObjects.Count < 5)
+                {
+                    Debug.Log("What..." + unit.GetComponent<Unit>().pointObjects.Count);
+                    // unit.GetComponent<Unit>().AddPoint(newPathPoint);
+                }
             }
         }
     }
@@ -316,7 +326,7 @@ public class Spawner : Structure
     public void AttemptUpgradeSpawnRate()
     {
         if (spawnedUnitStats.spawnTime < spawnedUnitStats.MAX_UNIT_SPAWN_RATE) return;
-        if (deductTeamPoints(1))
+        if (DeductTeamPoints(1))
         {
             UpgradeSpawnRate();
         }
@@ -325,7 +335,7 @@ public class Spawner : Structure
     public void AttemptUpgradeFireRate()
     {
         if (spawnedUnitStats.fireDelay < spawnedUnitStats.MAX_UNIT_FIRE_RATE) return;
-        if (deductTeamPoints(1))
+        if (DeductTeamPoints(1))
         {
             UpgradeFireRate();
         }
@@ -334,7 +344,7 @@ public class Spawner : Structure
     public void AttemptUpgradeRange()
     {
         if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return;
-        if (deductTeamPoints(1))
+        if (DeductTeamPoints(1))
         {
             UpgradeRange();
         }
@@ -378,8 +388,19 @@ public class Spawner : Structure
         rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
     }
 
-    public bool deductTeamPoints(int cost)
+    public bool DeductTeamPoints(int cost)
     {
         return TeamStats.AttemptPointDeductionFromTeam(cost, spawnerTeam);
+    }
+
+    public void UpdateAwaitingUnits()
+    {
+        foreach (GameObject unit in unitList)
+        {
+            if (unit?.GetComponent<Unit>().pointObjects.Count == 0)
+            {
+                unit.GetComponent<Unit>().UpdatePoints(spawnerPathManager.pathSpheres);
+            }
+        }
     }
 }
