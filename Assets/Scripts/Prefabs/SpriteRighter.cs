@@ -8,11 +8,6 @@ public class SpriteRighter : MonoBehaviour
     Quaternion rot = new Quaternion(0.0f, 0.0f, 0.0f, 1);
     public bool flipped = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     public void Flip(){
         SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sr in arr)
