@@ -34,9 +34,9 @@ public class KillSphere : MonoBehaviour
                     }
                 }
             }
-            if (other.gameObject.GetComponent<Spawner>() != null)
+            if (other.gameObject.GetComponent<HQObject>() != null)
             {
-                if (other.gameObject.GetComponent<Spawner>().spawnerTeam != alliedTeam)
+                if (other.gameObject.GetComponent<HQObject>().team != alliedTeam)
                 {
                     unit.AddTargetInRange(other.gameObject);
                 }

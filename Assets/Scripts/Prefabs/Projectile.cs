@@ -40,6 +40,7 @@ public class Projectile : MonoBehaviour
         checkDealDamage(other);
         checkSpawn(other);
         checkTower(other);
+        checkHQ(other);
     }
 
     /// <summary>
@@ -97,7 +98,26 @@ public class Projectile : MonoBehaviour
         if (otherSpawn == null) return;
         if (otherSpawn.spawnerTeam == team) return;
             
-        if (otherSpawn.spawnerTeam == "RED")
+        //if (otherSpawn.spawnerTeam == "RED")
+        //{
+        //    TeamStats.RedHP -= 1;
+        //}
+        //else
+        //{
+        //    TeamStats.BlueHP -= 1;
+        //}
+
+        //Destroy(this.gameObject);
+    }
+
+    private void checkHQ(Collider other)
+    {
+        HQObject otherSpawn = other.gameObject.GetComponent<HQObject>();
+
+        if (otherSpawn == null) return;
+        if (otherSpawn.team == team) return;
+
+        if (otherSpawn.team == "RED")
         {
             TeamStats.RedHP -= 1;
         }
@@ -107,7 +127,7 @@ public class Projectile : MonoBehaviour
         }
 
         Destroy(this.gameObject);
-            
+
     }
 
     /// <summary>
