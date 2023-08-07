@@ -72,6 +72,9 @@ public class Spidertank : Unit
         GameObject obj = GameObject.Instantiate(spidertankBullet, position, Quaternion.identity) as GameObject;
         obj.transform.LookAt(GetRandomAdjacentPosition(position, 0.0f));
         obj.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
+        //ShadowShot(position, obj);
+        StartCoroutine(TriggerFireAnim());
+        explosionAnim.gameObject.transform.position = position;
     }
 
     // This will create the traditional shadow!
