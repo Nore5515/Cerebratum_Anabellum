@@ -9,6 +9,7 @@ public class BuildingHandler : MonoBehaviour
 
     public int infSpawnerCost = 1;
     public int NANITE_GEN_COST = 1;
+    public int SPIDER_COST = 1;
 
     public void AddInfSpawner()
     {
@@ -37,6 +38,23 @@ public class BuildingHandler : MonoBehaviour
                 {
                     TeamStats.RedPoints -= NANITE_GEN_COST;
                     buildingSlot.setState("NANITE");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void AddSpidertankSpawner()
+    {
+        foreach (BuildingSlot buildingSlot in buildingSlots)
+        {
+            if (buildingSlot.state == "NONE")
+            {
+                if (TeamStats.RedPoints >= SPIDER_COST)
+                {
+                    TeamStats.RedPoints -= SPIDER_COST;
+                    buildingSlot.setState("SPIDER");
+                    buildingSlot.spidertankSpawner.GetComponent<Spawner>().LateStart();
                     break;
                 }
             }

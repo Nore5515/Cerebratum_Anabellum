@@ -286,7 +286,17 @@ public class Spawner : Structure
         GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
         unitList.Add(obj);
 
-        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+        if (reqPrefab.name.Contains("Spider"))
+        {
+            spawnedUnitStats.fireDelay = 2.0f;
+            spawnedUnitStats.spawnTime = 5.0f;
+            spawnedUnitStats.unitRange = 8.0f;
+            obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+        }
+        else
+        {
+            obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+        }
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 

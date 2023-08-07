@@ -7,6 +7,7 @@ public class BuildingSlot : MonoBehaviour
 
     public string state = "SPAWNER";
     public GameObject infSpawner;
+    public GameObject spidertankSpawner;
     public GameObject naniteGen;
     public GameObject removeButton;
     public string team;
@@ -18,6 +19,7 @@ public class BuildingSlot : MonoBehaviour
         if (startingSpawner)
         {
             naniteGen.SetActive(false);
+            spidertankSpawner.SetActive(false);
         }
         else
         {
@@ -36,6 +38,7 @@ public class BuildingSlot : MonoBehaviour
     {
         infSpawner.SetActive(false);
         naniteGen.SetActive(false);
+        spidertankSpawner.SetActive(false);
         removeButton.SetActive(false);
     }
 
@@ -46,6 +49,9 @@ public class BuildingSlot : MonoBehaviour
         {
             case "SPAWNER":
                 ActivateInfSpawner();
+                break;
+            case "SPIDER":
+                ActivateSpidertankSpawner();
                 break;
             case "NANITE":
                 ActivateNaniteGen();
@@ -58,9 +64,15 @@ public class BuildingSlot : MonoBehaviour
         }
     }
 
+    private void ActivateSpidertankSpawner()
+    {
+        spidertankSpawner.SetActive(true);
+        removeButton.SetActive(true);
+    }
+
     private void ClearBuildingStates()
     {
-        naniteGen?.GetComponent<NaniteGen>().StopGen();
+        naniteGen.GetComponent<NaniteGen>().StopGen();
     }
 
     private void ActivateNaniteGen()
