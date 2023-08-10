@@ -101,6 +101,14 @@ public class PathHandler : MonoBehaviour
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
+        Debug.Log(rayObj.hit.collider.gameObject.tag);
+        if (rayObj.hit.collider.gameObject.tag == "barrier")
+        {
+            Debug.Log("BARRIER!!");
+            spawnerClass.DisableDrawable();
+            StopDrawingPath();
+            return;
+        }
         distancePerSphere = 0.0f;
 
         spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
@@ -140,7 +148,7 @@ public class PathHandler : MonoBehaviour
         if (spawnerSource == null) return;
         if (!pathDrawingMode) return;
         if (rayObj.hit.collider == null) return;
-        if (rayObj.hit.collider.gameObject.tag == "floor")
+        if (rayObj.hit.collider.gameObject.tag == "floor" || rayObj.hit.collider.gameObject.tag == "barrier")
         {
             TryPlaceFollowSphere(rayObj);
         }

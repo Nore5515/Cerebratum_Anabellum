@@ -162,10 +162,17 @@ public class Spawner : Structure
         return spawnrateButton.gameObject.activeSelf;
     }
 
+    // TODO: Move ClearPoints to it's own thing.
     public void EnableDrawable()
     {
         spawnerPathManager.ClearPoints(unitList);
         //spawnerPathManager.UpdatePathlessUnits(unitList);
+        SetIsDrawable(true);
+    }
+
+    public void DisableDrawable()
+    {
+        spawnerPathManager.ClearPoints(unitList);
         SetIsDrawable(true);
     }
 

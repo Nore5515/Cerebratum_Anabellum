@@ -8,6 +8,7 @@ TagManager:
   - unit
   - spawner
   - spawner_buttons
+  - barrier
   layers:
   - Default
   - TransparentFX
