@@ -41,7 +41,6 @@ class InputHandler
         HandleMouseInput();
     }
 
-
     public void HandleMouseInput()
     {
         if (Input.GetKey(KeyCode.Mouse0))

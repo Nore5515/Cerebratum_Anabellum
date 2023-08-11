@@ -46,11 +46,13 @@ public class PathHandler : MonoBehaviour
             Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
             StopDrawingPath();
             spawnerClass.SetUIVisible(false);
+            HideAllSpawnerPoints(spawnerClass);
         }
     }
 
     public void HandleClickOnSpawner(RayObj rayObj)
     {
+        Debug.Log("Hit Obj: " + rayObj.hit.collider.gameObject);
         if (IsHitObjectSelectedSpawner(rayObj))
         {
             HandleClickOnSelectedSpawner();
@@ -166,9 +168,39 @@ public class PathHandler : MonoBehaviour
 
     void SelectSpawner(GameObject spawnerGameObject)
     {
+        TryHideSpawnerPoints();
         spawnerSource = spawnerGameObject;
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
         spawnerClass.SetUIVisible(true);
+        ShowAllSpawnerPoints(spawnerClass);
+    }
+
+    void TryHideSpawnerPoints()
+    {
+        if (spawnerSource != null)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+            if (spawnerClass != null)
+            {
+                HideAllSpawnerPoints(spawnerClass);
+            }
+        }
+    }
+
+    void ShowAllSpawnerPoints(Spawner spawner)
+    {
+        foreach (GameObject point in spawner.spawnerPathManager.pathSpheres)
+        {
+            point.GetComponent<MeshRenderer>().enabled = true;
+        }
+    }
+
+    void HideAllSpawnerPoints(Spawner spawner)
+    {
+        foreach(GameObject point in spawner.spawnerPathManager.pathSpheres)
+        {
+            point.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     // Update is called once per frame
