@@ -139,7 +139,12 @@ public class PosHandler : MonoBehaviour
                 Vector3 pos1 = controlledUnits[0].transform.position;
                 Vector3 pos2 = target;
                 Vector3[] poss = { pos1, pos2 };
+                line.SetActive(true);
                 line.GetComponent<LineRenderer>().SetPositions(poss);
+            }
+            else
+            {
+                line.SetActive(false);
             }
         }
     }
