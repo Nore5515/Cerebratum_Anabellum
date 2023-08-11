@@ -27,7 +27,7 @@ class InputHandler
         {
             posHandler.SetPossession(true);
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             posHandler.FreePossession();
         }

@@ -69,7 +69,7 @@ public class BotCommandExecutor : MonoBehaviour
 
     private void ExecuteDoNothingCommand()
     {
-        Debug.Log("Do nothing!");
+        //Debug.Log("Do nothing!");
     }
 
     private void ExecuteBuildInfSpawnerCommand()
