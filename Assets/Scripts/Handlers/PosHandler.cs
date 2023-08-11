@@ -117,25 +117,16 @@ public class PosHandler : MonoBehaviour
     // Attempt to possess a unit, going through the various checks and what not.
     public void TryPossessUnit(GameObject maybePos)
     {
-        Debug.Log("TRY POSSESS");
         if (!Input.GetKey(KeyCode.Space)) return;
-        //if (!possessionReady) return;
-        Debug.Log("POSSESS 1");
-        Debug.Log(maybePos);
         GameObject potentialUnit = maybePos.transform.parent.gameObject;
         if (potentialUnit.GetComponent<Unit>() == null) return;
-        Debug.Log("POSSESS 2");
         Unit unit = potentialUnit.GetComponent<Unit>();
-        Debug.Log("POSSESS 3");
         if (unit.unitTeam != teamColor) return;
-        Debug.Log("POSSESS 4: Controlled Unit Count = " + controlledUnits.Count);
         if (controlledUnits.Count > 0)
         {
             controlledUnits[0].beingControlled = false;
         }
-        Debug.Log("POSSESS 6");
         controlledUnits = new List<Unit>();
-        Debug.Log("POSSESS 7");
         PossessUnit(unit);
     }
 

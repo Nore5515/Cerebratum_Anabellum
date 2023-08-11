@@ -30,8 +30,8 @@ public class PathHandler : MonoBehaviour
     {
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
 
-        PosHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStats"));
-        GameObject.Find("Canvas/UnitStats").SetActive(false);
+        PosHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStatsWBG/UnitStats"));
+        GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
     }
 
     public void SetPathDrawingMode(bool newMode)
