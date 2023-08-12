@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class PosHandler : MonoBehaviour
 {
@@ -39,6 +40,9 @@ public class PosHandler : MonoBehaviour
 
     public string teamColor = "RED";
     public List<Unit> controlledUnits = new List<Unit>();
+
+    bool justFired = false;
+    float countdown = 0.0f;
 
     public void ControlledMouseDown(RayObj rayObj)
     {
@@ -187,6 +191,7 @@ public class PosHandler : MonoBehaviour
             return;
         }
         unit.beingControlled = true;
+        InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
         if (!setPossessed(unit))
@@ -196,6 +201,13 @@ public class PosHandler : MonoBehaviour
         }
         unitStatUI.SetActive(true);
         possessionButton.SetActive(false);
+    }
+
+    void InitializeCooldownSlider(Unit unit)
+    {
+        cooldownSlider.minValue = 0.0f;
+        cooldownSlider.maxValue = unit.rof;
+        cooldownSlider.value = cooldownSlider.maxValue;
     }
 
     // Creates instance
@@ -211,7 +223,9 @@ public class PosHandler : MonoBehaviour
     {
         Debug.Log(unitDelay);
         unitDelay += Time.deltaTime;
-        cooldownSlider.value = unitDelay;
+        TryUpdateCooldownSlider();
+        IterateUnitFireDelay();
+
         if (unitDelay > unitMaxDelay)
         {
             coroutineRunning = false;
@@ -220,5 +234,59 @@ public class PosHandler : MonoBehaviour
         return true;
     }
 
-    
+    private void FixedUpdate()
+    {
+        TryUpdateCooldownSlider();
+        IterateUnitFireDelay();
+    }
+
+    void IterateUnitFireDelay()
+    {
+        if (countdown > 0.0f)
+        {
+            countdown -= Time.deltaTime;
+            if (countdown < 0.0f)
+            {
+                countdown = 0.0f;
+            }
+        }
+    }
+
+    void TryUpdateCooldownSlider()
+    {
+        if (controlledUnits.Count > 0)
+        {
+            if (controlledUnits[0] != null)
+            {
+                UpdateCooldownSlider(controlledUnits[0]);
+            }
+        }
+    }
+
+    void UpdateCooldownSlider(Unit unit)
+    {
+        Debug.Log("1");
+        cooldownSlider.value = cooldownSlider.maxValue - countdown;
+        Debug.Log("2");
+        UnitFireCooldownChecker(unit);
+        Debug.Log("3");
+    }
+
+    void UnitFireCooldownChecker(Unit unit)
+    {
+        if (unit.canFire == false)
+        {
+            if (justFired == false)
+            {
+                justFired = true;
+                countdown = unit.rof;
+            }
+        }
+        else
+        {
+            justFired = false;
+        }
+    }
+
+
 }
