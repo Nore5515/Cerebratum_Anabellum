@@ -36,6 +36,10 @@ public class BotCommandGenerator
 
     private BotCommandModel CommandGenWhileSlotsFull()
     {
+        if (Random.Range(0.0f, 1.0f) < Constants.BOT_UPGRADE_CHANCE)
+        {
+            return new BotCommandModel("", BotCommands.UpgradeRandomSpawner);
+        }
         if (Random.Range(0.0f, 1.0f) < Constants.BOT_CHANGE_SPAWNER_PATH_CHANCE)
         {
             return new BotCommandModel("", BotCommands.ChangeSpawnerPath);

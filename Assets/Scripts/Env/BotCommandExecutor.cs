@@ -13,6 +13,13 @@ public class BotCommandExecutor : MonoBehaviour
 
     BotCommandGenerator commandGenerator = new BotCommandGenerator();
 
+    private enum SpawnerUpgrades
+    {
+        AttemptUpgradeSpawnRate,
+        AttemptUpgradeFireRate,
+        AttemptUpgradeRange
+    }
+
     void Start()
     {
         StartCoroutine(BotCommandGenerationTimer());
@@ -38,9 +45,60 @@ public class BotCommandExecutor : MonoBehaviour
             case BotCommands.ChangeSpawnerPath:
                 ExecuteChangeSpawnerPathCommand();
                 break;
+            case BotCommands.UpgradeRandomSpawner:
+                ExecuteUpgradeRandomSpawnerCommand();
+                break;
             default:
                 break;
         }
+    }
+
+    private void ExecuteUpgradeRandomSpawnerCommand()
+    {
+        List<BuildingSlot> buildingSlots = GetSpawnerBuildingSlots();
+        List<BuildingSlot> unmaxedBuildingSlots = new List<BuildingSlot>();
+
+        foreach (var buildingSlot in buildingSlots)
+        {
+            if (!IsSpawnerMaxedUpgraded(buildingSlot.getSpawner()))
+            {
+                unmaxedBuildingSlots.Add(buildingSlot);
+            }
+        }
+
+        if (unmaxedBuildingSlots.Count >= 1)
+        {
+            int randomSlot = Random.Range(0, unmaxedBuildingSlots.Count);
+            DoRandomUpgrade(unmaxedBuildingSlots[randomSlot].getSpawner());
+        }
+    }
+
+    private bool IsSpawnerMaxedUpgraded(Spawner spawner)
+    {
+        if (!spawner.IsMaxedSpawnRate()) return false;
+        if (!spawner.IsMaxedRange()) return false;
+        if (!spawner.IsMaxedFireRate()) return false;
+        return true;
+    }
+
+    private void DoRandomUpgrade(Spawner spawner)
+    {
+        List<System.Action> potentialUpgrades = getUpgradesNotMaxed(spawner);
+        if (potentialUpgrades.Count < 1) return;
+        int randomUpgrade = Random.Range(0, potentialUpgrades.Count);
+        potentialUpgrades[randomUpgrade]();
+    }
+
+    private List<System.Action> getUpgradesNotMaxed(Spawner spawner)
+    {
+
+        List<System.Action> functions = new List<System.Action>();
+
+        if (!spawner.IsMaxedSpawnRate()) functions.Add(spawner.AttemptUpgradeSpawnRate);
+        if (!spawner.IsMaxedRange()) functions.Add(spawner.AttemptUpgradeRange);
+        if (!spawner.IsMaxedFireRate()) functions.Add(spawner.AttemptUpgradeFireRate);
+
+        return functions;
     }
 
     private void ExecuteChangeSpawnerPathCommand()

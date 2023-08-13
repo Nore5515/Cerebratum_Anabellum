@@ -327,29 +327,47 @@ public class Spawner : Structure
 
     public void AttemptUpgradeSpawnRate()
     {
-        if (spawnedUnitStats.spawnTime < spawnedUnitStats.MAX_UNIT_SPAWN_RATE) return;
+        if (IsMaxedSpawnRate()) return;
         if (DeductTeamPoints(1))
         {
             UpgradeSpawnRate();
         }
     }
 
+    public bool IsMaxedSpawnRate()
+    {
+        if (spawnedUnitStats.spawnTime < spawnedUnitStats.MAX_UNIT_SPAWN_RATE) return true;
+        return false;
+    }
+
     public void AttemptUpgradeFireRate()
     {
-        if (spawnedUnitStats.fireDelay < spawnedUnitStats.MAX_UNIT_FIRE_RATE) return;
+        if (IsMaxedFireRate()) return;
         if (DeductTeamPoints(1))
         {
             UpgradeFireRate();
         }
     }
 
+    public bool IsMaxedFireRate()
+    {
+        if (spawnedUnitStats.fireDelay < spawnedUnitStats.MAX_UNIT_FIRE_RATE) return true;
+        return false;
+    }
+
     public void AttemptUpgradeRange()
     {
-        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return;
+        if (IsMaxedRange()) return;
         if (DeductTeamPoints(1))
         {
             UpgradeRange();
         }
+    }
+
+    public bool IsMaxedRange()
+    {
+        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return true;
+        return false;
     }
 
     private void UpgradeSpawnRate()

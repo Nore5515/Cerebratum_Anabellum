@@ -4,6 +4,7 @@ public static class Constants
 
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
     public static float BOT_CHANGE_SPAWNER_PATH_CHANCE => 0.25f;
+    public static float BOT_UPGRADE_CHANCE => 0.75f;
 
     public static float INF_MIN_SPAWN_TIME => 1.0f;
     public static float INF_MIN_FIRE_DELAY => 0.5f;

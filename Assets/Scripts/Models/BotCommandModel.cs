@@ -10,6 +10,7 @@ public enum BotCommands
     BuildNaniteGen,
     DoNothing,
     ChangeSpawnerPath,
+    UpgradeRandomSpawner
 }
 
 public class BotCommandModel
