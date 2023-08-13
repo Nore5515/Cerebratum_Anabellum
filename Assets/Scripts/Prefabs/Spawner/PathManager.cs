@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,6 +46,7 @@ public class PathManager : MonoBehaviour
             if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
             {
                 GameObject pathMarker = CreatePathMarker(new PathMarkerModel(color, orbTransform.position));
+                //pathMarker.GetComponent<MeshRenderer>().enabled = false;
                 AddPathMarkerToPathSpheres(pathMarker);
             }
         }
@@ -87,6 +89,7 @@ public class PathManager : MonoBehaviour
         {
             GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
             obj.GetComponent<MeshRenderer>().material = pathMat;
+            obj.GetComponent<MeshRenderer>().enabled = false;
             pathSpheres.Add(obj);
         }
     }

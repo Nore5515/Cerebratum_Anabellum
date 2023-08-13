@@ -168,6 +168,7 @@ public class PathHandler : MonoBehaviour
 
     void SelectSpawner(GameObject spawnerGameObject)
     {
+        Debug.Log("Selecting spawner!");
         TryHideSpawnerPoints();
         spawnerSource = spawnerGameObject;
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
