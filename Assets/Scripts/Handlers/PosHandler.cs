@@ -32,8 +32,6 @@ public class PosHandler : MonoBehaviour
 
     public bool possessionReady = false;
 
-    public GameObject possessionButton;
-
     InputHandler inputHandler;
 
     public PathHandler pathHandler;
@@ -53,7 +51,6 @@ public class PosHandler : MonoBehaviour
     public void Start()
     {
         inputHandler = new InputHandler(this.gameObject.GetComponent<PosHandler>());
-        possessionButton = GameObject.Find("PossessButton");
     }
 
     void Update()
@@ -64,7 +61,6 @@ public class PosHandler : MonoBehaviour
     public void SetPossession(bool newPossession)
     {
         possessionReady = newPossession;
-        possessionButton.GetComponent<Button>().interactable = !possessionReady;
     }
 
     public void FreePossession()
@@ -76,7 +72,6 @@ public class PosHandler : MonoBehaviour
         controlledUnits = new List<Unit>();
         camScript.followObj = null;
         unitStatUI.SetActive(false);
-        possessionButton.SetActive(true);
         setPossessed(null);
     }
 
@@ -201,7 +196,6 @@ public class PosHandler : MonoBehaviour
             return;
         }
         unitStatUI.SetActive(true);
-        possessionButton.SetActive(false);
     }
 
     void InitializeCooldownSlider(Unit unit)

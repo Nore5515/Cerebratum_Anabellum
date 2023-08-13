@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2827561041874613995
+--- !u!1 &415603163519305974
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2827561041874613998}
-  - component: {fileID: 2827561041874613993}
-  - component: {fileID: 2827561041874613992}
-  - component: {fileID: 2827561041874613999}
+  - component: {fileID: 415603163519305962}
+  - component: {fileID: 415603163519305960}
+  - component: {fileID: 415603163519305967}
+  - component: {fileID: 415603163519305961}
+  - component: {fileID: 415603163519305964}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -19,27 +20,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2827561041874613998
+--- !u!4 &415603163519305962
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827561041874613995}
-  m_LocalRotation: {x: 0.19655257, y: -0, z: -0, w: 0.9804933}
-  m_LocalPosition: {x: 0, y: 7.73, z: -12.59}
+  m_GameObject: {fileID: 415603163519305974}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 17, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 22.671, y: 0, z: 0}
---- !u!20 &2827561041874613993
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!20 &415603163519305960
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827561041874613995}
+  m_GameObject: {fileID: 415603163519305974}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -58,7 +60,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -76,32 +78,47 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2827561041874613992
+--- !u!81 &415603163519305967
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827561041874613995}
+  m_GameObject: {fileID: 415603163519305974}
   m_Enabled: 1
---- !u!114 &2827561041874613999
+--- !u!114 &415603163519305961
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827561041874613995}
+  m_GameObject: {fileID: 415603163519305974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc01853f73114918a1bc475d666b093, type: 3}
+  m_Script: {fileID: 11500000, guid: 69106f182216a47938fc1b2db4ce44bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCam: {fileID: 415603163519305960}
+  anchor: {fileID: 0}
+  followObj: {fileID: 0}
+  MoveSpeed: 5
+--- !u!114 &415603163519305964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415603163519305974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84584d8f76494286803c59d4aed5490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefabRed: {fileID: 2822049802233959069, guid: 918bfc0b0df8042cbb65fecc9e72380b, type: 3}
   prefabBlue: {fileID: 2822049802233959069, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
-  maxCount: 15
-  teamColor: 
-  teamColorText: {fileID: 0}
-  redObjs: []
-  blueObjs: []
-  units: []
-  toRemoveUnits: []
+  pathDrawingMode: 0
+  distancePerSphere: 0
+  maxDistancePerSphere: 5
+  oldPos: {x: 0, y: 0, z: 0}
+  pathBar: {fileID: 0}
+  pathHandlerPossessionHandler: {fileID: 0}
