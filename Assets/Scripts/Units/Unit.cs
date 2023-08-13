@@ -230,12 +230,10 @@ public class Unit : MonoBehaviour
 
     private void ValidPosFireAttempt(Vector3 targetPosition)
     {
-        Debug.Log("Valid Pos Fire Attempt!");
         canFire = false;
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            Debug.Log("Starting Enable Firing");
             StartCoroutine(EnableFiring());
         }
         //unitPossessionHandler.PossessedUnitFired();
@@ -245,11 +243,9 @@ public class Unit : MonoBehaviour
 
     private void InvalidPosFireAttempt()
     {
-        Debug.Log("INVALID FIRE ATTEMPT");
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            Debug.Log("Starting Enable Firing");
             StartCoroutine(EnableFiring());
         }
     }
