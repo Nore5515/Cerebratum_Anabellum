@@ -10,6 +10,7 @@ public class UI : MonoBehaviour
     public Text nanitesText;
     public Text nanitesPerMinuteText;
     public Text gameOverText;
+    public Image gameoverBGImage;
     bool gameEnding = false;
 
     // Start is called before the first frame update
@@ -43,6 +44,7 @@ public class UI : MonoBehaviour
                 {
                     gameOverText.text = "Red Victory!";
                 }
+                gameoverBGImage.enabled = true;
                 IEnumerator coroutine = EndGame();
                 StartCoroutine(coroutine);
             }
