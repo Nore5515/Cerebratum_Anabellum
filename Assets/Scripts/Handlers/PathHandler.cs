@@ -103,10 +103,8 @@ public class PathHandler : MonoBehaviour
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
-        Debug.Log(rayObj.hit.collider.gameObject.tag);
         if (rayObj.hit.collider.gameObject.tag == "barrier")
         {
-            Debug.Log("BARRIER!!");
             spawnerClass.DisableDrawable();
             StopDrawingPath();
             return;
