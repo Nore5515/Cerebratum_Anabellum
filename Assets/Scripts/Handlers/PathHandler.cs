@@ -52,7 +52,7 @@ public class PathHandler : MonoBehaviour
 
     public void HandleClickOnSpawner(RayObj rayObj)
     {
-        Debug.Log("Hit Obj: " + rayObj.hit.collider.gameObject);
+        //Debug.Log("Hit Obj: " + rayObj.hit.collider.gameObject);
         if (IsHitObjectSelectedSpawner(rayObj))
         {
             HandleClickOnSelectedSpawner();

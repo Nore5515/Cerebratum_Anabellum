@@ -46,7 +46,8 @@ public class PosHandler : MonoBehaviour
 
     public void ControlledMouseDown(RayObj rayObj)
     {
-        controlledUnits[0].AttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
+        Debug.Log("Attempt shot at point");
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
     }
 
     public void Start()
@@ -112,9 +113,9 @@ public class PosHandler : MonoBehaviour
     {
         if (!coroutineRunning)
         {
-            unitMaxDelay = posUnit.rof * 0.5f;
-            unitDelay = 0.0f;
-            coroutineRunning = true;
+            //unitMaxDelay = posUnit.rof * 0.5f;
+            //unitDelay = 0.0f;
+            //coroutineRunning = true;
         }
     }
 
@@ -265,11 +266,8 @@ public class PosHandler : MonoBehaviour
 
     void UpdateCooldownSlider(Unit unit)
     {
-        Debug.Log("1");
         cooldownSlider.value = cooldownSlider.maxValue - countdown;
-        Debug.Log("2");
         UnitFireCooldownChecker(unit);
-        Debug.Log("3");
     }
 
     void UnitFireCooldownChecker(Unit unit)

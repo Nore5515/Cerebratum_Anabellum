@@ -157,7 +157,8 @@ public class Unit : MonoBehaviour
     private WaitForSeconds FireDelay()
     {
         // When controlled, fire 50% faster.
-        if (beingControlled)
+        // Thats a good idea but poorly implemented.
+        if (beingControlled && false)
         {
             return new WaitForSeconds(rof * 0.5f);
         }
@@ -198,7 +199,7 @@ public class Unit : MonoBehaviour
     {
         if (canFire)
         {
-            ValidFireAttempt(targetPosition);
+            ValidAIFireAttempt(targetPosition);
         }
         else
         {
@@ -206,23 +207,61 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void ValidFireAttempt(Vector3 targetPosition)
+
+    private void ValidAIFireAttempt(Vector3 targetPosition)
     {
         canFire = false;
-        if (beingControlled)
-        {
-            unitPossessionHandler.PossessedUnitFired();
-        }
         // Fire with perfect accuracy if controlled.
         float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
         FireAtPosition(targetPosition, missRange);
     }
 
-    private void InvalidFireAttempt()
+    public void PosAttemptShotAtPosition(Vector3 targetPosition)
     {
+        if (canFire)
+        {
+            ValidPosFireAttempt(targetPosition);
+        }
+        else
+        {
+            InvalidPosFireAttempt();
+        }
+    }
+
+    private void ValidPosFireAttempt(Vector3 targetPosition)
+    {
+        Debug.Log("Valid Pos Fire Attempt!");
+        canFire = false;
         if (canFireDelay == false)
         {
             canFireDelay = true;
+            Debug.Log("Starting Enable Firing");
+            StartCoroutine(EnableFiring());
+        }
+        //unitPossessionHandler.PossessedUnitFired();
+        float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
+        FireAtPosition(targetPosition, missRange);
+    }
+
+    private void InvalidPosFireAttempt()
+    {
+        Debug.Log("INVALID FIRE ATTEMPT");
+        if (canFireDelay == false)
+        {
+            canFireDelay = true;
+            Debug.Log("Starting Enable Firing");
+            StartCoroutine(EnableFiring());
+        }
+    }
+
+
+    private void InvalidFireAttempt()
+    {
+        //Debug.Log("INVALID FIRE ATTEMPT");
+        if (canFireDelay == false)
+        {
+            canFireDelay = true;
+            //Debug.Log("Starting Enable Firing");
             StartCoroutine(EnableFiring());
         }
     }
