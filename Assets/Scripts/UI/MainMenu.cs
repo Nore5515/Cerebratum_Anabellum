@@ -63,6 +63,9 @@ public class MainMenu : MonoBehaviour
             case "TUTORIAL":
                 SceneManager.LoadScene("Scenes/Scenarios/Tutorial");
                 break;
+            case "CAMPAIGN":
+                SceneManager.LoadScene("Scenes/Campaign/CampaignMenu");
+                break;
 
             // System Stuff
             case "SETTINGS":
