@@ -54,7 +54,7 @@ public class MainMenu : MonoBehaviour
                 break;
 
             case "MAIN":
-                SceneManager.LoadScene("Scenes/MainMenu");
+                SceneManager.LoadScene("Scenes/Menus/MainMenu");
                 break;
 
             // Load Scenarios
@@ -101,18 +101,21 @@ public class MainMenu : MonoBehaviour
 
     public void HideUI()
     {
-        TutorialButton.SetActive(false);
-        StartButton.SetActive(false);
-        ScenarioButton.SetActive(false);
-        SettingsButton.SetActive(false);
-        QuitButton.SetActive(false);
+        if (TutorialButton != null)
+        {
+            TutorialButton.SetActive(false);
+            StartButton.SetActive(false);
+            ScenarioButton.SetActive(false);
+            SettingsButton.SetActive(false);
+            QuitButton.SetActive(false);
 
-        Scenarios_EasyMode_Button.SetActive(false);
-        Scenarios_WorldWar1_Button.SetActive(false);
-        Scenarios_NoTower_Button.SetActive(false);
-        Scenarios_Back_Button.SetActive(false);
+            Scenarios_EasyMode_Button.SetActive(false);
+            Scenarios_WorldWar1_Button.SetActive(false);
+            Scenarios_NoTower_Button.SetActive(false);
+            Scenarios_Back_Button.SetActive(false);
 
-        SettingsGroup.SetActive(false);
-        Scenario_Scene.SetActive(false);
+            SettingsGroup.SetActive(false);
+            Scenario_Scene.SetActive(false);
+        }
     }
 }
