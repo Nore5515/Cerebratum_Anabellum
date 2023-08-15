@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scenarios/EasyMode.unity
     guid: 49077c33e932a4f3e8b9e635afba117c
+  - enabled: 1
+    path: Assets/Scenes/Campaign/CampaignMenu.unity
+    guid: aa91545bf0cff4704b7e6bc92c04a4b0
   m_configObjects: {}

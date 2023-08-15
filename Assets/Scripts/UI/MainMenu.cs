@@ -53,6 +53,10 @@ public class MainMenu : MonoBehaviour
                 Scenario_Scene.SetActive(true);
                 break;
 
+            case "MAIN":
+                SceneManager.LoadScene("Scenes/MainMenu");
+                break;
+
             // Load Scenarios
             case "EASYMODE":
                 SceneManager.LoadScene("Scenes/Scenarios/EasyMode");

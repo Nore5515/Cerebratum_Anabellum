@@ -167,8 +167,9 @@ MonoBehaviour:
   hpSlider: {fileID: 0}
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4761643736141652774}
-  points: []
-  Dest: {fileID: 0}
+  pointObjects: []
+  pointVectors: []
+  Dest: {x: 0, y: 0, z: 0}
   removing: 0
   survivalTime: -1
   cm: {fileID: 0}
