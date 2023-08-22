@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,16 +14,23 @@ public class CampaignMenu : MonoBehaviour
 
     public GameObject detailsObj;
 
+    public GameObject levelTitleObj;
+    public GameObject levelDescObj;
+
     private string selectedLevel = "";
 
     private List<GameObject> levelButtons = new List<GameObject>();
 
+    Dictionary<string, string> levelDetails = new Dictionary<string, string>();
+    Dictionary<string, string> levelNames = new Dictionary<string, string>();
+
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Options " + options);
         fillLevelButtons(options);
         designateLevelButtons();
+        InitializeLevelFlavor();
     }
 
     void fillLevelButtons(GameObject parentObject)
@@ -39,8 +48,26 @@ public class CampaignMenu : MonoBehaviour
     {
         foreach (GameObject levelButton in levelButtons)
         {
-            levelButton.GetComponent<Button>().onClick.AddListener(delegate { selectButton(levelButton); });
+            levelButton.GetComponent<Button>().onClick.AddListener(delegate { ButtonClick(levelButton); });
         }
+    }
+
+    void InitializeLevelFlavor()
+    {
+        levelDetails.Add("Level1", "Congratulations on being promoted to a Cerebrum Commander, newbie! Corporate's already got your first task lined up. You've been hired out to the small southern nation of Sandsyl, which may not exist in a few moments, given that their capital is currently being invaded by their northern (and much scarier) neighbor, Iryllia. Sandsyl has paid us SIGNIFICANT sums of money to ensure that they stick around, so Corporate wants you to help lead their defense. You'll do great, newbie!");
+        levelDetails.Add("Level2", "Well done new blood! The capital’s not going anywhere soon, but unless we get Sandsyl’s industrial base and powerplants back online, it’s a losing battle. Get those factories back from the Iryllians and back online, ASAP!");
+        levelDetails.Add("Level3", "With Sandsyl’s factories back online, they’re eager to get to manufacturing their secret weapon. Some sort of tank that walks on legs, not treads. It’ll take some time to get everything online, and Iryllia is gonna be throwing everything they’ve got to stop those factories. Don’t let them through, and hold the line!");
+        levelDetails.Add("Level4", "The Sandsyl people love you, they practically praise your name! Sandsyl is ready for a proper counterattack thanks to your help, and are ready to drive the Iryllians back to their land. With their new tank tech and your leadership, you’ve got a chance! I’ll be signing out after this one, apparently Corporate’s got a new deployment for me. Some Sandsyl agent will be working with you directly from here on out, since I’m leaving. Maybe we’ll be seeing each other, heh!");
+        levelNames.Add("Level1", "Rude Awakening");
+        levelNames.Add("Level2", "Seizing Power Back");
+        levelNames.Add("Level3", "Awaken the War Machine");
+        levelNames.Add("Level4", "Returning the Favor");
+    }
+
+    void ButtonClick(GameObject buttonObj)
+    {
+        selectButton(buttonObj);
+        UpdateLevelDetails(buttonObj);
     }
 
     void selectButton(GameObject buttonObj)
@@ -52,6 +79,18 @@ public class CampaignMenu : MonoBehaviour
         else
         {
             selectedLevel = buttonObj.name;
+        }
+        Debug.Log(selectedLevel);
+    }
+
+    void UpdateLevelDetails(GameObject buttonObj)
+    {
+        Debug.Log(levelNames.Keys.ToString());
+        Debug.Log(buttonObj.name);
+        if (levelNames[buttonObj.name] != null && levelDetails[buttonObj.name] != null)
+        {
+            levelTitleObj.GetComponent<TextMeshProUGUI>().text = levelNames[buttonObj.name];
+            levelDescObj.GetComponent<TextMeshProUGUI>().text = levelDetails[buttonObj.name];
         }
     }
 
@@ -73,6 +112,25 @@ public class CampaignMenu : MonoBehaviour
         }
     }
 
+    LevelData ReadJsonFromFile(string filePath)
+    {
+        try
+        {
+            // Read the JSON file as a string
+            string jsonContent = File.ReadAllText(filePath);
+
+            // Deserialize the JSON string using JsonUtility
+            LevelData jsonData = JsonUtility.FromJson<LevelData>(jsonContent);
+
+            return jsonData;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"An error occurred: {ex.Message}");
+            return null;
+        }
+    }
+
     void tryParseLevelData()
     {
         string levelJsonFilePath = Path.Combine("..", "..", "JSONData", "levelData.json");
@@ -82,15 +140,26 @@ public class CampaignMenu : MonoBehaviour
 
             string jsonData = File.ReadAllText(levelJsonFilePath);
 
+            //LevelData jsonData = JsonUtility.ReadJsonFromFile("data.json");
+
+            //if (jsonData != null)
+            //{
+            //    Debug.Log($"Name: {jsonData.Name}, Age: {jsonData.Age}");
+            //}
+            //else
+            //{
+            //    Debug.LogError("Failed to read JSON data.");
+            //}
+
             // Deserialize the JSON into a dynamic object
-            dynamic data = JsonConvert.DeserializeObject(jsonData);
+            //dynamic data = JsonConvert.DeserializeObject(jsonData);
 
             // If you have a class for deserialization
             //LevelData data = JsonSerializer.Deserialize<LevelData>(jsonData);
 
             // Now you can access data.Property1, data.Property2, etc.
-            Console.WriteLine(data.Property1);
-            Console.WriteLine(data.Property2);
+            //Console.WriteLine(data.Property1);
+            //Console.WriteLine(data.Property2);
         }
         catch (Exception ex)
         {

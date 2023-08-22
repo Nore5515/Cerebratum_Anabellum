@@ -2039,7 +2039,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974319664}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4c6ec8a248c2b44dc9f3f332b0224e1a, type: 3}
@@ -2367,6 +2367,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   options: {fileID: 1801600615}
   detailsObj: {fileID: 1958834128}
+  levelTitleObj: {fileID: 1713859228}
+  levelDescObj: {fileID: 1327382547}
 --- !u!1 &1194763037
 GameObject:
   m_ObjectHideFlags: 0
@@ -2830,7 +2832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 75}
+  m_AnchoredPosition: {x: 0, y: 99.7}
   m_SizeDelta: {x: 200, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1327382549
@@ -2853,9 +2855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'dsadasdasdadasdad
-
-    sdasdasdasdasdsadsadsadsadsadsadsadasdasdsadasdasdasdasd'
+  m_text: sdsdadasdasdasdasdsadsdasdadsadasdasdadsadasdsadasdasdasdasdasdasdasdsadasdasdasdasdasdsadasdsadasdasdasdasdasdasdsadasdasd
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2882,11 +2882,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 16
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 16
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -2900,7 +2900,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -3464,8 +3464,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: 0, y: -45.3}
+  m_SizeDelta: {x: 200, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1713859230
 MonoBehaviour:
@@ -3520,7 +3520,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 1
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -3766,6 +3766,22 @@ PrefabInstance:
     - target: {fileID: 8982861478793835030, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
       propertyPath: m_Name
       value: Juhani Junkala [Retro Game Music Pack] Ending
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982861478793835030, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982861478793835031, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982861478793835031, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982861478793835031, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8982861478793835048, guid: ddcb98f886a4146e199d5db7b7d93cd2, type: 3}
       propertyPath: m_RootOrder
