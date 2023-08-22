@@ -1,0 +1,201 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6364721946441900345
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7412193530850577485, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577485, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577485, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577485, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577485, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577486, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_fontSize
+      value: 14.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530850577486, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426888, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: desc
+      value: I am a Dialogue box! Fill me up with cool dialogue! I'll probably add
+        an undertale esq *doot doot doot* and letters coming up one at a time, later.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426894, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_Name
+      value: DialoguePopup Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 35.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -159
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193530997426895, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 425
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 212.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998369, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998370, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_text
+      value: I am a Dialogue box! Fill me up with cool dialogue! I'll probably add
+        an undertale esq *doot doot doot* and letters coming up one at a time, later.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531424998370, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -37.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531917643361, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412193531947326038, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54412c920028f4bd3ad03186a739e26b, type: 3}
