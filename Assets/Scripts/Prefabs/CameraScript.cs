@@ -20,6 +20,18 @@ public class CameraScript : MonoBehaviour
 
     }
 
+    Vector3 ParseInputToOrthoVector(float xMovement, float zMovement)
+    {
+        Vector3 moveVec = new Vector3();
+        moveVec.x = xMovement;
+        moveVec.y = zMovement;
+        moveVec.z = 0.0f;
+        moveVec = Quaternion.Euler(45, 45, 0) * moveVec;
+
+        moveVec.y = 0.0f;
+        return moveVec;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -29,8 +41,10 @@ public class CameraScript : MonoBehaviour
             mainCam.transform.position = anchor.transform.position;
             float zMovement = Input.GetAxis("Vertical");
             float xMovement = Input.GetAxis("Horizontal");
-            Vector3 movement = new Vector3(xMovement, 0, zMovement);
+            //Vector3 movement = new Vector3(xMovement, 0, zMovement);
+            Vector3 movement = ParseInputToOrthoVector(xMovement, zMovement);
             anchor.transform.position += movement * MoveSpeed * Time.deltaTime;
+            //this.transform.parent.position += movement * MoveSpeed * Time.deltaTime;
         }
         else
         {
@@ -56,16 +70,16 @@ public class CameraScript : MonoBehaviour
         ///////////////////////////////////////////////////
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            if (mainCam.fieldOfView<=125)
+            if (mainCam.orthographicSize<=64)
             {
-                mainCam.fieldOfView +=2;
+                mainCam.orthographicSize += 1;
             }
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            if (mainCam.fieldOfView >= 20)
+            if (mainCam.orthographicSize >= 5)
             {
-                mainCam.fieldOfView -=2;
+                mainCam.orthographicSize -= 1;
             }
         }
     }

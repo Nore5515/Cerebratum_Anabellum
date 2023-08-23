@@ -21,7 +21,13 @@ public class SpriteRighter : MonoBehaviour
     {
         if (this.transform.rotation != rot)
         {
-            this.transform.rotation = rot;
+            //this.transform.rotation = rot;
         }
+    }
+
+    bool IsUnitFacingUp()
+    {
+        //if (this.transform.)
+        return false;
     }
 }
