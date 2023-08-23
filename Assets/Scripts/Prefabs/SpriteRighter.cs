@@ -7,6 +7,15 @@ public class SpriteRighter : MonoBehaviour
 
     Quaternion rot = new Quaternion(0.0f, 0.0f, 0.0f, 1);
     public bool flipped = false;
+    public Unit hostUnit;
+
+    public GameObject walkingAnim;
+    public GameObject walkingBackAnim;
+    public GameObject firingAnim;
+
+    string lastState = "";
+
+    bool lastKnownDirectionUp = false;
 
     public void Flip(){
         SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
@@ -19,15 +28,57 @@ public class SpriteRighter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.transform.rotation != rot)
+        ProcessUnitState();
+    }
+
+    void ProcessUnitState()
+    {
+        if (hostUnit.AnimState == lastState)
         {
-            //this.transform.rotation = rot;
+            if (lastKnownDirectionUp == IsUnitFacingUp())
+            {
+                return;
+            }
         }
+        if (hostUnit.AnimState == "Walking")
+        {
+            DisableAllSprites();
+            EnableWalkingAnim();
+        }
+        if (hostUnit.AnimState == "Shooting")
+        {
+            DisableAllSprites();
+            if (firingAnim != null) { firingAnim.SetActive(true); }
+        }
+        lastState = hostUnit.AnimState;
+        lastKnownDirectionUp = IsUnitFacingUp();
+    }
+
+    void EnableWalkingAnim()
+    {
+        if (IsUnitFacingUp())
+        {
+            if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+        }
+        else
+        {
+            if (walkingAnim != null) { walkingAnim.SetActive(true); }
+        }
+    }
+
+    void DisableAllSprites()
+    {
+        if (walkingAnim != null) { walkingAnim.SetActive(false); }
+        if (walkingBackAnim != null) { walkingBackAnim.SetActive(false); }
+        if (firingAnim != null) { firingAnim.SetActive(false); }
     }
 
     bool IsUnitFacingUp()
     {
-        //if (this.transform.)
+        if (hostUnit.direction.x > 0 && hostUnit.direction.z > 0)
+        {
+            return true;
+        }
         return false;
     }
 }

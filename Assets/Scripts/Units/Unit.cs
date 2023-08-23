@@ -37,6 +37,9 @@ public class Unit : MonoBehaviour
 
     public bool isUnitInitialized { get; set; }
 
+    // Movement
+    public Vector3 direction;
+
     // Range (REFACTOR TODO: TODO;)
     public int MIN_DIST_TO_MOVEMENT_DEST = 1;
 
@@ -63,7 +66,8 @@ public class Unit : MonoBehaviour
 
     string path = "Asset_Projectile";
 
-    IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
+    //IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
+    public string AnimState = "Idle";
 
     // Targets Stuff
     public TargetHandler unitTargetHandler = new TargetHandler();
@@ -130,8 +134,8 @@ public class Unit : MonoBehaviour
         }
         
         // Sprite Stuff
-        UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
-        UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
+        //UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
+        //UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
 
     private void InitializePoints(List<GameObject> newPoints)
@@ -267,11 +271,7 @@ public class Unit : MonoBehaviour
         unitTargetHandler.targetsInRange.Add(target);
         ClearNullTargets();
         UpdateThreatState();
-        if (UnitSprites.ContainsKey("Shooting"))
-        {
-            DisableAllSprites();
-            UnitSprites["Shooting"].SetActive(true);
-        }
+        AnimState = "Shooting";
     }
 
     public void UpdateThreatState()
@@ -311,14 +311,6 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void DisableAllSprites()
-    {
-        foreach (string sprite in UnitSprites.Keys)
-        {
-            UnitSprites[sprite].SetActive(false);
-        }
-    }
-
     public void RemoveTargetInRange(GameObject target)
     {
         if (unitTargetHandler.targetsInRange.Contains(target))
@@ -329,11 +321,7 @@ public class Unit : MonoBehaviour
         if (unitTargetHandler.targetsInRange.Count <= 0)
         {
             // Sprite = Walking
-            if (UnitSprites.ContainsKey("Walking"))
-            {
-                DisableAllSprites();
-                UnitSprites["Walking"].SetActive(true);
-            }
+            AnimState = "Walking";
         }
     }
 
@@ -434,7 +422,7 @@ public class Unit : MonoBehaviour
                 var newDest = new Vector3(Dest.x, this.transform.position.y, Dest.z);
                 var heading = newDest - this.transform.position;
                 var distance = heading.magnitude;
-                var direction = heading / distance;
+                direction = heading / distance;
 
                 float distToDest = Vector3.Distance(transform.position, Dest);
 
