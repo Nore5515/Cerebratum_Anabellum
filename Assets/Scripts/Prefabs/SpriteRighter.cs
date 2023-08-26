@@ -16,12 +16,31 @@ public class SpriteRighter : MonoBehaviour
     string lastState = "";
 
     bool lastKnownDirectionUp = false;
+    bool lastKnownDirectionLeft = false;
 
     public void Flip(){
         SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sr in arr)
         {
             sr.flipX = !sr.flipX;
+        }
+    }
+
+    void FaceLeft()
+    {
+        SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in arr)
+        {
+            sr.flipX = true;
+        }
+    }
+
+    void FaceRight()
+    {
+        SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in arr)
+        {
+            sr.flipX = false;
         }
     }
 
@@ -33,9 +52,10 @@ public class SpriteRighter : MonoBehaviour
 
     void ProcessUnitState()
     {
+        CheckAndUpdateIfHoriChanged();
         if (hostUnit.AnimState == lastState)
         {
-            if (lastKnownDirectionUp == IsUnitFacingUp())
+            if (lastKnownDirectionUp == IsUnitFacingUp() && lastKnownDirectionLeft == IsUnitFacingLeft())
             {
                 return;
             }
@@ -52,6 +72,27 @@ public class SpriteRighter : MonoBehaviour
         }
         lastState = hostUnit.AnimState;
         lastKnownDirectionUp = IsUnitFacingUp();
+        lastKnownDirectionLeft = IsUnitFacingLeft();
+    }
+
+    void CheckAndUpdateIfHoriChanged()
+    {
+        if (lastKnownDirectionLeft == IsUnitFacingLeft())
+        {
+            return;
+        }
+        else
+        {
+            if (IsUnitFacingLeft())
+            {
+                FaceLeft();
+            }
+            else
+            {
+                FaceRight();
+            }
+            lastKnownDirectionLeft = IsUnitFacingLeft();
+        }
     }
 
     void EnableWalkingAnim()
@@ -75,7 +116,20 @@ public class SpriteRighter : MonoBehaviour
 
     bool IsUnitFacingUp()
     {
-        if (hostUnit.direction.x > 0 && hostUnit.direction.z > 0)
+        //if (hostUnit.direction.z > 0)
+        //if (transform.TransformPoint(hostUnit.direction).x > 0 && transform.TransformPoint(hostUnit.direction).z > 0)
+        if (transform.TransformPoint(hostUnit.direction).z > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsUnitFacingLeft()
+    {
+        //if (hostUnit.direction.x < 0)
+        //if (transform.TransformPoint(hostUnit.direction).x < 0 && transform.TransformPoint(hostUnit.direction).z > 0)
+        if (transform.TransformPoint(hostUnit.direction).x < 0)
         {
             return true;
         }

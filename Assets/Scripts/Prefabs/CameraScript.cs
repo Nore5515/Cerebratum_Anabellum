@@ -24,9 +24,13 @@ public class CameraScript : MonoBehaviour
     {
         Vector3 moveVec = new Vector3();
         moveVec.x = xMovement;
-        moveVec.y = zMovement;
-        moveVec.z = 0.0f;
-        moveVec = Quaternion.Euler(45, 45, 0) * moveVec;
+
+        moveVec.y = 0.0f;
+        moveVec.z = zMovement;
+
+        //moveVec.y = zMovement;
+        //moveVec.z = 0.0f;
+        //moveVec = Quaternion.Euler(45, 45, 0) * moveVec;
 
         moveVec.y = 0.0f;
         return moveVec;
