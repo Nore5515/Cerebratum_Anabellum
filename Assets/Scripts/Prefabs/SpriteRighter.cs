@@ -11,6 +11,9 @@ public class SpriteRighter : MonoBehaviour
     public GameObject walkingBackAnim;
     public GameObject firingAnim;
     public GameObject idleAnim;
+    public GameObject idleBackAnim;
+    public GameObject gunAnim;
+    public GameObject gunBackAnim;
 
     string lastState = "";
 
@@ -64,7 +67,16 @@ public class SpriteRighter : MonoBehaviour
     void EnforceIdleState()
     {
         DisableAllSprites();
-        if (idleAnim != null) { idleAnim.SetActive(true); }
+        if (IsUnitFacingUp())
+        {
+            if (idleBackAnim != null) { idleBackAnim.SetActive(true); }
+            if (gunBackAnim != null) { gunBackAnim.SetActive(true); }
+        }
+        else
+        {
+            if (idleAnim != null) { idleAnim.SetActive(true); }
+            if (gunAnim != null) { gunAnim.SetActive(true); }
+        }
     }
 
     void UpdateHori()
@@ -113,11 +125,13 @@ public class SpriteRighter : MonoBehaviour
     void FaceUp()
     {
         if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+        if (gunBackAnim != null) { gunBackAnim.SetActive(true); }
     }
 
     void FaceDown()
     {
         if (walkingAnim != null) { walkingAnim.SetActive(true); }
+        if (gunAnim != null) { gunAnim.SetActive(true); }
     }
 
     void DisableAllSprites()
@@ -126,6 +140,9 @@ public class SpriteRighter : MonoBehaviour
         if (walkingBackAnim != null) { walkingBackAnim.SetActive(false); }
         if (firingAnim != null) { firingAnim.SetActive(false); }
         if (idleAnim != null) { idleAnim.SetActive(false); }
+        if (idleBackAnim != null) { idleBackAnim.SetActive(false); }
+        if (gunAnim != null) { gunAnim.SetActive(false); }
+        if (gunBackAnim != null) { gunBackAnim.SetActive(false); }
     }
 
     bool IsUnitFacingUp()

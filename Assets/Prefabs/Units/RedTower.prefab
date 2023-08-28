@@ -24,14 +24,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38398092517757915}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.11279285, y: -0.34207, z: -0.001}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalRotation: {x: 0.3535534, y: -0.3535534, z: 0.61237246, w: 0.61237246}
+  m_LocalPosition: {x: -0.1, y: -0.673, z: 0.032}
+  m_LocalScale: {x: 1.1249499, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1954480635913908324}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 90}
 --- !u!212 &4210680996794550419
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -853,7 +853,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8029445431544654601}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.23911765, y: 0.36964378, z: -0.09904577, w: 0.8923991}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -863,7 +863,7 @@ Transform:
   - {fileID: 1954480635913908324}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!136 &8029445431544654603
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -890,13 +890,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdbc216869994ef98221c9725631554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MIN_DIST_TO_MOVEMENT_DEST: 1
+  direction: {x: 0, y: 0, z: 0}
   hpSlider: {fileID: 0}
+  AnimState: Idle
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4210680996794550419}
   pointObjects: []
   pointVectors: []
   Dest: {x: 0, y: 0, z: 0}
   removing: 0
+  MIN_DIST_TO_MOVEMENT_DEST: 1
   HPBar: {fileID: 4645800611403398225}
   towerTeam: RED
