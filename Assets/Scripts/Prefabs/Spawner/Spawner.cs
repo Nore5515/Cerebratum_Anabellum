@@ -20,7 +20,6 @@ public class Spawner : Structure
 
     SpawnedUnitStats spawnedUnitStats = new SpawnedUnitStats();
 
-    GameObject canvas;
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
 
@@ -35,17 +34,10 @@ public class Spawner : Structure
     public Image fireRateFill;
     public Image spawnFill;
 
-    float rangeStep;
-    float firerateStep;
-    float spawnStep;
-
-    bool selected = false;
-
     public int maxPathLength;
 
     void Start()
     {
-        // Debug.Log("!START!");
         spawnedUnitStats.ResetToStartingStats();
 
         spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
@@ -53,7 +45,6 @@ public class Spawner : Structure
         spawnerPathManager.SetPathMat(spawnTeamMat);
 
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
-        canvas = GameObject.Find("Canvas");
 
         AttemptInitializeUI();
 
@@ -91,7 +82,6 @@ public class Spawner : Structure
         {
             Debug.LogError("Could not initialize UI for spawner");
         }
-        selected = false;
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -149,7 +139,6 @@ public class Spawner : Structure
     // ...it won't have anything else :\
     public void SetUIVisible(bool isVis)
     {
-        selected = isVis;
         if (spawnrateButton != null)
         {
             spawnrateButton.gameObject.SetActive(isVis);
@@ -231,39 +220,22 @@ public class Spawner : Structure
 
     private void UpdateSlider(ref Slider slider)
     {
-        // Convert it to a float.
-        // slider.value = (1.0f) * pathSpheres.Count / maxPathLength;
         slider.value = (1.0f) * spawnerPathManager.pathSpheres.Count / maxPathLength;
-        // If we hit the max count, color the bar red.
         if (spawnerPathManager.pathSpheres.Count == maxPathLength)
         {
             TintSliderRed(ref slider);
         }
     }
 
+    private bool isPathLengthMaxed()
+    {
+        return spawnerPathManager.pathSpheres.Count == maxPathLength;
+    }
+
     private void TintSliderRed(ref Slider slider)
     {
         Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
         slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
-    }
-
-    void BotSpendPoints()
-    {
-        switch (Random.Range(1, 3))
-        {
-            case 3:
-                AttemptUpgradeFireRate();
-                break;
-            case 2:
-                AttemptUpgradeRange();
-                break;
-            case 1:
-                AttemptUpgradeSpawnRate();
-                break;
-            default:
-                Debug.Log("ERROR IN AI POINT SPENDING");
-                break;
-        }
     }
 
     public void ClearNullInstances()
