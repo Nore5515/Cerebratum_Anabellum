@@ -11,6 +11,7 @@ public class SpriteRighter : MonoBehaviour
     public GameObject walkingAnim;
     public GameObject walkingBackAnim;
     public GameObject firingAnim;
+    public GameObject idleAnim;
 
     string lastState = "";
 
@@ -65,6 +66,9 @@ public class SpriteRighter : MonoBehaviour
             case "Shooting":
                 EnforceShootingState();
                 break;
+            case "Idle":
+                EnforceIdleState();
+                break;
             default:
                 break;
         }
@@ -82,6 +86,12 @@ public class SpriteRighter : MonoBehaviour
     {
         DisableAllSprites();
         if (firingAnim != null) { firingAnim.SetActive(true); }
+    }
+
+    void EnforceIdleState()
+    {
+        DisableAllSprites();
+        if (idleAnim != null) { idleAnim.SetActive(true); }
     }
 
     void CheckAndUpdateIfHoriChanged()

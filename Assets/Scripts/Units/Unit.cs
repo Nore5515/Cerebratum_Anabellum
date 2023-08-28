@@ -65,6 +65,9 @@ public class Unit : MonoBehaviour
 
     //IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
     public string AnimState = "Idle";
+    // Idle
+    // Shooting
+    // Walking
 
     // Targets Stuff
     public TargetHandler unitTargetHandler = new TargetHandler();
@@ -90,10 +93,12 @@ public class Unit : MonoBehaviour
 
     float MISS_RANGE_RADIUS = 1.0f;
     float CONTROLLED_MISS_RADIUS = 0.0f;
-    float MAX_IDLE_SECONDS = 5.0f;
+    int MINIMUM_FRAMES_TO_BE_IDLE = 60;
+    float MAX_IDLE_SECONDS = 10.0f;
     public int MIN_DIST_TO_MOVEMENT_DEST = 1;
 
-    float idle_count = 0;
+    int idle_frames = 0;
+    float idle_time = 0;
     Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
 
     // public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
@@ -431,6 +436,7 @@ public class Unit : MonoBehaviour
                 {
                     // Translate movement.
                     transform.Translate(direction * speed * Time.deltaTime);
+                    AnimState = "Walking";
                 }
                 // Once you get too close to your destination, remove it from your movement path and go towards the next one.
                 else
@@ -468,18 +474,24 @@ public class Unit : MonoBehaviour
     {
         if (lastPos == transform.position)
         {
-            idle_count += Time.deltaTime;
-            if (idle_count >= MAX_IDLE_SECONDS)
+            idle_frames++;
+            if (idle_frames > MINIMUM_FRAMES_TO_BE_IDLE)
             {
-                if (pointVectors.Count <= 0)
+                idle_time += Time.deltaTime;
+                AnimState = "Idle";
+                if (idle_time >= MAX_IDLE_SECONDS)
                 {
-                    Destroy(gameObject);
+                    if (pointVectors.Count <= 0)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
             }
         }
         else
         {
-            idle_count = 0;
+            idle_frames = 0;
+            idle_time = 0;
         }
         lastPos = transform.position;
     }
