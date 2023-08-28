@@ -1266,9 +1266,7 @@ MonoBehaviour:
   unitList: []
   spawnerTeam: RED
   naniteGenPrefab: {fileID: 0}
-  rangeFill: {fileID: 0}
-  fireRateFill: {fileID: 0}
-  spawnFill: {fileID: 0}
+  spawnerUI: {fileID: 9142861374171441160}
   maxPathLength: 30
 --- !u!135 &3360593358707628083
 SphereCollider:
@@ -2272,6 +2270,7 @@ GameObject:
   - component: {fileID: 5818561388526901158}
   - component: {fileID: 8393181046207400788}
   - component: {fileID: 5562281961104494690}
+  - component: {fileID: 9142861374171441160}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -2364,6 +2363,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9142861374171441160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6896525753240118376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9aa7b1c0b1c44ed9ac3b80653fb0322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnrateButton: {fileID: 2529618658386963618}
+  firerateButton: {fileID: 1827971888656623043}
+  rangeButton: {fileID: 297438504620500103}
+  pathButton: {fileID: 4102173414644643742}
+  rangeFill: {fileID: 7294276084966252230}
+  fireRateFill: {fileID: 13113845804271560}
+  spawnFill: {fileID: 8194815222247092347}
+  parentSpawnerObj: {fileID: 7575600747995610609}
 --- !u!1 &7073609469737178724
 GameObject:
   m_ObjectHideFlags: 0

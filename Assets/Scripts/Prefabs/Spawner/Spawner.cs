@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// THIS IS THE SPAWNER OBJ CLASS
+// I JUST DONT WANNA REFACTOR THE NAME RN LOL
+
+// Child Scripts:
+//      SpawnerUI.cs
 
 public class Spawner : Structure
 {
@@ -23,16 +28,17 @@ public class Spawner : Structure
     public GameObject naniteGenPrefab;
     string naniteGenPrefab_path = "Asset_NaniteGen";
 
-    // UI
-    Button spawnrateButton;
-    Button firerateButton;
-    Button rangeButton;
-    Button pathButton;
-    // Button deleteButton;
+    public SpawnerUI spawnerUI;
 
-    public Image rangeFill;
-    public Image fireRateFill;
-    public Image spawnFill;
+    // UI
+    //Button spawnrateButton;
+    //Button firerateButton;
+    //Button rangeButton;
+    //Button pathButton;
+
+    //public Image rangeFill;
+    //public Image fireRateFill;
+    //public Image spawnFill;
 
     public int maxPathLength;
 
@@ -46,7 +52,8 @@ public class Spawner : Structure
 
         naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
 
-        AttemptInitializeUI();
+        spawnerUI.AttemptInitializeUI();
+        //AttemptInitializeUI();
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -59,18 +66,8 @@ public class Spawner : Structure
         type = "spawn";
         if (spawnerTeam == "BLUE")
         {
-            spawnerPathManager.AI_DrawPath(this.transform.position);
+            spawnerPathManager.AI_DrawPath(transform.position);
         }
-    }
-
-    private bool AttemptInitializeUI()
-    {
-        if (this.gameObject.transform.Find("UI") != null)
-        {
-            InitalizeUI();
-            return true;
-        }
-        return false;
     }
 
     public void LateStart()
@@ -78,83 +75,24 @@ public class Spawner : Structure
         // Debug.Log("LATE START!");
         spawnedUnitStats.ResetToStartingStats();
 
-        if (!AttemptInitializeUI())
+        if (!spawnerUI.AttemptInitializeUI())
         {
-            Debug.LogError("Could not initialize UI for spawner");
+            //Debug.LogError("Could not initialize UI for spawner");
+            //return;
         }
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
     }
 
-    private void InitalizeUI()
-    {
-        GameObject ui = this.gameObject.transform.Find("UI").gameObject;
-        ui.GetComponent<Canvas>().worldCamera = Camera.main;
-        GameObject upgrades = ui.transform.Find("Upgrades").gameObject;
-
-        SetButtonInstances(upgrades, ui);
-        AddButtonListeners();
-
-        SetFills(ui);
-
-        ResetUpgradeFillAmounts();
-
-        SetUIVisible(false);
-    }
-
-    private void SetButtonInstances(GameObject upgrades, GameObject ui)
-    {
-        spawnrateButton = upgrades.transform.Find("RSpawn").gameObject.GetComponent<Button>();
-        firerateButton = upgrades.transform.Find("RFireRate").gameObject.GetComponent<Button>();
-        rangeButton = upgrades.transform.Find("RRange").gameObject.GetComponent<Button>();
-        pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
-    }
-
-    private void AddButtonListeners()
-    {
-        spawnrateButton.onClick.AddListener(delegate { AttemptUpgradeSpawnRate(); });
-        firerateButton.onClick.AddListener(delegate { AttemptUpgradeFireRate(); });
-        rangeButton.onClick.AddListener(delegate { AttemptUpgradeRange(); });
-        pathButton.onClick.AddListener(delegate { EnableDrawable(); });
-    }
-
-    private void ResetUpgradeFillAmounts()
-    {
-        rangeFill.fillAmount = 0;
-        fireRateFill.fillAmount = 0;
-        spawnFill.fillAmount = 0;
-    }
-
-    private void SetFills(GameObject ui)
-    {
-        GameObject infhutCanvas = ui.transform.Find("Canvas").gameObject;
-        rangeFill = infhutCanvas.transform.Find("range").gameObject.GetComponent<Image>();
-        fireRateFill = infhutCanvas.transform.Find("firerate").gameObject.GetComponent<Image>();
-        spawnFill = infhutCanvas.transform.Find("spawn").gameObject.GetComponent<Image>();
-    }
-
-    // For these two, we only use spawnrateButton.
-    // This is because, if it doesn't have spawnrate...
-    // ...it won't have anything else :\
     public void SetUIVisible(bool isVis)
     {
-        if (spawnrateButton != null)
-        {
-            spawnrateButton.gameObject.SetActive(isVis);
-            firerateButton.gameObject.SetActive(isVis);
-            rangeButton.gameObject.SetActive(isVis);
-            pathButton.gameObject.SetActive(isVis);
-        }
-        else
-        {
-            Debug.LogError("SPAWN RATE BUTTON");
-        }
+        spawnerUI.SetUIVisible(isVis);
     }
 
     public bool GetUIVisible()
     {
-        return spawnrateButton.gameObject.activeSelf;
+        return spawnerUI.GetUIVisible();
     }
 
     // TODO: Move ClearPoints to it's own thing.
@@ -173,33 +111,29 @@ public class Spawner : Structure
 
     public void SetIsDrawable(bool _newMode)
     {
+        spawnerUI.HandleNewDrawableState(_newMode, spawnerPathManager);
+        spawnerPathManager.pathDrawingMode = _newMode;
         if (_newMode == true)
         {
             DimHut();
-            pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
         }
         else
         {
-            if (spawnerPathManager.pathSpheres.Count > 0)
-            {
-                pathButton.GetComponentInChildren<TMP_Text>().text = "RESET PATH";
-            }
             UndimHut();
-            //pathButton.GetComponentInChildren<TMP_Text>().text = "DRAW PATH";
         }
-        spawnerPathManager.pathDrawingMode = _newMode;
+        
     }
 
     private void DimHut()
     {
         Color dim = new Color(166f / 255f, 166f / 255f, 166f / 255f);
-        this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = dim;
+        transform.Find("InfHut").GetComponent<SpriteRenderer>().color = dim;
     }
 
     private void UndimHut()
     {
         Color white = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-        this.transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
+        transform.Find("InfHut").GetComponent<SpriteRenderer>().color = white;
     }
 
     // Returns number of pathSpheres in path now.
@@ -212,30 +146,10 @@ public class Spawner : Structure
         if (spawnerPathManager.pathSpheres.Count > maxPathLength) return -1;
         newPathPoint = spawnerPathManager.CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
 
-        UpdateSlider(ref pathBar);
+        spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
 
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
         return spawnerPathManager.pathSpheres.Count;
-    }
-
-    private void UpdateSlider(ref Slider slider)
-    {
-        slider.value = (1.0f) * spawnerPathManager.pathSpheres.Count / maxPathLength;
-        if (spawnerPathManager.pathSpheres.Count == maxPathLength)
-        {
-            TintSliderRed(ref slider);
-        }
-    }
-
-    private bool isPathLengthMaxed()
-    {
-        return spawnerPathManager.pathSpheres.Count == maxPathLength;
-    }
-
-    private void TintSliderRed(ref Slider slider)
-    {
-        Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
-        slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = red;
     }
 
     public void ClearNullInstances()
@@ -351,39 +265,32 @@ public class Spawner : Structure
     private void UpgradeSpawnRate()
     {
         spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
-        RecalculateFill();
+        spawnerUI.RecalculateFill(spawnedUnitStats);
         if (spawnedUnitStats.spawnTime < Constants.INF_MIN_SPAWN_TIME)
         {
-            spawnrateButton.interactable = false;
+            spawnerUI.spawnrateButton.interactable = false;
         }
     }
 
     private void UpgradeFireRate()
     {
         spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
-        RecalculateFill();
+        spawnerUI.RecalculateFill(spawnedUnitStats);
         if (spawnedUnitStats.fireDelay < Constants.INF_MIN_FIRE_DELAY)
         {
-            firerateButton.interactable = false;
+            spawnerUI.firerateButton.interactable = false;
         }
     }
 
     private void UpgradeRange()
     {
         spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
-        RecalculateFill();
+        spawnerUI.RecalculateFill(spawnedUnitStats);
         // rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
         if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE)
         {
-            rangeButton.interactable = false;
+            spawnerUI.rangeButton.interactable = false;
         }
-    }
-
-    private void RecalculateFill()
-    {
-        spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
-        fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
-        rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
     }
 
     public bool DeductTeamPoints(int cost)

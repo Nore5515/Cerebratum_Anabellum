@@ -428,6 +428,7 @@ GameObject:
   - component: {fileID: 39021968191830651}
   - component: {fileID: 2616482761779340937}
   - component: {fileID: 2090863738151501247}
+  - component: {fileID: 3567886288869114115}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -520,6 +521,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3567886288869114115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117012721192421813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9aa7b1c0b1c44ed9ac3b80653fb0322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnrateButton: {fileID: 8299586834219614591}
+  firerateButton: {fileID: 5290408205417351198}
+  rangeButton: {fileID: 6058953635056585050}
+  pathButton: {fileID: 7555021987857324611}
+  rangeFill: {fileID: 3823404312788988699}
+  fireRateFill: {fileID: 5772377213005212181}
+  spawnFill: {fileID: 2417546252635987366}
+  parentSpawnerObj: {fileID: 4113189689929207852}
 --- !u!1 &1368862822674894542
 GameObject:
   m_ObjectHideFlags: 0
@@ -2325,9 +2346,7 @@ MonoBehaviour:
   unitList: []
   spawnerTeam: BLUE
   naniteGenPrefab: {fileID: 0}
-  rangeFill: {fileID: 0}
-  fireRateFill: {fileID: 0}
-  spawnFill: {fileID: 0}
+  spawnerUI: {fileID: 3567886288869114115}
   maxPathLength: 30
 --- !u!136 &5503797766339125258
 CapsuleCollider:
