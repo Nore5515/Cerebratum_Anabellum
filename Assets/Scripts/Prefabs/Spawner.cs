@@ -72,14 +72,14 @@ public class Spawner : Structure
         }
     }
 
-    private void AttemptInitializeUI()
+    private bool AttemptInitializeUI()
     {
         if (this.gameObject.transform.Find("UI") != null)
         {
             InitalizeUI();
-            SetUIVisible(false);
-            selected = false;
+            return true;
         }
+        return false;
     }
 
     public void LateStart()
@@ -87,7 +87,11 @@ public class Spawner : Structure
         // Debug.Log("LATE START!");
         spawnedUnitStats.ResetToStartingStats();
 
-        AttemptInitializeUI();
+        if (!AttemptInitializeUI())
+        {
+            Debug.LogError("Could not initialize UI for spawner");
+        }
+        selected = false;
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -105,6 +109,8 @@ public class Spawner : Structure
         SetFills(ui);
 
         ResetUpgradeFillAmounts();
+
+        SetUIVisible(false);
     }
 
     private void SetButtonInstances(GameObject upgrades, GameObject ui)

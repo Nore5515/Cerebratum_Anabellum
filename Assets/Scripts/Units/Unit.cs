@@ -113,7 +113,7 @@ public class Unit : MonoBehaviour
             glow.color = BLUE;
             if (gameObject.GetComponentInChildren<SpriteRighter>() != null)
             {
-                gameObject.GetComponentInChildren<SpriteRighter>().Flip();
+                //gameObject.GetComponentInChildren<SpriteRighter>().Flip();
             }
         }
 

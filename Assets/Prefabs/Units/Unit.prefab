@@ -244,6 +244,9 @@ MonoBehaviour:
   walkingAnim: {fileID: 8931946651971919714}
   walkingBackAnim: {fileID: 2605302370157317742}
   firingAnim: {fileID: 0}
+  sprites:
+  - {fileID: 8931946651971919714}
+  - {fileID: 2605302370157317742}
 --- !u!1 &4623804062567844888
 GameObject:
   m_ObjectHideFlags: 0

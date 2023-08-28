@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpriteRighter : MonoBehaviour
 {
-
     Quaternion rot = new Quaternion(0.0f, 0.0f, 0.0f, 1);
     public bool flipped = false;
     public Unit hostUnit;
@@ -15,23 +14,24 @@ public class SpriteRighter : MonoBehaviour
 
     string lastState = "";
 
-    bool lastKnownDirectionUp = false;
-    bool lastKnownDirectionLeft = false;
+    bool lastKnownDirectionUp;
+    bool lastKnownDirectionLeft;
 
-    public void Flip(){
-        SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer sr in arr)
-        {
-            sr.flipX = !sr.flipX;
-        }
+    void Start()
+    {
+        UpdateHori();
+        lastKnownDirectionUp = IsUnitFacingUp();
     }
+
 
     void FaceLeft()
     {
         SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
+
         foreach (SpriteRenderer sr in arr)
         {
             sr.flipX = true;
+            //sr.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
         }
     }
 
@@ -41,6 +41,7 @@ public class SpriteRighter : MonoBehaviour
         foreach (SpriteRenderer sr in arr)
         {
             sr.flipX = false;
+            //sr.transform.localScale = startingLocalScale;
         }
     }
 
@@ -53,26 +54,34 @@ public class SpriteRighter : MonoBehaviour
     void ProcessUnitState()
     {
         CheckAndUpdateIfHoriChanged();
-        if (hostUnit.AnimState == lastState)
+
+        if (hostUnit.AnimState == lastState) return;
+
+        switch (hostUnit.AnimState)
         {
-            if (lastKnownDirectionUp == IsUnitFacingUp() && lastKnownDirectionLeft == IsUnitFacingLeft())
-            {
-                return;
-            }
+            case "Walking":
+                EnforceWalkingState();
+                break;
+            case "Shooting":
+                EnforceShootingState();
+                break;
+            default:
+                break;
         }
-        if (hostUnit.AnimState == "Walking")
-        {
-            DisableAllSprites();
-            EnableWalkingAnim();
-        }
-        if (hostUnit.AnimState == "Shooting")
-        {
-            DisableAllSprites();
-            if (firingAnim != null) { firingAnim.SetActive(true); }
-        }
+
         lastState = hostUnit.AnimState;
-        lastKnownDirectionUp = IsUnitFacingUp();
-        lastKnownDirectionLeft = IsUnitFacingLeft();
+    }
+
+    void EnforceWalkingState()
+    {
+        DisableAllSprites();
+        EnableWalkingAnim();
+    }
+
+    void EnforceShootingState()
+    {
+        DisableAllSprites();
+        if (firingAnim != null) { firingAnim.SetActive(true); }
     }
 
     void CheckAndUpdateIfHoriChanged()
@@ -83,16 +92,21 @@ public class SpriteRighter : MonoBehaviour
         }
         else
         {
-            if (IsUnitFacingLeft())
-            {
-                FaceLeft();
-            }
-            else
-            {
-                FaceRight();
-            }
-            lastKnownDirectionLeft = IsUnitFacingLeft();
+            UpdateHori();
         }
+    }
+
+    void UpdateHori()
+    {
+        if (IsUnitFacingLeft())
+        {
+            FaceLeft();
+        }
+        else
+        {
+            FaceRight();
+        }
+        lastKnownDirectionLeft = IsUnitFacingLeft();
     }
 
     void EnableWalkingAnim()
@@ -103,7 +117,8 @@ public class SpriteRighter : MonoBehaviour
         }
         else
         {
-            if (walkingAnim != null) { walkingAnim.SetActive(true); }
+            //if (walkingAnim != null) { walkingAnim.SetActive(true); }
+            if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
         }
     }
 
@@ -116,9 +131,7 @@ public class SpriteRighter : MonoBehaviour
 
     bool IsUnitFacingUp()
     {
-        //if (hostUnit.direction.z > 0)
-        //if (transform.TransformPoint(hostUnit.direction).x > 0 && transform.TransformPoint(hostUnit.direction).z > 0)
-        if (transform.TransformPoint(hostUnit.direction).z > 0)
+        if (transform.TransformVector(hostUnit.direction).z > 0)
         {
             return true;
         }
@@ -127,9 +140,7 @@ public class SpriteRighter : MonoBehaviour
 
     bool IsUnitFacingLeft()
     {
-        //if (hostUnit.direction.x < 0)
-        //if (transform.TransformPoint(hostUnit.direction).x < 0 && transform.TransformPoint(hostUnit.direction).z > 0)
-        if (transform.TransformPoint(hostUnit.direction).x < 0)
+        if (transform.TransformVector(hostUnit.direction).x < 0)
         {
             return true;
         }
