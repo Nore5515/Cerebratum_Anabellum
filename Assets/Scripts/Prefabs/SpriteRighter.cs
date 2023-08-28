@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpriteRighter : MonoBehaviour
 {
-    Quaternion rot = new Quaternion(0.0f, 0.0f, 0.0f, 1);
     public bool flipped = false;
     public Unit hostUnit;
 
@@ -15,35 +14,9 @@ public class SpriteRighter : MonoBehaviour
 
     string lastState = "";
 
-    bool lastKnownDirectionUp;
-    bool lastKnownDirectionLeft;
-
     void Start()
     {
         UpdateHori();
-        lastKnownDirectionUp = IsUnitFacingUp();
-    }
-
-
-    void FaceLeft()
-    {
-        SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
-
-        foreach (SpriteRenderer sr in arr)
-        {
-            sr.flipX = true;
-            //sr.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
-        }
-    }
-
-    void FaceRight()
-    {
-        SpriteRenderer[] arr = this.gameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer sr in arr)
-        {
-            sr.flipX = false;
-            //sr.transform.localScale = startingLocalScale;
-        }
     }
 
     // Update is called once per frame
@@ -54,7 +27,7 @@ public class SpriteRighter : MonoBehaviour
 
     void ProcessUnitState()
     {
-        CheckAndUpdateIfHoriChanged();
+        UpdateHori();
 
         if (hostUnit.AnimState == lastState) return;
 
@@ -94,18 +67,6 @@ public class SpriteRighter : MonoBehaviour
         if (idleAnim != null) { idleAnim.SetActive(true); }
     }
 
-    void CheckAndUpdateIfHoriChanged()
-    {
-        if (lastKnownDirectionLeft == IsUnitFacingLeft())
-        {
-            return;
-        }
-        else
-        {
-            UpdateHori();
-        }
-    }
-
     void UpdateHori()
     {
         if (IsUnitFacingLeft())
@@ -116,20 +77,47 @@ public class SpriteRighter : MonoBehaviour
         {
             FaceRight();
         }
-        lastKnownDirectionLeft = IsUnitFacingLeft();
+    }
+
+    void FaceLeft()
+    {
+        SpriteRenderer[] arr = gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer sr in arr)
+        {
+            sr.flipX = true;
+        }
+    }
+
+    void FaceRight()
+    {
+        SpriteRenderer[] arr = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in arr)
+        {
+            sr.flipX = false;
+        }
     }
 
     void EnableWalkingAnim()
     {
         if (IsUnitFacingUp())
         {
-            if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+            FaceUp();
         }
         else
         {
-            if (walkingAnim != null) { walkingAnim.SetActive(true); }
-            //if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+            FaceDown();
         }
+    }
+
+    void FaceUp()
+    {
+        if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+    }
+
+    void FaceDown()
+    {
+        if (walkingAnim != null) { walkingAnim.SetActive(true); }
     }
 
     void DisableAllSprites()
@@ -137,6 +125,7 @@ public class SpriteRighter : MonoBehaviour
         if (walkingAnim != null) { walkingAnim.SetActive(false); }
         if (walkingBackAnim != null) { walkingBackAnim.SetActive(false); }
         if (firingAnim != null) { firingAnim.SetActive(false); }
+        if (idleAnim != null) { idleAnim.SetActive(false); }
     }
 
     bool IsUnitFacingUp()
