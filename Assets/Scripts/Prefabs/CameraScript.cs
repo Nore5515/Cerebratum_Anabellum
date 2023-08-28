@@ -43,7 +43,7 @@ public class CameraScript : MonoBehaviour
         {
             // mainCam.fieldOfView = 80;
             mainCam.transform.position = anchor.transform.position;
-            float zMovement = Input.GetAxis("Vertical");
+            float zMovement = Input.GetAxis("Vertical") * 2.0f;
             float xMovement = Input.GetAxis("Horizontal");
             //Vector3 movement = new Vector3(xMovement, 0, zMovement);
             Vector3 movement = ParseInputToOrthoVector(xMovement, zMovement);
@@ -53,7 +53,8 @@ public class CameraScript : MonoBehaviour
         else
         {
             // mainCam.fieldOfView = 40;
-            Vector3 newPos = followObj.transform.position;
+            Vector3 cameraTiltCompensation = new Vector3(0.0f, 0.0f, -30.0f);
+            Vector3 newPos = followObj.transform.position + cameraTiltCompensation;
             newPos.y = 20;
             mainCam.transform.position = newPos;
         }

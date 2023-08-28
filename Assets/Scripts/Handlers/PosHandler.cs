@@ -23,12 +23,8 @@ public class PosHandler : MonoBehaviour
 
     public GameObject line;
 
-    static bool coroutineRunning = false;
-
     public delegate void UpdateCalls();
     public static UpdateCalls uc;
-
-    private static GameObject unitStats;
 
     public bool possessionReady = false;
 
@@ -37,25 +33,26 @@ public class PosHandler : MonoBehaviour
     public PathHandler pathHandler;
 
     public string teamColor = "RED";
-    public List<Unit> controlledUnits = new List<Unit>();
+    public List<Unit> controlledUnits = new();
 
     bool justFired = false;
     float countdown = 0.0f;
 
-    public void ControlledMouseDown(RayObj rayObj)
-    {
-        Debug.Log("Attempt shot at point");
-        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
-    }
 
     public void Start()
     {
-        inputHandler = new InputHandler(this.gameObject.GetComponent<PosHandler>());
+        inputHandler = new InputHandler(gameObject.GetComponent<PosHandler>());
     }
 
     void Update()
     {
         inputHandler.UpdateFuncs();
+    }
+
+    public void ControlledMouseDown(RayObj rayObj)
+    {
+        Debug.Log("Attempt shot at point");
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
     }
 
     public void SetPossession(bool newPossession)
@@ -72,15 +69,10 @@ public class PosHandler : MonoBehaviour
         controlledUnits = new List<Unit>();
         camScript.followObj = null;
         unitStatUI.SetActive(false);
-        setPossessed(null);
+        SetPossessed(null);
     }
 
-    public static void setUnitStatUI(GameObject gameObject)
-    {
-        unitStats = gameObject;
-    }
-
-    public bool setPossessed(Unit u)
+    public bool SetPossessed(Unit u)
     {
         posUnit = u;
         if (posUnit != null)
@@ -100,17 +92,6 @@ public class PosHandler : MonoBehaviour
             unitRange.text = "NAN";
             unitTitle.text = "NAN";
             return false;
-        }
-    }
-
-    // TODO: EVENT DELEGATE THIS
-    public void PossessedUnitFired()
-    {
-        if (!coroutineRunning)
-        {
-            //unitMaxDelay = posUnit.rof * 0.5f;
-            //unitDelay = 0.0f;
-            //coroutineRunning = true;
         }
     }
 
@@ -190,7 +171,7 @@ public class PosHandler : MonoBehaviour
         InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
-        if (!setPossessed(unit))
+        if (!SetPossessed(unit))
         {
             Debug.LogError("PathHandler.cs --Possession Handler failed to set possessed unit.--");
             return;
@@ -223,7 +204,6 @@ public class PosHandler : MonoBehaviour
 
         if (unitDelay > unitMaxDelay)
         {
-            coroutineRunning = false;
             return false;
         }
         return true;

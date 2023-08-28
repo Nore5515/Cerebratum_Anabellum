@@ -29,8 +29,6 @@ public class PathHandler : MonoBehaviour
     public void Start()
     {
         pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
-
-        PosHandler.setUnitStatUI(GameObject.Find("Canvas/UnitStatsWBG/UnitStats"));
         GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
     }
 
