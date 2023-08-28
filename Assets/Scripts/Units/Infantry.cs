@@ -52,6 +52,7 @@ public class Infantry : Unit
     void Update()
     {
         MovementUpdate();
+        IdleUpdate();
     }
 }
 

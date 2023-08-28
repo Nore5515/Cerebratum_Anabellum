@@ -40,9 +40,6 @@ public class Unit : MonoBehaviour
     // Movement
     public Vector3 direction;
 
-    // Range (REFACTOR TODO: TODO;)
-    public int MIN_DIST_TO_MOVEMENT_DEST = 1;
-
     // UI
     public Slider hpSlider;
     // public GameObject spriteRed;
@@ -93,7 +90,11 @@ public class Unit : MonoBehaviour
 
     float MISS_RANGE_RADIUS = 1.0f;
     float CONTROLLED_MISS_RADIUS = 0.0f;
+    float MAX_IDLE_SECONDS = 5.0f;
+    public int MIN_DIST_TO_MOVEMENT_DEST = 1;
 
+    float idle_count = 0;
+    Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
 
     // public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
@@ -253,7 +254,6 @@ public class Unit : MonoBehaviour
             StartCoroutine(EnableFiring());
         }
     }
-
 
     private void InvalidFireAttempt()
     {
@@ -464,6 +464,25 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public void IdleUpdate()
+    {
+        if (lastPos == transform.position)
+        {
+            idle_count += Time.deltaTime;
+            if (idle_count >= MAX_IDLE_SECONDS)
+            {
+                if (pointVectors.Count <= 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+        else
+        {
+            idle_count = 0;
+        }
+        lastPos = transform.position;
+    }
 
     public void MovementUpdate()
     {

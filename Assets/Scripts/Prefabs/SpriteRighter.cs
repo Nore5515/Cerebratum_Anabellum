@@ -117,8 +117,8 @@ public class SpriteRighter : MonoBehaviour
         }
         else
         {
-            //if (walkingAnim != null) { walkingAnim.SetActive(true); }
-            if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
+            if (walkingAnim != null) { walkingAnim.SetActive(true); }
+            //if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
         }
     }
 
