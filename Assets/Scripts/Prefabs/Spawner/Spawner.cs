@@ -30,16 +30,6 @@ public class Spawner : Structure
 
     public SpawnerUI spawnerUI;
 
-    // UI
-    //Button spawnrateButton;
-    //Button firerateButton;
-    //Button rangeButton;
-    //Button pathButton;
-
-    //public Image rangeFill;
-    //public Image fireRateFill;
-    //public Image spawnFill;
-
     public int maxPathLength;
 
     void Start()
@@ -207,14 +197,6 @@ public class Spawner : Structure
         InstantiateUnit(prefab);
 
         StartCoroutine(SpawnPrefab());
-    }
-
-    float calculateFill(float min, float max, float target)
-    {
-        float diff = (max - min);
-        float result = (target - min) / diff;
-        // Debug.Log("Min/Max: " + min + "/" + max + " with a target of " + target + " = " + result);
-        return result;
     }
 
     public void AttemptUpgradeSpawnRate()
