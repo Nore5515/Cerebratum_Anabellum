@@ -162,20 +162,12 @@ public class PosHandler : MonoBehaviour
     void PossessUnit(Unit unit)
     {
         SetPossession(false);
-        if (unit == null)
-        {
-            Debug.LogError("PathHandler.cs --POSSESSED UNIT OBJ DOES NOT HAVE UNIT SCRIPT ATTACHED--");
-            return;
-        }
+        if (unit == null) return;
         unit.beingControlled = true;
         InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
-        if (!SetPossessed(unit))
-        {
-            Debug.LogError("PathHandler.cs --Possession Handler failed to set possessed unit.--");
-            return;
-        }
+        if (!SetPossessed(unit)) return;
         unitStatUI.SetActive(true);
     }
 

@@ -248,7 +248,8 @@ public class Unit : MonoBehaviour
         }
         //unitPossessionHandler.PossessedUnitFired();
         float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
-        FireAtPosition(targetPosition, missRange);
+        Vector3 spriteOffset = new Vector3(0.0f, 0.0f, 2.0f);
+        FireAtPosition(targetPosition + spriteOffset, missRange);
     }
 
     private void InvalidPosFireAttempt()
