@@ -138,7 +138,7 @@ public class Unit : MonoBehaviour
         {
             InitializePoints(newPoints);
         }
-        
+
         // Sprite Stuff
         //UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
         //UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);

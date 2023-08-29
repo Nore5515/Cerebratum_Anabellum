@@ -12,7 +12,7 @@ public class Infantry : Unit
 
     public void CInfantry()
     {
-        unitObj = this.gameObject;
+        unitObj = gameObject;
         controlDirection = new Vector3(0, 0, 0);
         MIN_DIST_TO_MOVEMENT_DEST = 1;
 
