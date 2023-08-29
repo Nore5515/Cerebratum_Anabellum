@@ -238,7 +238,7 @@ public class PosHandler : MonoBehaviour
 
     void UnitFireCooldownChecker(Unit unit)
     {
-        if (unit.canFire == false)
+        if (unit.GetCanFire() == false)
         {
             if (justFired == false)
             {

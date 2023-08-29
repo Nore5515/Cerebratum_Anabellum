@@ -19,7 +19,7 @@ public class Infantry : Unit
         // Core stat initialization
         hp = 1;
         maxHP = hp;
-        dmg = 1;
+        dmg = Constants.INF_DMG;
         speed = 4;
         rof = 2f;
         threatLevel = 3;

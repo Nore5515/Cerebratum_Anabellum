@@ -69,9 +69,7 @@ public class Unit : MonoBehaviour
     public TargetHandler unitTargetHandler = new TargetHandler();
 
     // Firing Stuff
-    public bool canFire { get; set; }
-    public bool canFireDelay { get; set; }
-    public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
+    UnitFiringHandler unitFiringHandler;
 
     public PosHandler unitPossessionHandler;
 
@@ -85,17 +83,24 @@ public class Unit : MonoBehaviour
     UnitPointHandler unitPointHandler = new UnitPointHandler();
     
     // Consts
-    const float MISS_RANGE_RADIUS = 1.0f;
-    const float CONTROLLED_MISS_RADIUS = 0.0f;
     const int MINIMUM_FRAMES_TO_BE_IDLE = 60;
     const float MAX_IDLE_SECONDS = 10.0f;
     public int MIN_DIST_TO_MOVEMENT_DEST = 1;
-    const float FIRST_FIRE_DELAY = 0.15f;
 
     int idle_frames = 0;
     float idle_time = 0;
     Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
 
+    // TODO: There is an error within spawner initializing this, and the start function within the
+    // classes that extend Unit.
+    //
+    // This error is that the START function of the extended unit happens the frame AFTER
+    // initialization is called.
+    //
+    // This results in unit-specific variables that are initialized in start being lost.
+    //
+    // SOLUTIONS:
+    // - Constants file, with each unit types stats and such.
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
         unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
@@ -113,7 +118,10 @@ public class Unit : MonoBehaviour
         }
 
         rof = newStats.fireDelay;
-        firstFire = true;   // First shot ready on initializaiton!
+
+        unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
+        unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
+
         KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
         unitKillSphere.alliedTeam = unitTeam;
         unitKillSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
@@ -136,17 +144,15 @@ public class Unit : MonoBehaviour
 
     public IEnumerator EnableFiring()
     {
-        yield return FireDelay();
-        canFire = true;
-        canFireDelay = false;
+        return unitFiringHandler.EnableFiring();
     }
 
     private WaitForSeconds FireDelay()
     {
-        if (firstFire)
+        if (unitFiringHandler.firstFire)
         {
-            firstFire = false;
-            return new WaitForSeconds(rof * FIRST_FIRE_DELAY);
+            unitFiringHandler.firstFire = false;
+            return new WaitForSeconds(rof * Constants.FIRST_FIRE_DELAY);
         }
         else
         {
@@ -157,6 +163,7 @@ public class Unit : MonoBehaviour
     // Health and Damage Logic
     public int DealDamage(int damage)
     {
+        Debug.Log("5.5: Deal Damage");
         hp -= damage;
         if (hpSlider != null)
         {
@@ -169,9 +176,7 @@ public class Unit : MonoBehaviour
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
-        GameObject bulletInstance = GenerateNewBulletPrefab();
-        bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
-        bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
+        unitFiringHandler.FireAtPosition(position, missRange);
     }
 
     GameObject GenerateNewBulletPrefab()
@@ -181,68 +186,14 @@ public class Unit : MonoBehaviour
 
     // [PARAMS]: Vector3 targetPosition
     // For AI, pass this as target. unitTargetHandler.targetsInRange[0].gameObject.transform.position
-    public void AttemptShotAtPosition(Vector3 targetPosition)
+    public void AttemptShotAtPosition(Vector3 targetPosition, bool beingControlled)
     {
-        if (canFire)
-        {
-            ValidAIFireAttempt(targetPosition);
-        }
-        else
-        {
-            InvalidFireAttempt();
-        }
-    }
-
-
-    private void ValidAIFireAttempt(Vector3 targetPosition)
-    {
-        canFire = false;
-        // Fire with perfect accuracy if controlled.
-        float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
-        FireAtPosition(targetPosition, missRange);
+        unitFiringHandler.AttemptShotAtPosition(targetPosition, beingControlled);
     }
 
     public void PosAttemptShotAtPosition(Vector3 targetPosition)
     {
-        if (canFire)
-        {
-            ValidPosFireAttempt(targetPosition);
-        }
-        else
-        {
-            InvalidPosFireAttempt();
-        }
-    }
-
-    private void ValidPosFireAttempt(Vector3 targetPosition)
-    {
-        canFire = false;
-        if (canFireDelay == false)
-        {
-            canFireDelay = true;
-            StartCoroutine(EnableFiring());
-        }
-        float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
-        Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
-        FireAtPosition(targetPosition + spriteOffset, missRange);
-    }
-
-    private void InvalidPosFireAttempt()
-    {
-        if (canFireDelay == false)
-        {
-            canFireDelay = true;
-            StartCoroutine(EnableFiring());
-        }
-    }
-
-    private void InvalidFireAttempt()
-    {
-        if (canFireDelay == false)
-        {
-            canFireDelay = true;
-            StartCoroutine(EnableFiring());
-        }
+        unitFiringHandler.PosAttemptShotAtPosition(targetPosition);
     }
 
     public void AddTargetInRange(GameObject target)
@@ -251,6 +202,11 @@ public class Unit : MonoBehaviour
         ClearNullTargets();
         UpdateThreatState();
         AnimState = "Shooting";
+    }
+
+    public bool GetCanFire()
+    {
+        return unitFiringHandler.canFire;
     }
 
     public void UpdateThreatState()
@@ -339,18 +295,6 @@ public class Unit : MonoBehaviour
         Vector3 newVector = new Vector3(vector.x, vector.y, vector.z);
         return newVector;
     }
-
-    // Takes in a position and a float (representing randomness)
-    // Generates a random position up to randomness away
-    // Returns it
-    public Vector3 GetRandomAdjacentPosition(Vector3 position, float randomness)
-    {
-        float randomX = position.x + Random.Range(-randomness, randomness);
-        float randomZ = position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, position.y, randomZ);
-        return random;
-    }
-
 
     //
     //   ╔══════════════════════════════════════════════╗
@@ -452,7 +396,7 @@ public class Unit : MonoBehaviour
                 // Are there any targets left after the purge?
                 if (unitTargetHandler.targetsInRange.Count > 0)
                 {
-                    AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position);
+                    AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position, beingControlled);
                 }
             }
         }

@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CheckDealDamage(other);
+        checkUnit(other);
         checkTower(other);
         checkHQ(other);
     }
@@ -71,16 +71,21 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// If projectile hits unit, deal damage.
     /// </summary>
-    private void CheckDealDamage(Collider other)
+    private void checkUnit(Collider other)
     {
         Unit unit = other.gameObject.GetComponent<Unit>();
 
+        Debug.Log("1");
         if (unit == null) return;
+        Debug.Log("2");
         if (unit.unitTeam == "NIL") return;
+        Debug.Log("3");
         if (unit.unitTeam == team) return;
+        Debug.Log("4");
 
         if (unit.DealDamage(damage) <= 0)
         {
+            Debug.Log("5");
             Destroy(other.gameObject);
         }
         

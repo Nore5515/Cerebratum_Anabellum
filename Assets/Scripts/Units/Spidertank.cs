@@ -70,7 +70,8 @@ public class Spidertank : Unit
     public override void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject obj = GameObject.Instantiate(spidertankBullet, position, Quaternion.identity) as GameObject;
-        obj.transform.LookAt(GetRandomAdjacentPosition(position, 0.0f));
+        // TODO: i just commented this line out. I dont care.
+        //obj.transform.LookAt(GetRandomAdjacentPosition(position, 0.0f));
         obj.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
         //ShadowShot(position, obj);
         StartCoroutine(TriggerFireAnim());
