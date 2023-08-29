@@ -42,8 +42,6 @@ public class Unit : MonoBehaviour
 
     // UI
     public Slider hpSlider;
-    // public GameObject spriteRed;
-    // public GameObject spriteBlue;
 
     public string unitTeam { get; set; }
     public string unitType { get; set; }
@@ -54,7 +52,6 @@ public class Unit : MonoBehaviour
     public Vector3 controlDirection { get; set; }
 
     // STATE
-    // TODO: Enum this?
     public string threatState { get; set; }
 
     // WALK - No threats of equal or higher level.
@@ -63,7 +60,6 @@ public class Unit : MonoBehaviour
 
     string path = "Asset_Projectile";
 
-    //IDictionary<string, GameObject> UnitSprites = new Dictionary<string, GameObject>();
     public string AnimState = "Idle";
     // Idle
     // Shooting
@@ -86,22 +82,22 @@ public class Unit : MonoBehaviour
     Color BLUE = new Color(0, 0, 255, 0.3f);
 
     // Point Stuff
-    public List<GameObject> pointObjects = new List<GameObject>();
-    public List<Vector3> pointVectors = new List<Vector3>();
+    public List<GameObject> pointObjects = new();
+    public List<Vector3> pointVectors = new();
     public Vector3 Dest;
     public bool removing = false;
 
-    float MISS_RANGE_RADIUS = 1.0f;
-    float CONTROLLED_MISS_RADIUS = 0.0f;
-    int MINIMUM_FRAMES_TO_BE_IDLE = 60;
-    float MAX_IDLE_SECONDS = 10.0f;
+    const float MISS_RANGE_RADIUS = 1.0f;
+    const float CONTROLLED_MISS_RADIUS = 0.0f;
+    const int MINIMUM_FRAMES_TO_BE_IDLE = 60;
+    const float MAX_IDLE_SECONDS = 10.0f;
     public int MIN_DIST_TO_MOVEMENT_DEST = 1;
+    const float FIRST_FIRE_DELAY = 0.15f;
 
     int idle_frames = 0;
     float idle_time = 0;
     Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
 
-    // public void Initalize(List<GameObject> newPoints, string newTeam, float _rof, float _unitRange)
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
         unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
@@ -117,10 +113,6 @@ public class Unit : MonoBehaviour
         else
         {
             glow.color = BLUE;
-            if (gameObject.GetComponentInChildren<SpriteRighter>() != null)
-            {
-                //gameObject.GetComponentInChildren<SpriteRighter>().Flip();
-            }
         }
 
         rof = newStats.fireDelay;
@@ -138,10 +130,6 @@ public class Unit : MonoBehaviour
         {
             InitializePoints(newPoints);
         }
-
-        // Sprite Stuff
-        //UnitSprites.Add("Walking", transform.Find("SpriteRighter/Sprite").gameObject);
-        //UnitSprites.Add("Shooting", transform.Find("SpriteRighter/Sprite_shooting").gameObject);
     }
 
     private void InitializePoints(List<GameObject> newPoints)
@@ -166,16 +154,10 @@ public class Unit : MonoBehaviour
 
     private WaitForSeconds FireDelay()
     {
-        // When controlled, fire 50% faster.
-        // Thats a good idea but poorly implemented.
-        if (beingControlled && false)
-        {
-            return new WaitForSeconds(rof * 0.5f);
-        }
-        else if (firstFire)
+        if (firstFire)
         {
             firstFire = false;
-            return new WaitForSeconds(rof * 0.15f);
+            return new WaitForSeconds(rof * FIRST_FIRE_DELAY);
         }
         else
         {
