@@ -37,8 +37,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        checkDealDamage(other);
-        checkSpawn(other);
+        CheckDealDamage(other);
         checkTower(other);
         checkHQ(other);
     }
@@ -66,13 +65,13 @@ public class Projectile : MonoBehaviour
     /// </summary>
     void Update()
     {
-        transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        transform.position += moveSpeed * Time.deltaTime * transform.forward;
     }
 
     /// <summary>
     /// If projectile hits unit, deal damage.
     /// </summary>
-    private void checkDealDamage(Collider other)
+    private void CheckDealDamage(Collider other)
     {
         Unit unit = other.gameObject.GetComponent<Unit>();
 
@@ -85,29 +84,7 @@ public class Projectile : MonoBehaviour
             Destroy(other.gameObject);
         }
         
-        Destroy(this.gameObject);
-    }
-
-    /// <summary>
-    /// Checks spawner team and adjusts health points accordingly.
-    /// </summary>
-    private void checkSpawn(Collider other) 
-    {
-        Spawner otherSpawn = other.gameObject.GetComponent<Spawner>();
-
-        if (otherSpawn == null) return;
-        if (otherSpawn.spawnerTeam == team) return;
-            
-        //if (otherSpawn.spawnerTeam == "RED")
-        //{
-        //    TeamStats.RedHP -= 1;
-        //}
-        //else
-        //{
-        //    TeamStats.BlueHP -= 1;
-        //}
-
-        //Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     private void checkHQ(Collider other)
@@ -126,8 +103,7 @@ public class Projectile : MonoBehaviour
             TeamStats.BlueHP -= 1;
         }
 
-        Destroy(this.gameObject);
-
+        Destroy(gameObject);
     }
 
     /// <summary>
@@ -143,6 +119,6 @@ public class Projectile : MonoBehaviour
             
         tower.DealDamage(1);
 
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

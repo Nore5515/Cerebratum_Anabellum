@@ -82,11 +82,9 @@ public class Unit : MonoBehaviour
     Color BLUE = new Color(0, 0, 255, 0.3f);
 
     // Point Stuff
-    public List<GameObject> pointObjects = new();
-    public List<Vector3> pointVectors = new();
-    public Vector3 Dest;
-    public bool removing = false;
-
+    UnitPointHandler unitPointHandler = new UnitPointHandler();
+    
+    // Consts
     const float MISS_RANGE_RADIUS = 1.0f;
     const float CONTROLLED_MISS_RADIUS = 0.0f;
     const int MINIMUM_FRAMES_TO_BE_IDLE = 60;
@@ -102,7 +100,6 @@ public class Unit : MonoBehaviour
     {
         unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
         bulletPrefab = Resources.Load(path) as GameObject;
-        MIN_DIST_TO_MOVEMENT_DEST = 1;
         unitTeam = newTeam;
         threatState = "WALK";
 
@@ -134,15 +131,7 @@ public class Unit : MonoBehaviour
 
     private void InitializePoints(List<GameObject> newPoints)
     {
-        foreach (GameObject newPoint in newPoints)
-        {
-            pointObjects.Add(newPoint);
-            pointVectors.Add(newPoint.transform.position);
-        }
-        if (pointVectors.Count > 0)
-        {
-            Dest = pointVectors[0];
-        }
+        unitPointHandler.InitializePoints(newPoints);
     }
 
     public IEnumerator EnableFiring()
@@ -180,9 +169,14 @@ public class Unit : MonoBehaviour
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
-        GameObject bulletInstance = GameObject.Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity) as GameObject;
+        GameObject bulletInstance = GenerateNewBulletPrefab();
         bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
         bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
+    }
+
+    GameObject GenerateNewBulletPrefab()
+    {
+        return Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity); 
     }
 
     // [PARAMS]: Vector3 targetPosition
@@ -228,9 +222,8 @@ public class Unit : MonoBehaviour
             canFireDelay = true;
             StartCoroutine(EnableFiring());
         }
-        //unitPossessionHandler.PossessedUnitFired();
         float missRange = beingControlled ? CONTROLLED_MISS_RADIUS : MISS_RANGE_RADIUS;
-        Vector3 spriteOffset = new Vector3(0.0f, 0.0f, 2.0f);
+        Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
         FireAtPosition(targetPosition + spriteOffset, missRange);
     }
 
@@ -245,11 +238,9 @@ public class Unit : MonoBehaviour
 
     private void InvalidFireAttempt()
     {
-        //Debug.Log("INVALID FIRE ATTEMPT");
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            //Debug.Log("Starting Enable Firing");
             StartCoroutine(EnableFiring());
         }
     }
@@ -308,7 +299,6 @@ public class Unit : MonoBehaviour
         }
         if (unitTargetHandler.targetsInRange.Count <= 0)
         {
-            // Sprite = Walking
             AnimState = "Walking";
         }
     }
@@ -331,45 +321,23 @@ public class Unit : MonoBehaviour
     //
     public void AddPoint(GameObject point)
     {
-        pointVectors.Add(DuplicateVector(point.transform.position));
-        if (pointVectors.Count == 1)
-        {
-            Dest = pointVectors[0];
-        }
+        unitPointHandler.AddPoint(point);
     }
 
     public void RemovePoint(GameObject point)
     {
-        pointVectors.Remove(point.transform.position);
-        removing = false;
-        if (pointVectors.Count == 0)
-        {
-            Dest = this.transform.position;
-        }
-        else
-        {
-            Dest = pointVectors[0];
-        }
+        unitPointHandler.RemovePoint(point, this.transform.position);
+    }
+
+    public void RemovePoint(Vector3 point)
+    {
+        unitPointHandler.RemovePoint(point);
     }
 
     public Vector3 DuplicateVector(Vector3 vector)
     {
         Vector3 newVector = new Vector3(vector.x, vector.y, vector.z);
         return newVector;
-    }
-
-    public void RemovePoint(Vector3 point)
-    {
-        pointVectors.Remove(point);
-        removing = false;
-        if (pointVectors.Count == 0)
-        {
-            Dest = new Vector3(0.0f, 0.0f, 0.0f);
-        }
-        else
-        {
-            Dest = pointVectors[0];
-        }
     }
 
     // Takes in a position and a float (representing randomness)
@@ -396,7 +364,7 @@ public class Unit : MonoBehaviour
     public void AIMovement()
     {
         // If dest exists, cus otherwise you're just stayin' still.
-        if (Dest != new Vector3(0.0f, 0.0f, 0.0f))
+        if (unitPointHandler.Dest != new Vector3(0.0f, 0.0f, 0.0f))
         {
             // If an enemy is in range, stay still!
             // if (unitTargetHandler.targetsInRange.Count > 0)
@@ -407,12 +375,12 @@ public class Unit : MonoBehaviour
             else
             {
                 // Get movement direction.
-                var newDest = new Vector3(Dest.x, this.transform.position.y, Dest.z);
+                var newDest = new Vector3(unitPointHandler.Dest.x, this.transform.position.y, unitPointHandler.Dest.z);
                 var heading = newDest - this.transform.position;
                 var distance = heading.magnitude;
                 direction = heading / distance;
 
-                float distToDest = Vector3.Distance(transform.position, Dest);
+                float distToDest = Vector3.Distance(transform.position, unitPointHandler.Dest);
 
                 // If you are not close enough to your dest, keep moving towards it.
                 if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
@@ -424,11 +392,7 @@ public class Unit : MonoBehaviour
                 // Once you get too close to your destination, remove it from your movement path and go towards the next one.
                 else
                 {
-                    if (removing == false)
-                    {
-                        removing = true;
-                        RemovePoint(Dest);
-                    }
+                    unitPointHandler.AttemptRemovePoint();
                 }
             }
         }
@@ -443,14 +407,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-
     public void UpdatePoints(List<GameObject> newPoints)
     {
-        foreach (GameObject newPoint in newPoints)
-        {
-            pointObjects.Add(newPoint);
-            pointVectors.Add(newPoint.transform.position);
-        }
+        unitPointHandler.UpdatePoints(newPoints);
     }
 
     public void IdleUpdate()
@@ -464,7 +423,7 @@ public class Unit : MonoBehaviour
                 AnimState = "Idle";
                 if (idle_time >= MAX_IDLE_SECONDS)
                 {
-                    if (pointVectors.Count <= 0)
+                    if (unitPointHandler.pointVectors.Count <= 0)
                     {
                         Destroy(gameObject);
                     }
