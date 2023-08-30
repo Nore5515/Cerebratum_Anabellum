@@ -24,26 +24,26 @@ public class Spawner : Structure
     public string spawnerTeam = "RED";
 
     SpawnedUnitStats spawnedUnitStats = new SpawnedUnitStats();
-
-    public GameObject naniteGenPrefab;
-    string naniteGenPrefab_path = "Asset_NaniteGen";
+    SpawnerStatsHandler spawnerStatsHandler;
 
     public SpawnerUI spawnerUI;
 
     public int maxPathLength;
 
+    public string unitType = "Infantry";
+
     void Start()
     {
-        spawnedUnitStats.ResetToStartingStats();
+        spawnedUnitStats.ResetToStartingStats("Infantry");
+
+        spawnerStatsHandler = gameObject.AddComponent<SpawnerStatsHandler>();
+        spawnerStatsHandler.Initialize(unitType);
 
         spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
 
         spawnerPathManager.SetPathMat(spawnTeamMat);
 
-        naniteGenPrefab = Resources.Load(naniteGenPrefab_path) as GameObject;
-
         spawnerUI.AttemptInitializeUI();
-        //AttemptInitializeUI();
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -62,14 +62,7 @@ public class Spawner : Structure
 
     public void LateStart()
     {
-        // Debug.Log("LATE START!");
-        spawnedUnitStats.ResetToStartingStats();
-
-        if (!spawnerUI.AttemptInitializeUI())
-        {
-            //Debug.LogError("Could not initialize UI for spawner");
-            //return;
-        }
+        spawnedUnitStats.ResetToStartingStats("Infantry");
 
         IEnumerator coroutine = SpawnPrefab();
         StartCoroutine(coroutine);
@@ -172,26 +165,42 @@ public class Spawner : Structure
     private void InstantiateUnit(GameObject reqPrefab)
     {
         // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
-        GameObject obj = Instantiate(reqPrefab, this.transform.position, Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate(reqPrefab, transform.position, Quaternion.identity);
         unitList.Add(obj);
 
-        if (reqPrefab.name.Contains("Spider"))
+        if (unitType == "Spider")
         {
             spawnedUnitStats.fireDelay = 2.0f;
-            spawnedUnitStats.spawnTime = 5.0f;
+            spawnedUnitStats.spawnDelay = 5.0f;
             spawnedUnitStats.unitRange = 8.0f;
-            obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+        }
+        else if (unitType == "Infantry")
+        {
+            spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
+            spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
+            spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
+        }
+        else if (unitType == "Scout")
+        {
+            spawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
+            spawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
+            spawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
         }
         else
         {
-            obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+            // Just default to infantry for now.
+            Debug.Log("Unit not recognized.");
+            spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
+            spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
+            spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
         }
+        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
     IEnumerator SpawnPrefab()
     {
-        yield return new WaitForSeconds(spawnedUnitStats.spawnTime);
+        yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
         ClearNullInstances();
 
         InstantiateUnit(prefab);
@@ -210,8 +219,7 @@ public class Spawner : Structure
 
     public bool IsMaxedSpawnRate()
     {
-        if (spawnedUnitStats.spawnTime < spawnedUnitStats.MAX_UNIT_SPAWN_RATE) return true;
-        return false;
+        return spawnerStatsHandler.IsMaxedSpawnRate(spawnedUnitStats);
     }
 
     public void AttemptUpgradeFireRate()
@@ -225,8 +233,7 @@ public class Spawner : Structure
 
     public bool IsMaxedFireRate()
     {
-        if (spawnedUnitStats.fireDelay < spawnedUnitStats.MAX_UNIT_FIRE_RATE) return true;
-        return false;
+        return spawnerStatsHandler.IsMaxedFireRate(spawnedUnitStats);
     }
 
     public void AttemptUpgradeRange()
@@ -240,39 +247,22 @@ public class Spawner : Structure
 
     public bool IsMaxedRange()
     {
-        if (spawnedUnitStats.unitRange > spawnedUnitStats.MAX_UNIT_RANGE) return true;
-        return false;
+        return spawnerStatsHandler.IsMaxedRange(spawnedUnitStats);
     }
 
     private void UpgradeSpawnRate()
     {
-        spawnedUnitStats.spawnTime += Constants.INF_SPAWN_TIME_UPGRADE_AMOUNT;
-        spawnerUI.RecalculateFill(spawnedUnitStats);
-        if (spawnedUnitStats.spawnTime < Constants.INF_MIN_SPAWN_TIME)
-        {
-            spawnerUI.spawnrateButton.interactable = false;
-        }
+        spawnerStatsHandler.UpgradeSpawnRate(spawnedUnitStats, spawnerUI);
     }
 
     private void UpgradeFireRate()
     {
-        spawnedUnitStats.fireDelay += Constants.INF_FIRE_RATE_UPGRADE_AMOUNT;
-        spawnerUI.RecalculateFill(spawnedUnitStats);
-        if (spawnedUnitStats.fireDelay < Constants.INF_MIN_FIRE_DELAY)
-        {
-            spawnerUI.firerateButton.interactable = false;
-        }
+        spawnerStatsHandler.UpgradeFireRate(spawnedUnitStats, spawnerUI);
     }
 
     private void UpgradeRange()
     {
-        spawnedUnitStats.unitRange += Constants.INF_RANGE_UPGRADE_AMOUNT;
-        spawnerUI.RecalculateFill(spawnedUnitStats);
-        // rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
-        if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE)
-        {
-            spawnerUI.rangeButton.interactable = false;
-        }
+        spawnerStatsHandler.UpgradeRange(spawnedUnitStats, spawnerUI);
     }
 
     public bool DeductTeamPoints(int cost)

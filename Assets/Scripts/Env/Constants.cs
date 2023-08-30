@@ -1,14 +1,12 @@
 public static class Constants
 {
-    public static int INF_SPAWNER_COST => 1;
-
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
     public static float BOT_CHANGE_SPAWNER_PATH_CHANCE => 0.25f;
     public static float BOT_UPGRADE_CHANCE => 0.75f;
 
     public static float INF_MIN_SPAWN_TIME => 1.0f;
     public static float INF_MIN_FIRE_DELAY => 0.5f;
-    public static float INF_MAX_RANGE => 6.0f;
+    //public static float INF_MAX_RANGE => 6.0f;
 
     public static float INF_SPAWN_TIME_UPGRADE_AMOUNT => -0.5f;
     public static float INF_FIRE_RATE_UPGRADE_AMOUNT => -0.25f;
@@ -18,5 +16,37 @@ public static class Constants
     public static float MISS_RANGE_RADIUS = 1.0f;
     public static float CONTROLLED_MISS_RADIUS = 0.0f;
 
+    // UNIT STATS
+
+    // Infantry
     public static int INF_DMG => 1;
+    public static int INF_HP => 2;
+    public static int INF_SPEED => 1;
+
+    public static float INF_INIT_FIRE_DELAY = 2.0f;
+    public static float INF_INIT_RANGE = 3.0f;
+    public static float INF_INIT_SPAWN_DELAY = 3.0f;
+
+    public static float INF_MAX_FIRE_DELAY = 0.5f;
+    public static float INF_MAX_RANGE = 6.0f;
+    public static float INF_MAX_SPAWN_DELAY = 1.0f;
+
+    // Scouts
+    public static int SCOUT_DMG => 1;
+    public static int SCOUT_HP => 1;
+    public static int SCOUT_SPEED => 2;
+
+    public static float SCOUT_INIT_FIRE_DELAY = 2.0f;
+    public static float SCOUT_INIT_RANGE = 3.0f;
+    public static float SCOUT_INIT_SPAWN_DELAY = 3.0f;
+
+    public static float SCOUT_MAX_FIRE_DELAY = 0.5f;
+    public static float SCOUT_MAX_RANGE = 6.0f;
+    public static float SCOUT_MAX_SPAWN_DELAY = 1.0f;
+
+    // PRICING
+    public static int SCOUT_SPAWNER_COST = 1;
+    public static int INF_SPAWNER_COST => 1;
+    public static int NANITE_GEN_COST = 1;
+    public static int SPIDERTANK_SPAWNER_COST = 1;
 }

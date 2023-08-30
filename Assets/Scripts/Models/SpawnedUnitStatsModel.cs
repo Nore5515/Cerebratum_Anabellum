@@ -1,19 +1,16 @@
 public class SpawnedUnitStats
 {
-    public float startingFireDelay = 2.0f;
-    public float startingUnitRange = 3.0f;
-    public float startingSpawnTime = 3.0f;
-    public float MAX_UNIT_FIRE_RATE = 0.5f;
-    public float MAX_UNIT_RANGE = 6.0f;
-    public float MAX_UNIT_SPAWN_RATE = 1.0f;
     public float fireDelay;
     public float unitRange;
-    public float spawnTime;
+    public float spawnDelay;
 
-    public void ResetToStartingStats()
+    public void ResetToStartingStats(string unitType)
     {
-        fireDelay = startingFireDelay;
-        unitRange = startingUnitRange;
-        spawnTime = startingSpawnTime;
+        if (unitType == "Infantry")
+        {
+            fireDelay = Constants.INF_INIT_FIRE_DELAY;
+            unitRange = Constants.INF_INIT_RANGE;
+            spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
+        }
     }
 }

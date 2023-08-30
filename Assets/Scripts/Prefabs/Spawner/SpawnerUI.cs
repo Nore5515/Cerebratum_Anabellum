@@ -133,9 +133,9 @@ public class SpawnerUI : MonoBehaviour
 
     public void RecalculateFill(SpawnedUnitStats spawnedUnitStats)
     {
-        spawnFill.fillAmount = calculateFill(spawnedUnitStats.startingSpawnTime, 0.5f, spawnedUnitStats.spawnTime);
-        fireRateFill.fillAmount = calculateFill(spawnedUnitStats.startingFireDelay, 0.25f, spawnedUnitStats.fireDelay);
-        rangeFill.fillAmount = calculateFill(spawnedUnitStats.startingUnitRange, 6.5f, spawnedUnitStats.unitRange);
+        spawnFill.fillAmount = calculateFill(Constants.INF_INIT_SPAWN_DELAY, 0.5f, spawnedUnitStats.spawnDelay);
+        fireRateFill.fillAmount = calculateFill(Constants.INF_INIT_FIRE_DELAY, 0.25f, spawnedUnitStats.fireDelay);
+        rangeFill.fillAmount = calculateFill(Constants.INF_INIT_RANGE, 6.5f, spawnedUnitStats.unitRange);
     }
 
     float calculateFill(float min, float max, float target)

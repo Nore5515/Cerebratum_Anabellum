@@ -163,7 +163,6 @@ public class Unit : MonoBehaviour
     // Health and Damage Logic
     public int DealDamage(int damage)
     {
-        Debug.Log("5.5: Deal Damage");
         hp -= damage;
         if (hpSlider != null)
         {

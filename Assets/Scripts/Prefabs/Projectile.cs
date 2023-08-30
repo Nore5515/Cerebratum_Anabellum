@@ -75,17 +75,12 @@ public class Projectile : MonoBehaviour
     {
         Unit unit = other.gameObject.GetComponent<Unit>();
 
-        Debug.Log("1");
         if (unit == null) return;
-        Debug.Log("2");
         if (unit.unitTeam == "NIL") return;
-        Debug.Log("3");
         if (unit.unitTeam == team) return;
-        Debug.Log("4");
 
         if (unit.DealDamage(damage) <= 0)
         {
-            Debug.Log("5");
             Destroy(other.gameObject);
         }
         
