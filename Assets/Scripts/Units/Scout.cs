@@ -1,34 +1,34 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Infantry : Unit
+public class Scout : Unit
 {
     // Core unit stats
     public float survivalTime = 15.0f;
     public PathHandler cm;
     public Animation anim;
 
-    public void CInfantry()
+    public void CScout()
     {
         unitObj = gameObject;
         controlDirection = new Vector3(0, 0, 0);
         MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
-        hp = Constants.INF_HP;
+        hp = Constants.SCOUT_HP;
         maxHP = hp;
-        dmg = Constants.INF_DMG;
-        speed = Constants.INF_SPEED;
-        rof = 2f;
+        dmg = Constants.SCOUT_DMG;
+        speed = Constants.SCOUT_SPEED;
+        rof = 2;
         threatLevel = 3;
-        unitType = "Infantry";
+        unitType = "Scout";
     }
 
     void Start()
     {
-        CInfantry();
+        CScout();
         hp = maxHP;
         if (hpSlider != null)
         {
