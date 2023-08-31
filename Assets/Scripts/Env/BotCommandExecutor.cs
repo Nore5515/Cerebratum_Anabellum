@@ -159,7 +159,7 @@ public class BotCommandExecutor : MonoBehaviour
             {
                 TeamStats.BluePoints -= Constants.INF_SPAWNER_COST;
                 buildingSlot.setState("SPAWNER");
-                buildingSlot.infSpawner.GetComponent<Spawner>().LateStart();
+                buildingSlot.infSpawner.GetComponent<Spawner>().LateStart("Infantry");
                 return true;
             }
         }

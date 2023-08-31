@@ -21,7 +21,7 @@ public class Infantry : Unit
         maxHP = hp;
         dmg = Constants.INF_DMG;
         speed = Constants.INF_SPEED;
-        rof = 2f;
+        rof = Constants.INF_INIT_FIRE_DELAY;
         threatLevel = 3;
         unitType = "Infantry";
     }

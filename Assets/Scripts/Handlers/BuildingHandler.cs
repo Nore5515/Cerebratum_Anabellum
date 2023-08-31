@@ -17,7 +17,7 @@ public class BuildingHandler : MonoBehaviour
                 {
                     TeamStats.RedPoints -= Constants.INF_SPAWNER_COST;
                     buildingSlot.setState("SPAWNER");
-                    buildingSlot.infSpawner.GetComponent<Spawner>().LateStart();
+                    buildingSlot.infSpawner.GetComponent<Spawner>().LateStart("Infantry");
                     break;
                 }
             }
@@ -34,7 +34,7 @@ public class BuildingHandler : MonoBehaviour
                 {
                     TeamStats.RedPoints -= Constants.SCOUT_SPAWNER_COST;
                     buildingSlot.setState("SPAWNER");
-                    buildingSlot.infSpawner.GetComponent<Spawner>().LateStart();
+                    buildingSlot.infSpawner.GetComponent<Spawner>().LateStart("Scout");
                     break;
                 }
             }
@@ -67,7 +67,7 @@ public class BuildingHandler : MonoBehaviour
                 {
                     TeamStats.RedPoints -= Constants.SPIDERTANK_SPAWNER_COST;
                     buildingSlot.setState("SPIDER");
-                    buildingSlot.spidertankSpawner.GetComponent<Spawner>().LateStart();
+                    buildingSlot.spidertankSpawner.GetComponent<Spawner>().LateStart("Spider");
                     break;
                 }
             }

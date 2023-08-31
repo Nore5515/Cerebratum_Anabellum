@@ -19,11 +19,11 @@ public class Spidertank : Unit
         MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
-        hp = 20;
+        hp = Constants.SPIDER_HP;
         maxHP = hp;
-        dmg = 1;
-        speed = 2;
-        rof = 2f;
+        dmg = Constants.SPIDER_DMG;
+        speed = Constants.SPIDER_SPEED;
+        rof = Constants.SPIDER_INIT_FIRE_DELAY;
         threatLevel = 20;
         unitType = "Spidertank";
 

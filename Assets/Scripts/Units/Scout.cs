@@ -21,7 +21,7 @@ public class Scout : Unit
         maxHP = hp;
         dmg = Constants.SCOUT_DMG;
         speed = Constants.SCOUT_SPEED;
-        rof = 2;
+        rof = Constants.SCOUT_INIT_FIRE_DELAY;
         threatLevel = 3;
         unitType = "Scout";
     }

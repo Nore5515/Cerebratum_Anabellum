@@ -12796,6 +12796,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: scoutPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: c8a8e8351d6ee4fb6a68900782ea1ea1, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: spiderPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 43c089224c84544c38e9827433a91ace, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: infantryPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: paths.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -25178,6 +25190,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: scoutPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: c8a8e8351d6ee4fb6a68900782ea1ea1, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: spiderPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 43c089224c84544c38e9827433a91ace, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: infantryPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: paths.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -25991,6 +26015,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1790530487}
+    - target: {fileID: 6318694514751558721, guid: 8e6e65f48a06144c8b7b70388ab8d6a2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1790530487}
+    - target: {fileID: 6318694514751558721, guid: 8e6e65f48a06144c8b7b70388ab8d6a2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddScoutSpawner
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6e65f48a06144c8b7b70388ab8d6a2, type: 3}
 --- !u!224 &1059446155704680758 stripped
@@ -26196,6 +26228,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueBuildingSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: scoutPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: c8a8e8351d6ee4fb6a68900782ea1ea1, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: spiderPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 43c089224c84544c38e9827433a91ace, type: 3}
+    - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: infantryPrefab
+      value: 
+      objectReference: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
     - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: paths.Array.size
       value: 4

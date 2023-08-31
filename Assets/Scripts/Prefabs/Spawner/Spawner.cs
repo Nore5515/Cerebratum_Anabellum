@@ -14,6 +14,9 @@ public class Spawner : Structure
 {
     public PathManager spawnerPathManager;
 
+    [SerializeField] GameObject scoutPrefab;
+    [SerializeField] GameObject infantryPrefab;
+    [SerializeField] GameObject spiderPrefab;
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
@@ -34,10 +37,7 @@ public class Spawner : Structure
 
     void Start()
     {
-        spawnedUnitStats.ResetToStartingStats("Infantry");
-
-        spawnerStatsHandler = gameObject.AddComponent<SpawnerStatsHandler>();
-        spawnerStatsHandler.Initialize(unitType);
+        InitializeUnitType(unitType);
 
         spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
 
@@ -45,10 +45,41 @@ public class Spawner : Structure
 
         spawnerUI.AttemptInitializeUI();
 
-        IEnumerator coroutine = SpawnPrefab();
+        IEnumerator coroutine = SpawnPrefab(prefab);
         StartCoroutine(coroutine);
 
         SpawnDeclaration();
+    }
+
+    void InitializeUnitType(string newUnitType)
+    {
+        unitType = newUnitType;
+        prefab = GetPrefabFromUnitString(unitType);
+        spawnedUnitStats.ResetToStartingStats(unitType);
+
+        spawnerStatsHandler = gameObject.AddComponent<SpawnerStatsHandler>();
+        spawnerStatsHandler.Initialize(unitType);
+    }
+
+    GameObject GetPrefabFromUnitString(string unitTypeString)
+    {
+        if (unitTypeString == "Infantry")
+        {
+            return infantryPrefab;
+        }
+        else if (unitTypeString == "Scout")
+        {
+            return scoutPrefab;
+        }
+        else if (unitTypeString == "Spider")
+        {
+            return spiderPrefab;
+        }
+        else
+        {
+            Debug.LogError("UNKNOWN UNIT TYPE STRING");
+            return null;
+        }
     }
 
     private void SpawnDeclaration()
@@ -60,11 +91,11 @@ public class Spawner : Structure
         }
     }
 
-    public void LateStart()
+    public void LateStart(string newUnitType)
     {
-        spawnedUnitStats.ResetToStartingStats("Infantry");
+        InitializeUnitType(newUnitType);
 
-        IEnumerator coroutine = SpawnPrefab();
+        IEnumerator coroutine = SpawnPrefab(prefab);
         StartCoroutine(coroutine);
     }
 
@@ -170,9 +201,9 @@ public class Spawner : Structure
 
         if (unitType == "Spider")
         {
-            spawnedUnitStats.fireDelay = 2.0f;
-            spawnedUnitStats.spawnDelay = 5.0f;
-            spawnedUnitStats.unitRange = 8.0f;
+            spawnedUnitStats.fireDelay = Constants.SPIDER_INIT_FIRE_DELAY;
+            spawnedUnitStats.spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
+            spawnedUnitStats.unitRange = Constants.SPIDER_INIT_RANGE;
         }
         else if (unitType == "Infantry")
         {
@@ -198,14 +229,14 @@ public class Spawner : Structure
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
-    IEnumerator SpawnPrefab()
+    IEnumerator SpawnPrefab(GameObject prefabToSpawn)
     {
         yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
         ClearNullInstances();
 
-        InstantiateUnit(prefab);
+        InstantiateUnit(prefabToSpawn);
 
-        StartCoroutine(SpawnPrefab());
+        StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
 
     public void AttemptUpgradeSpawnRate()

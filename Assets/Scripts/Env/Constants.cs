@@ -31,6 +31,19 @@ public static class Constants
     public static float INF_MAX_RANGE = 6.0f;
     public static float INF_MAX_SPAWN_DELAY = 1.0f;
 
+    // Spider
+    public static int SPIDER_DMG => 2;
+    public static int SPIDER_HP => 20;
+    public static int SPIDER_SPEED => 2;
+
+    public static float SPIDER_INIT_FIRE_DELAY = 2.0f;
+    public static float SPIDER_INIT_RANGE = 5.0f;
+    public static float SPIDER_INIT_SPAWN_DELAY = 8.0f;
+
+    public static float SPIDER_MAX_FIRE_DELAY = 1.0f;
+    public static float SPIDER_MAX_RANGE = 10.0f;
+    public static float SPIDER_MAX_SPAWN_DELAY = 4.0f;
+
     // Scouts
     public static int SCOUT_DMG => 1;
     public static int SCOUT_HP => 1;
