@@ -29,6 +29,8 @@ public class Projectile : MonoBehaviour
 
     public string team = "NIL";
 
+    private bool projectileIsExhausted = false;
+
     void Start()
     {
         IEnumerator coroutine = SelfDestruct();
@@ -73,6 +75,7 @@ public class Projectile : MonoBehaviour
     /// </summary>
     private void checkUnit(Collider other)
     {
+        if (projectileIsExhausted) return;
         Unit unit = other.gameObject.GetComponent<Unit>();
 
         if (unit == null) return;
@@ -83,12 +86,15 @@ public class Projectile : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
-        
+
+        projectileIsExhausted = true;
+
         Destroy(gameObject);
     }
 
     private void checkHQ(Collider other)
     {
+        if (projectileIsExhausted) return;
         HQObject otherSpawn = other.gameObject.GetComponent<HQObject>();
 
         if (otherSpawn == null) return;
@@ -103,6 +109,8 @@ public class Projectile : MonoBehaviour
             TeamStats.BlueHP -= 1;
         }
 
+        projectileIsExhausted = true;
+
         Destroy(gameObject);
     }
 
@@ -112,12 +120,15 @@ public class Projectile : MonoBehaviour
     /// </summary>
     private void checkTower(Collider other) 
     {
+        if (projectileIsExhausted) return;
         TowerScript tower = other.gameObject.GetComponent<TowerScript>();
 
         if (tower == null) return;
         if (tower.unitTeam == team) return;
             
         tower.DealDamage(1);
+
+        projectileIsExhausted = true;
 
         Destroy(gameObject);
     }
