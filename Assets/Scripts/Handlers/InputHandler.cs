@@ -17,16 +17,39 @@ class InputHandler
         rayHandler = new RayHandler();
     }
 
-    public void KeyChecks()
+    public void UpdateFuncs()
+    {
+        rayObj = rayHandler.GenerateRayObj();
+        posHandler.DrawLine(rayObj.hit.point);
+        HandleKeyboardInput();
+        HandleMouseInput();
+    }
+
+    public void HandleKeyboardInput()
+    {
+        HandleEscapeHeld();
+        HandleLeftControlHeld();
+        HandleSpaceHeld();
+    }
+
+    void HandleEscapeHeld()
     {
         if (Input.GetKey(KeyCode.Escape))
         {
             SceneManager.LoadScene("MainMenu");
         }
+    }
+
+    void HandleLeftControlHeld()
+    {
         if (Input.GetKey(KeyCode.LeftControl))
         {
             posHandler.FreePossession();
         }
+    }
+
+    void HandleSpaceHeld()
+    {
         if (Input.GetKey(KeyCode.Space))
         {
             posHandler.possessionKeyHeld = true;
@@ -35,14 +58,6 @@ class InputHandler
         {
             posHandler.possessionKeyHeld = false;
         }
-    }
-
-    public void UpdateFuncs()
-    {
-        rayObj = rayHandler.GenerateRayObj();
-        posHandler.DrawLine(rayObj.hit.point);
-        KeyChecks();
-        HandleMouseInput();
     }
 
     public void HandleMouseInput()
@@ -91,25 +106,37 @@ class InputHandler
 
     void CommandModeMouseDown()
     {
+        if (RayCheckSpawner()) return;
+        if (RayCheckUnit()) return;
+    }
+
+    bool RayCheckSpawner()
+    {
         rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
         if (rayObj.hit.collider != null)
         {
             HitSpawner();
-            return;
+            return true;
         }
+        return false;
+    }
+
+    bool RayCheckUnit()
+    {
         rayObj = rayHandler.GenerateLayeredRayObj("Unit");
         if (rayObj.hit.collider != null)
         {
             HitUnit();
-            return;
+            return true;
         }
+        return false;
     }
 
     void HitUnit()
     {
-        Debug.Log("Hit unit!");
         posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
     }
+
     void HitSpawner()
     {
         pathHandler.HandleClickOnSpawner(rayObj);
