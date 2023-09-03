@@ -809,7 +809,7 @@ MonoBehaviour:
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4761643736141652774}
   detectionSphere: {fileID: 8646230950262295469}
-  engagementSphere: {fileID: 0}
+  engagementSphere: {fileID: 1147403777599704448}
   MIN_DIST_TO_MOVEMENT_DEST: 1
   survivalTime: -1
   cm: {fileID: 0}
@@ -888,7 +888,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alliedTeam: 
   unit: {fileID: 0}
-  sphereType: 0
 --- !u!54 &8885089173988304938
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1354,6 +1353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747ea04eba058474e815eea61cd7ac35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alliedTeam: 
+  unit: {fileID: 0}
 --- !u!1 &8931946651971919714
 GameObject:
   m_ObjectHideFlags: 0

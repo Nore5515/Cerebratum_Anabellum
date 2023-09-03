@@ -216,7 +216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alliedTeam: BLUE
   unit: {fileID: 0}
-  sphereType: 0
 --- !u!135 &5391287561844959056
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -524,9 +523,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5083775367306647665}
-  - component: {fileID: 3638759670114193821}
   - component: {fileID: 4006140403870883818}
   - component: {fileID: 352306293031005644}
+  - component: {fileID: 3544984367568574657}
   m_Layer: 2
   m_Name: EngagementRadius
   m_TagString: Untagged
@@ -549,21 +548,6 @@ Transform:
   m_Father: {fileID: 8029445431544654596}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3638759670114193821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3057325018838632048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eb3092252bdc49b083c0156c1f034cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alliedTeam: BLUE
-  unit: {fileID: 0}
-  sphereType: 0
 --- !u!135 &4006140403870883818
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -593,6 +577,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3544984367568574657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057325018838632048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 747ea04eba058474e815eea61cd7ac35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alliedTeam: 
+  unit: {fileID: 0}
 --- !u!1 &3478250751914503539
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,7 +974,7 @@ MonoBehaviour:
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4210680996794550419}
   detectionSphere: {fileID: 5032540897370840962}
-  engagementSphere: {fileID: 3638759670114193821}
+  engagementSphere: {fileID: 3544984367568574657}
   MIN_DIST_TO_MOVEMENT_DEST: 1
   HPBar: {fileID: 4645800611403398225}
   towerTeam: BLUE

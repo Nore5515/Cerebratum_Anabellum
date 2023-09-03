@@ -10,41 +10,41 @@ public class EngagementSphere : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (transform.parent.gameObject.GetComponent<Unit>() != null)
-        {
-            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().unitTeam;
-            // Debug.Log("TEAM IS: " + alliedTeam);
-            unit = transform.parent.gameObject.GetComponent<Unit>();
-        }
+        //if (transform.parent.gameObject.GetComponent<Unit>() != null)
+        //{
+        //    alliedTeam = transform.parent.gameObject.GetComponent<Unit>().unitTeam;
+        //    // Debug.Log("TEAM IS: " + alliedTeam);
+        //    unit = transform.parent.gameObject.GetComponent<Unit>();
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (alliedTeam == null) return;
+        //if (alliedTeam == null) return;
 
-        AttemptAddUnitInRange(other);
+        //AttemptAddUnitInRange(other);
 
-        AttemptAddHQInRange(other);
+        //AttemptAddHQInRange(other);
     }
 
     void AttemptAddUnitInRange(Collider other)
     {
-        if (other.gameObject.GetComponent<Unit>() == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitTeam == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitTeam == alliedTeam) return;
+        //if (other.gameObject.GetComponent<Unit>() == null) return;
+        //if (other.gameObject.GetComponent<Unit>().unitTeam == null) return;
+        //if (other.gameObject.GetComponent<Unit>().unitTeam == alliedTeam) return;
 
-        unit.AddTargetInRange(other.gameObject);
+        //unit.AddTargetInRange(other.gameObject);
     }
 
     void AttemptAddHQInRange(Collider other)
     {
-        if (other.gameObject.GetComponent<HQObject>() == null) return;
-        if (other.gameObject.GetComponent<HQObject>().team == alliedTeam) return;
-        unit.AddTargetInRange(other.gameObject);
+        //if (other.gameObject.GetComponent<HQObject>() == null) return;
+        //if (other.gameObject.GetComponent<HQObject>().team == alliedTeam) return;
+        //unit.AddTargetInRange(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        unit.RemoveTargetInRange(other.gameObject);
+        //unit.RemoveTargetInRange(other.gameObject);
     }
 }

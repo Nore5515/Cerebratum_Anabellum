@@ -76,7 +76,7 @@ public class Unit : MonoBehaviour
     public SpriteRenderer glow;
 
     public KillSphere detectionSphere;
-    public KillSphere engagementSphere;
+    public EngagementSphere engagementSphere;
 
     // COLORS
     Color RED = new Color(255, 0, 0, 0.3f);
@@ -155,19 +155,6 @@ public class Unit : MonoBehaviour
         return unitFiringHandler.EnableFiring();
     }
 
-    //private WaitForSeconds FireDelay()
-    //{
-    //    if (unitFiringHandler.firstFire)
-    //    {
-    //        unitFiringHandler.firstFire = false;
-    //        return new WaitForSeconds(rof * Constants.FIRST_FIRE_DELAY);
-    //    }
-    //    else
-    //    {
-    //        return new WaitForSeconds(rof);
-    //    }
-    //}
-
     // Health and Damage Logic
     public int DealDamage(int damage)
     {
@@ -181,16 +168,10 @@ public class Unit : MonoBehaviour
         return hp;
     }
 
-    // FireAt Logic
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
         unitFiringHandler.FireAtPosition(position, missRange);
-    }
-
-    GameObject GenerateNewBulletPrefab()
-    {
-        return Instantiate(bulletPrefab, unitObj.transform.position, Quaternion.identity); 
     }
 
     // [PARAMS]: Vector3 targetPosition
