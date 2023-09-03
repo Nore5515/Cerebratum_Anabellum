@@ -22,7 +22,7 @@ public class UnitPointHandler
         }
     }
 
-    public void AttemptRemovePoint()
+    public void AttemptRemoveNextDestPoint()
     {
         if (removing == false)
         {

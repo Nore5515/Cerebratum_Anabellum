@@ -322,7 +322,7 @@ public class Unit : MonoBehaviour
             // Once you get too close to your destination, remove it from your movement path and go towards the next one.
             else
             {
-                unitPointHandler.AttemptRemovePoint();
+                unitPointHandler.AttemptRemoveNextDestPoint();
             }
         }
     }
