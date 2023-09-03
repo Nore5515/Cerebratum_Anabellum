@@ -12,6 +12,8 @@ public class PathHandler : MonoBehaviour
     public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
+    Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
+
     // NEW STUFF
     public Slider pathBar;
 
@@ -31,13 +33,11 @@ public class PathHandler : MonoBehaviour
 
     public void DeselectSpawners()
     {
-        if (spawnerSource != null)
-        {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-            StopDrawingPath();
-            spawnerClass.SetUIVisible(false);
-            HideAllSpawnerPoints(spawnerClass);
-        }
+        if (spawnerSource == null) return;
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        StopDrawingPath();
+        spawnerClass.SetUIVisible(false);
+        HideAllSpawnerPoints(spawnerClass);
     }
 
     public void HandleClickOnSpawner(RayObj rayObj)
@@ -102,8 +102,8 @@ public class PathHandler : MonoBehaviour
             RayObjHitBarrier(spawnerClass);
             return;
         }
-        distancePerSphere = 0.0f;
 
+        distancePerSphere = 0.0f;
         spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
     }
 
@@ -139,8 +139,12 @@ public class PathHandler : MonoBehaviour
     {
         pathBar.value = 0;
         pathBar.gameObject.SetActive(true);
-        Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
-        pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = green;
+        GetImageFromPathBarObj(pathBar.gameObject).color = green;
+    }
+
+    Image GetImageFromPathBarObj(GameObject pathBarObj)
+    {
+        return pathBarObj.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
     }
 
     public void StopDrawingPath()

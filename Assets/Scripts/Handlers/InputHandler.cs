@@ -25,11 +25,15 @@ class InputHandler
         }
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            posHandler.SetPossession(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
             posHandler.FreePossession();
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            posHandler.possessionKeyHeld = true;
+        }
+        else
+        {
+            posHandler.possessionKeyHeld = false;
         }
     }
 
