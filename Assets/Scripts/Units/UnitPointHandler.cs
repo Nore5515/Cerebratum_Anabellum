@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class UnitPointHandler
 {
-    public Vector3 Dest;
-    public List<GameObject> pointObjects = new();
+    public Vector3 DestVector;
     public List<Vector3> pointVectors = new();
     public bool removing = false;
 
@@ -13,12 +12,11 @@ public class UnitPointHandler
     {
         foreach (GameObject newPoint in newPoints)
         {
-            pointObjects.Add(newPoint);
             pointVectors.Add(newPoint.transform.position);
         }
         if (pointVectors.Count > 0)
         {
-            Dest = pointVectors[0];
+            DestVector = pointVectors[0];
         }
     }
 
@@ -27,7 +25,7 @@ public class UnitPointHandler
         if (removing == false)
         {
             removing = true;
-            RemovePoint(Dest);
+            RemovePoint(DestVector);
         }
     }
 
@@ -36,7 +34,7 @@ public class UnitPointHandler
         pointVectors.Add(DuplicateVector(point.transform.position));
         if (pointVectors.Count == 1)
         {
-            Dest = pointVectors[0];
+            DestVector = pointVectors[0];
         }
     }
 
@@ -46,11 +44,11 @@ public class UnitPointHandler
         removing = false;
         if (pointVectors.Count == 0)
         {
-            Dest = currentUnitPos;
+            DestVector = currentUnitPos;
         }
         else
         {
-            Dest = pointVectors[0];
+            DestVector = pointVectors[0];
         }
     }
 
@@ -66,11 +64,11 @@ public class UnitPointHandler
         removing = false;
         if (pointVectors.Count == 0)
         {
-            Dest = new Vector3(0.0f, 0.0f, 0.0f);
+            DestVector = new Vector3(0.0f, 0.0f, 0.0f);
         }
         else
         {
-            Dest = pointVectors[0];
+            DestVector = pointVectors[0];
         }
     }
 
@@ -78,7 +76,6 @@ public class UnitPointHandler
     {
         foreach (GameObject newPoint in newPoints)
         {
-            pointObjects.Add(newPoint);
             pointVectors.Add(newPoint.transform.position);
         }
     }

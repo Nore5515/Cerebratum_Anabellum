@@ -298,7 +298,7 @@ public class Unit : MonoBehaviour
     public void AIMovement()
     {
         // If dest exists, cus otherwise you're just stayin' still.
-        if (unitPointHandler.Dest == new Vector3(0.0f, 0.0f, 0.0f)) return;
+        if (unitPointHandler.DestVector == new Vector3(0.0f, 0.0f, 0.0f)) return;
 
         // If an enemy is in range, stay still!
         if (threatState == "STAND" || threatState == "FLEE")
@@ -310,7 +310,7 @@ public class Unit : MonoBehaviour
             // Get movement direction.
             direction = getNewMovementVector();
 
-            float distToDest = Vector3.Distance(transform.position, unitPointHandler.Dest);
+            float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
 
             // If you are not close enough to your dest, keep moving towards it.
             if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
@@ -329,7 +329,7 @@ public class Unit : MonoBehaviour
 
     private Vector3 getNewMovementVector()
     {
-        Vector3 newDest = new(unitPointHandler.Dest.x, transform.position.y, unitPointHandler.Dest.z);
+        Vector3 newDest = new(unitPointHandler.DestVector.x, transform.position.y, unitPointHandler.DestVector.z);
         Vector3 heading = newDest - transform.position;
         float distance = heading.magnitude;
         return heading / distance;
