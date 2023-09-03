@@ -6,26 +6,6 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
-    public class TargetHandler
-    {
-        public List<GameObject> targetsInRange = new List<GameObject>();
-
-        public void ClearNullTargets()
-        {
-            List<GameObject> toRemoveObjs = new List<GameObject>();
-            foreach (GameObject obj in targetsInRange)
-            {
-                if (obj == null)
-                {
-                    toRemoveObjs.Add(obj);
-                }
-            }
-            foreach (GameObject markedObj in toRemoveObjs)
-            {
-                targetsInRange.Remove(markedObj);
-            }
-        }
-    }
 
     // Core unit stats
     public int hp { get; set; }
@@ -158,9 +138,7 @@ public class Unit : MonoBehaviour
     // Health and Damage Logic
     public int DealDamage(int damage)
     {
-        Debug.Log("HP Before: " + hp);
         hp -= damage;
-        Debug.Log("HP After: " + hp);
         if (hpSlider != null)
         {
             hpSlider.value = hp;

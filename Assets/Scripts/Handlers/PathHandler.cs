@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PathHandler : MonoBehaviour
 {
-
     public GameObject prefabRed;
     public GameObject prefabBlue;
 
@@ -18,9 +13,7 @@ public class PathHandler : MonoBehaviour
     public Vector3 oldPos = new Vector3();
 
     // NEW STUFF
-    Color red = new Color(233f / 255f, 80f / 255f, 55f / 255f);
     public Slider pathBar;
-    private Image pathBarFill;
 
     GameObject spawnerSource;
 
@@ -28,7 +21,6 @@ public class PathHandler : MonoBehaviour
 
     public void Start()
     {
-        pathBarFill = pathBar.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
         GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
     }
 
@@ -50,7 +42,6 @@ public class PathHandler : MonoBehaviour
 
     public void HandleClickOnSpawner(RayObj rayObj)
     {
-        //Debug.Log("Hit Obj: " + rayObj.hit.collider.gameObject);
         if (IsHitObjectSelectedSpawner(rayObj))
         {
             HandleClickOnSelectedSpawner();
@@ -65,9 +56,9 @@ public class PathHandler : MonoBehaviour
     public void HandleClickOnSelectedSpawner()
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-        if (spawnerClass.spawnerPathManager.GetIsDrawable() == true)
+        UpdatePathDrawingMode(spawnerClass);
+        if (pathDrawingMode)
         {
-            pathDrawingMode = spawnerClass.spawnerPathManager.GetIsDrawable();
             PreparePathBar();
         }
         else
@@ -75,6 +66,11 @@ public class PathHandler : MonoBehaviour
             DeselectSpawners();
             spawnerSource = null;
         }
+    }
+
+    void UpdatePathDrawingMode(Spawner spawnerClass)
+    {
+        pathDrawingMode = spawnerClass.spawnerPathManager.GetIsDrawable();
     }
 
     public bool IsHitObjectSelectedSpawner(RayObj rayObj)
@@ -101,15 +97,29 @@ public class PathHandler : MonoBehaviour
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
-        if (rayObj.hit.collider.gameObject.tag == "barrier")
+        if (DidRayObjHitBarrier(rayObj))
         {
-            spawnerClass.DisableDrawable();
-            StopDrawingPath();
+            RayObjHitBarrier(spawnerClass);
             return;
         }
         distancePerSphere = 0.0f;
 
         spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
+    }
+
+    bool DidRayObjHitBarrier(RayObj rayObj)
+    {
+        if (rayObj.hit.collider.gameObject.CompareTag("barrier"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void RayObjHitBarrier(Spawner spawnerClass)
+    {
+        spawnerClass.DisableDrawable();
+        StopDrawingPath();
     }
 
     void AddSphereDistance(RayObj rayObj)
@@ -164,7 +174,6 @@ public class PathHandler : MonoBehaviour
 
     void SelectSpawner(GameObject spawnerGameObject)
     {
-        Debug.Log("Selecting spawner!");
         TryHideSpawnerPoints();
         spawnerSource = spawnerGameObject;
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
