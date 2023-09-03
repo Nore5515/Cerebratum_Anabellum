@@ -75,6 +75,9 @@ public class Unit : MonoBehaviour
 
     public SpriteRenderer glow;
 
+    public KillSphere detectionSphere;
+    public KillSphere engagementSphere;
+
     // COLORS
     Color RED = new Color(255, 0, 0, 0.3f);
     Color BLUE = new Color(0, 0, 255, 0.3f);
@@ -122,9 +125,14 @@ public class Unit : MonoBehaviour
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
         unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
 
-        KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
-        unitKillSphere.alliedTeam = unitTeam;
-        unitKillSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
+        //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
+
+        detectionSphere.alliedTeam = unitTeam;
+        engagementSphere.alliedTeam = unitTeam;
+
+        detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
+        engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + 2;
+
         unitRange = newStats.unitRange;
 
         if (newPoints.Count == 0)
@@ -147,18 +155,18 @@ public class Unit : MonoBehaviour
         return unitFiringHandler.EnableFiring();
     }
 
-    private WaitForSeconds FireDelay()
-    {
-        if (unitFiringHandler.firstFire)
-        {
-            unitFiringHandler.firstFire = false;
-            return new WaitForSeconds(rof * Constants.FIRST_FIRE_DELAY);
-        }
-        else
-        {
-            return new WaitForSeconds(rof);
-        }
-    }
+    //private WaitForSeconds FireDelay()
+    //{
+    //    if (unitFiringHandler.firstFire)
+    //    {
+    //        unitFiringHandler.firstFire = false;
+    //        return new WaitForSeconds(rof * Constants.FIRST_FIRE_DELAY);
+    //    }
+    //    else
+    //    {
+    //        return new WaitForSeconds(rof);
+    //    }
+    //}
 
     // Health and Damage Logic
     public int DealDamage(int damage)

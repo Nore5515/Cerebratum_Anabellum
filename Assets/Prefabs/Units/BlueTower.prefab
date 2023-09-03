@@ -214,8 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb3092252bdc49b083c0156c1f034cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alliedTeam: RED
+  alliedTeam: BLUE
   unit: {fileID: 0}
+  sphereType: 0
 --- !u!135 &5391287561844959056
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -514,6 +515,84 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3057325018838632048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5083775367306647665}
+  - component: {fileID: 3638759670114193821}
+  - component: {fileID: 4006140403870883818}
+  - component: {fileID: 352306293031005644}
+  m_Layer: 2
+  m_Name: EngagementRadius
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5083775367306647665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057325018838632048}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8029445431544654596}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3638759670114193821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057325018838632048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb3092252bdc49b083c0156c1f034cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alliedTeam: BLUE
+  unit: {fileID: 0}
+  sphereType: 0
+--- !u!135 &4006140403870883818
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057325018838632048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &352306293031005644
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057325018838632048}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3478250751914503539
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +940,7 @@ Transform:
   - {fileID: 2166381974920097769}
   - {fileID: 2669290264954531461}
   - {fileID: 1954480635913908324}
+  - {fileID: 5083775367306647665}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
@@ -895,10 +975,8 @@ MonoBehaviour:
   AnimState: Idle
   unitPossessionHandler: {fileID: 0}
   glow: {fileID: 4210680996794550419}
-  pointObjects: []
-  pointVectors: []
-  Dest: {x: 0, y: 0, z: 0}
-  removing: 0
+  detectionSphere: {fileID: 5032540897370840962}
+  engagementSphere: {fileID: 3638759670114193821}
   MIN_DIST_TO_MOVEMENT_DEST: 1
   HPBar: {fileID: 4645800611403398225}
   towerTeam: BLUE
