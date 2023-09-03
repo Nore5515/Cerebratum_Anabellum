@@ -280,12 +280,6 @@ public class Unit : MonoBehaviour
         unitPointHandler.RemovePoint(point);
     }
 
-    public Vector3 DuplicateVector(Vector3 vector)
-    {
-        Vector3 newVector = new Vector3(vector.x, vector.y, vector.z);
-        return newVector;
-    }
-
     //
     //   ╔══════════════════════════════════════════════╗
     // ╔══════════════════════════════════════════════════╗
