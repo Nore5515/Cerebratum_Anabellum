@@ -155,7 +155,7 @@ public class PathHandler : MonoBehaviour
         spawnerSource?.GetComponent<Spawner>().UpdateAwaitingUnits();
     }
 
-    public void AttemptFollowSphere(RayObj rayObj)
+    public void AttemptPlaceSpawnerFollowObj(RayObj rayObj)
     {
         if (spawnerSource == null) return;
         if (!pathDrawingMode) return;
@@ -178,23 +178,14 @@ public class PathHandler : MonoBehaviour
 
     void SelectSpawner(GameObject spawnerGameObject)
     {
-        TryHideSpawnerPoints();
         spawnerSource = spawnerGameObject;
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+
+        if (spawnerClass == null) return;
+
+        HideAllSpawnerPoints(spawnerClass);
         spawnerClass.SetUIVisible(true);
         ShowAllSpawnerPoints(spawnerClass);
-    }
-
-    void TryHideSpawnerPoints()
-    {
-        if (spawnerSource != null)
-        {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-            if (spawnerClass != null)
-            {
-                HideAllSpawnerPoints(spawnerClass);
-            }
-        }
     }
 
     void ShowAllSpawnerPoints(Spawner spawner)
@@ -213,20 +204,19 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         pathHandlerPossessionHandler.GetPossessionMovement();
     }
 
-    public GameObject CreateRedPoint(Vector3 position)
-    {
-        return Instantiate(prefabRed, position, Quaternion.identity) as GameObject;
-    }
+    //public GameObject CreateRedPoint(Vector3 position)
+    //{
+    //    return Instantiate(prefabRed, position, Quaternion.identity);
+    //}
 
-    public GameObject CreateBluePoint(Vector3 position)
-    {
-        return Instantiate(prefabBlue, position, Quaternion.identity) as GameObject;
-    }
+    //public GameObject CreateBluePoint(Vector3 position)
+    //{
+    //    return Instantiate(prefabBlue, position, Quaternion.identity);
+    //}
 
 }

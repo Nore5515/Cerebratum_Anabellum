@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.CanvasScaler;
 
 public class PosHandler : MonoBehaviour
 {
@@ -53,7 +51,6 @@ public class PosHandler : MonoBehaviour
 
     public void ControlledMouseDown(RayObj rayObj)
     {
-        Debug.Log("Attempt shot at point");
         controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
     }
 
@@ -71,30 +68,23 @@ public class PosHandler : MonoBehaviour
         controlledUnits = new List<Unit>();
         camScript.followObj = null;
         unitStatUI.SetActive(false);
-        SetPossessed(null);
+        SetNoPosUnitUI();
     }
 
-    public bool SetPossessed(Unit u)
+    private void SetPosUnitUI(Unit posUnit)
     {
-        posUnit = u;
-        if (posUnit != null)
-        {
-            Debug.Log(posUnit);
-            Debug.Log(unitHP);
-            unitHP.text = posUnit.hp.ToString();
-            unitRoF.text = posUnit.rof.ToString();
-            unitRange.text = posUnit.unitRange.ToString();
-            unitTitle.text = posUnit.unitType;
-            return true;
-        }
-        else
-        {
-            unitHP.text = "NAN";
-            unitRoF.text = "NAN";
-            unitRange.text = "NAN";
-            unitTitle.text = "NAN";
-            return false;
-        }
+        unitHP.text = posUnit.hp.ToString();
+        unitRoF.text = posUnit.rof.ToString();
+        unitRange.text = posUnit.unitRange.ToString();
+        unitTitle.text = posUnit.unitType;
+    }
+
+    private void SetNoPosUnitUI()
+    {
+        unitHP.text = "NAN";
+        unitRoF.text = "NAN";
+        unitRange.text = "NAN";
+        unitTitle.text = "NAN";
     }
 
     // Attempt to possess a unit, going through the various checks and what not.
@@ -137,42 +127,45 @@ public class PosHandler : MonoBehaviour
     // Returns true if you are controlling a unit, and false otherwise.
     public bool IsControlling()
     {
-        if (controlledUnits.Count >= 1)
+        if (controlledUnits.Count == 0) return false;
+        if (controlledUnits[0] == null)
         {
-            if (controlledUnits[0] == null)
-            {
-                controlledUnits = new List<Unit>();
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            controlledUnits = new List<Unit>();
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void GetPossessionMovement()
     {
-        if (IsControlling())
-        {
-            float zMovement = Input.GetAxis("Vertical");
-            float xMovement = Input.GetAxis("Horizontal");
-            controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
-        }
+        if (!IsControlling()) return;
+
+        float zMovement = Input.GetAxis("Vertical");
+        float xMovement = Input.GetAxis("Horizontal");
+        controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
     }
 
     // Possess the passed-in unit.
     void PossessUnit(Unit unit)
     {
         SetPossession(false);
+
         if (unit == null) return;
+
         unit.beingControlled = true;
         InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
-        if (!SetPossessed(unit)) return;
-        unitStatUI.SetActive(true);
+
+        if (unit == null)
+        {
+            SetNoPosUnitUI();
+        }
+        else
+        {
+            SetPosUnitUI(unit);
+            unitStatUI.SetActive(true);
+        }
     }
 
     void InitializeCooldownSlider(Unit unit)

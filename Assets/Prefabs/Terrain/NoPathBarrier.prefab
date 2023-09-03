@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9174959427669747129}
   - component: {fileID: 7406141228017996533}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NoPathBarrier
   m_TagString: barrier
   m_Icon: {fileID: 0}

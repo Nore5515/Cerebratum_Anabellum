@@ -86,7 +86,8 @@ class InputHandler
 
     void MouseHeldFuncs()
     {
-        pathHandler.AttemptFollowSphere(rayObj);
+        rayObj = rayHandler.GenerateLayeredRayObj("Floor");
+        pathHandler.AttemptPlaceSpawnerFollowObj(rayObj);
     }
 
     void MouseDownFuncs()
