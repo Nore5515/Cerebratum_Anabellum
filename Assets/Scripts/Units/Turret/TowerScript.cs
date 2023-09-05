@@ -9,13 +9,9 @@ public class TowerScript : Unit
     public string towerTeam;
     SpawnedUnitStats towerStats;
 
-    Sprite[] rotationSheet;
-
     // Start is called before the first frame update
     void Start()
     {
-        rotationSheet = Resources.LoadAll<Sprite>("Asset_TurretRotationSheet");
-        Debug.Log(rotationSheet.Length);
         // Core stat initialization
         hp = 20;
         maxHP = hp;
