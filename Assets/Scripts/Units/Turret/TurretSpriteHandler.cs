@@ -22,7 +22,22 @@ public class TurretSpriteHandler : MonoBehaviour
 
     const float FRAME_RATE = 10.0f;
 
-    string spriteState = "Activation";
+    //string spriteState = "Activation";
+    string spriteState = "FaceDirection";
+
+    enum Direction
+    {
+        E=0,
+        SE=1,
+        S=2,
+        SW=3,
+        W=4,
+        NW=5,
+        N=6,
+        NE=7
+    }
+
+    Direction direction = Direction.E;
 
     void Start()
     {
@@ -34,6 +49,8 @@ public class TurretSpriteHandler : MonoBehaviour
         maxActivationFrame = activationSheet.Length;
         maxSpinFrame = rotationSheet.Length;
         UpdateHori();
+
+        StartCoroutine(SillySpin());
     }
 
     // Update is called once per frame
@@ -60,11 +77,32 @@ public class TurretSpriteHandler : MonoBehaviour
                 case "Idle":
                     GetComponent<SpriteRenderer>().sprite = activationSheet[0];
                     break;
+                case "FaceDirection":
+                    IterateFaceDirectionAnim(direction);
+                    break;
                 default:
                     break;
             }
             isSpriteAnimPlaying = true;
         }
+    }
+
+    IEnumerator SillySpin()
+    {
+        int dirSpin = 0;
+        while (dirSpin < 8)
+        {
+            direction = (Direction)dirSpin;
+            isSpriteAnimPlaying = false;
+            dirSpin++;
+            yield return new WaitForSeconds(1.0f / FRAME_RATE);
+        }
+        StartCoroutine(SillySpin());
+    }
+
+    void IterateFaceDirectionAnim(Direction dir)
+    {
+        GetComponent<SpriteRenderer>().sprite = rotationSheet[(int) dir];
     }
 
     IEnumerator IterateActivationAnim()
