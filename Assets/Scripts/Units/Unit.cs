@@ -74,6 +74,8 @@ public class Unit : MonoBehaviour
     float idle_time = 0;
     Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
 
+    public Vector3 lastAimedTarget;
+
     // TODO: There is an error within spawner initializing this, and the start function within the
     // classes that extend Unit.
     //
@@ -157,6 +159,7 @@ public class Unit : MonoBehaviour
     public void AttemptShotAtPosition(Vector3 targetPosition, bool beingControlled)
     {
         unitFiringHandler.AttemptShotAtPosition(targetPosition, beingControlled);
+        lastAimedTarget = targetPosition;
     }
 
     public void PosAttemptShotAtPosition(Vector3 targetPosition)

@@ -92,7 +92,7 @@ class InputHandler
 
     void MouseDownFuncs()
     {
-        rayObj = rayHandler.GenerateRayObj();
+        rayObj = rayHandler.GenerateLayeredRayObj("Floor");
         if (rayObj.hit.collider == null) return;
 
         if (posHandler.IsControlling())

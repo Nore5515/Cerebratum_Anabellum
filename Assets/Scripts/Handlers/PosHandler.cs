@@ -51,7 +51,7 @@ public class PosHandler : MonoBehaviour
 
     public void ControlledMouseDown(RayObj rayObj)
     {
-        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, 0.5f, rayObj.hit.point.z));
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, rayObj.hit.point.y + 0.25f, rayObj.hit.point.z));
     }
 
     public void SetPossession(bool newPossession)

@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TurretSpriteHandler : MonoBehaviour
 {
     public bool flipped = false;
     public Unit hostUnit;
-
-    string lastState = "";
 
     Sprite[] rotationSheet;
     Sprite[] activationSheet;
@@ -24,6 +21,17 @@ public class TurretSpriteHandler : MonoBehaviour
 
     //string spriteState = "Activation";
     string spriteState = "FaceDirection";
+
+    TowerState towerState = TowerState.Idle;
+
+    enum TowerState
+    {
+        Idle,
+        Activating,
+        Deactivating,
+        RotatingTowards,
+        FiringAt
+    }
 
     enum Direction
     {
@@ -48,7 +56,6 @@ public class TurretSpriteHandler : MonoBehaviour
 
         maxActivationFrame = activationSheet.Length;
         maxSpinFrame = rotationSheet.Length;
-        UpdateHori();
 
         StartCoroutine(SillySpin());
     }
@@ -61,29 +68,76 @@ public class TurretSpriteHandler : MonoBehaviour
 
     void ProcessUnitState()
     {
+
+        switch (hostUnit.AnimState)
+        {
+            case "Shooting":
+                EnforceShootingState();
+                break;
+            case "Idle":
+                EnforceIdleState();
+                break;
+            default:
+                break;
+        }
+
         if (!isSpriteAnimPlaying)
         {
-            switch (spriteState)
-            {
-                case "Activation":
-                    StartCoroutine(IterateActivationAnim());
-                    break;
-                case "Deactivation":
-                    StartCoroutine(IterateDeactivationAnim());
-                    break;
-                case "Spin":
-                    StartCoroutine(IterateSpinAnim());
-                    break;
-                case "Idle":
-                    GetComponent<SpriteRenderer>().sprite = activationSheet[0];
-                    break;
-                case "FaceDirection":
-                    IterateFaceDirectionAnim(direction);
-                    break;
-                default:
-                    break;
-            }
+            HandleTowerSpriteCommands();
             isSpriteAnimPlaying = true;
+        }
+    }
+
+    void EnforceShootingState()
+    {
+        spriteState = "FaceDirection";
+        direction = GetDirectionFromVector3(hostUnit.lastAimedTarget);
+    }
+
+    Direction GetDirectionFromVector3(Vector3 vector)
+    {
+        Vector3 dir = (transform.position - vector).normalized;
+        if (dir.x > 0)
+        {
+            if (dir.z < 0.23f)
+            {
+                if (dir.z > 0.23f)
+                {
+
+                }
+            }
+        }
+    }
+
+    void EnforceIdleState()
+    {
+        if (towerState == TowerState.FiringAt || towerState == TowerState.RotatingTowards)
+        {
+
+        }
+    }
+
+    void HandleTowerSpriteCommands()
+    {
+        switch (spriteState)
+        {
+            case "Activation":
+                StartCoroutine(IterateActivationAnim());
+                break;
+            case "Deactivation":
+                StartCoroutine(IterateDeactivationAnim());
+                break;
+            case "Spin":
+                StartCoroutine(IterateSpinAnim());
+                break;
+            case "Idle":
+                GetComponent<SpriteRenderer>().sprite = activationSheet[0];
+                break;
+            case "FaceDirection":
+                IterateFaceDirectionAnim(direction);
+                break;
+            default:
+                break;
         }
     }
 
@@ -143,94 +197,5 @@ public class TurretSpriteHandler : MonoBehaviour
         spinFrame = 0;
         spriteState = "Deactivation";
         isSpriteAnimPlaying = false;
-    }
-
-    void EnforceWalkingState()
-    {
-        DisableAllSprites();
-        EnableWalkingAnim();
-    }
-
-    void EnforceShootingState()
-    {
-        DisableAllSprites();
-    }
-
-    void EnforceIdleState()
-    {
-        DisableAllSprites();
-    }
-
-    void UpdateHori()
-    {
-        if (IsUnitFacingLeft())
-        {
-            FaceLeft();
-        }
-        else
-        {
-            FaceRight();
-        }
-    }
-
-    void FaceLeft()
-    {
-        SpriteRenderer[] arr = gameObject.GetComponentsInChildren<SpriteRenderer>();
-
-        foreach (SpriteRenderer sr in arr)
-        {
-            sr.flipX = true;
-        }
-    }
-
-    void FaceRight()
-    {
-        SpriteRenderer[] arr = gameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer sr in arr)
-        {
-            sr.flipX = false;
-        }
-    }
-
-    void EnableWalkingAnim()
-    {
-        if (IsUnitFacingUp())
-        {
-            FaceUp();
-        }
-        else
-        {
-            FaceDown();
-        }
-    }
-
-    void FaceUp()
-    {
-    }
-
-    void FaceDown()
-    {
-    }
-
-    void DisableAllSprites()
-    {
-    }
-
-    bool IsUnitFacingUp()
-    {
-        if (transform.TransformVector(hostUnit.direction).z > 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    bool IsUnitFacingLeft()
-    {
-        if (transform.TransformVector(hostUnit.direction).x < 0)
-        {
-            return true;
-        }
-        return false;
     }
 }
