@@ -643,6 +643,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipped: 0
   hostUnit: {fileID: 8029445431544654600}
+  verboseLogs: 0
+  angleText: {fileID: 0}
 --- !u!212 &8456984882799396332
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -684,15 +686,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 448402544, guid: 2f36dec4215d3472e9355077502aae29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4076487189437871381
@@ -1129,5 +1131,6 @@ MonoBehaviour:
   detectionSphere: {fileID: 5032540897370840962}
   engagementSphere: {fileID: 4156089164537246932}
   MIN_DIST_TO_MOVEMENT_DEST: 1
+  lastAimedTarget: {x: 0, y: 0, z: 0}
   HPBar: {fileID: 4645800611403398225}
   towerTeam: RED

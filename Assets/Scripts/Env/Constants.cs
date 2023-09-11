@@ -21,7 +21,7 @@ public static class Constants
     // UNIT STATS
 
     // Infantry
-    public static int INF_DMG => 0;
+    public static int INF_DMG => 1;
     public static int INF_HP => 2;
     public static int INF_SPEED => 4;
 
