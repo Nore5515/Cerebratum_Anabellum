@@ -82,6 +82,9 @@ public class TurretSpriteHandler : MonoBehaviour
             case "Idle":
                 EnforceIdleState();
                 break;
+            case "Walking":
+                EnforceIdleState();
+                break;
             default:
                 break;
         }
@@ -147,19 +150,20 @@ public class TurretSpriteHandler : MonoBehaviour
 
     void EnforceIdleState()
     {
-        if (spriteState == "Waiting" && !isSpriteAnimPlaying)
-        {
-            spriteState = "FaceDirection";
-            direction = Direction.E;
-        }
-        else if (spriteState == "FaceDirection" && !isSpriteAnimPlaying)
-        {
-            spriteState = "Deactivation";
-        }
-        else
-        {
-            spriteState = "Idle";
-        }
+        spriteState = "Idle";
+        //if (spriteState == "Waiting" && !isSpriteAnimPlaying)
+        //{
+        //    spriteState = "FaceDirection";
+        //    direction = Direction.E;
+        //}
+        //else if (spriteState == "FaceDirection" && !isSpriteAnimPlaying)
+        //{
+        //    spriteState = "Deactivation";
+        //}
+        //else
+        //{
+        //    spriteState = "Idle";
+        //}
     }
 
     void HandleTowerSpriteCommands()

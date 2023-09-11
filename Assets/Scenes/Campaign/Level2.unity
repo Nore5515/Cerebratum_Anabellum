@@ -2888,7 +2888,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798081300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.627419, y: 0.5, z: -28.284271}
+  m_LocalPosition: {x: 22.627419, y: 1, z: -28.284271}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2998,7 +2998,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805434744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.1, y: 0.5, z: 1.2}
+  m_LocalPosition: {x: 14.1, y: 1, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9024,6 +9024,10 @@ PrefabInstance:
     - target: {fileID: 5429629538891162310, guid: 8f8d382d0daf74fb18dfff1a8d8efd8f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429629539538707109, guid: 8f8d382d0daf74fb18dfff1a8d8efd8f, type: 3}
+      propertyPath: buildingSlots.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5429629539538707109, guid: 8f8d382d0daf74fb18dfff1a8d8efd8f, type: 3}
       propertyPath: buildingSlots.Array.data[0]
