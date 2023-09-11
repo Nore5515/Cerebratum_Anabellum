@@ -42,6 +42,7 @@ public class PathHandler : MonoBehaviour
 
     public void HandleClickOnSpawner(RayObj rayObj)
     {
+        if (IsHitObjectNonAlliedSpawner(rayObj)) return;
         if (IsHitObjectSelectedSpawner(rayObj))
         {
             HandleClickOnSelectedSpawner();
@@ -51,6 +52,15 @@ public class PathHandler : MonoBehaviour
             DeselectSpawners();
             SelectSpawner(rayObj.hit.collider.gameObject);
         }
+    }
+
+    bool IsHitObjectNonAlliedSpawner(RayObj rayObj)
+    {
+        if (rayObj.hit.collider.transform.parent.gameObject.GetComponent<NeutralSpawner>() != null)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void HandleClickOnSelectedSpawner()
@@ -151,8 +161,11 @@ public class PathHandler : MonoBehaviour
     {
         pathDrawingMode = false;
         pathBar.gameObject.SetActive(false);
-        spawnerSource?.GetComponent<Spawner>().SetIsDrawable(false);
-        spawnerSource?.GetComponent<Spawner>().UpdateAwaitingUnits();
+        if (spawnerSource != null)
+        {
+            spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+            spawnerSource.GetComponent<Spawner>().UpdateAwaitingUnits();
+        }
     }
 
     public void AttemptPlaceSpawnerFollowObj(RayObj rayObj)

@@ -18,6 +18,10 @@ public static class Constants
 
     public static float PATH_FOLLOW_DIVERGENCE = 2.0f;
 
+    public static int CYCLE_MAX = 30;
+
+    public static string NEUTRAL_TEAM = "NEUTRAL";
+
     // UNIT STATS
 
     // Infantry

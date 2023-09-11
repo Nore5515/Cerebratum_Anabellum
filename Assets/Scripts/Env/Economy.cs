@@ -20,7 +20,7 @@ public class Economy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetCycleMax(15);
+        SetCycleMax(Constants.CYCLE_MAX);
         cycleVal = 0;
 
         // TODO: make better cyclemax parse too lasy
