@@ -107,6 +107,7 @@ public class Unit : MonoBehaviour
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
         unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
 
+
         //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
 
         detectionSphere.alliedTeam = unitTeam;

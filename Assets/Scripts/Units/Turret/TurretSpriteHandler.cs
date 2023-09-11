@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class TurretSpriteHandler : MonoBehaviour
 {
@@ -20,9 +23,14 @@ public class TurretSpriteHandler : MonoBehaviour
     const float FRAME_RATE = 10.0f;
 
     //string spriteState = "Activation";
+    string lastSpriteState = "";
     string spriteState = "FaceDirection";
 
     TowerState towerState = TowerState.Idle;
+
+    public bool verboseLogs = false;
+
+    public TMPro.TextMeshProUGUI angleText;
 
     enum TowerState
     {
@@ -56,8 +64,6 @@ public class TurretSpriteHandler : MonoBehaviour
 
         maxActivationFrame = activationSheet.Length;
         maxSpinFrame = rotationSheet.Length;
-
-        StartCoroutine(SillySpin());
     }
 
     // Update is called once per frame
@@ -68,7 +74,6 @@ public class TurretSpriteHandler : MonoBehaviour
 
     void ProcessUnitState()
     {
-
         switch (hostUnit.AnimState)
         {
             case "Shooting":
@@ -84,36 +89,76 @@ public class TurretSpriteHandler : MonoBehaviour
         if (!isSpriteAnimPlaying)
         {
             HandleTowerSpriteCommands();
-            isSpriteAnimPlaying = true;
         }
+
+        lastSpriteState = spriteState;
     }
 
     void EnforceShootingState()
     {
+        //if (spriteState == "Idle" && !isSpriteAnimPlaying)
+        //{
+        //    spriteState = "Activation";
+        //}
+        //else if (spriteState == "Face Direction" && !isSpriteAnimPlaying)
+        //{
+
+        //}
         spriteState = "FaceDirection";
         direction = GetDirectionFromVector3(hostUnit.lastAimedTarget);
     }
 
     Direction GetDirectionFromVector3(Vector3 vector)
     {
-        Vector3 dir = (transform.position - vector).normalized;
-        if (dir.x > 0)
-        {
-            if (dir.z < 0.23f)
-            {
-                if (dir.z > 0.23f)
-                {
+        Vector3 dir = (transform.position - vector);
 
-                }
-            }
+        float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+
+        if (angleText != null) {
+            angleText.text = angle.ToString();
         }
+        //angle -= 180f;
+
+        //if (angle < 0)
+        //{
+        //angle += 360;
+        //}
+        Debug.Log(angle);
+        if (angle < 0)
+        {
+            return Direction.S;
+        }
+
+        //angle = 0;
+
+        if (Input.GetKey(KeyCode.Alpha1)) angle = 45;
+        if (Input.GetKey(KeyCode.Alpha2)) angle = 90;
+        if (Input.GetKey(KeyCode.Alpha3)) angle = 135;
+        if (Input.GetKey(KeyCode.Alpha4)) angle = 180;
+        if (Input.GetKey(KeyCode.Alpha5)) angle = 225;
+        if (Input.GetKey(KeyCode.Alpha6)) angle = 270;
+        if (Input.GetKey(KeyCode.Alpha7)) angle = 315;
+        if (Input.GetKey(KeyCode.Alpha8)) angle = 360;
+
+        int spriteIndex = Mathf.RoundToInt(angle / 45f) % 8;
+
+        return (Direction)spriteIndex;
     }
 
     void EnforceIdleState()
     {
-        if (towerState == TowerState.FiringAt || towerState == TowerState.RotatingTowards)
+        if (spriteState == "Waiting" && !isSpriteAnimPlaying)
         {
-
+            spriteState = "FaceDirection";
+            direction = Direction.E;
+        }
+        else if (spriteState == "FaceDirection" && !isSpriteAnimPlaying)
+        {
+            spriteState = "Deactivation";
+        }
+        else
+        {
+            spriteState = "Idle";
         }
     }
 
@@ -122,16 +167,21 @@ public class TurretSpriteHandler : MonoBehaviour
         switch (spriteState)
         {
             case "Activation":
-                StartCoroutine(IterateActivationAnim());
+                WakeupSequenceAnim();
                 break;
             case "Deactivation":
-                StartCoroutine(IterateDeactivationAnim());
+                ShutdownSequenceAnim();
                 break;
             case "Spin":
-                StartCoroutine(IterateSpinAnim());
+                StartCoroutine(IterateSpriteAnimAscending("Waiting", rotationSheet));
                 break;
             case "Idle":
                 GetComponent<SpriteRenderer>().sprite = activationSheet[0];
+                isSpriteAnimPlaying = false;
+                break;
+            case "Waiting":
+                GetComponent<SpriteRenderer>().sprite = rotationSheet[0];
+                isSpriteAnimPlaying = false;
                 break;
             case "FaceDirection":
                 IterateFaceDirectionAnim(direction);
@@ -141,61 +191,51 @@ public class TurretSpriteHandler : MonoBehaviour
         }
     }
 
-    IEnumerator SillySpin()
+    void ShutdownSequenceAnim()
     {
-        int dirSpin = 0;
-        while (dirSpin < 8)
-        {
-            direction = (Direction)dirSpin;
-            isSpriteAnimPlaying = false;
-            dirSpin++;
-            yield return new WaitForSeconds(1.0f / FRAME_RATE);
-        }
-        StartCoroutine(SillySpin());
+        StartCoroutine(IterateSpriteAnimDescending("Idle", activationSheet));
+    }
+
+    void WakeupSequenceAnim()
+    {
+        StartCoroutine(IterateSpriteAnimAscending("Waiting", activationSheet));
     }
 
     void IterateFaceDirectionAnim(Direction dir)
     {
+        isSpriteAnimPlaying = true;
+        //Debug.Log(dir);
         GetComponent<SpriteRenderer>().sprite = rotationSheet[(int) dir];
-    }
-
-    IEnumerator IterateActivationAnim()
-    {
-        while (activationFrame < maxActivationFrame)
-        {
-            GetComponent<SpriteRenderer>().sprite = activationSheet[activationFrame];
-            activationFrame++;
-            yield return new WaitForSeconds(1.0f/FRAME_RATE);
-        }
-        activationFrame = 0;
-        spriteState = "Spin";
         isSpriteAnimPlaying = false;
     }
 
-    IEnumerator IterateDeactivationAnim()
+    IEnumerator IterateSpriteAnimAscending(string completionSpriteState, Sprite[] spriteSheet)
     {
-        activationFrame = maxActivationFrame - 1;
-        while (activationFrame > 0)
+        isSpriteAnimPlaying = true;
+        int currentFrame = 0;
+        while (currentFrame < spriteSheet.Length)
         {
-            GetComponent<SpriteRenderer>().sprite = activationSheet[activationFrame];
-            activationFrame--;
+            GetComponent<SpriteRenderer>().sprite = spriteSheet[currentFrame];
+            currentFrame++;
             yield return new WaitForSeconds(1.0f / FRAME_RATE);
         }
-        activationFrame = 0;
-        spriteState = "Activation";
+        spriteState = completionSpriteState;
         isSpriteAnimPlaying = false;
     }
 
-    IEnumerator IterateSpinAnim()
+    IEnumerator IterateSpriteAnimDescending(string completionSpriteState, Sprite[] spriteSheet)
     {
-        while (spinFrame < maxSpinFrame)
+        isSpriteAnimPlaying = true;
+        int currentFrame = spriteSheet.Length - 1;
+        while (currentFrame > 0)
         {
-            GetComponent<SpriteRenderer>().sprite = rotationSheet[spinFrame];
-            spinFrame++;
-            yield return new WaitForSeconds(1.0f/FRAME_RATE);
+            GetComponent<SpriteRenderer>().sprite = spriteSheet[currentFrame];
+            currentFrame--;
+            yield return new WaitForSeconds(1.0f / FRAME_RATE);
         }
-        spinFrame = 0;
-        spriteState = "Deactivation";
+        spriteState = completionSpriteState;
         isSpriteAnimPlaying = false;
     }
+
+    
 }
