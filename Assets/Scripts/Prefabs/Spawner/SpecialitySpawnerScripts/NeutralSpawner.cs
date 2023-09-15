@@ -36,6 +36,10 @@ public class NeutralSpawner : Structure
 
     public string unitType = "Infantry";
 
+    bool spawningIsValid = false;
+
+    public List<GameObject> neutralPath;
+
     void Start()
     {
         InitializeUnitType(unitType);
@@ -44,7 +48,8 @@ public class NeutralSpawner : Structure
 
         spawnerPathManager.SetPathMat(spawnTeamMat);
 
-        //IEnumerator coroutine = SpawnPrefab(prefab);
+        IEnumerator coroutine = SpawnPrefab(prefab);
+        StartCoroutine(coroutine);
 
         SpawnDeclaration();
     }
@@ -53,14 +58,19 @@ public class NeutralSpawner : Structure
     {
         if (detectorSphere.unitInRange)
         {
-            Debug.Log("ON");
+            //Debug.Log("ON");
+            spawningIsValid = true;
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 255, 0);
+            
         }
         else
         {
-            Debug.Log("OFF");
+            //Debug.Log("OFF");
+            spawningIsValid = false;
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(255, 255, 255);
         }
+
+        
     }
 
     void InitializeUnitType(string newUnitType)
@@ -175,6 +185,7 @@ public class NeutralSpawner : Structure
         }
     }
 
+
     private List<GameObject> GenerateNullUnitList()
     {
         List<GameObject> nullUnitList = new List<GameObject>();
@@ -225,7 +236,7 @@ public class NeutralSpawner : Structure
             spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
             spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
         }
-        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
+        obj.GetComponent<Unit>().Initalize(neutralPath, "RED", spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
@@ -234,7 +245,10 @@ public class NeutralSpawner : Structure
         yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
         ClearNullInstances();
 
-        InstantiateUnit(prefabToSpawn);
+        if (spawningIsValid)
+        {
+            InstantiateUnit(prefabToSpawn);
+        }
 
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }

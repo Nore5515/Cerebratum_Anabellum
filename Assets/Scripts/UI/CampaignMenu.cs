@@ -54,8 +54,8 @@ public class CampaignMenu : MonoBehaviour
 
     void InitializeLevelFlavor()
     {
-        levelDetails.Add("Level1", "Congratulations on being promoted to a Cerebrum Commander, newbie! Corporate's already got your first task lined up. You've been hired out to the small southern nation of Sandsyl, which may not exist in a few moments, given that their capital is currently being invaded by their northern (and much scarier) neighbor, Iryllia. Sandsyl has paid us SIGNIFICANT sums of money to ensure that they stick around, so Corporate wants you to help lead their defense. You'll do great, newbie!");
-        levelDetails.Add("Level2", "Well done new blood! The capital’s not going anywhere soon, but unless we get Sandsyl’s industrial base and powerplants back online, it’s a losing battle. Get those factories back from the Iryllians and back online, ASAP!");
+        levelDetails.Add("Level1", "Sandsyl is under attack! The Capital is well defended, but without your help it's a losing battle.");
+        levelDetails.Add("Level2", "The Irrylians...of course. This next one is tricky, but capture the factories and turn the tide!");
         levelDetails.Add("Level3", "With Sandsyl’s factories back online, they’re eager to get to manufacturing their secret weapon. Some sort of tank that walks on legs, not treads. It’ll take some time to get everything online, and Iryllia is gonna be throwing everything they’ve got to stop those factories. Don’t let them through, and hold the line!");
         levelDetails.Add("Level4", "The Sandsyl people love you, they practically praise your name! Sandsyl is ready for a proper counterattack thanks to your help, and are ready to drive the Iryllians back to their land. With their new tank tech and your leadership, you’ve got a chance! I’ll be signing out after this one, apparently Corporate’s got a new deployment for me. Some Sandsyl agent will be working with you directly from here on out, since I’m leaving. Maybe we’ll be seeing each other, heh!");
         levelNames.Add("Level1", "Rude Awakening");

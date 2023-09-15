@@ -313,6 +313,11 @@ public class Unit : MonoBehaviour
 
     private void MoveInDirection(Vector3 directionToMove)
     {
+        if (directionToMove.x == float.NaN || directionToMove.y == float.NaN || directionToMove.z == float.NaN)
+        {
+            Destroy(gameObject);
+            return;
+        }
         transform.Translate(directionToMove * speed * Time.deltaTime);
     }
 
