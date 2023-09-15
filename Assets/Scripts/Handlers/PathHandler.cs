@@ -66,6 +66,8 @@ public class PathHandler : MonoBehaviour
     public void HandleClickOnSelectedSpawner()
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerClass == null) return;
+        if (spawnerClass.spawnerTeam == "NEUTRAL") return;
         UpdatePathDrawingMode(spawnerClass);
         if (pathDrawingMode)
         {
@@ -163,8 +165,11 @@ public class PathHandler : MonoBehaviour
         pathBar.gameObject.SetActive(false);
         if (spawnerSource != null)
         {
-            spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
-            spawnerSource.GetComponent<Spawner>().UpdateAwaitingUnits();
+            if (spawnerSource.GetComponent<Spawner>() != null)
+            {
+                spawnerSource.GetComponent<Spawner>().SetIsDrawable(false);
+                spawnerSource.GetComponent<Spawner>().UpdateAwaitingUnits();
+            }
         }
     }
 

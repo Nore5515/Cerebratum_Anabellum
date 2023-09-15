@@ -15,9 +15,12 @@ public class DetectorSphere : MonoBehaviour
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))
             {
-                //Debug.Log("New Unit");
-                unitsInRange++;
-                UpdateUnitInRange();
+                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
+                {
+                    //Debug.Log("New Unit");
+                    unitsInRange++;
+                    UpdateUnitInRange();
+                }
             }
         }
     }
@@ -30,9 +33,12 @@ public class DetectorSphere : MonoBehaviour
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))
             {
-                //Debug.Log("Bye Unit");
-                unitsInRange--;
-                UpdateUnitInRange();
+                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
+                {
+                    //Debug.Log("Bye Unit");
+                    unitsInRange--;
+                    UpdateUnitInRange();
+                }
             }
         }
     }

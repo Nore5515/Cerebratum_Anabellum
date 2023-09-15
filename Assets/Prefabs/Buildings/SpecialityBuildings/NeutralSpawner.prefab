@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8118653198821790912}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885186711264287907}
   - component: {fileID: 5013470948667893188}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: CaptureSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 5778721670492140260}
   - component: {fileID: 1637655382330617949}
   - component: {fileID: 73301406925879275}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,9 +300,9 @@ GameObject:
   - component: {fileID: 7498906744169249238}
   - component: {fileID: 3360593358707628083}
   - component: {fileID: 2908551945073907242}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: NeutralSpawner
-  m_TagString: spawner
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -351,6 +351,7 @@ MonoBehaviour:
   detectorSphere: {fileID: 2220947433417788547}
   maxPathLength: 0
   unitType: Infantry
+  neutralPath: []
 --- !u!135 &3360593358707628083
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -392,7 +393,7 @@ GameObject:
   - component: {fileID: 5394110999288714161}
   - component: {fileID: 8186755325946651433}
   - component: {fileID: 2220947433417788547}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: DetectorSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitInRange: 0
+  unitsInRange: 0
 --- !u!1 &4454681164672410423
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +453,7 @@ GameObject:
   - component: {fileID: 669829067207383060}
   - component: {fileID: 8645102582583980717}
   - component: {fileID: 1552153299584909742}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +530,7 @@ GameObject:
   - component: {fileID: 6340859046036569015}
   - component: {fileID: 20310415205002842}
   - component: {fileID: 2762945690517158473}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -628,7 +630,7 @@ GameObject:
   - component: {fileID: 3595639543306006389}
   - component: {fileID: 5272866713997957180}
   - component: {fileID: 7496581277555805959}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2327713825682619954}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
