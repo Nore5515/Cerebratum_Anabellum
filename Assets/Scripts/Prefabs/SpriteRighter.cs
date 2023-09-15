@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpriteRighter : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class SpriteRighter : MonoBehaviour
     public GameObject idleBackAnim;
     public GameObject gunAnim;
     public GameObject gunBackAnim;
+
+    public Text stateText;
+    public Text stateText2;
 
     string lastState = "";
 
@@ -99,6 +103,10 @@ public class SpriteRighter : MonoBehaviour
         {
             sr.flipX = true;
         }
+        if (stateText != null)
+        {
+            stateText2.text = "LEFT";
+        }
     }
 
     void FaceRight()
@@ -107,6 +115,10 @@ public class SpriteRighter : MonoBehaviour
         foreach (SpriteRenderer sr in arr)
         {
             sr.flipX = false;
+        }
+        if (stateText != null)
+        {
+            stateText2.text = "RIGHT";
         }
     }
 
@@ -126,12 +138,20 @@ public class SpriteRighter : MonoBehaviour
     {
         if (walkingBackAnim != null) { walkingBackAnim.SetActive(true); }
         if (gunBackAnim != null) { gunBackAnim.SetActive(true); }
+        if (stateText != null)
+        {
+            stateText.text = "UP";
+        }
     }
 
     void FaceDown()
     {
         if (walkingAnim != null) { walkingAnim.SetActive(true); }
         if (gunAnim != null) { gunAnim.SetActive(true); }
+        if (stateText != null)
+        {
+            stateText.text = "DOWN";
+        }
     }
 
     void DisableAllSprites()
