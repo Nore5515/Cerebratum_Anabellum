@@ -30,7 +30,6 @@ public class PathHandler : MonoBehaviour
     {
         pathDrawingMode = newMode;
     }
-
     public void DeselectSpawners()
     {
         if (spawnerSource == null) return;

@@ -10,14 +10,12 @@ public class DetectorSphere : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("New Thing");
         if (other.gameObject.transform.parent != null)
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))
             {
                 if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
                 {
-                    //Debug.Log("New Unit");
                     unitsInRange++;
                     UpdateUnitInRange();
                 }
@@ -27,7 +25,6 @@ public class DetectorSphere : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //Debug.Log("Bye Thin");
         Debug.Log(other.name);
         if (other.gameObject.transform.parent != null)
         {
@@ -35,7 +32,6 @@ public class DetectorSphere : MonoBehaviour
             {
                 if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
                 {
-                    //Debug.Log("Bye Unit");
                     unitsInRange--;
                     UpdateUnitInRange();
                 }
