@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 7318591987923594178}
   - component: {fileID: 4846867336891512686}
   - component: {fileID: 7752983819483913971}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: DetectionSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillSlider: {fileID: 7984437140230389646}
   detectorSphere: {fileID: 7752983819483913971}
+  powerupButton: {fileID: 0}
 --- !u!1 &6526342895021013505
 GameObject:
   m_ObjectHideFlags: 0

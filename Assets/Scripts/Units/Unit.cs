@@ -313,12 +313,16 @@ public class Unit : MonoBehaviour
 
     private void MoveInDirection(Vector3 directionToMove)
     {
-        if (directionToMove.x == float.NaN || directionToMove.y == float.NaN || directionToMove.z == float.NaN)
+        Vector3 newDir = directionToMove;
+        if (newDir.x == float.NaN || newDir.y == float.NaN || newDir.z == float.NaN)
         {
             Destroy(gameObject);
             return;
         }
-        transform.Translate(directionToMove * speed * Time.deltaTime);
+        if (this != null)
+        {
+            transform.Translate(newDir * speed * Time.deltaTime);
+        }
     }
 
     public void PossessedMovement()

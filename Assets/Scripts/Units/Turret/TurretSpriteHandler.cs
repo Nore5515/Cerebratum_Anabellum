@@ -60,7 +60,7 @@ public class TurretSpriteHandler : MonoBehaviour
         rotationSheet = Resources.LoadAll<Sprite>("Asset_TurretRotationSheet");
         activationSheet = Resources.LoadAll<Sprite>("Asset_TurretActivation");
         
-        Debug.Log(rotationSheet.Length);
+        //Debug.Log(rotationSheet.Length);
 
         maxActivationFrame = activationSheet.Length;
         maxSpinFrame = rotationSheet.Length;
