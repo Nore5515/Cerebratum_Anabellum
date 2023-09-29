@@ -1,79 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7812029373751507666
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5613985023998078272}
-  m_Layer: 0
-  m_Name: HQBunker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5613985023998078272
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7812029373751507666}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5907044196168230082}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &4603673876004275635
+--- !u!1001 &1349847408657144980
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 5613985023998078272}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 25995687840465529, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a218c50339d9c484e95ee66f7cebd923, type: 3}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8923991
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.23911765
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.36964378
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.09904577
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180508870095808639, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 6855751035659662796, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-      propertyPath: team
-      value: RED
-      objectReference: {fileID: 0}
     - target: {fileID: 7587400009447083382, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
       propertyPath: m_Name
-      value: HQ
+      value: FactoryHQ
       objectReference: {fileID: 0}
     - target: {fileID: 7933514716777341297, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
       propertyPath: m_RootOrder
@@ -121,8 +61,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
---- !u!4 &5907044196168230082 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7933514716777341297, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
-  m_PrefabInstance: {fileID: 4603673876004275635}
-  m_PrefabAsset: {fileID: 0}

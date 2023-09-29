@@ -29,7 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Campaign/Level3.unity
     guid: 9480942a14b74408c853f1f5c2c5b384
   - enabled: 1
