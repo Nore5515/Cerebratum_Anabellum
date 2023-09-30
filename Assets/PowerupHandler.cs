@@ -6,9 +6,12 @@ using static UnityEngine.UI.CanvasScaler;
 public class PowerupHandler : MonoBehaviour
 {
     public GameObject fireballPlaceholder;
+    public GameObject fireballAnim;
     public GameObject fireWhisp;
 
     Color fireballMat;
+
+    bool releasedMouse = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,14 +30,20 @@ public class PowerupHandler : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            fireballMat.a = 0.8f;
-            fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
-            VaporizePoorFools();
+            //fireballMat.a = 0.8f;
+            //fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
+            if (releasedMouse)
+            {
+                Instantiate(fireballAnim, hitPos, transform.rotation);
+                VaporizePoorFools();
+                releasedMouse = false;
+            }
         }
         else
         {
             fireballMat.a = 0.2f;
             fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
+            releasedMouse = true;
         }
     }
 
