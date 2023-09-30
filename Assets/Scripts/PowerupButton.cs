@@ -38,7 +38,11 @@ public class PowerupButton : MonoBehaviour
         // TODO: MAEK SMART LATER
         if (buttonText.text == "FIREBALL")
         {
-
+            Debug.Log("FIREBALLL");
+        }
+        if (buttonText.text == "SKULL")
+        {
+            Debug.Log("SKULL");
         }
     }
 }

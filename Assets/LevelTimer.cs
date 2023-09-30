@@ -20,9 +20,7 @@ public class LevelTimer : MonoBehaviour
     void Start()
     {
         SetCycleMax(LEVEL_TIME);
-        Debug.Log(cycleMax);
         cycleVal = cycleMax;
-        Debug.Log(cycleVal);
 
         // Starting Conds
         TeamStats.CycleLength = 15;
@@ -43,7 +41,7 @@ public class LevelTimer : MonoBehaviour
     {
         if (cycleVal > 0)
         {
-            Debug.Log("is wurk");
+            //Debug.Log("is wurk");
             cycleVal -= 1 * Time.deltaTime;
             TimeTracker.GetComponent<Image>().fillAmount = (cycleVal / cycleMax);
         }
@@ -56,7 +54,7 @@ public class LevelTimer : MonoBehaviour
 
     public void TimerEnd()
     {
-        Debug.Log("WHY NOT WORKING");
+        //Debug.Log("WHY NOT WORKING");
         TeamStats.BlueHP = 0;
     }
 
