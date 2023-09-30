@@ -484,7 +484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1855816672862665040, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: startingSpawner
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4250375309655023007, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -694,8 +694,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: desc
-      value: You've got it, cus if you don't, then I have to get involved. And if
-        I get involved, you can bet your ass it'll BE your ass.
+      value: HQ's helping the Sandsyl people develop some strange prototype here.
       objectReference: {fileID: 0}
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: next
@@ -2294,6 +2293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueBuildingSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: startingSpawner
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: scoutPrefab
       value: 
@@ -2517,6 +2520,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6503728440169248045, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
   m_PrefabInstance: {fileID: 302831891}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &302831893 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+  m_PrefabInstance: {fileID: 302831891}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe772d33a521450e93da375c999216e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &311206981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4150224622381220491, guid: 185842e5392b34bb096e4e8d7f44c5c0, type: 3}
@@ -5341,7 +5355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
       propertyPath: botBuildingSlotList.Array.size
-      value: 3
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
       propertyPath: botBuildingSlotList.Array.data[0]
@@ -5355,6 +5369,26 @@ PrefabInstance:
       propertyPath: botBuildingSlotList.Array.data[2]
       value: 
       objectReference: {fileID: 1205774508}
+    - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
+      propertyPath: botBuildingSlotList.Array.data[3]
+      value: 
+      objectReference: {fileID: 2101214719}
+    - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
+      propertyPath: botBuildingSlotList.Array.data[4]
+      value: 
+      objectReference: {fileID: 2015186766}
+    - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
+      propertyPath: botBuildingSlotList.Array.data[5]
+      value: 
+      objectReference: {fileID: 1658096745}
+    - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
+      propertyPath: botBuildingSlotList.Array.data[6]
+      value: 
+      objectReference: {fileID: 302831893}
+    - target: {fileID: 1129120761319637585, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
+      propertyPath: botBuildingSlotList.Array.data[7]
+      value: 
+      objectReference: {fileID: 1855816672032470811}
     - target: {fileID: 3766099547511820869, guid: 9919f5e97a7e140e689084fa131568ee, type: 3}
       propertyPath: m_Name
       value: BlueBotCommander
@@ -6565,7 +6599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &860458169
 Transform:
   m_ObjectHideFlags: 0
@@ -6765,7 +6799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1855816672862665040, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: startingSpawner
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4250375309655023007, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -10879,7 +10913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1432254119
 Transform:
   m_ObjectHideFlags: 0
@@ -11139,7 +11173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1855816672862665040, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: startingSpawner
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4250375309655023007, guid: 2b967557b7f8c4010a8c4b6579d3d38a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -11751,6 +11785,10 @@ PrefabInstance:
     - target: {fileID: 3369527233908570304, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: m_Name
       value: BlueBuildingSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+      propertyPath: startingSpawner
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4113189689929207852, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
       propertyPath: scoutPrefab
@@ -13084,6 +13122,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6503728440169248045, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
   m_PrefabInstance: {fileID: 1658096743}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1658096745 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+  m_PrefabInstance: {fileID: 1658096743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe772d33a521450e93da375c999216e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1662030548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13809,7 +13858,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1846899430
 Transform:
   m_ObjectHideFlags: 0
@@ -13984,7 +14033,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: desc
-      value: Anyways. Good luck.
+      value: Guard it until it's completed! Losing it will be your ass. Good luck!
       objectReference: {fileID: 0}
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: title
@@ -14541,7 +14590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1972720960
 Transform:
   m_ObjectHideFlags: 0
@@ -14947,6 +14996,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe772d33a521450e93da375c999216e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2015186766 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+  m_PrefabInstance: {fileID: 700506734}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe772d33a521450e93da375c999216e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2023258226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6239374013005713497, guid: 5d669c057891545e7a668c00abf5dfc8, type: 3}
@@ -15025,6 +15085,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3877396256286464622, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
   m_PrefabInstance: {fileID: 2099618840}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2101214719 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3742670908654305854, guid: 257cd6f0e04fa4e21b9897cd16776949, type: 3}
+  m_PrefabInstance: {fileID: 1537393429}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe772d33a521450e93da375c999216e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2101572713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8827216604494688835, guid: 0772e6d17e57b474e8f39dc4920731dc, type: 3}
@@ -16755,7 +16826,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: desc
-      value: Secure all these factories, and push the enemy back!
+      value: You're doing great newbie! We've got the upper hand, all we need is
+        something to really secure our advantage.
       objectReference: {fileID: 0}
     - target: {fileID: 4506254251130989553, guid: d2a7fc701ba3642e1a2a850f56bf759c, type: 3}
       propertyPath: next
