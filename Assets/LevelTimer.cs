@@ -1,18 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelTimer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject TimeTracker;
+
+    public float cycleMax;
+    private float cycleVal;
+
+    // Starting Conditions
+    public int redNaniteBoost = 0;
+    public int blueNaniteBoost = 0;
+
+    [SerializeField]
+    int LEVEL_TIME;
+
     void Start()
     {
-        
+        SetCycleMax(LEVEL_TIME);
+        Debug.Log(cycleMax);
+        cycleVal = cycleMax;
+        Debug.Log(cycleVal);
+
+        // Starting Conds
+        TeamStats.CycleLength = 15;
+        TeamStats.RedNaniteGain = 1;
+        TeamStats.BlueNaniteGain = 1;
+        TeamStats.RedPoints = redNaniteBoost;
+        TeamStats.BluePoints = blueNaniteBoost;
+
+        TimeTracker = GameObject.Find("LevelTimeTracker");
     }
 
-    // Update is called once per frame
+    public void SetCycleMax(float newMax)
+    {
+        cycleMax = newMax;
+    }
+
     void Update()
     {
-        
+        if (cycleVal > 0)
+        {
+            Debug.Log("is wurk");
+            cycleVal -= 1 * Time.deltaTime;
+            TimeTracker.GetComponent<Image>().fillAmount = (cycleVal / cycleMax);
+        }
+        else
+        {
+            TimerEnd();
+        }
+
     }
+
+    public void TimerEnd()
+    {
+        Debug.Log("WHY NOT WORKING");
+        TeamStats.BlueHP = 0;
+    }
+
+
 }

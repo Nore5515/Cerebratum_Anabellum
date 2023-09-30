@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 5753409699071790516}
   - component: {fileID: 3263689526383148554}
   m_Layer: 5
-  m_Name: TimeTracker
+  m_Name: LevelTimeTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
