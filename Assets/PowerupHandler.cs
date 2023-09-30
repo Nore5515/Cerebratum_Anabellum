@@ -6,6 +6,7 @@ using static UnityEngine.UI.CanvasScaler;
 public class PowerupHandler : MonoBehaviour
 {
     public GameObject fireballPlaceholder;
+    public GameObject fireWhisp;
 
     Color fireballMat;
 
@@ -51,6 +52,8 @@ public class PowerupHandler : MonoBehaviour
 
         foreach (GameObject victim in confirmedVictims)
         {
+            GameObject whispInstance = Instantiate(fireWhisp, victim.transform.position, victim.transform.rotation);
+            whispInstance.transform.position += new Vector3(0.0f, 0.5f, 0.0f);
             if(victim.GetComponent<Unit>().DealDamage(999) <= 0)
             {
                 Destroy(victim.GetComponent<Unit>().gameObject);
