@@ -12,7 +12,7 @@ public class PowerupButton : MonoBehaviour
     [SerializeField]
     Image buttonImage;
     [SerializeField]
-    Text buttonText;
+    public Text buttonText;
 
     public void SetPowerupButtonType(string powerupType)
     {
@@ -20,16 +20,17 @@ public class PowerupButton : MonoBehaviour
         {
             buttonImage.sprite = fireball;
             buttonText.text = "FIREBALL";
+            this.GetComponent<Button>().interactable = true;
         }
         else if (powerupType == "Skull")
         {
             buttonImage.sprite = skull;
             buttonText.text = "SKULL";
+            this.GetComponent<Button>().interactable = true;
         }
         else
         {
-            buttonImage.sprite = null;
-            buttonText.text = "--";
+            ClearPowerup();
         }
     }
 
@@ -38,6 +39,7 @@ public class PowerupButton : MonoBehaviour
         // TODO: MAEK SMART LATER
         if (buttonText.text == "FIREBALL")
         {
+            this.GetComponent<Button>().interactable = !this.GetComponent<Button>().interactable;
             Debug.Log("FIREBALLL");
         }
         if (buttonText.text == "SKULL")
@@ -45,4 +47,12 @@ public class PowerupButton : MonoBehaviour
             Debug.Log("SKULL");
         }
     }
+
+    public void ClearPowerup()
+    {
+        buttonImage.sprite = null;
+        buttonText.text = "--";
+        this.GetComponent<Button>().interactable = true;
+    }
+
 }

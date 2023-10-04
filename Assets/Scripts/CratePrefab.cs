@@ -12,13 +12,8 @@ public class CratePrefab : MonoBehaviour
     // TODO: Better way of linking these
     public PowerupButton powerupButton;
 
-    string[] powerupList = { "Skull", "Fireball" };
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //string[] powerupList = { "Skull", "Fireball" };
+    string[] powerupList = { "Fireball" };
 
     // Update is called once per frame
     void Update()
@@ -39,17 +34,9 @@ public class CratePrefab : MonoBehaviour
         powerupButton.SetPowerupButtonType(GenerateRandomPowerup());
     }
 
-
-    int stupid = 0;
     public string GenerateRandomPowerup()
     {
         int randomPowerupIndex = Random.Range(0, powerupList.Length);
-        randomPowerupIndex = stupid;
-        stupid++;
-        if (stupid == powerupList.Length)
-        {
-            stupid = 0;
-        }
         if (powerupList.Length <= 0)
         {
             return "No Powerups Available!";

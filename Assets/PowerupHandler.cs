@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
 
 public class PowerupHandler : MonoBehaviour
 {
+    [SerializeField]
+    PowerupButton powerupButton;
+
     public GameObject fireballPlaceholder;
     public GameObject fireballAnim;
     public GameObject fireWhisp;
@@ -22,28 +26,38 @@ public class PowerupHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 hitPos = RayHitFloorPosition();
-        if (hitPos != new Vector3(0.0f, 0.0f, 0.0f))
+        if (powerupButton.buttonText.text == "FIREBALL" && powerupButton.GetComponent<Button>().interactable == false)
         {
-            fireballPlaceholder.transform.position = hitPos;
-        }
-
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            //fireballMat.a = 0.8f;
-            //fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
-            if (releasedMouse)
+            Vector3 hitPos = RayHitFloorPosition();
+            if (hitPos != new Vector3(0.0f, 0.0f, 0.0f))
             {
-                Instantiate(fireballAnim, hitPos, transform.rotation);
-                VaporizePoorFools();
-                releasedMouse = false;
+                fireballPlaceholder.transform.position = hitPos;
+            }
+
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                //fireballMat.a = 0.8f;
+                //fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
+                if (releasedMouse)
+                {
+                    Instantiate(fireballAnim, hitPos, transform.rotation);
+                    VaporizePoorFools();
+                    releasedMouse = false;
+                    powerupButton.ClearPowerup();
+                }
+            }
+            else
+            {
+                fireballMat.a = 0.2f;
+                fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
+                releasedMouse = true;
             }
         }
         else
         {
-            fireballMat.a = 0.2f;
+            fireballMat.a = 0.0f;
             fireballPlaceholder.GetComponent<Renderer>().material.color = fireballMat;
-            releasedMouse = true;
+            fireballPlaceholder.transform.position = new Vector3(1000.0f, 1000.0f, 1000.0f);
         }
     }
 

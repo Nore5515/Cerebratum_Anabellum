@@ -17526,6 +17526,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7761971699201980664, guid: 66eea92973ff24d19a0d2e9e54e4d0dc, type: 3}
     - target: {fileID: 8522348205442216411, guid: 7fad4fc4382ac4f23a0e9c9db19576e5, type: 3}
+      propertyPath: powerupButton
+      value: 
+      objectReference: {fileID: 1801854797}
+    - target: {fileID: 8522348205442216411, guid: 7fad4fc4382ac4f23a0e9c9db19576e5, type: 3}
       propertyPath: fireballPlaceholder
       value: 
       objectReference: {fileID: 308782442}
