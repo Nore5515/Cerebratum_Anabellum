@@ -18,11 +18,16 @@ public class MapEditor : MonoBehaviour
     TileBase storedTile;
     Vector3Int oldGridPos;
 
+    TileBase paletteTile;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        paletteTile = floorTile;
+    }
+
+    public void SetPaletteTile(TileBase newTile)
+    {
+        paletteTile = newTile;
     }
 
     void InitGridPos(Vector3Int gridPos)
@@ -67,7 +72,7 @@ public class MapEditor : MonoBehaviour
                 storedTile = tileMap.GetTile(gridPos);
                 storedTileFilled = true;
             }
-            tileMap.SetTile(gridPos, floorTile);
+            tileMap.SetTile(gridPos, paletteTile);
 
             //if (tileMap.GetTile(gridPos).name == "EmptyTile")
             //{
@@ -76,8 +81,8 @@ public class MapEditor : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                tileMap.SetTile(gridPos, floorTile);
-                storedTile = floorTile;
+                tileMap.SetTile(gridPos, paletteTile);
+                storedTile = paletteTile;
             }
 
             oldGridPos = gridPos;

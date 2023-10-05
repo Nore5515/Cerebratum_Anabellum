@@ -131,6 +131,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1789449834}
     m_Modifications:
     - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
+      propertyPath: tile
+      value: 
+      objectReference: {fileID: 11400000, guid: 62fc10e81a3f84aa3859ebc8c86d850d, type: 2}
+    - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
       propertyPath: tileSprite
       value: 
       objectReference: {fileID: 21300000, guid: 91cd30fd8a747458b8ec42ae34c481c7, type: 3}
@@ -341,6 +345,7 @@ GameObject:
   - component: {fileID: 469703502}
   - component: {fileID: 469703501}
   - component: {fileID: 469703500}
+  - component: {fileID: 469703503}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -410,10 +415,26 @@ Transform:
   m_LocalPosition: {x: 2.8, y: -5.3, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1785239916}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &469703503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469703499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37c2c128a8a94cf5a415048a2a351a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchor: {fileID: 0}
+  followObj: {fileID: 0}
+  MoveSpeed: 5
 --- !u!1 &516501436
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +447,7 @@ GameObject:
   - component: {fileID: 516501438}
   m_Layer: 0
   m_Name: PlayerMapEditor
-  m_TagString: Untagged
+  m_TagString: player_map_editor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3850,6 +3871,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1785239915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1785239916}
+  m_Layer: 0
+  m_Name: Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1785239916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785239915}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 469703502}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1789449833
 GameObject:
   m_ObjectHideFlags: 0
@@ -4019,6 +4071,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1789449834}
     m_Modifications:
     - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
+      propertyPath: tile
+      value: 
+      objectReference: {fileID: 11400000, guid: 7c341b9dc2bf24ab18dbe74c9533df8e, type: 2}
+    - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
       propertyPath: tileSprite
       value: 
       objectReference: {fileID: 21300000, guid: 0b4abfcbed1ae49169dded23434a6c04, type: 3}
@@ -4124,6 +4180,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1789449834}
     m_Modifications:
+    - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
+      propertyPath: tile
+      value: 
+      objectReference: {fileID: 11400000, guid: d52b78643ebcf409f9a7d1ca1695411d, type: 2}
     - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
       propertyPath: tileSprite
       value: 
@@ -4235,6 +4295,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1789449834}
     m_Modifications:
+    - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
+      propertyPath: tile
+      value: 
+      objectReference: {fileID: 11400000, guid: 30d42d6b3213f4018a9c1486fa805b77, type: 2}
     - target: {fileID: 2560265488386303550, guid: 96b832fd2408e422da67293117a556d9, type: 3}
       propertyPath: tileSprite
       value: 

@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class TileButton : MonoBehaviour
 {
     [SerializeField]
     Sprite tileSprite;
+
+    [SerializeField]
+    TileBase tile;
 
     MapEditor mapEditor;
 
@@ -26,12 +30,8 @@ public class TileButton : MonoBehaviour
 
     void CustomClick()
     {
+        mapEditor.SetPaletteTile(tile);
         Debug.Log(tileSprite.name);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
 }

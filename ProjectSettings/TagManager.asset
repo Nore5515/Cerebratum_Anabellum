@@ -9,6 +9,7 @@ TagManager:
   - spawner
   - spawner_buttons
   - barrier
+  - player_map_editor
   layers:
   - Default
   - TransparentFX
