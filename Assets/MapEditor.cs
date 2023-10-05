@@ -14,10 +14,9 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     TileBase emptyTile;
 
+    TileBase storedTile;
     Vector3Int oldGridPos;
-    TileBase oldGridTile;
 
-    bool tilePlaced = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +32,17 @@ public class MapEditor : MonoBehaviour
         }
     }
 
+    void StoreNewTile(TileBase tile)
+    {
+        storedTile = tile;
+    }
+
+    void ReplaceOldTileWithStoredTile()
+    {
+        tileMap.SetTile(oldGridPos, storedTile);
+        storedTile = null;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -43,17 +53,20 @@ public class MapEditor : MonoBehaviour
 
         if (gridPos != oldGridPos)
         {
-            tileMap.SetTile(oldGridPos, oldGridTile);
+            ReplaceOldTileWithStoredTile();
         }
 
         if (tileMap.HasTile(gridPos))
         {
-            Debug.Log(tileMap.GetTile(gridPos).name);
-            if (tileMap.GetTile(gridPos).name == "EmptyTile" && !tilePlaced)
+            if (storedTile == null)
             {
-                tileMap.SetTile(gridPos, floorTile);
+                storedTile = tileMap.GetTile(gridPos);
             }
-            oldGridTile = tileMap.GetTile(gridPos);
+            tileMap.SetTile(gridPos, floorTile);
+
+            //if (tileMap.GetTile(gridPos).name == "EmptyTile")
+            //{
+            //}
         }
 
         oldGridPos = gridPos;
