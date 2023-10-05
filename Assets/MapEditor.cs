@@ -9,6 +9,9 @@ public class MapEditor : MonoBehaviour
     Tilemap tileMap;
 
     [SerializeField]
+    Tilemap wallTileMap;
+
+    [SerializeField]
     TileBase floorTile;
 
     [SerializeField]
@@ -20,6 +23,8 @@ public class MapEditor : MonoBehaviour
 
     TileBase paletteTile;
 
+    bool selectingWallMap = false;
+
     void Start()
     {
         paletteTile = floorTile;
@@ -28,6 +33,15 @@ public class MapEditor : MonoBehaviour
     public void SetPaletteTile(TileBase newTile)
     {
         paletteTile = newTile;
+        if (paletteTile.name.Contains("Wall"))
+        {
+            Debug.Log("WALL");
+            selectingWallMap = true;
+        }
+        else
+        {
+            selectingWallMap = false;
+        }
     }
 
     void InitGridPos(Vector3Int gridPos)
@@ -45,18 +59,39 @@ public class MapEditor : MonoBehaviour
 
     void ReplaceOldTileWithStoredTile()
     {
-        tileMap.SetTile(oldGridPos, storedTile);
+        if (selectingWallMap)
+        {
+            wallTileMap.SetTile(oldGridPos, storedTile);
+        }
+        else
+        {
+            tileMap.SetTile(oldGridPos, storedTile);
+        }
         storedTile = null;
         storedTileFilled = false;
+    }
+
+    Vector3Int GetGridPos(Vector2 mousePos)
+    {
+        Vector3Int gridPos;
+        if (wallTileMap)
+        {
+            gridPos = wallTileMap.WorldToCell(mousePos);
+        }
+        else
+        {
+            gridPos = tileMap.WorldToCell(mousePos);
+        }
+        return gridPos;
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (mousePos.y >= -9.5f)
+        if (mousePos.y - Camera.main.gameObject.transform.position.y >= -4.0f)
         {
-            Vector3Int gridPos = tileMap.WorldToCell(mousePos);
+            Vector3Int gridPos = GetGridPos(mousePos);
 
             InitGridPos(gridPos);
 
@@ -69,10 +104,25 @@ public class MapEditor : MonoBehaviour
             //{
             if (storedTileFilled == false)
             {
-                storedTile = tileMap.GetTile(gridPos);
+                if (selectingWallMap)
+                {
+                    storedTile = wallTileMap.GetTile(gridPos);
+                }
+                else
+                {
+                    storedTile = tileMap.GetTile(gridPos);
+                }
                 storedTileFilled = true;
             }
-            tileMap.SetTile(gridPos, paletteTile);
+
+            if (selectingWallMap)
+            {
+                wallTileMap.SetTile(gridPos, paletteTile);
+            }
+            else
+            {
+                tileMap.SetTile(gridPos, paletteTile);
+            }
 
             //if (tileMap.GetTile(gridPos).name == "EmptyTile")
             //{
@@ -81,7 +131,14 @@ public class MapEditor : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                tileMap.SetTile(gridPos, paletteTile);
+                if (selectingWallMap)
+                {
+                    wallTileMap.SetTile(gridPos, paletteTile);
+                }
+                else
+                {
+                    tileMap.SetTile(gridPos, paletteTile);
+                }
                 storedTile = paletteTile;
             }
 
