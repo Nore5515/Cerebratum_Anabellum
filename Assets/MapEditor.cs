@@ -49,35 +49,38 @@ public class MapEditor : MonoBehaviour
     void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPos = tileMap.WorldToCell(mousePos);
-
-        InitGridPos(gridPos);
-
-        if (gridPos != oldGridPos)
+        if (mousePos.y >= -9.5f)
         {
-            ReplaceOldTileWithStoredTile();
-        }
+            Vector3Int gridPos = tileMap.WorldToCell(mousePos);
 
-        //if (tileMap.HasTile(gridPos))
-        //{
-        if (storedTileFilled == false)
-        {
-            storedTile = tileMap.GetTile(gridPos);
-            storedTileFilled = true;
-        }
-        tileMap.SetTile(gridPos, floorTile);
+            InitGridPos(gridPos);
+
+            if (gridPos != oldGridPos)
+            {
+                ReplaceOldTileWithStoredTile();
+            }
+
+            //if (tileMap.HasTile(gridPos))
+            //{
+            if (storedTileFilled == false)
+            {
+                storedTile = tileMap.GetTile(gridPos);
+                storedTileFilled = true;
+            }
+            tileMap.SetTile(gridPos, floorTile);
 
             //if (tileMap.GetTile(gridPos).name == "EmptyTile")
             //{
             //}
-        //}
+            //}
 
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            tileMap.SetTile(gridPos, floorTile);
-            storedTile = floorTile;
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                tileMap.SetTile(gridPos, floorTile);
+                storedTile = floorTile;
+            }
+
+            oldGridPos = gridPos;
         }
-
-        oldGridPos = gridPos;
     }
 }
