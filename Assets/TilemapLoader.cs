@@ -1,19 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class TilemapLoader : MonoBehaviour
 {
     string tilemapStateStr = "";
 
+    [SerializeField]
+    Tilemap wallTileMap;
+
+    [SerializeField]
+    TMP_InputField importField;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        Tilemap tilemap = GetComponent<Tilemap>();
+    }
 
+    void UpdateStateStr()
+    {
+        tilemapStateStr += "--FLOORS--\n";
+        tilemapStateStr += GetStringifiedTilemap(GetComponent<Tilemap>());
+        tilemapStateStr += "--WALLS--\n";
+        tilemapStateStr += GetStringifiedTilemap(wallTileMap);
+
+    }
+
+    string GetStringifiedTilemap(Tilemap tilemap)
+    {
         BoundsInt bounds = tilemap.cellBounds;
         TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+
+        string stateStr = "";
 
         for (int x = 0; x < bounds.size.x; x++)
         {
@@ -22,17 +44,28 @@ public class TilemapLoader : MonoBehaviour
                 TileBase tile = allTiles[x + y * bounds.size.x];
                 if (tile != null)
                 {
-                    tilemapStateStr += "x:" + x + " y:" + y + " tile:" + tile.name + "\n";
+                    stateStr += "x:" + x + " y:" + y + " tile:" + tile.name + "\n";
                     //Debug.Log("x:" + x + " y:" + y + " tile:" + tile.name);
                 }
                 else
                 {
-                    tilemapStateStr += "x:" + x + " y:" + y + " tile: (null)\n";
+                    stateStr += "x:" + x + " y:" + y + " tile: (null)\n";
                     //Debug.Log("x:" + x + " y:" + y + " tile: (null)");
                 }
             }
         }
-        Debug.Log(tilemapStateStr);
+        return stateStr;
+    }
+
+    public void CopyToClipboard()
+    {
+        UpdateStateStr();
+        GUIUtility.systemCopyBuffer = tilemapStateStr;
+    }
+
+    public void ImportState()
+    {
+        Debug.Log(importField.text);
     }
 
     // Update is called once per frame

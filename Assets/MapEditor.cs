@@ -85,11 +85,29 @@ public class MapEditor : MonoBehaviour
         return gridPos;
     }
 
+    bool IsCoveringPortUI(Vector2 mousePos)
+    {
+        if (mousePos.x - Camera.main.gameObject.transform.position.x <= -7.25f)
+        {
+            if (mousePos.y - Camera.main.gameObject.transform.position.y >= 3.75f)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsCoveringTilePalette(Vector2 mousePos)
+    {
+        return mousePos.y - Camera.main.gameObject.transform.position.y <= -4.0f;
+    }
+
     // Update is called once per frame
     void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (mousePos.y - Camera.main.gameObject.transform.position.y >= -4.0f)
+        //Debug.Log(new Vector2(mousePos.x - Camera.main.gameObject.transform.position.x, mousePos.y - Camera.main.gameObject.transform.position.y));
+        if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
         {
             Vector3Int gridPos = GetGridPos(mousePos);
 
