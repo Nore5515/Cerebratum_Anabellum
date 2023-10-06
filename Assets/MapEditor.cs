@@ -21,6 +21,9 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     Text debugText;
 
+    [SerializeField]
+    Toggle symToggle;
+
     bool storedTileFilled = false;
     TileBase storedTile;
     Vector3Int oldGridPos;
@@ -34,8 +37,15 @@ public class MapEditor : MonoBehaviour
         paletteTile = floorTile;
     }
 
+    void RevertTile()
+    {
+        wallTileMap.SetTile(oldGridPos, storedTile);
+        tileMap.SetTile(oldGridPos, storedTile);
+    }
+
     public void SetPaletteTile(TileBase newTile)
     {
+        //RevertTile();
         paletteTile = newTile;
         Debug.Log(paletteTile.name);
         if (paletteTile.name.Contains("Wall"))
@@ -115,13 +125,74 @@ public class MapEditor : MonoBehaviour
         return false;
     }
 
+    Vector3Int GetScreenGridCenter()
+    {
+        Vector2 centerPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0.0f));
+
+        Vector3Int gridPos = GetGridPos(centerPos);
+
+        return gridPos;
+    }
+
+    Vector3Int GetSymPoint(Vector3Int gridPos)
+    {
+        Vector3Int symGridPos = new Vector3Int(0, 0, gridPos.z);
+        Vector3Int centerPos = GetScreenGridCenter();
+
+        int xDistFromCenter = gridPos.x - centerPos.x;
+        int yDistFromCenter = gridPos.y - centerPos.y;
+
+        symGridPos.x = centerPos.x - xDistFromCenter;
+        symGridPos.y = centerPos.y - yDistFromCenter;
+
+        return symGridPos;
+    }
+
+    void DrawTile(Vector3Int gridPos)
+    {
+        if (IsEmptyPaletteSprite())
+        {
+            wallTileMap.SetTile(gridPos, paletteTile);
+            tileMap.SetTile(gridPos, paletteTile);
+        }
+        else
+        {
+            if (selectingWallMap)
+            {
+                if (symToggle)
+                {
+                    Vector3Int symGridPoint = GetSymPoint(gridPos);
+                    wallTileMap.SetTile(symGridPoint, paletteTile);
+                    tileMap.SetTile(symGridPoint, null);
+                }
+                wallTileMap.SetTile(gridPos, paletteTile);
+                tileMap.SetTile(gridPos, null);
+            }
+            else
+            {
+                if (symToggle)
+                {
+                    Vector3Int symGridPoint = new Vector3Int(gridPos.x, gridPos.y, gridPos.z);
+                    tileMap.SetTile(symGridPoint, paletteTile);
+                    wallTileMap.SetTile(symGridPoint, null);
+                }
+                tileMap.SetTile(gridPos, paletteTile);
+                wallTileMap.SetTile(gridPos, null);
+            }
+        }
+
+    }
+
     // Update is called once per frame
     void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(new Vector2(mousePos.x - Camera.main.gameObject.transform.position.x, mousePos.y - Camera.main.gameObject.transform.position.y));
+
         if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
         {
+
+
             debugText.text = "GOOD TO GO";
             Vector3Int gridPos = GetGridPos(mousePos);
 
@@ -164,22 +235,7 @@ public class MapEditor : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                if (selectingWallMap)
-                {
-                    wallTileMap.SetTile(gridPos, paletteTile);
-                    tileMap.SetTile(gridPos, null);
-                }
-                else
-                {
-                    tileMap.SetTile(gridPos, paletteTile);
-                    wallTileMap.SetTile(gridPos, null);
-                }
-
-                if (IsEmptyPaletteSprite())
-                {
-                    wallTileMap.SetTile(gridPos, paletteTile);
-                    tileMap.SetTile(gridPos, paletteTile);
-                }
+                DrawTile(gridPos);
                 storedTile = paletteTile;
             }
 
@@ -187,6 +243,7 @@ public class MapEditor : MonoBehaviour
         }
         else
         {
+            RevertTile();
             debugText.text = "XXXXXX";
         }
     }
