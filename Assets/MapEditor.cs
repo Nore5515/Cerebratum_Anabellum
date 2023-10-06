@@ -159,7 +159,7 @@ public class MapEditor : MonoBehaviour
         {
             if (selectingWallMap)
             {
-                if (symToggle)
+                if (symToggle.isOn)
                 {
                     Vector3Int symGridPoint = GetSymPoint(gridPos);
                     wallTileMap.SetTile(symGridPoint, paletteTile);
@@ -170,9 +170,9 @@ public class MapEditor : MonoBehaviour
             }
             else
             {
-                if (symToggle)
+                if (symToggle.isOn)
                 {
-                    Vector3Int symGridPoint = new Vector3Int(gridPos.x, gridPos.y, gridPos.z);
+                    Vector3Int symGridPoint = GetSymPoint(gridPos);
                     tileMap.SetTile(symGridPoint, paletteTile);
                     wallTileMap.SetTile(symGridPoint, null);
                 }
