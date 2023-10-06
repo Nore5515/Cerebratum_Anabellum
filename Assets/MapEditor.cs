@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
 public class MapEditor : MonoBehaviour
@@ -16,6 +17,9 @@ public class MapEditor : MonoBehaviour
 
     [SerializeField]
     TileBase emptyTile;
+
+    [SerializeField]
+    Text debugText;
 
     bool storedTileFilled = false;
     TileBase storedTile;
@@ -99,7 +103,7 @@ public class MapEditor : MonoBehaviour
 
     bool IsCoveringTilePalette(Vector2 mousePos)
     {
-        return mousePos.y - Camera.main.gameObject.transform.position.y <= -4.0f;
+        return mousePos.y - Camera.main.gameObject.transform.position.y <= -3.0f;
     }
 
     bool IsEmptyPaletteSprite()
@@ -118,6 +122,7 @@ public class MapEditor : MonoBehaviour
         //Debug.Log(new Vector2(mousePos.x - Camera.main.gameObject.transform.position.x, mousePos.y - Camera.main.gameObject.transform.position.y));
         if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
         {
+            debugText.text = "GOOD TO GO";
             Vector3Int gridPos = GetGridPos(mousePos);
 
             InitGridPos(gridPos);
@@ -179,6 +184,10 @@ public class MapEditor : MonoBehaviour
             }
 
             oldGridPos = gridPos;
+        }
+        else
+        {
+            debugText.text = "XXXXXX";
         }
     }
 }
