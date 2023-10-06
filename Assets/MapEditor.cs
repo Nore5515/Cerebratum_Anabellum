@@ -103,7 +103,7 @@ public class MapEditor : MonoBehaviour
     {
         if (mousePos.x - Camera.main.gameObject.transform.position.x <= -7.25f)
         {
-            if (mousePos.y - Camera.main.gameObject.transform.position.y >= 3.75f)
+            if (mousePos.y - Camera.main.gameObject.transform.position.y >= 3.25f)
             {
                 return true;
             }
