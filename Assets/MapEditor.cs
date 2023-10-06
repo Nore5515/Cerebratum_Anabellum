@@ -33,9 +33,9 @@ public class MapEditor : MonoBehaviour
     public void SetPaletteTile(TileBase newTile)
     {
         paletteTile = newTile;
+        Debug.Log(paletteTile.name);
         if (paletteTile.name.Contains("Wall"))
         {
-            Debug.Log("WALL");
             selectingWallMap = true;
         }
         else
@@ -102,6 +102,15 @@ public class MapEditor : MonoBehaviour
         return mousePos.y - Camera.main.gameObject.transform.position.y <= -4.0f;
     }
 
+    bool IsEmptyPaletteSprite()
+    {
+        if (paletteTile.name.Contains("Empty"))
+        {
+            return true;
+        }
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -130,6 +139,7 @@ public class MapEditor : MonoBehaviour
                 {
                     storedTile = tileMap.GetTile(gridPos);
                 }
+
                 storedTileFilled = true;
             }
 
@@ -152,9 +162,17 @@ public class MapEditor : MonoBehaviour
                 if (selectingWallMap)
                 {
                     wallTileMap.SetTile(gridPos, paletteTile);
+                    tileMap.SetTile(gridPos, null);
                 }
                 else
                 {
+                    tileMap.SetTile(gridPos, paletteTile);
+                    wallTileMap.SetTile(gridPos, null);
+                }
+
+                if (IsEmptyPaletteSprite())
+                {
+                    wallTileMap.SetTile(gridPos, paletteTile);
                     tileMap.SetTile(gridPos, paletteTile);
                 }
                 storedTile = paletteTile;

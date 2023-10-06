@@ -47,11 +47,6 @@ public class TilemapLoader : MonoBehaviour
                     stateStr += "x:" + x + " y:" + y + " tile:" + tile.name + "\n";
                     //Debug.Log("x:" + x + " y:" + y + " tile:" + tile.name);
                 }
-                else
-                {
-                    stateStr += "x:" + x + " y:" + y + " tile: (null)\n";
-                    //Debug.Log("x:" + x + " y:" + y + " tile: (null)");
-                }
             }
         }
         return stateStr;
