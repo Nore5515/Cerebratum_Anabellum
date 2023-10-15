@@ -47,7 +47,7 @@ public class MapEditor : MonoBehaviour
     {
         //RevertTile();
         paletteTile = newTile;
-        Debug.Log(paletteTile.name);
+        //Debug.Log(paletteTile.name);
         if (paletteTile.name.Contains("Wall"))
         {
             selectingWallMap = true;
