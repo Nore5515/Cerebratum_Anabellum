@@ -11,12 +11,14 @@ class TilePosObject
 {
     public int x, y;
     public TileBase tileBase;
+    public string layer;
 
-    public TilePosObject(int x, int y, TileBase tileBase)
+    public TilePosObject(int x, int y, TileBase tileBase, string layer)
     {
         this.tileBase = tileBase;
         this.x = x;
         this.y = y;
+        this.layer = layer;
     }
 }
 
@@ -58,10 +60,11 @@ public class TilemapLoader : MonoBehaviour
         {
             for (int y = 0; y < bounds.size.y; y++)
             {
+                //TileBase tile = allTiles[x + y * bounds.size.x];
                 TileBase tile = allTiles[x + y * bounds.size.x];
                 if (tile != null)
                 {
-                    stateStr += "x:" + x + " y:" + y + " tile:" + tile.name + "\n";
+                    stateStr += "x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n";
                 }
             }
         }
@@ -159,7 +162,7 @@ public class TilemapLoader : MonoBehaviour
             {
                 if (line != "Empty")
                 {
-                    floorObjs.Add(TurnExportStringIntoObj(line));
+                    floorObjs.Add(TurnExportStringIntoObj(line, "floor"));
                 }
             }
         }
@@ -169,7 +172,28 @@ public class TilemapLoader : MonoBehaviour
         return floorObjs;
     }
 
-    TilePosObject TurnExportStringIntoObj(string str)
+    List<TilePosObject> GenerateWallTilesFromString(string str)
+    {
+        List<TilePosObject> wallObjs = new List<TilePosObject>();
+        string[] wallStringLines = str.Split("\n");
+
+        foreach (string line in wallStringLines)
+        {
+            if (line != "--WALLS--" && line != "")
+            {
+                if (line != "Empty")
+                {
+                    wallObjs.Add(TurnExportStringIntoObj(line, "wall"));
+                }
+            }
+        }
+
+        DisplayTilePosObjectList(wallObjs);
+
+        return wallObjs;
+    }
+
+    TilePosObject TurnExportStringIntoObj(string str, string layer)
     {
         Debug.Log(str);
 
@@ -184,7 +208,7 @@ public class TilemapLoader : MonoBehaviour
         string tileStr = str.Substring(xStr.Length + yStr.Length, tileStrLength);
         TileBase tile = GetTileBaseFromString(tileStr);
 
-        TilePosObject newTileObj = new TilePosObject(xInt, yInt, tile);
+        TilePosObject newTileObj = new TilePosObject(xInt, yInt, tile, layer);
         Debug.Log(newTileObj.tileBase.name + ", (" + newTileObj.x + "," + newTileObj.y + ")");
         return newTileObj;
     }
@@ -231,12 +255,6 @@ public class TilemapLoader : MonoBehaviour
         return xPosInt;
     }
 
-    List<TilePosObject> GenerateWallTilesFromString(string str)
-    {
-        List<TilePosObject> wallObjs = new List<TilePosObject>();
-        return wallObjs;
-    }
-
     void DisplayTilePosObjectList(List<TilePosObject> objList)
     {
         foreach (TilePosObject tile in objList)
@@ -279,7 +297,14 @@ public class TilemapLoader : MonoBehaviour
     {
         foreach (TilePosObject tileObj in newTiles)
         {
-            GetComponent<Tilemap>().SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
+            if (tileObj.layer == "wall")
+            {
+                wallTileMap.SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
+            }
+            else if (tileObj.layer == "floor")
+            {
+                GetComponent<Tilemap>().SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
+            }
             Debug.Log("nice");
             Debug.Log(tileObj.tileBase.name + ", (" + tileObj.x + "," + tileObj.y + ")");
         }

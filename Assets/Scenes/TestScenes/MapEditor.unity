@@ -2403,6 +2403,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallTileMap: {fileID: 1229107739}
   importField: {fileID: 2037891513}
+  tileBases:
+  - {fileID: 11400000, guid: d252d34ed9f98495aaed6b1f99af5fb4, type: 2}
+  - {fileID: 11400000, guid: 73d56b628fdd4406b8543a46afa01c9f, type: 2}
+  - {fileID: 11400000, guid: 506073734a00b4b28a1c031de9349e87, type: 2}
+  - {fileID: 11400000, guid: 62fc10e81a3f84aa3859ebc8c86d850d, type: 2}
+  - {fileID: 11400000, guid: e10b240e0178245c79379948ead07a81, type: 2}
+  - {fileID: 11400000, guid: 7c341b9dc2bf24ab18dbe74c9533df8e, type: 2}
+  - {fileID: 11400000, guid: d52b78643ebcf409f9a7d1ca1695411d, type: 2}
+  - {fileID: 11400000, guid: 30d42d6b3213f4018a9c1486fa805b77, type: 2}
+  - {fileID: 11400000, guid: a8a154ef57b0443efbc457010fa07176, type: 2}
+  - {fileID: 11400000, guid: d408d2acc10d64c888327cec2eb1d6b6, type: 2}
+  - {fileID: 11400000, guid: d6cd6404698a54acf87e9d302d9a30bc, type: 2}
+  - {fileID: 11400000, guid: 59e7adec402f64396a56652ddcce921a, type: 2}
+  - {fileID: 11400000, guid: 6ac701ea3cdef49d68f2cd95db28b569, type: 2}
+  - {fileID: 11400000, guid: b952350b2c3b246cbb9bdf5b1f60045f, type: 2}
 --- !u!1001 &1375226390
 PrefabInstance:
   m_ObjectHideFlags: 0

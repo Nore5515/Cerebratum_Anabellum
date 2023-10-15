@@ -192,8 +192,10 @@ public class MapEditor : MonoBehaviour
         if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
         {
 
-
-            debugText.text = "GOOD TO GO";
+            string validPos = "";
+            validPos += "X: " + mousePos.x;
+            validPos += " // Y: " + mousePos.y;
+            debugText.text = validPos;
             Vector3Int gridPos = GetGridPos(mousePos);
 
             InitGridPos(gridPos);
@@ -248,3 +250,5 @@ public class MapEditor : MonoBehaviour
         }
     }
 }
+
+
