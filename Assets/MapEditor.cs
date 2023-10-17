@@ -171,8 +171,8 @@ public class MapEditor : MonoBehaviour
     {
         if (stashedActions.Count > 0)
         {
-            UndoLastTileAction(stashedActions[0]);
-            stashedActions.RemoveAt(0);
+            UndoLastTileAction(stashedActions[stashedActions.Count - 1]);
+            stashedActions.RemoveAt(stashedActions.Count - 1);
         }
         else
         {
@@ -336,6 +336,13 @@ public class MapEditor : MonoBehaviour
             {
                 TryDraw(gridPos);
             }
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                DrawTile(gridPos);
+                storedTile = paletteTile;
+            }
+
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
