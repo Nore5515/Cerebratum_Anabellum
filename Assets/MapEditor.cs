@@ -146,6 +146,10 @@ public class MapEditor : MonoBehaviour
 
         Vector3Int gridPos = GetGridPos(centerPos);
 
+        Vector3Int actualCenter = new Vector3Int(0, 0, 0);
+
+        gridPos = actualCenter;
+
         return gridPos;
     }
 
