@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
+// Contains a list of tile pos objects (i.e. sym placed both go in here)
+class TilePlacementAction
+{
+    public List<TilePosObject> tilePosObjects;
+
+    public TilePlacementAction()
+    {
+        tilePosObjects = new List<TilePosObject>();
+    }
+}
+
 public class MapEditor : MonoBehaviour
 {
     [SerializeField]
@@ -32,7 +43,8 @@ public class MapEditor : MonoBehaviour
 
     bool selectingWallMap = false;
 
-    List<TilePosObject> lastTilesPlaced = new List<TilePosObject>();
+    TilePlacementAction lastTilesPlaced = new TilePlacementAction();
+    List<TilePlacementAction> stashedTileActions = new List<TilePlacementAction>();
     //TilePosObject lastTilePlaced = null;
 
     void Start()
@@ -151,9 +163,22 @@ public class MapEditor : MonoBehaviour
         return symGridPos;
     }
 
-    void UndoTiles(List<TilePosObject> tileObjsToUndo)
+    void HandleUndoPress(List<TilePlacementAction> stashedActions)
     {
-        foreach (var tileObjToUndo in tileObjsToUndo)
+        if (stashedActions.Count > 0)
+        {
+            UndoLastTileAction(stashedActions[0]);
+            stashedActions.RemoveAt(0);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    void UndoLastTileAction(TilePlacementAction tilePlacementAction)
+    {
+        foreach (var tileObjToUndo in tilePlacementAction.tilePosObjects)
         {
             if (tileObjToUndo.layer == "wall")
             {
@@ -166,29 +191,44 @@ public class MapEditor : MonoBehaviour
         }
     }
 
+    //void UndoTiles(List<TilePosObject> tileObjsToUndo)
+    //{
+    //    foreach (var tileObjToUndo in tileObjsToUndo)
+    //    {
+    //        if (tileObjToUndo.layer == "wall")
+    //        {
+    //            wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
+    //        }
+    //        else
+    //        {
+    //            tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
+    //        }
+    //    }
+    //}
 
-    void UndoTile(TilePosObject tileObjToUndo)
-    {
-        if (tileObjToUndo.layer == "wall")
-        {
-            wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-        }
-        else
-        {
-            tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-        }
-    }
+
+    //void UndoTile(TilePosObject tileObjToUndo)
+    //{
+    //    if (tileObjToUndo.layer == "wall")
+    //    {
+    //        wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
+    //    }
+    //    else
+    //    {
+    //        tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
+    //    }
+    //}
 
     void DrawTile(Vector3Int gridPos)
     {
-        if (lastTilesPlaced.Count != 0)
-        {
-            foreach (var lastTilePlaced in lastTilesPlaced)
-            {
-                Debug.Log(lastTilePlaced.x + "," + lastTilePlaced.y + "," + lastTilePlaced.tileBase.name + "," + lastTilePlaced.layer);
-            }
-        }
-        lastTilesPlaced.Clear();
+        //if (lastTilesPlaced.tilePosObjects.Count != 0)
+        //{
+        //    foreach (var tilePlacementAction in lastTilesPlaced.tilePosObjects)
+        //    {
+        //        Debug.Log(tilePlacementAction.x + "," + tilePlacementAction.y + "," + tilePlacementAction.tileBase.name + "," + tilePlacementAction.layer);
+        //    }
+        //}
+        //lastTilesPlaced.tilePosObjects.Clear();
         if (IsEmptyPaletteSprite())
         {
             wallTileMap.SetTile(gridPos, paletteTile);
@@ -198,32 +238,42 @@ public class MapEditor : MonoBehaviour
         {
             if (selectingWallMap)
             {
+                TilePlacementAction tileAction = new TilePlacementAction();
                 if (symToggle.isOn)
                 {
                     Vector3Int symGridPoint = GetSymPoint(gridPos);
                     wallTileMap.SetTile(symGridPoint, paletteTile);
                     tileMap.SetTile(symGridPoint, null);
-                    lastTilesPlaced.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "wall"));
+                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "wall"));
                 }
+                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "wall"));
                 wallTileMap.SetTile(gridPos, paletteTile);
-                lastTilesPlaced.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "wall"));
                 tileMap.SetTile(gridPos, null);
+                stashedTileActions.Add(tileAction);
             }
             else
             {
+                TilePlacementAction tileAction = new TilePlacementAction();
                 if (symToggle.isOn)
                 {
                     Vector3Int symGridPoint = GetSymPoint(gridPos);
                     tileMap.SetTile(symGridPoint, paletteTile);
                     wallTileMap.SetTile(symGridPoint, null);
-                    lastTilesPlaced.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "floor"));
+                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "floor"));
                 }
-                lastTilesPlaced.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "floor"));
+                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "floor"));
                 tileMap.SetTile(gridPos, paletteTile);
                 wallTileMap.SetTile(gridPos, null);
+                stashedTileActions.Add(tileAction);
             }
         }
+    }
 
+    void TryDraw(Vector3Int gridPos)
+    {
+        if (oldGridPos == gridPos) return;
+        DrawTile(gridPos);
+        storedTile = paletteTile;
     }
 
     // Update is called once per frame
@@ -280,14 +330,15 @@ public class MapEditor : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                DrawTile(gridPos);
-                storedTile = paletteTile;
+                TryDraw(gridPos);
             }
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 //UndoTile(lastTilePlaced);
-                UndoTiles(lastTilesPlaced);
+                //UndoTiles(lastTilesPlaced);
+                //UndoLastTileAction(lastTilesPlaced);
+                HandleUndoPress(stashedTileActions);
             }
             oldGridPos = gridPos;
         }
