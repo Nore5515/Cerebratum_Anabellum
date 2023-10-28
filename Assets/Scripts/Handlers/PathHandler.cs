@@ -85,7 +85,6 @@ public class PathHandler : MonoBehaviour
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
         if (spawnerClass == null) return;
         if (spawnerClass.spawnerTeam == "NEUTRAL") return;
-        Debug.Log("sanity");
         UpdateLocalPathDrawingMode(spawnerClass);
         if (pathDrawingMode)
         {
@@ -208,12 +207,27 @@ public class PathHandler : MonoBehaviour
 
     public void AttemptPlaceSpawnerFollowObj(RayObj rayObj)
     {
+        string err = "Attempting Follow Obj: IsNull?";
+        //Debug.Log(err);
         if (spawnerSource == null) return;
+        err += " pathDrawTrue?";
+        //Debug.Log(err);
         if (!pathDrawingMode) return;
+        err += " isColliderNull?";
+        //Debug.Log(err);
         if (rayObj.hit.collider == null) return;
+        err += " isColliderTagFloorOrBarrier?";
+        //Debug.Log(err);
         if (rayObj.hit.collider.gameObject.tag == "floor" || rayObj.hit.collider.gameObject.tag == "barrier")
         {
+            err += " SUCCESS!";
+            //Debug.Log(err);
             TryPlaceFollowSphere(rayObj);
+        }
+        else
+        {
+            err += " NOPE";
+            //Debug.Log(err);
         }
     }
 

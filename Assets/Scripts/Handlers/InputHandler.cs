@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 class InputHandler
 {
@@ -9,12 +10,14 @@ class InputHandler
     public PathHandler pathHandler;
 
     PosHandler posHandler;
+    Tilemap tileMap;
 
-    public InputHandler(PosHandler _posHandler)
+    public InputHandler(PosHandler _posHandler, Tilemap tileMap)
     {
         posHandler = _posHandler;
         pathHandler = posHandler.pathHandler;
         rayHandler = new RayHandler();
+        this.tileMap = tileMap;
     }
 
     public void UpdateFuncs()
@@ -70,6 +73,15 @@ class InputHandler
 
     public void HandleMouseInput()
     {
+        rayObj = rayHandler.GenerateLayeredRayObj("Floor");
+        if (rayObj.hit.collider != null)
+        {
+            Debug.Log(rayObj.hit.collider.name);
+        }
+        else
+        {
+            //Debug.Log("null");
+        }
         if (Input.GetKey(KeyCode.Mouse0))
         {
             MouseHeldFuncs();
@@ -95,7 +107,22 @@ class InputHandler
     void MouseHeldFuncs()
     {
         rayObj = rayHandler.GenerateLayeredRayObj("Floor");
+        MouseHeldGridPos();
         pathHandler.AttemptPlaceSpawnerFollowObj(rayObj);
+    }
+
+    void MouseHeldGridPos()
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int gridPos = GetGridPos(mousePos);
+        Debug.Log(gridPos);
+    }
+
+    Vector3Int GetGridPos(Vector2 mousePos)
+    {
+        Vector3Int gridPos;
+        gridPos = tileMap.WorldToCell(mousePos);
+        return gridPos;
     }
 
     void MouseDownFuncs()

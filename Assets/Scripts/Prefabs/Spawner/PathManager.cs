@@ -96,7 +96,6 @@ public class PathManager : MonoBehaviour
 
     public bool GetIsDrawable()
     {
-        Debug.Log("Path drawing mode" + pathDrawingMode);
         return pathDrawingMode;
     }
 

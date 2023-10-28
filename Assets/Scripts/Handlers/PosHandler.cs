@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class PosHandler : MonoBehaviour
@@ -38,10 +39,12 @@ public class PosHandler : MonoBehaviour
 
     public bool possessionKeyHeld = false;
 
+    [SerializeField]
+    Tilemap tilemap;
 
     public void Start()
     {
-        inputHandler = new InputHandler(gameObject.GetComponent<PosHandler>());
+        inputHandler = new InputHandler(gameObject.GetComponent<PosHandler>(), tilemap);
     }
 
     void Update()
