@@ -12,7 +12,7 @@ public class PathHandler : MonoBehaviour
     public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
-    Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
+    Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
 
     // NEW STUFF
     public Slider pathBar;
@@ -23,7 +23,7 @@ public class PathHandler : MonoBehaviour
 
     public void Start()
     {
-        GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
+        //GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
     }
 
     public void SetPathDrawingMode(bool newMode)
@@ -34,9 +34,27 @@ public class PathHandler : MonoBehaviour
     {
         if (spawnerSource == null) return;
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerClass == null) return;
         StopDrawingPath();
         spawnerClass.SetUIVisible(false);
         HideAllSpawnerPoints(spawnerClass);
+    }
+
+    public void HandleClickOnDrawButton(RayObj rayObj)
+    {
+        if (IsHitObjectSelectedSpawner(rayObj))
+        {
+            HandleDrawButtonPress();
+        }
+    }
+
+    void HandleDrawButtonPress()
+    {
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerClass == null) return;
+        if (spawnerClass.spawnerTeam == "NEUTRAL") return;
+        spawnerClass.EnableDrawable();
+        UpdateLocalPathDrawingMode(spawnerClass);
     }
 
     public void HandleClickOnSpawner(RayObj rayObj)
@@ -67,7 +85,8 @@ public class PathHandler : MonoBehaviour
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
         if (spawnerClass == null) return;
         if (spawnerClass.spawnerTeam == "NEUTRAL") return;
-        UpdatePathDrawingMode(spawnerClass);
+        Debug.Log("sanity");
+        UpdateLocalPathDrawingMode(spawnerClass);
         if (pathDrawingMode)
         {
             PreparePathBar();
@@ -79,14 +98,29 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    void UpdatePathDrawingMode(Spawner spawnerClass)
+
+    void UpdateLocalPathDrawingMode(Spawner spawnerClass)
     {
         pathDrawingMode = spawnerClass.spawnerPathManager.GetIsDrawable();
     }
 
     public bool IsHitObjectSelectedSpawner(RayObj rayObj)
     {
-        return (spawnerSource == rayObj.hit.collider.gameObject);
+        GameObject spawnerObj = GetSpawnerObjFromRayObj(rayObj);
+
+        return (spawnerSource == spawnerObj);
+    }
+
+    GameObject GetSpawnerObjFromRayObj(RayObj rayObj)
+    {
+        if (rayObj.hit.collider.name == "DrawCube")
+        {
+            return rayObj.hit.collider.transform.parent.gameObject;
+        }
+        else
+        {
+            return rayObj.hit.collider.gameObject;
+        }
     }
 
     // Attempt to place a sphere down on where the raycast hits the world.
@@ -215,7 +249,7 @@ public class PathHandler : MonoBehaviour
 
     void HideAllSpawnerPoints(Spawner spawner)
     {
-        foreach(GameObject point in spawner.spawnerPathManager.pathSpheres)
+        foreach (GameObject point in spawner.spawnerPathManager.pathSpheres)
         {
             point.GetComponent<MeshRenderer>().enabled = false;
         }

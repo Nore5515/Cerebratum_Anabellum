@@ -7,7 +7,7 @@ public class SpawnerHandler : MonoBehaviour
 {
     Button spidertankSpawner;
     Button infSpawner;
-    public GameObject spidertankSpawnerPrefab;
+    //public GameObject spidertankSpawnerPrefab;
     public GameObject infSpawnerPrefab;
 
     int stSpawnerCost = 10;
@@ -56,12 +56,12 @@ public class SpawnerHandler : MonoBehaviour
         {
             if (TeamStats.RedPoints >= stSpawnerCost)
             {
-                TeamStats.RedPoints -= stSpawnerCost;
-                Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
-                newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
-                GameObject newObj = Instantiate(spidertankSpawnerPrefab, newPos, Quaternion.identity) as GameObject;
-                newObj.GetComponent<Structure>().type = "spawn";
-                SpawnerTracker.redSpawnerObjs.Add(newObj);
+                //TeamStats.RedPoints -= stSpawnerCost;
+                //Vector3 newPos = SpawnerTracker.redSpawnerObjs[0].transform.position;
+                //newPos.z += (16.0f * (SpawnerTracker.redSpawnerObjs.Count - 1.5f));
+                //GameObject newObj = Instantiate(spidertankSpawnerPrefab, newPos, Quaternion.identity) as GameObject;
+                //newObj.GetComponent<Structure>().type = "spawn";
+                //SpawnerTracker.redSpawnerObjs.Add(newObj);
             }
         }
     }

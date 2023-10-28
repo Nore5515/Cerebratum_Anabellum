@@ -96,6 +96,7 @@ public class PathManager : MonoBehaviour
 
     public bool GetIsDrawable()
     {
+        Debug.Log("Path drawing mode" + pathDrawingMode);
         return pathDrawingMode;
     }
 
@@ -154,7 +155,8 @@ public class PathManager : MonoBehaviour
 
     private void UpdateUnitWithPath(Unit unit)
     {
-        foreach (GameObject pathSphere in pathSpheres) {
+        foreach (GameObject pathSphere in pathSpheres)
+        {
             unit.AddPoint(pathSphere);
         }
     }

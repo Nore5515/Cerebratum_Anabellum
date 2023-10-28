@@ -17,6 +17,7 @@ public class Spawner : Structure
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;
     [SerializeField] GameObject spiderPrefab;
+    [SerializeField] GameObject drawButtonCube;
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
@@ -102,6 +103,7 @@ public class Spawner : Structure
     public void SetUIVisible(bool isVis)
     {
         spawnerUI.SetUIVisible(isVis);
+        drawButtonCube.SetActive(isVis);
     }
 
     public bool GetUIVisible()
@@ -109,7 +111,7 @@ public class Spawner : Structure
         return spawnerUI.GetUIVisible();
     }
 
-    // TODO: Move ClearPoints to it's own thing.
+    // THIS IS THE ON-DRAW-BUTTON-PRESSED-FUNCTION
     public void EnableDrawable()
     {
         spawnerPathManager.ClearPoints(unitList);
@@ -135,7 +137,7 @@ public class Spawner : Structure
         {
             UndimHut();
         }
-        
+
     }
 
     private void DimHut()

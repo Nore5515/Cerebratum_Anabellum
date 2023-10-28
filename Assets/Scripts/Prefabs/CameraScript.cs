@@ -25,14 +25,15 @@ public class CameraScript : MonoBehaviour
         Vector3 moveVec = new Vector3();
         moveVec.x = xMovement;
 
-        moveVec.y = 0.0f;
-        moveVec.z = zMovement;
+        //moveVec.y = 0.0f;
+        moveVec.y = zMovement;
+        //moveVec.z = zMovement;
 
         //moveVec.y = zMovement;
         //moveVec.z = 0.0f;
         //moveVec = Quaternion.Euler(45, 45, 0) * moveVec;
 
-        moveVec.y = 0.0f;
+        //moveVec.y = 0.0f;
         return moveVec;
     }
 
@@ -43,7 +44,7 @@ public class CameraScript : MonoBehaviour
         {
             // mainCam.fieldOfView = 80;
             mainCam.transform.position = anchor.transform.position;
-            float zMovement = Input.GetAxis("Vertical") * 2.0f;
+            float zMovement = Input.GetAxis("Vertical");
             float xMovement = Input.GetAxis("Horizontal");
             //Vector3 movement = new Vector3(xMovement, 0, zMovement);
             Vector3 movement = ParseInputToOrthoVector(xMovement, zMovement);
@@ -75,7 +76,7 @@ public class CameraScript : MonoBehaviour
         ///////////////////////////////////////////////////
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            if (mainCam.orthographicSize<=64)
+            if (mainCam.orthographicSize <= 64)
             {
                 mainCam.orthographicSize += 1;
             }

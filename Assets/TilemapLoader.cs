@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
-using static UnityEditor.VersionControl.Asset;
-using UnityEngine.WSA;
 
 class TilePosObject
 {
