@@ -467,6 +467,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1878196142}
     - target: {fileID: 6508300150143159614, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
+      propertyPath: xGridOffset
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6508300150143159614, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
+      propertyPath: yGridOffset
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6508300150143159614, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: pathHandlerPossessionHandler
       value: 
       objectReference: {fileID: 42971182}

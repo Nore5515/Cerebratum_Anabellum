@@ -107,15 +107,15 @@ class InputHandler
     void MouseHeldFuncs()
     {
         rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        MouseHeldGridPos();
-        pathHandler.AttemptPlaceSpawnerFollowObj(rayObj);
+        pathHandler.AttemptPlaceSpawnerFollowObjOnVector3(MouseHeldGridPos());
+        //pathHandler.AttemptPlaceSpawnerFollowObj(rayObj);
     }
 
-    void MouseHeldGridPos()
+    Vector3 MouseHeldGridPos()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int gridPos = GetGridPos(mousePos);
-        Debug.Log(gridPos);
+        return gridPos;
     }
 
     Vector3Int GetGridPos(Vector2 mousePos)

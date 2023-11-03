@@ -12,6 +12,9 @@ public class PathHandler : MonoBehaviour
     public float maxDistancePerSphere = 5.0f;
     public Vector3 oldPos = new Vector3();
 
+    public int xGridOffset;
+    public int yGridOffset;
+
     Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
 
     // NEW STUFF
@@ -137,6 +140,21 @@ public class PathHandler : MonoBehaviour
         }
     }
 
+    void TryPlaceFollowSphereFromVector3(Vector3 vector)
+    {
+        if (distancePerSphere >= maxDistancePerSphere)
+        {
+            PlaceFollowSphere(vector);
+        }
+
+        // If distance is less than maxdistancepersphere, add change in distance.
+        else
+        {
+            AddSphereDistance(vector);
+        }
+    }
+
+
     void PlaceFollowSphere(RayObj rayObj)
     {
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
@@ -149,6 +167,22 @@ public class PathHandler : MonoBehaviour
 
         distancePerSphere = 0.0f;
         spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
+    }
+
+    void PlaceFollowSphere(Vector3 vector)
+    {
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+
+        distancePerSphere = 0.0f;
+        spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
+    }
+
+    Vector3 GetOffsetGridVector(Vector3 vector)
+    {
+        Vector3 newVec = new Vector3(vector.x, vector.y, vector.z);
+        newVec.x += xGridOffset;
+        newVec.y += yGridOffset;
+        return newVec;
     }
 
     bool DidRayObjHitBarrier(RayObj rayObj)
@@ -176,6 +210,19 @@ public class PathHandler : MonoBehaviour
         {
             distancePerSphere += Vector3.Distance(oldPos, rayObj.hit.point);
             oldPos = rayObj.hit.point;
+        }
+    }
+
+    void AddSphereDistance(Vector3 vector)
+    {
+        if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
+        {
+            oldPos = vector;
+        }
+        else
+        {
+            distancePerSphere += Vector3.Distance(oldPos, vector);
+            oldPos = vector;
         }
     }
 
@@ -229,6 +276,11 @@ public class PathHandler : MonoBehaviour
             err += " NOPE";
             //Debug.Log(err);
         }
+    }
+
+    public void AttemptPlaceSpawnerFollowObjOnVector3(Vector3 spawnerPos)
+    {
+        TryPlaceFollowSphereFromVector3(spawnerPos);
     }
 
     private int GenerateRayFromMasks(int[] masks)
