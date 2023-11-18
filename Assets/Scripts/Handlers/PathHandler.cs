@@ -3,9 +3,6 @@ using UnityEngine.UI;
 
 public class PathHandler : MonoBehaviour
 {
-    public GameObject prefabRed;
-    public GameObject prefabBlue;
-
     public bool pathDrawingMode = false;
 
     public float distancePerSphere = 0.0f;
@@ -23,11 +20,6 @@ public class PathHandler : MonoBehaviour
     GameObject spawnerSource;
 
     public PosHandler pathHandlerPossessionHandler;
-
-    public void Start()
-    {
-        //GameObject.Find("Canvas/UnitStatsWBG").SetActive(false);
-    }
 
     public void SetPathDrawingMode(bool newMode)
     {
@@ -171,10 +163,18 @@ public class PathHandler : MonoBehaviour
 
     void PlaceFollowSphere(Vector3 vector)
     {
-        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerSource != null)
+        {
+            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
-        distancePerSphere = 0.0f;
-        spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
+            distancePerSphere = 0.0f;
+            spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
+
+        }
+        else
+        {
+            Debug.Log("Spawner is null");
+        }
     }
 
     Vector3 GetOffsetGridVector(Vector3 vector)
@@ -325,15 +325,4 @@ public class PathHandler : MonoBehaviour
     {
         pathHandlerPossessionHandler.GetPossessionMovement();
     }
-
-    //public GameObject CreateRedPoint(Vector3 position)
-    //{
-    //    return Instantiate(prefabRed, position, Quaternion.identity);
-    //}
-
-    //public GameObject CreateBluePoint(Vector3 position)
-    //{
-    //    return Instantiate(prefabBlue, position, Quaternion.identity);
-    //}
-
 }

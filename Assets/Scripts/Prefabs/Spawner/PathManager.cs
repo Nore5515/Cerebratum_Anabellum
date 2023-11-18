@@ -1,40 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.UI;
 
-
+// All this does is handle paths from user input to state.
 public class PathManager : MonoBehaviour
 {
     public List<GameObject> paths;
     private GameObject chosenPath;
     public GameObject pathMarker;
-    // string path = "Asset_PathMarker";
     public bool pathDrawingMode = false;
     public List<GameObject> pathSpheres = new List<GameObject>();
 
     public Material pathMat;
 
-    // TODO: Whenever u de-monobehaviro this
-    // public PathManager(Material newMat)
-    // {
-    //     pathMat = newMat;
-    // }
+    public void Start()
+    {
+        PathState.paths = paths;
+    }
 
     public void SetPathMat(Material newMat)
     {
         pathMat = newMat;
     }
 
-    void Start()
-    {
-        // pathMarker = Resources.Load(path) as GameObject;
-    }
-
     public void SelectRandomPath()
     {
-        chosenPath = paths[Random.Range(0, paths.Count)];
+        chosenPath = PathState.paths[Random.Range(0, PathState.paths.Count)];
     }
 
     public void PickAndCreateNewPath(string color)
@@ -46,7 +36,6 @@ public class PathManager : MonoBehaviour
             if (orbTransform.position != new Vector3(0, 0.5f, 0) && orbTransform.position != new Vector3(0, 0.0f, 0))
             {
                 GameObject pathMarker = CreatePathMarker(new PathMarkerModel(color, orbTransform.position));
-                //pathMarker.GetComponent<MeshRenderer>().enabled = false;
                 AddPathMarkerToPathSpheres(pathMarker);
             }
         }
@@ -81,7 +70,7 @@ public class PathManager : MonoBehaviour
 
     public void AI_DrawPath(Vector3 position)
     {
-        if (paths.Count > 0)
+        if (PathState.paths.Count > 0)
         {
             PickAndCreateNewPath("BLUE");
         }
@@ -98,35 +87,6 @@ public class PathManager : MonoBehaviour
     {
         return pathDrawingMode;
     }
-
-    // TODO: MAKE THIS WORK!!!
-    // Returns number of pathSpheres in path now.
-    // public int DrawPathSphereAtPoint(Vector3 point, ref Slider pathBar)
-    // {
-    //     GameObject newPathPoint;
-    //     ClearNullInstances();
-
-    //     if (pathSpheres.Count <= maxPathLength)
-    //     {
-    //         // Create and add a team path marker.
-    //         newPathPoint = CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
-    //         // newPathPoint = AddPathMarkerToPathSpheres(new PathMarkerModel(spawnerTeam, point));
-    //     }
-    //     else
-    //     {
-    //         return -1;
-    //     }
-
-    //     if (spawnerTeam == "RED")
-    //     {
-    //         UpdateSlider(ref pathBar);
-    //     }
-
-    //     AddPathMarkerToPathSpheres(newPathPoint);
-    //     AddPathPointToAlliedUnits(newPathPoint);
-
-    //     return pathSpheres.Count;
-    // }
 
     // TODO: Also have this only happen when EnableDrawable is pressed.
     public void ClearPoints(List<GameObject> unitList)
@@ -168,14 +128,7 @@ public class PathManager : MonoBehaviour
     public void RemovePoint(GameObject obj, List<GameObject> unitList)
     {
         pathSpheres.Remove(obj);
-        //foreach (GameObject unit in unitList)
-        //{
-        //    if (unit != null)
-        //    {
-        //        unit.GetComponent<Unit>().RemovePoint(obj);
-        //    }
-        //}
-        GameObject.Destroy(obj);
+        Destroy(obj);
     }
 
     public void AddPathMarkerToPathSpheres(GameObject pathMarker)
