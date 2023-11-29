@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
+// New: What is state? Also, this below text is just wrong. 
 // All this does is handle paths from user input to state.
-public class PathManager : MonoBehaviour
+public class SpawnerPathManager : MonoBehaviour
 {
     public List<GameObject> paths;
     private GameObject chosenPath;
@@ -93,7 +95,7 @@ public class PathManager : MonoBehaviour
     {
         while (pathSpheres.Count > 0)
         {
-            RemovePoint(pathSpheres[0], unitList);
+            RemovePoint(pathSpheres[0], UnitList.unitList);
         }
     }
 

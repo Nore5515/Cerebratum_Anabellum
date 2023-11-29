@@ -12,7 +12,7 @@ using TMPro;
 
 public class NeutralSpawner : Structure
 {
-    public PathManager spawnerPathManager;
+    public SpawnerPathManager spawnerPathManager;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;

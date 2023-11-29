@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Economy : MonoBehaviour
 {
-
     public GameObject TimeTracker;
 
     public float cycleMax;
@@ -14,8 +13,6 @@ public class Economy : MonoBehaviour
     // Starting Conditions
     public int redNaniteBoost = 0;
     public int blueNaniteBoost = 0;
-
-    // public GameObject fuckoff;
 
     // Start is called before the first frame update
     void Start()
@@ -52,19 +49,11 @@ public class Economy : MonoBehaviour
             GainPoints();
             cycleVal = 0;
         }
-
-        // fuckoff.GetComponent<Text>().text = SpawnerTracker.redSpawnerObjs.Count.ToString();
     }
 
     private void GainPoints()
     {
-
         TeamStats.RedPoints += TeamStats.RedNaniteGain;
         TeamStats.BluePoints += TeamStats.BlueNaniteGain;
-
-        // if (isAI)
-        // {
-        //     BotSpendPoints();
-        // }
     }
 }

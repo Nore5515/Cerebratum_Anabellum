@@ -17,7 +17,10 @@ class InputHandler
         posHandler = _posHandler;
         pathHandler = posHandler.pathHandler;
         rayHandler = new RayHandler();
-        this.tileMap = tileMap;
+        if (tileMap != null)
+        {
+            this.tileMap = tileMap;
+        }
     }
 
     public void UpdateFuncs()
@@ -120,8 +123,11 @@ class InputHandler
 
     Vector3Int GetGridPos(Vector2 mousePos)
     {
-        Vector3Int gridPos;
-        gridPos = tileMap.WorldToCell(mousePos);
+        Vector3Int gridPos = new Vector3Int();
+        if (tileMap != null)
+        {
+            gridPos = tileMap.WorldToCell(mousePos);
+        }
         return gridPos;
     }
 
@@ -163,13 +169,9 @@ class InputHandler
         return false;
     }
 
-
-
     bool RayCheckSpawner()
     {
         rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
-        //Debug.Log(rayObj.hit);
-        //Debug.Log(rayObj.hit.collider);
         if (rayObj.hit.collider != null)
         {
             Debug.Log("Hit spawner!");

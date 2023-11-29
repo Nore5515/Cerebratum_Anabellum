@@ -33,7 +33,7 @@ public class UI : MonoBehaviour
         return result;
     }
 
-    void Update() 
+    void Update()
     {
 
         healthText.text = GetRedHPPercentage().ToString() + "%";
@@ -68,7 +68,7 @@ public class UI : MonoBehaviour
     IEnumerator EndGame()
     {
         yield return new WaitForSeconds(5.0f);
-        SpawnerTracker.NewGame();
+        //SpawnerTracker.NewGame();
         TeamStats.ResetGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

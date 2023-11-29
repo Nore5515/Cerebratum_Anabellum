@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 // THIS IS THE SPAWNER OBJ CLASS
 // I JUST DONT WANNA REFACTOR THE NAME RN LOL
@@ -12,7 +11,7 @@ using TMPro;
 
 public class Spawner : Structure
 {
-    public PathManager spawnerPathManager;
+    public SpawnerPathManager spawnerPathManager;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;
@@ -39,10 +38,7 @@ public class Spawner : Structure
     void Start()
     {
         InitializeUnitType(unitType);
-
-        spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
-
-        spawnerPathManager.SetPathMat(spawnTeamMat);
+        InitializeTeam();
 
         spawnerUI.AttemptInitializeUI();
 
@@ -50,6 +46,13 @@ public class Spawner : Structure
         StartCoroutine(coroutine);
 
         SpawnDeclaration();
+    }
+
+    void InitializeTeam()
+    {
+        spawnTeamMat = (spawnerTeam == "RED") ? redMat : blueMat;
+
+        spawnerPathManager.SetPathMat(spawnTeamMat);
     }
 
     void InitializeUnitType(string newUnitType)
@@ -64,22 +67,17 @@ public class Spawner : Structure
 
     GameObject GetPrefabFromUnitString(string unitTypeString)
     {
-        if (unitTypeString == "Infantry")
+        switch (unitTypeString)
         {
-            return infantryPrefab;
-        }
-        else if (unitTypeString == "Scout")
-        {
-            return scoutPrefab;
-        }
-        else if (unitTypeString == "Spider")
-        {
-            return spiderPrefab;
-        }
-        else
-        {
-            Debug.LogError("UNKNOWN UNIT TYPE STRING");
-            return null;
+            case ("Infantry"):
+                return infantryPrefab;
+            case ("Scout"):
+                return scoutPrefab;
+            case ("Spider"):
+                return spiderPrefab;
+            default:
+                Debug.LogError("UNKNOWN UNIT TYPE STRING");
+                return null;
         }
     }
 
@@ -106,38 +104,25 @@ public class Spawner : Structure
         drawButtonCube.SetActive(isVis);
     }
 
-    public bool GetUIVisible()
-    {
-        return spawnerUI.GetUIVisible();
-    }
-
     // THIS IS THE ON-DRAW-BUTTON-PRESSED-FUNCTION
     public void EnableDrawable()
     {
         spawnerPathManager.ClearPoints(unitList);
-        //spawnerPathManager.UpdatePathlessUnits(unitList);
         SetIsDrawable(true);
     }
 
     public void DisableDrawable()
     {
         spawnerPathManager.ClearPoints(unitList);
-        SetIsDrawable(true);
+        SetIsDrawable(false);
     }
 
     public void SetIsDrawable(bool _newMode)
     {
         spawnerUI.HandleNewDrawableState(_newMode, spawnerPathManager);
         spawnerPathManager.pathDrawingMode = _newMode;
-        if (_newMode == true)
-        {
-            DimHut();
-        }
-        else
-        {
-            UndimHut();
-        }
-
+        if (_newMode) DimHut();
+        else UndimHut();
     }
 
     private void DimHut()
@@ -153,19 +138,26 @@ public class Spawner : Structure
     }
 
     // Returns number of pathSpheres in path now.
-    // TODO: MOVE THIS TO PATH MANAGER
     public int DrawPathSphereAtPoint(Vector3 point, ref Slider pathBar)
     {
-        GameObject newPathPoint;
-        ClearNullInstances();
+        ClearNullInstances(); // Necessary call for cleanup.
+        if (SphereCountIsMaxed()) return -1;
 
-        if (spawnerPathManager.pathSpheres.Count > maxPathLength) return -1;
-        newPathPoint = spawnerPathManager.CreatePathMarker(new PathMarkerModel(spawnerTeam, point));
+        PathMarkerModel newMarkerModel = new PathMarkerModel(spawnerTeam, point);
+        GameObject newPathPoint = spawnerPathManager.CreatePathMarker(newMarkerModel);
 
+        // Update various subclasses
         spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
-
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
+
         return spawnerPathManager.pathSpheres.Count;
+    }
+
+    private bool SphereCountIsMaxed() { return spawnerPathManager.pathSpheres.Count > maxPathLength; }
+
+    public bool IsPathLongerThanMaxLength()
+    {
+        return spawnerPathManager.pathSpheres.Count > maxPathLength;
     }
 
     public void ClearNullInstances()
@@ -190,14 +182,8 @@ public class Spawner : Structure
         return nullUnitList;
     }
 
-    public void DEBUG_BreakEcon()
-    {
-        GameObject.Find("Economy").GetComponent<Economy>().SetCycleMax(1);
-    }
-
     private void InstantiateUnit(GameObject reqPrefab)
     {
-        // TODO: When creating, add a new field to SpawnerData to determine unit type to spawn!!!
         GameObject obj = Instantiate(reqPrefab, transform.position, Quaternion.identity);
         unitList.Add(obj);
 
@@ -221,17 +207,13 @@ public class Spawner : Structure
         }
         else
         {
-            // Just default to infantry for now.
-            Debug.Log("Unit not recognized.");
-            spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
+            Debug.LogError("Unit not recognized.");
         }
         obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }
 
-    IEnumerator SpawnPrefab(GameObject prefabToSpawn)
+    private IEnumerator SpawnPrefab(GameObject prefabToSpawn)
     {
         yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
         ClearNullInstances();
@@ -241,70 +223,42 @@ public class Spawner : Structure
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
 
+    public void DEBUG_BreakEcon()
+    {
+        GameObject.Find("Economy").GetComponent<Economy>().SetCycleMax(1);
+    }
+
     public void AttemptUpgradeSpawnRate()
     {
         if (IsMaxedSpawnRate()) return;
-        if (DeductTeamPoints(1))
-        {
-            UpgradeSpawnRate();
-        }
+        if (DeductTeamPoints(1)) UpgradeSpawnRate();
     }
 
-    public bool IsMaxedSpawnRate()
-    {
-        return spawnerStatsHandler.IsMaxedSpawnRate(spawnedUnitStats);
-    }
+    public bool IsMaxedSpawnRate() { return spawnerStatsHandler.IsMaxedSpawnRate(spawnedUnitStats); }
 
     public void AttemptUpgradeFireRate()
     {
         if (IsMaxedFireRate()) return;
-        if (DeductTeamPoints(1))
-        {
-            UpgradeFireRate();
-        }
+        if (DeductTeamPoints(1)) UpgradeFireRate();
     }
 
-    public bool IsMaxedFireRate()
-    {
-        return spawnerStatsHandler.IsMaxedFireRate(spawnedUnitStats);
-    }
+    public bool IsMaxedFireRate() { return spawnerStatsHandler.IsMaxedFireRate(spawnedUnitStats); }
 
     public void AttemptUpgradeRange()
     {
         if (IsMaxedRange()) return;
-        if (DeductTeamPoints(1))
-        {
-            UpgradeRange();
-        }
+        if (DeductTeamPoints(1)) UpgradeRange();
     }
 
-    public bool IsMaxedRange()
-    {
-        return spawnerStatsHandler.IsMaxedRange(spawnedUnitStats);
-    }
+    public bool IsMaxedRange() { return spawnerStatsHandler.IsMaxedRange(spawnedUnitStats); }
 
-    private void UpgradeSpawnRate()
-    {
-        spawnerStatsHandler.UpgradeSpawnRate(spawnedUnitStats, spawnerUI);
-    }
+    private void UpgradeSpawnRate() { spawnerStatsHandler.UpgradeSpawnRate(spawnedUnitStats, spawnerUI); }
 
-    private void UpgradeFireRate()
-    {
-        spawnerStatsHandler.UpgradeFireRate(spawnedUnitStats, spawnerUI);
-    }
+    private void UpgradeFireRate() { spawnerStatsHandler.UpgradeFireRate(spawnedUnitStats, spawnerUI); }
 
-    private void UpgradeRange()
-    {
-        spawnerStatsHandler.UpgradeRange(spawnedUnitStats, spawnerUI);
-    }
+    private void UpgradeRange() { spawnerStatsHandler.UpgradeRange(spawnedUnitStats, spawnerUI); }
 
-    public bool DeductTeamPoints(int cost)
-    {
-        return TeamStats.AttemptPointDeductionFromTeam(cost, spawnerTeam);
-    }
+    public bool DeductTeamPoints(int cost) { return TeamStats.AttemptPointDeductionFromTeam(cost, spawnerTeam); }
 
-    public void UpdateAwaitingUnits()
-    {
-        spawnerPathManager.UpdatePathlessUnits(unitList);
-    }
+    public void UpdateAwaitingUnits() { spawnerPathManager.UpdatePathlessUnits(unitList); }
 }

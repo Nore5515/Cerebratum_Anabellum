@@ -21,10 +21,6 @@ public class PathHandler : MonoBehaviour
 
     public PosHandler pathHandlerPossessionHandler;
 
-    public void SetPathDrawingMode(bool newMode)
-    {
-        pathDrawingMode = newMode;
-    }
     public void DeselectSpawners()
     {
         if (spawnerSource == null) return;
@@ -117,28 +113,12 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    // Attempt to place a sphere down on where the raycast hits the world.
-    void TryPlaceFollowSphere(RayObj rayObj)
-    {
-        if (distancePerSphere >= maxDistancePerSphere)
-        {
-            PlaceFollowSphere(rayObj);
-        }
-
-        // If distance is less than maxdistancepersphere, add change in distance.
-        else
-        {
-            AddSphereDistance(rayObj);
-        }
-    }
-
-    void TryPlaceFollowSphereFromVector3(Vector3 vector)
+    void MouseDraggedWhileHoldingDown(Vector3 vector)
     {
         if (distancePerSphere >= maxDistancePerSphere)
         {
             PlaceFollowSphere(vector);
         }
-
         // If distance is less than maxdistancepersphere, add change in distance.
         else
         {
@@ -146,35 +126,20 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-
-    void PlaceFollowSphere(RayObj rayObj)
-    {
-        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
-
-        if (DidRayObjHitBarrier(rayObj))
-        {
-            RayObjHitBarrier(spawnerClass);
-            return;
-        }
-
-        distancePerSphere = 0.0f;
-        spawnerClass.DrawPathSphereAtPoint(rayObj.hit.point, ref pathBar);
-    }
-
     void PlaceFollowSphere(Vector3 vector)
     {
-        if (spawnerSource != null)
-        {
-            Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
+        if (spawnerSource == null) { Debug.LogError("Spawner is null"); return; }
 
-            distancePerSphere = 0.0f;
-            spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
+        Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
-        }
-        else
-        {
-            Debug.Log("Spawner is null");
-        }
+        ResetSphereDistance();
+        //spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
+        spawnerClass.DrawPathSphereAtPoint(vector, ref pathBar);
+    }
+
+    void ResetSphereDistance()
+    {
+        distancePerSphere = 0.0f;
     }
 
     Vector3 GetOffsetGridVector(Vector3 vector)
@@ -183,34 +148,6 @@ public class PathHandler : MonoBehaviour
         newVec.x += xGridOffset;
         newVec.y += yGridOffset;
         return newVec;
-    }
-
-    bool DidRayObjHitBarrier(RayObj rayObj)
-    {
-        if (rayObj.hit.collider.gameObject.CompareTag("barrier"))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    void RayObjHitBarrier(Spawner spawnerClass)
-    {
-        spawnerClass.DisableDrawable();
-        StopDrawingPath();
-    }
-
-    void AddSphereDistance(RayObj rayObj)
-    {
-        if (oldPos == new Vector3(0.0f, 0.0f, 0.0f))
-        {
-            oldPos = rayObj.hit.collider.gameObject.transform.position;
-        }
-        else
-        {
-            distancePerSphere += Vector3.Distance(oldPos, rayObj.hit.point);
-            oldPos = rayObj.hit.point;
-        }
     }
 
     void AddSphereDistance(Vector3 vector)
@@ -252,45 +189,9 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    public void AttemptPlaceSpawnerFollowObj(RayObj rayObj)
-    {
-        string err = "Attempting Follow Obj: IsNull?";
-        //Debug.Log(err);
-        if (spawnerSource == null) return;
-        err += " pathDrawTrue?";
-        //Debug.Log(err);
-        if (!pathDrawingMode) return;
-        err += " isColliderNull?";
-        //Debug.Log(err);
-        if (rayObj.hit.collider == null) return;
-        err += " isColliderTagFloorOrBarrier?";
-        //Debug.Log(err);
-        if (rayObj.hit.collider.gameObject.tag == "floor" || rayObj.hit.collider.gameObject.tag == "barrier")
-        {
-            err += " SUCCESS!";
-            //Debug.Log(err);
-            TryPlaceFollowSphere(rayObj);
-        }
-        else
-        {
-            err += " NOPE";
-            //Debug.Log(err);
-        }
-    }
-
     public void AttemptPlaceSpawnerFollowObjOnVector3(Vector3 spawnerPos)
     {
-        TryPlaceFollowSphereFromVector3(spawnerPos);
-    }
-
-    private int GenerateRayFromMasks(int[] masks)
-    {
-        int layerMask = 1;
-        foreach (int mask in masks)
-        {
-            layerMask = (1 << mask);
-        }
-        return layerMask;
+        MouseDraggedWhileHoldingDown(spawnerPos);
     }
 
     void SelectSpawner(GameObject spawnerGameObject)

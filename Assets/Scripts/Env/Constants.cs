@@ -20,8 +20,6 @@ public static class Constants
 
     public static int CYCLE_MAX = 30;
 
-    public static string NEUTRAL_TEAM = "NEUTRAL";
-
     // UNIT STATS
 
     // Infantry

@@ -95,7 +95,7 @@ public class SpawnerUI : MonoBehaviour
         return spawnrateButton.gameObject.activeSelf;
     }
 
-    public void HandleNewDrawableState(bool newDrawableState, PathManager pathManager)
+    public void HandleNewDrawableState(bool newDrawableState, SpawnerPathManager pathManager)
     {
         if (newDrawableState)
         {
@@ -110,7 +110,7 @@ public class SpawnerUI : MonoBehaviour
         }
     }
 
-    public void UpdateSlider(ref Slider slider, PathManager pathManager, int maxPathLength)
+    public void UpdateSlider(ref Slider slider, SpawnerPathManager pathManager, int maxPathLength)
     {
         slider.value = (1.0f) * pathManager.pathSpheres.Count / maxPathLength;
         if (IsPathLengthMaxed(pathManager, maxPathLength))
@@ -119,7 +119,7 @@ public class SpawnerUI : MonoBehaviour
         }
     }
 
-    private bool IsPathLengthMaxed(PathManager pathManager, int maxPathLength)
+    private bool IsPathLengthMaxed(SpawnerPathManager pathManager, int maxPathLength)
     {
         return pathManager.pathSpheres.Count == maxPathLength;
     }
