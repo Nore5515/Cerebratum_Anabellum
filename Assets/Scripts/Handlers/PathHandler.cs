@@ -113,41 +113,32 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    void MouseDraggedWhileHoldingDown(Vector3 vector)
+    void PlaceFollowObjOnPosition(Vector3 position)
     {
         if (distancePerSphere >= maxDistancePerSphere)
         {
-            PlaceFollowSphere(vector);
+            PlaceFollowSphere(position);
         }
         // If distance is less than maxdistancepersphere, add change in distance.
         else
         {
-            AddSphereDistance(vector);
+            AddSphereDistance(position);
         }
     }
 
     void PlaceFollowSphere(Vector3 vector)
     {
-        if (spawnerSource == null) { Debug.LogError("Spawner is null"); return; }
+        if (spawnerSource == null) { Debug.Log("Spawner is null"); return; }
 
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
         ResetSphereDistance();
-        //spawnerClass.DrawPathSphereAtPoint(GetOffsetGridVector(vector), ref pathBar);
         spawnerClass.DrawPathSphereAtPoint(vector, ref pathBar);
     }
 
     void ResetSphereDistance()
     {
         distancePerSphere = 0.0f;
-    }
-
-    Vector3 GetOffsetGridVector(Vector3 vector)
-    {
-        Vector3 newVec = new Vector3(vector.x, vector.y, vector.z);
-        newVec.x += xGridOffset;
-        newVec.y += yGridOffset;
-        return newVec;
     }
 
     void AddSphereDistance(Vector3 vector)
@@ -189,9 +180,9 @@ public class PathHandler : MonoBehaviour
         }
     }
 
-    public void AttemptPlaceSpawnerFollowObjOnVector3(Vector3 spawnerPos)
+    public void MouseHeldAndDraggedAtPosition(Vector3 mousePosition)
     {
-        MouseDraggedWhileHoldingDown(spawnerPos);
+        PlaceFollowObjOnPosition(mousePosition);
     }
 
     void SelectSpawner(GameObject spawnerGameObject)

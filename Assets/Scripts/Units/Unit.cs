@@ -64,11 +64,11 @@ public class Unit : MonoBehaviour
 
     // Point Stuff
     UnitPointHandler unitPointHandler = new UnitPointHandler();
-    
+
     // Consts
     const int MINIMUM_FRAMES_TO_BE_IDLE = 60;
     const float MAX_IDLE_SECONDS = 10.0f;
-    public int MIN_DIST_TO_MOVEMENT_DEST = 1;
+    public float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
 
     int idle_frames = 0;
     float idle_time = 0;
@@ -270,42 +270,51 @@ public class Unit : MonoBehaviour
     // ║                                                  ║
     // ╚══════════════════════════════════════════════════╝
     //   ╚══════════════════════════════════════════════╝
-    //
+    // 
     public void AIMovement()
     {
         // If dest exists, cus otherwise you're just stayin' still.
         if (unitPointHandler.DestVector == new Vector3(0.0f, 0.0f, 0.0f)) return;
 
-        // If an enemy is in range, stay still!
-        if (threatState == "STAND" || threatState == "FLEE")
+        switch (threatState)
         {
-            // Skirmish.
+            case ("STAND"):
+                break;
+            case ("FLEE"):
+                break;
+            case ("WALK"):
+                WalkingLogic();
+                break;
+            default:
+                break;
         }
+    }
+
+    private void WalkingLogic()
+    {
+        // Get movement direction.
+        direction = getNewMovementVector();
+
+        float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
+
+        // If you are not close enough to your dest, keep moving towards it.
+        if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
+        {
+            // Translate movement.
+            MoveInDirection(direction);
+            AnimState = "Walking";
+        }
+        // Once you get too close to your destination, remove it from your movement path and go towards the next one.
         else
         {
-            // Get movement direction.
-            direction = getNewMovementVector();
-
-            float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
-
-            // If you are not close enough to your dest, keep moving towards it.
-            if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
-            {
-                // Translate movement.
-                MoveInDirection(direction);
-                AnimState = "Walking";
-            }
-            // Once you get too close to your destination, remove it from your movement path and go towards the next one.
-            else
-            {
-                unitPointHandler.AttemptRemoveNextDestPoint();
-            }
+            Debug.Log(name + "Next Position");
+            unitPointHandler.AttemptRemoveNextDestPoint();
         }
     }
 
     private Vector3 getNewMovementVector()
     {
-        Vector3 newDest = new(unitPointHandler.DestVector.x, transform.position.y, unitPointHandler.DestVector.z);
+        Vector3 newDest = new Vector3(unitPointHandler.DestVector.x, unitPointHandler.DestVector.y, -0.5f);
         Vector3 heading = newDest - transform.position;
         float distance = heading.magnitude;
         return heading / distance;

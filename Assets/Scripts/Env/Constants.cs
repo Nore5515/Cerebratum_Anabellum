@@ -16,7 +16,7 @@ public static class Constants
     public static float MISS_RANGE_RADIUS = 1.0f;
     public static float CONTROLLED_MISS_RADIUS = 0.0f;
 
-    public static float PATH_FOLLOW_DIVERGENCE = 2.0f;
+    public static float PATH_FOLLOW_DIVERGENCE = 0.0f;
 
     public static int CYCLE_MAX = 30;
 

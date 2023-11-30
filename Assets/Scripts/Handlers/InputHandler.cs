@@ -110,25 +110,17 @@ class InputHandler
     void MouseHeldFuncs()
     {
         rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        pathHandler.AttemptPlaceSpawnerFollowObjOnVector3(MouseHeldGridPos());
-        //pathHandler.AttemptPlaceSpawnerFollowObj(rayObj);
+        pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
     }
 
-    Vector3 MouseHeldGridPos()
+    Vector3 MousePositionZeroZed()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPos = GetGridPos(mousePos);
-        return gridPos;
-    }
-
-    Vector3Int GetGridPos(Vector2 mousePos)
-    {
-        Vector3Int gridPos = new Vector3Int();
-        if (tileMap != null)
-        {
-            gridPos = tileMap.WorldToCell(mousePos);
-        }
-        return gridPos;
+        Vector3 zeroZed = new Vector3();
+        Vector3 screenToWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        zeroZed.x = screenToWorldPos.x;
+        zeroZed.y = screenToWorldPos.y;
+        zeroZed.z = -0.5f;
+        return zeroZed;
     }
 
     void MouseDownFuncs()
@@ -140,12 +132,10 @@ class InputHandler
 
         if (posHandler.IsControlling())
         {
-            //Debug.Log("Fuck");
             posHandler.ControlledMouseDown(rayObj);
         }
         else
         {
-            //Debug.Log("Command mouse down");
             CommandModeMouseDown();
         }
     }
