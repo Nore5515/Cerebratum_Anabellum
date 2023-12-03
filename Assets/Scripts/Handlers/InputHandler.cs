@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 class InputHandler
 {
@@ -76,15 +77,15 @@ class InputHandler
 
     public void HandleMouseInput()
     {
-        rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        if (rayObj.hit.collider != null)
-        {
-            Debug.Log(rayObj.hit.collider.name);
-        }
-        else
-        {
-            //Debug.Log("null");
-        }
+        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
+        //if (rayObj.hit.collider != null)
+        //{
+        //    Debug.Log(rayObj.hit.collider.name);
+        //}
+        //else
+        //{
+        //    //Debug.Log("null");
+        //}
         if (Input.GetKey(KeyCode.Mouse0))
         {
             MouseHeldFuncs();
@@ -109,8 +110,20 @@ class InputHandler
 
     void MouseHeldFuncs()
     {
-        rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
+        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
+        //rayObj = rayHandler.GenerateRayObj();
+
+        //RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, MousePositionZeroZed());
+
+        //RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, MousePositionZeroZed(), Mathf.Infinity, LayerMask.NameToLayer("Floor"));
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+
+        if (hit.collider != null)
+        {
+            Debug.Log(hit.collider + ", " + hit.collider.gameObject.name);
+            pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
+        }
     }
 
     Vector3 MousePositionZeroZed()

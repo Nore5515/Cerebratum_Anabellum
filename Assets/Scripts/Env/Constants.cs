@@ -25,7 +25,7 @@ public static class Constants
     // Infantry
     public static int INF_DMG => 1;
     public static int INF_HP => 2;
-    public static int INF_SPEED => 1;
+    public static float INF_SPEED => 0.75f;
 
     public static float INF_INIT_FIRE_DELAY = 2.0f;
     public static float INF_INIT_RANGE = 3.0f;

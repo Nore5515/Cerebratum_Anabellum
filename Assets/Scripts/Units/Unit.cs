@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour
     public int hp { get; set; }
     public int maxHP { get; set; }
     public int dmg { get; set; }
-    public int speed { get; set; }
+    public float speed { get; set; }
     public float rof { get; set; }
     public int threatLevel { get; set; }
 
@@ -307,7 +307,7 @@ public class Unit : MonoBehaviour
         // Once you get too close to your destination, remove it from your movement path and go towards the next one.
         else
         {
-            Debug.Log(name + "Next Position");
+            //Debug.Log(name + "Next Position");
             unitPointHandler.AttemptRemoveNextDestPoint();
         }
     }
