@@ -13,6 +13,11 @@ public class UI : MonoBehaviour
     public Image gameoverBGImage;
     bool gameEnding = false;
 
+    [SerializeField] Button placeSpawner;
+    bool placingSpawner = false;
+    [SerializeField] GameObject spawnerGhost;
+    GameObject newSpawnerGhost;
+
     int startingRedHP;
 
     // Start is called before the first frame update
@@ -24,6 +29,61 @@ public class UI : MonoBehaviour
         healthText.text = "RED: 10 --- BLUE: 10";
         nanitesText.text = "RED: 0 --- BLUE: 0";
         //nanitesPerMinuteText.text = "RED: 0 --- BLUE: 0";
+        placeSpawner.onClick.AddListener(delegate { PlaceSpawnerClicked(); });
+    }
+
+    void PlaceSpawnerClicked()
+    {
+        Debug.Log("Place Spawner!");
+
+        // Toggles On/Off
+        if (placingSpawner)
+        {
+            placingSpawner = false;
+            GameObject.Destroy(newSpawnerGhost);
+            newSpawnerGhost = null;
+        }
+        else
+        {
+            placingSpawner = true;
+        }
+
+
+    }
+
+    void PlaceSpawnerUpdateLoop()
+    {
+        // Get Mouse Position
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        // // If you hit nothing, exit.
+        if (hit.collider == null) return;
+
+        // Create ghost image on mouse position
+        // // Create instance of sprite of spawner on mouse pos
+
+        if (newSpawnerGhost == null)
+        {
+            Debug.Log("Instntiating!");
+            newSpawnerGhost = Instantiate(spawnerGhost);
+        }
+
+        Debug.Log("Going");
+        newSpawnerGhost.transform.position = MousePositionZeroZed();
+
+        // if valid placement, turn green. otherwise turn red.
+
+        // On click, create instance of spawner on mouse position
+    }
+
+    Vector3 MousePositionZeroZed()
+    {
+        Vector3 zeroZed = new Vector3();
+        Vector3 screenToWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        zeroZed.x = screenToWorldPos.x;
+        zeroZed.y = screenToWorldPos.y;
+        zeroZed.z = -0.5f;
+        return zeroZed;
     }
 
     double GetRedHPPercentage()
@@ -35,6 +95,11 @@ public class UI : MonoBehaviour
 
     void Update()
     {
+
+        if (placingSpawner)
+        {
+            PlaceSpawnerUpdateLoop();
+        }
 
         healthText.text = GetRedHPPercentage().ToString() + "%";
         //healthText.text = "RED: " + TeamStats.RedHP.ToString() + " --- BLUE: " + TeamStats.BlueHP.ToString();

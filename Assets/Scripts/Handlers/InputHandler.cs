@@ -110,18 +110,10 @@ class InputHandler
 
     void MouseHeldFuncs()
     {
-        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        //rayObj = rayHandler.GenerateRayObj();
-
-        //RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, MousePositionZeroZed());
-
-        //RaycastHit2D hit = Physics2D.Raycast(Camera.main.transform.position, MousePositionZeroZed(), Mathf.Infinity, LayerMask.NameToLayer("Floor"));
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
 
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider + ", " + hit.collider.gameObject.name);
             pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
         }
     }
