@@ -17,6 +17,7 @@ public class UI : MonoBehaviour
     bool placingSpawner = false;
     [SerializeField] GameObject spawnerGhost;
     GameObject newSpawnerGhost;
+    [SerializeField] GameObject spawnerPrefab;
 
     int startingRedHP;
 
@@ -74,6 +75,12 @@ public class UI : MonoBehaviour
         // if valid placement, turn green. otherwise turn red.
 
         // On click, create instance of spawner on mouse position
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject newSpawner = Instantiate(spawnerPrefab);
+            newSpawner.transform.position = newSpawnerGhost.transform.position;
+            newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        }
     }
 
     Vector3 MousePositionZeroZed()
