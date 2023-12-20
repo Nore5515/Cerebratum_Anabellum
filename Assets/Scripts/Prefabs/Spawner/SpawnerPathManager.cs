@@ -14,9 +14,53 @@ public class SpawnerPathManager : MonoBehaviour
 
     public Material pathMat;
 
+    bool aiControlled = false;
+    int waiter = 0;
+
     public void Start()
     {
         PathState.paths = paths;
+        if (this.gameObject.GetComponent<Spawner>() != null)
+        {
+            // TODO: Obviously not good long temr lol
+            if (this.gameObject.GetComponent<Spawner>().spawnerTeam == "BLUE")
+            {
+                Debug.Log("Blue!");
+                aiControlled = true;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (aiControlled)
+        {
+            if (paths.Count == 0)
+            {
+                if (waiter > 300)
+                {
+                    List<GameObject> spawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("spawner"));
+                    Debug.Log(spawners.Count);
+                    waiter = 0;
+                    foreach (var spawner in spawners)
+                    {
+                        if (spawner.GetComponent<Spawner>() != null)
+                        {
+                            if (spawner.GetComponent<Spawner>().spawnerTeam != "BLUE")
+                            {
+                                Debug.Log("GOOO");
+                                GameObject marker = InstantiateBluePathMarkerAtPoint(spawner.gameObject.transform.position);
+                                AddPathMarkerToPathSpheres(marker);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    waiter++;
+                }
+            }
+        }
     }
 
     public void SetPathMat(Material newMat)

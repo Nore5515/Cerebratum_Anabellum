@@ -64,7 +64,7 @@ public class PathHandler : MonoBehaviour
 
     bool IsHitObjectNonAlliedSpawner(RayObj rayObj)
     {
-        if (rayObj.hit.collider.transform.parent.gameObject.GetComponent<NeutralSpawner>() != null)
+        if (rayObj.hit.collider.transform.GetComponent<NeutralSpawner>() != null)
         {
             return true;
         }

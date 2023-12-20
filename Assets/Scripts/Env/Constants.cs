@@ -13,7 +13,7 @@ public static class Constants
     public static float INF_RANGE_UPGRADE_AMOUNT => 0.5f;
 
     public static float FIRST_FIRE_DELAY = 0.15f;
-    public static float MISS_RANGE_RADIUS = 1.0f;
+    public static float MISS_RANGE_RADIUS = 0.25f;
     public static float CONTROLLED_MISS_RADIUS = 0.0f;
 
     public static float PATH_FOLLOW_DIVERGENCE = 0.0f;
