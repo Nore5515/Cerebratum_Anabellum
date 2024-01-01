@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 758778824666323729}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7933514716777341297}
   m_RootOrder: 0
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 7118839469301492581}
   m_Layer: 0
   m_Name: HQ
-  m_TagString: Untagged
+  m_TagString: hq
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,5 +169,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 0.81
   m_Center: {x: 0, y: 0, z: 0}

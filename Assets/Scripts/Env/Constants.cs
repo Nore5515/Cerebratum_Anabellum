@@ -20,6 +20,8 @@ public static class Constants
 
     public static int CYCLE_MAX = 30;
 
+    public static float PLACEMENT_RANGE = 5.0f;
+
     // UNIT STATS
 
     // Infantry

@@ -21,9 +21,14 @@ public class UI : MonoBehaviour
 
     int startingRedHP;
 
+    bool spawnerInRange = false;
+
+    private GameObject blueHQ;
+
     // Start is called before the first frame update
     void Start()
     {
+        blueHQ = GetBlueHQ();
         startingRedHP = TeamStats.RedHP;
         nanitesText = GameObject.Find("NanitesText").GetComponent<Text>();
         //nanitesPerMinuteText = GameObject.Find("NaniteGainText").GetComponent<Text>();
@@ -65,22 +70,83 @@ public class UI : MonoBehaviour
 
         if (newSpawnerGhost == null)
         {
-            Debug.Log("Instntiating!");
+            //Debug.Log("Instntiating!");
             newSpawnerGhost = Instantiate(spawnerGhost);
         }
 
-        Debug.Log("Going");
+
+        //Debug.Log("Going");
         newSpawnerGhost.transform.position = MousePositionZeroZed();
 
         // if valid placement, turn green. otherwise turn red.
+        newSpawnerGhost.GetComponentInChildren<SpriteRenderer>().color = GetGhostColor();
+
 
         // On click, create instance of spawner on mouse position
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject newSpawner = Instantiate(spawnerPrefab);
-            newSpawner.transform.position = newSpawnerGhost.transform.position;
-            newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            if (TeamStats.RedPoints > 0 && spawnerInRange)
+            {
+                TeamStats.RedPoints -= 1;
+                GameObject newSpawner = Instantiate(spawnerPrefab);
+                newSpawner.transform.position = newSpawnerGhost.transform.position;
+                newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            }
         }
+    }
+
+    public void AI_Place_Spawner()
+    {
+        Debug.Log("Ai place");
+        Vector2 randomCircleOffset = Random.insideUnitCircle * Constants.PLACEMENT_RANGE;
+        Vector3 randomCircleOffsetZeroZ = new Vector3(randomCircleOffset.x, randomCircleOffset.y, -0.01f);
+        GameObject newSpawner = Instantiate(spawnerPrefab);
+        newSpawner.transform.position = blueHQ.transform.position + randomCircleOffsetZeroZ;
+        newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        newSpawner.GetComponent<Spawner>().spawnerTeam = "BLUE";
+    }
+
+    GameObject GetBlueHQ()
+    {
+        List<GameObject> hqs = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
+        if (hqs.Count > 0)
+        {
+            foreach (var hq in hqs)
+            {
+                if (hq.GetComponent<HQObject>() != null)
+                {
+                    if (hq.GetComponent<HQObject>().team == "BLUE")
+                    {
+                        return hq;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    Color GetGhostColor()
+    {
+        List<GameObject> hqs = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
+        if (hqs.Count > 0)
+        {
+            foreach (var hq in hqs)
+            {
+                if (hq.GetComponent<HQObject>() != null)
+                {
+                    if (hq.GetComponent<HQObject>().team == "RED")
+                    {
+                        if (Vector3.Distance(newSpawnerGhost.transform.position, hq.transform.position) > Constants.PLACEMENT_RANGE)
+                        {
+                            spawnerInRange = false;
+                            return new Color(1.0f, 0.0f, 0.0f, 0.40f);
+                        }
+                    }
+                }
+            }
+        }
+        spawnerInRange = true;
+        return new Color(0.34f, 0.83f, 0.40f, 0.40f);
     }
 
     Vector3 MousePositionZeroZed()
@@ -133,6 +199,12 @@ public class UI : MonoBehaviour
                 IEnumerator coroutine = EndGame();
                 StartCoroutine(coroutine);
             }
+        }
+
+        if (TeamStats.BluePoints > 0)
+        {
+            AI_Place_Spawner();
+            TeamStats.BluePoints -= 1;
         }
         // }
     }

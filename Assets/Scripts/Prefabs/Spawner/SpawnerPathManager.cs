@@ -35,10 +35,27 @@ public class SpawnerPathManager : MonoBehaviour
     {
         if (aiControlled)
         {
-            if (paths.Count == 0)
+            if (paths.Count == 0 && pathSpheres.Count <= 1)
             {
                 if (waiter > 300)
                 {
+                    List<GameObject> hqs = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
+                    Debug.Log(hqs.Count);
+                    waiter = 0;
+                    foreach (var spawner in hqs)
+                    {
+                        if (spawner.GetComponent<HQObject>() != null)
+                        {
+                            if (spawner.GetComponent<HQObject>().team != "BLUE")
+                            {
+                                Debug.Log("GOOO HQ");
+                                GameObject marker = InstantiateBluePathMarkerAtPoint(spawner.gameObject.transform.position);
+                                AddPathMarkerToPathSpheres(marker);
+                                return;
+                            }
+                        }
+                    }
+
                     List<GameObject> spawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("spawner"));
                     Debug.Log(spawners.Count);
                     waiter = 0;
@@ -51,6 +68,7 @@ public class SpawnerPathManager : MonoBehaviour
                                 Debug.Log("GOOO");
                                 GameObject marker = InstantiateBluePathMarkerAtPoint(spawner.gameObject.transform.position);
                                 AddPathMarkerToPathSpheres(marker);
+                                return;
                             }
                         }
                     }

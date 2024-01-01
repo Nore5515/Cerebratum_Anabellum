@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-class InputHandler
+class PossessionInputHandler
 {
     RayHandler rayHandler;
     RayObj rayObj = new RayObj();
@@ -13,7 +13,7 @@ class InputHandler
     PosHandler posHandler;
     Tilemap tileMap;
 
-    public InputHandler(PosHandler _posHandler, Tilemap tileMap)
+    public PossessionInputHandler(PosHandler _posHandler, Tilemap tileMap)
     {
         posHandler = _posHandler;
         pathHandler = posHandler.pathHandler;
@@ -181,14 +181,19 @@ class InputHandler
         rayObj = rayHandler.GenerateLayeredRayObj("Unit");
         if (rayObj.hit.collider != null)
         {
-            HitUnit();
+            HitUnit(rayObj);
             return true;
         }
         return false;
     }
 
-    void HitUnit()
+    void HitUnit(RayObj rayObj)
     {
+        Debug.Log(posHandler);
+        Debug.Log(rayObj);
+        Debug.Log(rayObj.hit);
+        Debug.Log(rayObj.hit.collider);
+        Debug.Log(rayObj.hit.collider.gameObject);
         posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
     }
 

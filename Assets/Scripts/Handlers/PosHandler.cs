@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class PosHandler : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class PosHandler : MonoBehaviour
 
     public bool possessionReady = false;
 
-    InputHandler inputHandler;
+    PossessionInputHandler posInputHandler;
 
     public PathHandler pathHandler;
 
@@ -44,12 +45,20 @@ public class PosHandler : MonoBehaviour
 
     public void Start()
     {
-        inputHandler = new InputHandler(gameObject.GetComponent<PosHandler>(), tilemap);
+        posInputHandler = new PossessionInputHandler(this, tilemap);
     }
 
     void Update()
     {
-        inputHandler.UpdateFuncs();
+        posInputHandler.UpdateFuncs();
+
+        if (controlledUnits.Count > 0)
+        {
+            if (controlledUnits[0] == null)
+            {
+                FreePossession();
+            }
+        }
     }
 
     public void ControlledMouseDown(RayObj rayObj)
@@ -143,9 +152,9 @@ public class PosHandler : MonoBehaviour
     {
         if (!IsControlling()) return;
 
-        float zMovement = Input.GetAxis("Vertical");
+        float yMovement = Input.GetAxis("Vertical");
         float xMovement = Input.GetAxis("Horizontal");
-        controlledUnits[0].controlDirection = new Vector3(xMovement, 0, zMovement);
+        controlledUnits[0].controlDirection = new Vector3(xMovement, yMovement, 0.0f);
     }
 
     // Possess the passed-in unit.
@@ -156,18 +165,18 @@ public class PosHandler : MonoBehaviour
         if (unit == null) return;
 
         unit.beingControlled = true;
-        InitializeCooldownSlider(unit);
+        //InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
 
         if (unit == null)
         {
-            SetNoPosUnitUI();
+            //SetNoPosUnitUI();
         }
         else
         {
-            SetPosUnitUI(unit);
-            unitStatUI.SetActive(true);
+            //SetPosUnitUI(unit);
+            //unitStatUI.SetActive(true);
         }
     }
 
@@ -225,7 +234,9 @@ public class PosHandler : MonoBehaviour
         {
             if (controlledUnits[0] != null)
             {
-                UpdateCooldownSlider(controlledUnits[0]);
+                //UpdateCooldownSlider(controlledUnits[0]);
+                //TEMP
+                UnitFireCooldownChecker(controlledUnits[0]);
             }
         }
     }

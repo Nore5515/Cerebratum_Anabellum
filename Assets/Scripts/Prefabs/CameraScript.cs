@@ -54,9 +54,9 @@ public class CameraScript : MonoBehaviour
         else
         {
             // mainCam.fieldOfView = 40;
-            Vector3 cameraTiltCompensation = new Vector3(0.0f, 0.0f, -30.0f);
-            Vector3 newPos = followObj.transform.position + cameraTiltCompensation;
-            newPos.y = 20;
+            //Vector3 cameraTiltCompensation = new Vector3(0.0f, 0.0f, -30.0f);
+            Vector3 newPos = followObj.transform.position;
+            newPos.z = -10;
             mainCam.transform.position = newPos;
         }
 
