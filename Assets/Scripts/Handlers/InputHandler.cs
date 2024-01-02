@@ -13,6 +13,8 @@ class PossessionInputHandler
     PosHandler posHandler;
     Tilemap tileMap;
 
+    bool isDrawingPathFromSpawner = false;
+
     public PossessionInputHandler(PosHandler _posHandler, Tilemap tileMap)
     {
         posHandler = _posHandler;
@@ -102,6 +104,9 @@ class PossessionInputHandler
 
     void MouseUpFuncs()
     {
+
+        isDrawingPathFromSpawner = false;
+
         if (pathHandler.pathDrawingMode)
         {
             pathHandler.StopDrawingPath();
@@ -114,7 +119,9 @@ class PossessionInputHandler
 
         if (hit.collider != null)
         {
-            pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
+            if (isDrawingPathFromSpawner) {
+                pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
+            }
         }
     }
 
@@ -134,6 +141,21 @@ class PossessionInputHandler
         // TODO: Im drunk and a little tired; look at tomorrow when sober
         //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
         //if (rayObj.hit.collider == null) return;
+
+        
+
+        // RaycastHit hit = Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 9);
+        RaycastHit hit = rayHandler.GenerateLayeredRayObj("SpawnerUI").hit;
+        
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.name == "SpawnerPathButton") {
+                isDrawingPathFromSpawner = true;
+                
+                 Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
+                 spawnerClass.spawnerPathManager.ClearPoints(spawnerClass.unitList);
+            }
+        }
 
         if (posHandler.IsControlling())
         {

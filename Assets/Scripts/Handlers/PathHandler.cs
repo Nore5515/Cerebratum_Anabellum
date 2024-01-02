@@ -17,7 +17,7 @@ public class PathHandler : MonoBehaviour
     // NEW STUFF
     public Slider pathBar;
 
-    GameObject spawnerSource;
+    public GameObject spawnerSource;
 
     public PosHandler pathHandlerPossessionHandler;
 
@@ -51,15 +51,16 @@ public class PathHandler : MonoBehaviour
     public void HandleClickOnSpawner(RayObj rayObj)
     {
         if (IsHitObjectNonAlliedSpawner(rayObj)) return;
+
         if (IsHitObjectSelectedSpawner(rayObj))
         {
             HandleClickOnSelectedSpawner();
+            return;
         }
-        else
-        {
-            DeselectSpawners();
-            SelectSpawner(rayObj.hit.collider.gameObject);
-        }
+        
+        // Spawner isn't selected, select it
+        DeselectSpawners();
+        SelectSpawner(rayObj.hit.collider.gameObject);
     }
 
     bool IsHitObjectNonAlliedSpawner(RayObj rayObj)

@@ -1681,7 +1681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3596658078477276431
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2535,7 +2535,7 @@ GameObject:
   - component: {fileID: 6403674936417719146}
   - component: {fileID: 694094401685655744}
   m_Layer: 9
-  m_Name: DrawCube
+  m_Name: SpawnerPathButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
