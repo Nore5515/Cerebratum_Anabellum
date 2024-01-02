@@ -50,7 +50,9 @@ public class UnitFiringHandler : MonoBehaviour
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
         GameObject bulletInstance = GenerateNewBulletPrefab();
-        bulletInstance.transform.LookAt(GetRandomAdjacentPosition(position, missRange));
+        Vector3 zeroedTarget = position;
+        zeroedTarget.z = Constants.ZED_OFFSET;
+        bulletInstance.transform.LookAt(GetRandomAdjacentPosition(zeroedTarget, missRange));
         bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
     }
 
@@ -100,7 +102,8 @@ public class UnitFiringHandler : MonoBehaviour
             StartCoroutine(EnableFiring());
         }
         float missRange = Constants.CONTROLLED_MISS_RADIUS;
-        Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
+        //Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
+        Vector3 spriteOffset = new(0.0f, 0.0f, 0.0f);
         FireAtPosition(targetPosition + spriteOffset, missRange);
     }
 

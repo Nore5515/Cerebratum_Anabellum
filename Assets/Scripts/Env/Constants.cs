@@ -22,6 +22,8 @@ public static class Constants
 
     public static float PLACEMENT_RANGE = 5.0f;
 
+    public static float ZED_OFFSET = -0.1f;
+
     // UNIT STATS
 
     // Infantry

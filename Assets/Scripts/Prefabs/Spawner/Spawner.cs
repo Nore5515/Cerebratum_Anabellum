@@ -22,6 +22,9 @@ public class Spawner : Structure
     public Material blueMat;
     public Material spawnTeamMat;
 
+    [SerializeField]
+    GameObject selectCircle;
+
     public List<GameObject> unitList = new List<GameObject>();
 
     public string spawnerTeam = "RED";
@@ -46,6 +49,7 @@ public class Spawner : Structure
         StartCoroutine(coroutine);
 
         SpawnDeclaration();
+        selectCircle.SetActive(false);
     }
 
     void InitializeTeam()
@@ -102,6 +106,7 @@ public class Spawner : Structure
     {
         spawnerUI.SetUIVisible(isVis);
         drawButtonCube.SetActive(isVis);
+        selectCircle.SetActive(isVis);
     }
 
     // THIS IS THE ON-DRAW-BUTTON-PRESSED-FUNCTION
@@ -149,6 +154,8 @@ public class Spawner : Structure
         // Update various subclasses
         spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
+
+        Debug.Log("Drawing sphere!");
 
         return spawnerPathManager.pathSpheres.Count;
     }

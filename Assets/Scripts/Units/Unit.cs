@@ -331,6 +331,9 @@ public class Unit : MonoBehaviour
         if (this != null)
         {
             transform.Translate(newDir * speed * Time.deltaTime);
+            Vector3 zedZeroedMovement = transform.position;
+            zedZeroedMovement.z = Constants.ZED_OFFSET;
+            this.transform.position = zedZeroedMovement;
         }
     }
 
@@ -340,6 +343,9 @@ public class Unit : MonoBehaviour
         {
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
+            Vector3 zedZeroedMovement = transform.position;
+            zedZeroedMovement.z = Constants.ZED_OFFSET;
+            this.transform.position = zedZeroedMovement;
             direction = controlDirection;
         }
     }
