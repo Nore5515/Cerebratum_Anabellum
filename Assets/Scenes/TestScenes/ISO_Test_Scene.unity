@@ -1090,6 +1090,10 @@ PrefabInstance:
       value: Line
       objectReference: {fileID: 0}
     - target: {fileID: 1770927877642613494, guid: 54b41463c44d34dc29ac3939620665f4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 929c47deb3fce4800b660a6dae0bf2f7, type: 2}
+    - target: {fileID: 1770927877642613494, guid: 54b41463c44d34dc29ac3939620665f4, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
       value: 0.4576524
       objectReference: {fileID: 0}

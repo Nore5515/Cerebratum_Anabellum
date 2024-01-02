@@ -49,7 +49,9 @@ public class Spawner : Structure
         StartCoroutine(coroutine);
 
         SpawnDeclaration();
+
         selectCircle.SetActive(false);
+        drawButtonCube.SetActive(false);
     }
 
     void InitializeTeam()
