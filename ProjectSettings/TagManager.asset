@@ -11,6 +11,7 @@ TagManager:
   - barrier
   - player_map_editor
   - hq
+  - econ
   layers:
   - Default
   - TransparentFX
