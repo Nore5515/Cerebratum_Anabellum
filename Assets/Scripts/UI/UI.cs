@@ -161,8 +161,8 @@ public class UI : MonoBehaviour
 
     double GetRedHPPercentage()
     {
-        double result = TeamStats.RedHP / startingRedHP;
-        result = result * 100;
+        double result = (double) TeamStats.RedHP / (double) startingRedHP;
+        result *= 100;
         return result;
     }
 
