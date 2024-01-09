@@ -1,44 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
-class PossessionInputHandler
+// Command Mode refers to any time you are not actively possessing a unit.
+
+// It is attached to the camera, within the camera obj.
+
+public class CommandModeInputHandler : MonoBehaviour
 {
     RayHandler rayHandler;
     RayObj rayObj = new RayObj();
 
     public PathHandler pathHandler;
 
-    PosHandler posHandler;
     Tilemap tileMap;
+
+    // Also referenced in InputHandler (PossessionInputHandler)
+    public static bool commandLoopEnabled = false;
+
+    public bool initCmdLoop = true;
 
     bool isDrawingPathFromSpawner = false;
 
-    public PossessionInputHandler(PosHandler _posHandler, Tilemap tileMap)
+    public bool spaceHeld = false;
+
+    PosHandler posHandler;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        posHandler = _posHandler;
-        pathHandler = posHandler.pathHandler;
         rayHandler = new RayHandler();
-        if (tileMap != null)
-        {
-            this.tileMap = tileMap;
-        }
+        commandLoopEnabled = initCmdLoop;
     }
 
-    public void UpdateFuncs()
+    // Update is called once per frame
+    void Update()
     {
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //RaycastHit caughtHit;
-        //Physics.Raycast(ray, out caughtHit, Mathf.Infinity, LayerMask.GetMask("Spawner"));
-        //if (caughtHit.collider != null)
-        //{
-        //    Debug.Log(caughtHit.collider.name);
-        //}
-        if (!CommandModeInputHandler.commandLoopEnabled)
+        if (commandLoopEnabled)
         {
             rayObj = rayHandler.GenerateRayObj();
-            posHandler.DrawLine(rayObj.hit.point);
             HandleKeyboardInput();
             HandleMouseInput();
         }
@@ -47,7 +49,6 @@ class PossessionInputHandler
     public void HandleKeyboardInput()
     {
         HandleEscapeHeld();
-        HandleLeftControlHeld();
         HandleSpaceHeld();
     }
 
@@ -59,37 +60,13 @@ class PossessionInputHandler
         }
     }
 
-    void HandleLeftControlHeld()
-    {
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            posHandler.FreePossession();
-        }
-    }
-
     void HandleSpaceHeld()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            posHandler.possessionKeyHeld = true;
-        }
-        else
-        {
-            posHandler.possessionKeyHeld = false;
-        }
+        spaceHeld = Input.GetKey(KeyCode.Space);
     }
 
     public void HandleMouseInput()
     {
-        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        //if (rayObj.hit.collider != null)
-        //{
-        //    Debug.Log(rayObj.hit.collider.name);
-        //}
-        //else
-        //{
-        //    //Debug.Log("null");
-        //}
         if (Input.GetKey(KeyCode.Mouse0))
         {
             MouseHeldFuncs();
@@ -127,26 +104,8 @@ class PossessionInputHandler
         }
     }
 
-    Vector3 MousePositionZeroZed()
-    {
-        Vector3 zeroZed = new Vector3();
-        Vector3 screenToWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        zeroZed.x = screenToWorldPos.x;
-        zeroZed.y = screenToWorldPos.y;
-        zeroZed.z = -0.5f;
-        return zeroZed;
-    }
-
     void MouseDownFuncs()
     {
-        //Debug.Log("Mouse down!");
-        // TODO: Im drunk and a little tired; look at tomorrow when sober
-        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        //if (rayObj.hit.collider == null) return;
-
-
-
-        // RaycastHit hit = Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 9);
         RaycastHit hit = rayHandler.GenerateLayeredRayObj("SpawnerUI").hit;
 
         if (hit.collider != null)
@@ -160,14 +119,7 @@ class PossessionInputHandler
             }
         }
 
-        if (posHandler.IsControlling())
-        {
-            posHandler.ControlledMouseDown(rayObj);
-        }
-        else
-        {
-            CommandModeMouseDown();
-        }
+        CommandModeMouseDown();
     }
 
     void CommandModeMouseDown()
@@ -175,6 +127,16 @@ class PossessionInputHandler
         if (RayCheckSpawnerDraw()) return;
         if (RayCheckSpawner()) return;
         if (RayCheckUnit()) return;
+    }
+
+    Vector3 MousePositionZeroZed()
+    {
+        Vector3 zeroZed = new Vector3();
+        Vector3 screenToWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        zeroZed.x = screenToWorldPos.x;
+        zeroZed.y = screenToWorldPos.y;
+        zeroZed.z = -0.5f;
+        return zeroZed;
     }
 
     bool RayCheckSpawnerDraw()
@@ -196,7 +158,7 @@ class PossessionInputHandler
         if (rayObj.hit.collider != null)
         {
             Debug.Log("Hit spawner!");
-            HitSpawner();
+            HitSpawner(rayObj.hit.collider.gameObject);
             return true;
         }
         return false;
@@ -215,21 +177,47 @@ class PossessionInputHandler
 
     void HitUnit(RayObj rayObj)
     {
-        Debug.Log(posHandler);
-        Debug.Log(rayObj);
-        Debug.Log(rayObj.hit);
-        Debug.Log(rayObj.hit.collider);
-        Debug.Log(rayObj.hit.collider.gameObject);
-        posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
+        //Debug.Log(posHandler);
+        //Debug.Log(rayObj);
+        //Debug.Log(rayObj.hit);
+        //Debug.Log(rayObj.hit.collider);
+        //Debug.Log(rayObj.hit.collider.gameObject);
+        if (posHandler != null)
+        {
+            posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
+        }
+        else
+        {
+            Debug.LogError("No Possession Handler Assigned - CommandModeInputHandler");
+        }
     }
 
     void HitDrawButton()
     {
-        pathHandler.HandleClickOnDrawButton(rayObj);
+        if (pathHandler != null)
+        {
+            pathHandler.HandleClickOnDrawButton(rayObj);
+        }
+        else
+        {
+            Debug.LogError("No Path Handler Assigned - CommandModeInputHandler");
+        }
     }
 
-    void HitSpawner()
+    void HitSpawner(GameObject colliderObj)
     {
-        pathHandler.HandleClickOnSpawner(rayObj);
+        if (pathHandler != null)
+        {
+            pathHandler.HandleClickOnSpawner(rayObj);
+        }
+        else
+        {
+            //if (colliderObj.GetComponent<SpawnerPathManager>() != null)
+            //{
+            //    pathHandler = colliderObj.GetComponent<SpawnerPathManager>();
+            //    pathHandler.HandleClickOnSpawner(rayObj);
+            //}
+            Debug.LogError("No Path Handler Assigned - CommandModeInputHandler");
+        }
     }
 }

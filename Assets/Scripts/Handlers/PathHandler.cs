@@ -15,7 +15,7 @@ public class PathHandler : MonoBehaviour
     Color green = new Color(88f / 255f, 233f / 255f, 55f / 255f);
 
     // NEW STUFF
-    public Slider pathBar;
+    //public Slider pathBar;
 
     public GameObject spawnerSource;
 
@@ -57,7 +57,7 @@ public class PathHandler : MonoBehaviour
             HandleClickOnSelectedSpawner();
             return;
         }
-        
+
         // Spawner isn't selected, select it
         DeselectSpawners();
         SelectSpawner(rayObj.hit.collider.gameObject);
@@ -134,7 +134,7 @@ public class PathHandler : MonoBehaviour
         Spawner spawnerClass = spawnerSource.GetComponent<Spawner>();
 
         ResetSphereDistance();
-        spawnerClass.DrawPathSphereAtPoint(vector, ref pathBar);
+        spawnerClass.DrawPathSphereAtPoint(vector);
     }
 
     void ResetSphereDistance()
@@ -157,9 +157,9 @@ public class PathHandler : MonoBehaviour
 
     void PreparePathBar()
     {
-        pathBar.value = 0;
-        pathBar.gameObject.SetActive(true);
-        GetImageFromPathBarObj(pathBar.gameObject).color = green;
+        //pathBar.value = 0;
+        //pathBar.gameObject.SetActive(true);
+        //GetImageFromPathBarObj(pathBar.gameObject).color = green;
     }
 
     Image GetImageFromPathBarObj(GameObject pathBarObj)
@@ -170,7 +170,7 @@ public class PathHandler : MonoBehaviour
     public void StopDrawingPath()
     {
         pathDrawingMode = false;
-        pathBar.gameObject.SetActive(false);
+        //pathBar.gameObject.SetActive(false);
         if (spawnerSource != null)
         {
             if (spawnerSource.GetComponent<Spawner>() != null)
@@ -216,6 +216,9 @@ public class PathHandler : MonoBehaviour
 
     void Update()
     {
-        pathHandlerPossessionHandler.GetPossessionMovement();
+        if (pathHandlerPossessionHandler != null)
+        {
+            pathHandlerPossessionHandler.GetPossessionMovement();
+        }
     }
 }

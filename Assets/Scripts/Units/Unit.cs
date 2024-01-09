@@ -76,6 +76,8 @@ public class Unit : MonoBehaviour
 
     public Vector3 lastAimedTarget;
 
+    public bool testMode_noPossession = false;
+
     // TODO: There is an error within spawner initializing this, and the start function within the
     // classes that extend Unit.
     //
@@ -88,7 +90,10 @@ public class Unit : MonoBehaviour
     // - Constants file, with each unit types stats and such.
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
-        unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
+        if (!testMode_noPossession)
+        {
+            unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
+        }
         bulletPrefab = Resources.Load(path) as GameObject;
         unitTeam = newTeam;
         threatState = "WALK";

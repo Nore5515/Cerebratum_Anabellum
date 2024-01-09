@@ -40,6 +40,8 @@ public class PosHandler : MonoBehaviour
 
     public bool possessionKeyHeld = false;
 
+    public CommandModeInputHandler cmdInputHandler;
+
     [SerializeField]
     Tilemap tilemap;
 
@@ -119,7 +121,7 @@ public class PosHandler : MonoBehaviour
 
     public void DrawLine(Vector3 target)
     {
-        if (target != null)
+        if (target != null && line != null)
         {
             if (IsControlling())
             {
