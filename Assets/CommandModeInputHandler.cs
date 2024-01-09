@@ -182,6 +182,7 @@ public class CommandModeInputHandler : MonoBehaviour
         //Debug.Log(rayObj.hit);
         //Debug.Log(rayObj.hit.collider);
         //Debug.Log(rayObj.hit.collider.gameObject);
+        if (!spaceHeld) return;
         if (posHandler != null)
         {
             posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);

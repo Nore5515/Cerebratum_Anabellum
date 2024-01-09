@@ -48,7 +48,6 @@ class PossessionInputHandler
     {
         HandleEscapeHeld();
         HandleLeftControlHeld();
-        HandleSpaceHeld();
     }
 
     void HandleEscapeHeld()
@@ -64,18 +63,6 @@ class PossessionInputHandler
         if (Input.GetKey(KeyCode.LeftControl))
         {
             posHandler.FreePossession();
-        }
-    }
-
-    void HandleSpaceHeld()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            posHandler.possessionKeyHeld = true;
-        }
-        else
-        {
-            posHandler.possessionKeyHeld = false;
         }
     }
 
@@ -160,14 +147,14 @@ class PossessionInputHandler
             }
         }
 
-        if (posHandler.IsControlling())
-        {
-            posHandler.ControlledMouseDown(rayObj);
-        }
-        else
-        {
-            CommandModeMouseDown();
-        }
+        //if (posHandler.IsControlling())
+        //{
+        posHandler.ControlledMouseDown(rayObj);
+        //}
+        //else
+        //{
+        //    CommandModeMouseDown();
+        //}
     }
 
     void CommandModeMouseDown()
@@ -215,11 +202,6 @@ class PossessionInputHandler
 
     void HitUnit(RayObj rayObj)
     {
-        Debug.Log(posHandler);
-        Debug.Log(rayObj);
-        Debug.Log(rayObj.hit);
-        Debug.Log(rayObj.hit.collider);
-        Debug.Log(rayObj.hit.collider.gameObject);
         posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
     }
 

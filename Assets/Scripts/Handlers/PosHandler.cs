@@ -38,8 +38,6 @@ public class PosHandler : MonoBehaviour
     bool justFired = false;
     float countdown = 0.0f;
 
-    public bool possessionKeyHeld = false;
-
     public CommandModeInputHandler cmdInputHandler;
 
     [SerializeField]
@@ -104,9 +102,6 @@ public class PosHandler : MonoBehaviour
     // Attempt to possess a unit, going through the various checks and what not.
     public void TryPossessUnit(GameObject maybePos)
     {
-        // NOT A GOOD FIX
-        if (!possessionKeyHeld) return;
-
         GameObject potentialUnit = maybePos.transform.parent.gameObject;
         if (potentialUnit.GetComponent<Unit>() == null) return;
         Unit unit = potentialUnit.GetComponent<Unit>();
