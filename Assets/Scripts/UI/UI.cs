@@ -19,6 +19,7 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject spawnerGhost;
     GameObject newSpawnerGhost;
     [SerializeField] GameObject spawnerPrefab;
+    [SerializeField] GameObject ai_spawnerPrefab;
 
     int startingRedHP;
 
@@ -120,7 +121,7 @@ public class UI : MonoBehaviour
         {
             Vector2 randomCircleOffset = Random.insideUnitCircle * Constants.PLACEMENT_RANGE;
             Vector3 randomCircleOffsetZeroZ = new Vector3(randomCircleOffset.x, randomCircleOffset.y, -0.01f);
-            GameObject newSpawner = Instantiate(spawnerPrefab);
+            GameObject newSpawner = Instantiate(ai_spawnerPrefab);
             newSpawner.transform.position = blueHQ.transform.position + randomCircleOffsetZeroZ;
             newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             newSpawner.GetComponent<Spawner>().spawnerTeam = "BLUE";
