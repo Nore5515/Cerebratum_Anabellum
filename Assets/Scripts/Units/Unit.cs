@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour
     // UI
     public Slider hpSlider;
 
-    public string unitTeam { get; set; }
+    public virtual string unitTeam { get; set; }
     public string unitType { get; set; }
     public float unitRange { get; set; }
     public bool beingControlled { get; set; }
@@ -112,7 +112,6 @@ public class Unit : MonoBehaviour
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
         unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
 
-
         //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
 
         detectionSphere.alliedTeam = unitTeam;
@@ -170,7 +169,14 @@ public class Unit : MonoBehaviour
 
     public void PosAttemptShotAtPosition(Vector3 targetPosition)
     {
-        unitFiringHandler.PosAttemptShotAtPosition(targetPosition);
+        if (unitFiringHandler == null)
+        {
+            Debug.LogError("HUH");
+        }
+        else
+        {
+            unitFiringHandler.PosAttemptShotAtPosition(targetPosition);
+        }
     }
 
     public void AddTargetInRange(GameObject target)
@@ -183,7 +189,12 @@ public class Unit : MonoBehaviour
 
     public bool GetCanFire()
     {
-        return unitFiringHandler.canFire;
+        if (unitFiringHandler)
+        {
+            Debug.Log("Yes");
+            return unitFiringHandler.canFire;
+        }
+        return false;
     }
 
     public void UpdateThreatState()

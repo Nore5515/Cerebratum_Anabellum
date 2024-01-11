@@ -26,7 +26,7 @@ public class CommandModeInputHandler : MonoBehaviour
 
     public bool spaceHeld = false;
 
-    PosHandler posHandler;
+    public PosHandler posHandler;
 
     // Start is called before the first frame update
     void Start()
@@ -154,7 +154,6 @@ public class CommandModeInputHandler : MonoBehaviour
     bool RayCheckSpawner()
     {
         rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
-        Debug.Log("Spawner?");
         if (rayObj.hit.collider != null)
         {
             Debug.Log("Hit spawner!");
@@ -177,15 +176,13 @@ public class CommandModeInputHandler : MonoBehaviour
 
     void HitUnit(RayObj rayObj)
     {
-        //Debug.Log(posHandler);
-        //Debug.Log(rayObj);
-        //Debug.Log(rayObj.hit);
-        //Debug.Log(rayObj.hit.collider);
-        //Debug.Log(rayObj.hit.collider.gameObject);
         if (!spaceHeld) return;
         if (posHandler != null)
         {
-            posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
+            if (posHandler.TryPossessUnit(rayObj.hit.collider.gameObject))
+            {
+                commandLoopEnabled = false;
+            }
         }
         else
         {

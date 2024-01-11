@@ -19,8 +19,6 @@ public class PathHandler : MonoBehaviour
 
     public GameObject spawnerSource;
 
-    public PosHandler pathHandlerPossessionHandler;
-
     public void DeselectSpawners()
     {
         if (spawnerSource == null) return;
@@ -211,14 +209,6 @@ public class PathHandler : MonoBehaviour
         foreach (GameObject point in spawner.spawnerPathManager.pathSpheres)
         {
             point.GetComponent<MeshRenderer>().enabled = false;
-        }
-    }
-
-    void Update()
-    {
-        if (pathHandlerPossessionHandler != null)
-        {
-            pathHandlerPossessionHandler.GetPossessionMovement();
         }
     }
 }

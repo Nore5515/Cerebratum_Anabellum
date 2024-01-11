@@ -197,6 +197,7 @@ MonoBehaviour:
   placeSpawner: {fileID: 2859066416936132264}
   spawnerGhost: {fileID: 0}
   spawnerPrefab: {fileID: 0}
+  ai_spawnerPrefab: {fileID: 3723304060339295256, guid: 4d88632fe28664011898751c3c3fa38d, type: 3}
 --- !u!1001 &639853267426932637
 PrefabInstance:
   m_ObjectHideFlags: 0

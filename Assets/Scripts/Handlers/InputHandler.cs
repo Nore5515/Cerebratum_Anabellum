@@ -28,13 +28,6 @@ class PossessionInputHandler
 
     public void UpdateFuncs()
     {
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //RaycastHit caughtHit;
-        //Physics.Raycast(ray, out caughtHit, Mathf.Infinity, LayerMask.GetMask("Spawner"));
-        //if (caughtHit.collider != null)
-        //{
-        //    Debug.Log(caughtHit.collider.name);
-        //}
         if (!CommandModeInputHandler.commandLoopEnabled)
         {
             rayObj = rayHandler.GenerateRayObj();
@@ -46,6 +39,7 @@ class PossessionInputHandler
 
     public void HandleKeyboardInput()
     {
+        posHandler.GetPossessionMovement();
         HandleEscapeHeld();
         HandleLeftControlHeld();
     }
@@ -68,15 +62,6 @@ class PossessionInputHandler
 
     public void HandleMouseInput()
     {
-        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        //if (rayObj.hit.collider != null)
-        //{
-        //    Debug.Log(rayObj.hit.collider.name);
-        //}
-        //else
-        //{
-        //    //Debug.Log("null");
-        //}
         if (Input.GetKey(KeyCode.Mouse0))
         {
             MouseHeldFuncs();
@@ -93,25 +78,16 @@ class PossessionInputHandler
 
     void MouseUpFuncs()
     {
-        isDrawingPathFromSpawner = false;
+        //isDrawingPathFromSpawner = false;
 
-        if (pathHandler.pathDrawingMode)
-        {
-            pathHandler.StopDrawingPath();
-        }
+        //if (pathHandler.pathDrawingMode)
+        //{
+        //    pathHandler.StopDrawingPath();
+        //}
     }
 
     void MouseHeldFuncs()
     {
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-        if (hit.collider != null)
-        {
-            if (isDrawingPathFromSpawner)
-            {
-                pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
-            }
-        }
     }
 
     Vector3 MousePositionZeroZed()
@@ -126,92 +102,6 @@ class PossessionInputHandler
 
     void MouseDownFuncs()
     {
-        //Debug.Log("Mouse down!");
-        // TODO: Im drunk and a little tired; look at tomorrow when sober
-        //rayObj = rayHandler.GenerateLayeredRayObj("Floor");
-        //if (rayObj.hit.collider == null) return;
-
-
-
-        // RaycastHit hit = Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 9);
-        RaycastHit hit = rayHandler.GenerateLayeredRayObj("SpawnerUI").hit;
-
-        if (hit.collider != null)
-        {
-            if (hit.collider.gameObject.name == "SpawnerPathButton")
-            {
-                isDrawingPathFromSpawner = true;
-
-                Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
-                spawnerClass.spawnerPathManager.ClearPoints(spawnerClass.unitList);
-            }
-        }
-
-        //if (posHandler.IsControlling())
-        //{
-        posHandler.ControlledMouseDown(rayObj);
-        //}
-        //else
-        //{
-        //    CommandModeMouseDown();
-        //}
-    }
-
-    void CommandModeMouseDown()
-    {
-        if (RayCheckSpawnerDraw()) return;
-        if (RayCheckSpawner()) return;
-        if (RayCheckUnit()) return;
-    }
-
-    bool RayCheckSpawnerDraw()
-    {
-        rayObj = rayHandler.GenerateLayeredRayObj("SpawnerUI");
-        if (rayObj.hit.collider != null)
-        {
-            Debug.Log("Hit button!");
-            HitDrawButton();
-            return true;
-        }
-        return false;
-    }
-
-    bool RayCheckSpawner()
-    {
-        rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
-        Debug.Log("Spawner?");
-        if (rayObj.hit.collider != null)
-        {
-            Debug.Log("Hit spawner!");
-            HitSpawner();
-            return true;
-        }
-        return false;
-    }
-
-    bool RayCheckUnit()
-    {
-        rayObj = rayHandler.GenerateLayeredRayObj("Unit");
-        if (rayObj.hit.collider != null)
-        {
-            HitUnit(rayObj);
-            return true;
-        }
-        return false;
-    }
-
-    void HitUnit(RayObj rayObj)
-    {
-        posHandler.TryPossessUnit(rayObj.hit.collider.gameObject);
-    }
-
-    void HitDrawButton()
-    {
-        pathHandler.HandleClickOnDrawButton(rayObj);
-    }
-
-    void HitSpawner()
-    {
-        pathHandler.HandleClickOnSpawner(rayObj);
+        posHandler.PossessedMouseDown(rayObj);
     }
 }
