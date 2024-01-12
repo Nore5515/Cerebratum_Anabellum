@@ -191,7 +191,6 @@ public class Unit : MonoBehaviour
     {
         if (unitFiringHandler)
         {
-            Debug.Log("Yes");
             return unitFiringHandler.canFire;
         }
         return false;
