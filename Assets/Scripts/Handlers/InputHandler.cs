@@ -8,6 +8,8 @@ class PossessionInputHandler
     RayHandler rayHandler;
     RayObj rayObj = new RayObj();
 
+    RaycastHit2D hit2D;
+
     public PathHandler pathHandler;
 
     PosHandler posHandler;
@@ -30,8 +32,9 @@ class PossessionInputHandler
     {
         if (!CommandModeInputHandler.commandLoopEnabled)
         {
-            rayObj = rayHandler.GenerateRayObj();
-            posHandler.DrawLine(rayObj.hit.point);
+
+            hit2D = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.zero);
+            posHandler.DrawLine(hit2D.point);
             HandleKeyboardInput();
             HandleMouseInput();
         }
@@ -102,6 +105,6 @@ class PossessionInputHandler
 
     void MouseDownFuncs()
     {
-        posHandler.PossessedMouseDown(rayObj);
+        posHandler.PossessedMouseDown(hit2D.point);
     }
 }

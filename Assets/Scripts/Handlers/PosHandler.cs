@@ -61,10 +61,9 @@ public class PosHandler : MonoBehaviour
         }
     }
 
-    public void PossessedMouseDown(RayObj rayObj)
+    public void PossessedMouseDown(Vector2 locationToShootAt)
     {
-        Debug.Log("Possessed mouse down");
-        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, rayObj.hit.point.y, Constants.ZED_OFFSET));
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(locationToShootAt.x, locationToShootAt.y, Constants.ZED_OFFSET));
     }
 
     public void SetPossession(bool newPossession)
