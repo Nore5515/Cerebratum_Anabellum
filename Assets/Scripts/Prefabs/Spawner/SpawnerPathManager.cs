@@ -78,6 +78,21 @@ public class SpawnerPathManager : MonoBehaviour
                     waiter++;
                 }
             }
+            else if (paths.Count > 0)
+            {
+                Debug.Log("PATHS?");
+                // pick path at random
+                // For each child game object in the path (each path is a parent object with many children acting as waypoint nodes),
+                //      create and add a path marker
+                //
+                Debug.Log(paths[0].transform.childCount);
+                foreach (Transform child in paths[0].transform)
+                {
+                    GameObject marker = InstantiateBluePathMarkerAtPoint(child.position);
+                    AddPathMarkerToPathSpheres(marker);
+                    return;
+                }
+            }
         }
     }
 
