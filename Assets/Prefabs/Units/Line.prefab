@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1770927877642613493}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.11916751, y: 15.606184, z: -1.2049944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -52,7 +52,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 72885e500947944879ce26c99286870d, type: 2}
+  - {fileID: 2100000, guid: 929c47deb3fce4800b660a6dae0bf2f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,29 +85,29 @@ LineRenderer:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 1.7250001
-        outSlope: 1.7250001
+        inSlope: 0.28462803
+        outSlope: 0.28462803
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.4123765
+        outWeight: 0.42387864
       - serializedVersion: 3
-        time: 0.46859294
-        value: 0.2499971
-        inSlope: 0.22001976
-        outSlope: 0.22001976
+        time: 0.4576524
+        value: 0.10888381
+        inSlope: 0.22042741
+        outSlope: 0.22042741
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.52829623
-        outWeight: 0.33334234
+        outWeight: 0.26951858
       - serializedVersion: 3
         time: 1
-        value: 0.41666445
-        inSlope: 0.7187404
-        outSlope: 0.7187404
+        value: 0.15285525
+        inSlope: 0.39347172
+        outSlope: 0.39347172
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.43635863
+        inWeight: 0.34962338
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

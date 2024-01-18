@@ -38,7 +38,7 @@ public class PosHandler : MonoBehaviour
     bool justFired = false;
     float countdown = 0.0f;
 
-    public bool possessionKeyHeld = false;
+    public CommandModeInputHandler cmdInputHandler;
 
     [SerializeField]
     Tilemap tilemap;
@@ -61,9 +61,9 @@ public class PosHandler : MonoBehaviour
         }
     }
 
-    public void ControlledMouseDown(RayObj rayObj)
+    public void PossessedMouseDown(Vector2 locationToShootAt)
     {
-        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(rayObj.hit.point.x, rayObj.hit.point.y, Constants.ZED_OFFSET));
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(locationToShootAt.x, locationToShootAt.y, Constants.ZED_OFFSET));
     }
 
     public void SetPossession(bool newPossession)
@@ -80,7 +80,9 @@ public class PosHandler : MonoBehaviour
         controlledUnits = new List<Unit>();
         camScript.followObj = null;
         unitStatUI.SetActive(false);
-        SetNoPosUnitUI();
+
+        CommandModeInputHandler.commandLoopEnabled = true;
+        //SetNoPosUnitUI();
     }
 
     private void SetPosUnitUI(Unit posUnit)
@@ -100,26 +102,26 @@ public class PosHandler : MonoBehaviour
     }
 
     // Attempt to possess a unit, going through the various checks and what not.
-    public void TryPossessUnit(GameObject maybePos)
+    public bool TryPossessUnit(GameObject maybePos)
     {
-        // NOT A GOOD FIX
-        if (!possessionKeyHeld) return;
-
         GameObject potentialUnit = maybePos.transform.parent.gameObject;
-        if (potentialUnit.GetComponent<Unit>() == null) return;
+        if (potentialUnit.GetComponent<Unit>() == null) return false;
+
         Unit unit = potentialUnit.GetComponent<Unit>();
-        if (unit.unitTeam != teamColor) return;
+        if (unit.unitTeam != teamColor) return false;
+
         if (controlledUnits.Count > 0)
         {
             controlledUnits[0].beingControlled = false;
         }
         controlledUnits = new List<Unit>();
         PossessUnit(unit);
+        return true;
     }
 
     public void DrawLine(Vector3 target)
     {
-        if (target != null)
+        if (target != null && line != null)
         {
             if (IsControlling())
             {
@@ -145,14 +147,17 @@ public class PosHandler : MonoBehaviour
             controlledUnits = new List<Unit>();
             return false;
         }
-        pathHandler.DeselectSpawners();
+
+        if (pathHandler != null)
+        {
+            pathHandler.DeselectSpawners();
+        }
         return true;
     }
 
     public void GetPossessionMovement()
     {
         if (!IsControlling()) return;
-
         float yMovement = Input.GetAxis("Vertical");
         float xMovement = Input.GetAxis("Horizontal");
         controlledUnits[0].controlDirection = new Vector3(xMovement, yMovement, 0.0f);

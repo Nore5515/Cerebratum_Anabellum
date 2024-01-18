@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour
     // UI
     public Slider hpSlider;
 
-    public string unitTeam { get; set; }
+    public virtual string unitTeam { get; set; }
     public string unitType { get; set; }
     public float unitRange { get; set; }
     public bool beingControlled { get; set; }
@@ -76,6 +76,8 @@ public class Unit : MonoBehaviour
 
     public Vector3 lastAimedTarget;
 
+    public bool testMode_noPossession = false;
+
     // TODO: There is an error within spawner initializing this, and the start function within the
     // classes that extend Unit.
     //
@@ -88,7 +90,10 @@ public class Unit : MonoBehaviour
     // - Constants file, with each unit types stats and such.
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
-        unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
+        if (!testMode_noPossession)
+        {
+            unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
+        }
         bulletPrefab = Resources.Load(path) as GameObject;
         unitTeam = newTeam;
         threatState = "WALK";
@@ -106,7 +111,6 @@ public class Unit : MonoBehaviour
 
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
         unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
-
 
         //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
 
@@ -165,7 +169,14 @@ public class Unit : MonoBehaviour
 
     public void PosAttemptShotAtPosition(Vector3 targetPosition)
     {
-        unitFiringHandler.PosAttemptShotAtPosition(targetPosition);
+        if (unitFiringHandler == null)
+        {
+            Debug.LogError("HUH");
+        }
+        else
+        {
+            unitFiringHandler.PosAttemptShotAtPosition(targetPosition);
+        }
     }
 
     public void AddTargetInRange(GameObject target)
@@ -178,7 +189,11 @@ public class Unit : MonoBehaviour
 
     public bool GetCanFire()
     {
-        return unitFiringHandler.canFire;
+        if (unitFiringHandler)
+        {
+            return unitFiringHandler.canFire;
+        }
+        return false;
     }
 
     public void UpdateThreatState()

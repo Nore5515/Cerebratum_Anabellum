@@ -72,8 +72,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 6508300151044142137}
     m_Modifications:
     - target: {fileID: 415603163519305960, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 415603163519305960, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
       propertyPath: orthographic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 415603163519305960, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.14150941
+      objectReference: {fileID: 0}
+    - target: {fileID: 415603163519305960, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.071708284
+      objectReference: {fileID: 0}
+    - target: {fileID: 415603163519305960, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.019357424
       objectReference: {fileID: 0}
     - target: {fileID: 415603163519305961, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
       propertyPath: anchor
@@ -137,8 +153,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+--- !u!1 &6508300150143159588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 415603163519305974, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+  m_PrefabInstance: {fileID: 6887873417131804114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &553736201070422536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6508300150143159588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb35194d060447529582af5fdc16bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathHandler: {fileID: 6508300150143159614}
+  initCmdLoop: 1
+  spaceHeld: 0
 --- !u!4 &6508300150143159608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 415603163519305962, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
   m_PrefabInstance: {fileID: 6887873417131804114}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6508300150143159614 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 415603163519305964, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}
+  m_PrefabInstance: {fileID: 6887873417131804114}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6508300150143159588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84584d8f76494286803c59d4aed5490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject spawnerGhost;
     GameObject newSpawnerGhost;
     [SerializeField] GameObject spawnerPrefab;
+    [SerializeField] GameObject ai_spawnerPrefab;
 
     int startingRedHP;
 
@@ -25,9 +27,13 @@ public class UI : MonoBehaviour
 
     private GameObject blueHQ;
 
+    Economy sceneEcon;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.GetComponent<Canvas>().worldCamera = Camera.main;
+
         blueHQ = GetBlueHQ();
         startingRedHP = TeamStats.RedHP;
         nanitesText = GameObject.Find("NanitesText").GetComponent<Text>();
@@ -36,6 +42,11 @@ public class UI : MonoBehaviour
         nanitesText.text = "RED: 0 --- BLUE: 0";
         //nanitesPerMinuteText.text = "RED: 0 --- BLUE: 0";
         placeSpawner.onClick.AddListener(delegate { PlaceSpawnerClicked(); });
+        GameObject econObj = GameObject.FindGameObjectWithTag("econ");
+        if (econObj != null)
+        {
+            sceneEcon = econObj.GetComponent<Economy>();
+        }
     }
 
     void PlaceSpawnerClicked()
@@ -87,7 +98,7 @@ public class UI : MonoBehaviour
         {
             if (TeamStats.RedPoints > 0 && spawnerInRange)
             {
-                TeamStats.RedPoints -= 1;
+                SpendRedPoints(1);
                 GameObject newSpawner = Instantiate(spawnerPrefab);
                 newSpawner.transform.position = newSpawnerGhost.transform.position;
                 newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -95,15 +106,30 @@ public class UI : MonoBehaviour
         }
     }
 
+    public void SpendRedPoints(int pointsToSpend)
+    {
+        if (TeamStats.RedPoints >= pointsToSpend)
+        {
+            TeamStats.RedPoints -= pointsToSpend;
+        }
+    }
+
     public void AI_Place_Spawner()
     {
         Debug.Log("Ai place");
-        Vector2 randomCircleOffset = Random.insideUnitCircle * Constants.PLACEMENT_RANGE;
-        Vector3 randomCircleOffsetZeroZ = new Vector3(randomCircleOffset.x, randomCircleOffset.y, -0.01f);
-        GameObject newSpawner = Instantiate(spawnerPrefab);
-        newSpawner.transform.position = blueHQ.transform.position + randomCircleOffsetZeroZ;
-        newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        newSpawner.GetComponent<Spawner>().spawnerTeam = "BLUE";
+        if (blueHQ != null)
+        {
+            Vector2 randomCircleOffset = Random.insideUnitCircle * Constants.PLACEMENT_RANGE;
+            Vector3 randomCircleOffsetZeroZ = new Vector3(randomCircleOffset.x, randomCircleOffset.y, -0.01f);
+            GameObject newSpawner = Instantiate(ai_spawnerPrefab);
+            newSpawner.transform.position = blueHQ.transform.position + randomCircleOffsetZeroZ;
+            newSpawner.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            newSpawner.GetComponent<Spawner>().spawnerTeam = "BLUE";
+        }
+        else
+        {
+            Debug.LogError("Blue HQ not found -> UI");
+        }
     }
 
     GameObject GetBlueHQ()
@@ -161,7 +187,7 @@ public class UI : MonoBehaviour
 
     double GetRedHPPercentage()
     {
-        double result = (double) TeamStats.RedHP / (double) startingRedHP;
+        double result = (double)TeamStats.RedHP / (double)startingRedHP;
         result *= 100;
         return result;
     }

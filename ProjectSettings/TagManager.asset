@@ -11,6 +11,8 @@ TagManager:
   - barrier
   - player_map_editor
   - hq
+  - econ
+  - ai_spawner
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - Spawner
   - Floor
   - SpawnerUI
-  - 
+  - AI_Spawner
   - 
   - 
   - 

@@ -38,6 +38,8 @@ public class Spawner : Structure
 
     public string unitType = "Infantry";
 
+    public bool testMode_noPossession = false;
+
     void Start()
     {
         InitializeUnitType(unitType);
@@ -145,7 +147,7 @@ public class Spawner : Structure
     }
 
     // Returns number of pathSpheres in path now.
-    public int DrawPathSphereAtPoint(Vector3 point, ref Slider pathBar)
+    public int DrawPathSphereAtPoint(Vector3 point)
     {
         ClearNullInstances(); // Necessary call for cleanup.
         if (SphereCountIsMaxed()) return -1;
@@ -154,7 +156,7 @@ public class Spawner : Structure
         GameObject newPathPoint = spawnerPathManager.CreatePathMarker(newMarkerModel);
 
         // Update various subclasses
-        spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
+        //spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
 
         Debug.Log("Drawing sphere!");
@@ -218,6 +220,7 @@ public class Spawner : Structure
         {
             Debug.LogError("Unit not recognized.");
         }
+        obj.GetComponent<Unit>().testMode_noPossession = testMode_noPossession;
         obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
     }

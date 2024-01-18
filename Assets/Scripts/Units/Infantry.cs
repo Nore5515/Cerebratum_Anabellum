@@ -9,6 +9,7 @@ public class Infantry : Unit
     public float survivalTime = 15.0f;
     public PathHandler cm;
     public Animation anim;
+    public bool debugMode = false;
 
     public void CInfantry()
     {
@@ -24,6 +25,15 @@ public class Infantry : Unit
         rof = Constants.INF_INIT_FIRE_DELAY;
         threatLevel = 3;
         unitType = "Infantry";
+
+        if (debugMode)
+        {
+            SpawnedUnitStats debugSpawnedUnitStats = new SpawnedUnitStats();
+            debugSpawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
+            debugSpawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
+            debugSpawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
+            Initalize(new List<GameObject>(), "RED", debugSpawnedUnitStats);
+        }
     }
 
     void Start()
