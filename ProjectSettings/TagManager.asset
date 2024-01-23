@@ -13,6 +13,7 @@ TagManager:
   - hq
   - econ
   - ai_spawner
+  - path
   layers:
   - Default
   - TransparentFX

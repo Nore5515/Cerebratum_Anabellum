@@ -29,6 +29,11 @@ public class SpawnerPathManager : MonoBehaviour
                 aiControlled = true;
             }
         }
+
+        foreach (GameObject pathParent in GameObject.FindGameObjectsWithTag("path"))
+        {
+            paths.Add(pathParent);
+        }
     }
 
     private void Update()
@@ -78,15 +83,11 @@ public class SpawnerPathManager : MonoBehaviour
                     waiter++;
                 }
             }
-            else if (paths.Count > 0)
+            else if (paths.Count > 0 && pathSpheres.Count == 0)
             {
                 Debug.Log("PATHS?");
-                // pick path at random
-                // For each child game object in the path (each path is a parent object with many children acting as waypoint nodes),
-                //      create and add a path marker
-                //
-                Debug.Log(paths[0].transform.childCount);
-                foreach (Transform child in paths[0].transform)
+                int randomlySelectedPath = Random.Range(0, paths.Count);
+                foreach (Transform child in paths[randomlySelectedPath].transform)
                 {
                     GameObject marker = InstantiateBluePathMarkerAtPoint(child.position);
                     AddPathMarkerToPathSpheres(marker);
