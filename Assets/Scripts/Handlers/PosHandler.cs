@@ -59,6 +59,22 @@ public class PosHandler : MonoBehaviour
                 FreePossession();
             }
         }
+
+        if (controlledUnits.Count > 0)
+        {
+            if (controlledUnits[0] != null)
+            {
+                if (tilemap == null) return;
+                Vector3Int cellLoc = tilemap.WorldToCell(controlledUnits[0].transform.position);
+                //Debug.Log(cellLoc);
+                cellLoc.z = 0;
+                Debug.Log(tilemap.GetTile(cellLoc).name);
+                if (tilemap.GetTile(cellLoc).name == "IndNotFloorTile")
+                {
+                    Debug.Log("DIE");
+                }
+            }
+        }
     }
 
     public void PossessedMouseDown(Vector2 locationToShootAt)
@@ -79,26 +95,11 @@ public class PosHandler : MonoBehaviour
         }
         controlledUnits = new List<Unit>();
         camScript.followObj = null;
-        unitStatUI.SetActive(false);
+        //unitStatUI.SetActive(false);
+
+        SharedPosessionLogic.static_possessedUnit = null;
 
         CommandModeInputHandler.commandLoopEnabled = true;
-        //SetNoPosUnitUI();
-    }
-
-    private void SetPosUnitUI(Unit posUnit)
-    {
-        unitHP.text = posUnit.hp.ToString();
-        unitRoF.text = posUnit.rof.ToString();
-        unitRange.text = posUnit.unitRange.ToString();
-        unitTitle.text = posUnit.unitType;
-    }
-
-    private void SetNoPosUnitUI()
-    {
-        unitHP.text = "NAN";
-        unitRoF.text = "NAN";
-        unitRange.text = "NAN";
-        unitTitle.text = "NAN";
     }
 
     // Attempt to possess a unit, going through the various checks and what not.
@@ -171,26 +172,10 @@ public class PosHandler : MonoBehaviour
         if (unit == null) return;
 
         unit.beingControlled = true;
-        //InitializeCooldownSlider(unit);
         controlledUnits.Add(unit);
         camScript.followObj = unit.unitObj;
 
-        if (unit == null)
-        {
-            //SetNoPosUnitUI();
-        }
-        else
-        {
-            //SetPosUnitUI(unit);
-            //unitStatUI.SetActive(true);
-        }
-    }
-
-    void InitializeCooldownSlider(Unit unit)
-    {
-        cooldownSlider.minValue = 0.0f;
-        cooldownSlider.maxValue = unit.rof;
-        cooldownSlider.value = cooldownSlider.maxValue;
+        SharedPosessionLogic.static_possessedUnit = unit;
     }
 
     // Creates instance
@@ -240,17 +225,9 @@ public class PosHandler : MonoBehaviour
         {
             if (controlledUnits[0] != null)
             {
-                //UpdateCooldownSlider(controlledUnits[0]);
-                //TEMP
                 UnitFireCooldownChecker(controlledUnits[0]);
             }
         }
-    }
-
-    void UpdateCooldownSlider(Unit unit)
-    {
-        cooldownSlider.value = cooldownSlider.maxValue - countdown;
-        UnitFireCooldownChecker(unit);
     }
 
     void UnitFireCooldownChecker(Unit unit)

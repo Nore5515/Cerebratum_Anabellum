@@ -51,7 +51,7 @@ public class UI : MonoBehaviour
 
     void PlaceSpawnerClicked()
     {
-        Debug.Log("Place Spawner!");
+        //Debug.Log("Place Spawner!");
 
         // Toggles On/Off
         if (placingSpawner)

@@ -362,6 +362,7 @@ public class Unit : MonoBehaviour
             zedZeroedMovement.z = Constants.ZED_OFFSET;
             this.transform.position = zedZeroedMovement;
             direction = controlDirection;
+
         }
     }
 

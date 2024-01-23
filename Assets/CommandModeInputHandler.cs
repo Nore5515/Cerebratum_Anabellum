@@ -144,7 +144,6 @@ public class CommandModeInputHandler : MonoBehaviour
         rayObj = rayHandler.GenerateLayeredRayObj("SpawnerUI");
         if (rayObj.hit.collider != null)
         {
-            Debug.Log("Hit button!");
             HitDrawButton();
             return true;
         }
@@ -156,7 +155,6 @@ public class CommandModeInputHandler : MonoBehaviour
         rayObj = rayHandler.GenerateLayeredRayObj("Spawner");
         if (rayObj.hit.collider != null)
         {
-            Debug.Log("Hit spawner!");
             HitSpawner(rayObj.hit.collider.gameObject);
             return true;
         }
