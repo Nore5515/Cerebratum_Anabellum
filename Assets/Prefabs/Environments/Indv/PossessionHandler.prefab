@@ -53,7 +53,9 @@ MonoBehaviour:
   unitStatUI: {fileID: 0}
   line: {fileID: 0}
   possessionReady: 0
-  possessionButton: {fileID: 0}
   pathHandler: {fileID: 0}
   teamColor: RED
   controlledUnits: []
+  cmdInputHandler: {fileID: 0}
+  tilemap: {fileID: 0}
+  unitFallingDeathPrefab: {fileID: 1965369830691972299, guid: ec4afe2eef83242fba3411f2875760cc, type: 3}

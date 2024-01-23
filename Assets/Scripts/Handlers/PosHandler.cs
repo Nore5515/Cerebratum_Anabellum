@@ -43,6 +43,9 @@ public class PosHandler : MonoBehaviour
     [SerializeField]
     Tilemap tilemap;
 
+    [SerializeField]
+    GameObject unitFallingDeathPrefab;
+
     public void Start()
     {
         posInputHandler = new PossessionInputHandler(this, tilemap);
@@ -65,13 +68,26 @@ public class PosHandler : MonoBehaviour
             if (controlledUnits[0] != null)
             {
                 if (tilemap == null) return;
-                Vector3Int cellLoc = tilemap.WorldToCell(controlledUnits[0].transform.position);
-                //Debug.Log(cellLoc);
-                cellLoc.z = 0;
-                Debug.Log(tilemap.GetTile(cellLoc).name);
-                if (tilemap.GetTile(cellLoc).name == "IndNotFloorTile")
+                Vector3 unitPos = controlledUnits[0].transform.position;
+                Vector3 modifiedSpritePosLeft = new Vector3(unitPos.x + 0.15f, unitPos.y - 0.2f, unitPos.z);
+                Vector3 modifiedSpritePosRight = new Vector3(unitPos.x - 0.15f, unitPos.y - 0.2f, unitPos.z);
+                Vector3 modifiedSpritePosLeftUp = new Vector3(unitPos.x + 0.15f, unitPos.y + 0.2f, unitPos.z);
+                Vector3 modifiedSpritePosRightUp = new Vector3(unitPos.x - 0.15f, unitPos.y + 0.2f, unitPos.z);
+                Vector3Int cellLocLeft = tilemap.WorldToCell(modifiedSpritePosLeft);
+                cellLocLeft.z = 0;
+                Vector3Int cellLocRight = tilemap.WorldToCell(modifiedSpritePosRight);
+                cellLocRight.z = 0;
+                Vector3Int cellLocLeftUp = tilemap.WorldToCell(modifiedSpritePosLeftUp);
+                cellLocLeftUp.z = 0;
+                Vector3Int cellLocRightUp = tilemap.WorldToCell(modifiedSpritePosRightUp);
+                cellLocRightUp.z = 0;
+                if (tilemap.GetTile(cellLocLeft).name == "IndNotFloorTile" && tilemap.GetTile(cellLocRight).name == "IndNotFloorTile" && tilemap.GetTile(cellLocLeftUp).name == "IndNotFloorTile" && tilemap.GetTile(cellLocRightUp).name == "IndNotFloorTile")
                 {
                     Debug.Log("DIE");
+                    Unit toDieUnit = controlledUnits[0];
+                    Instantiate(unitFallingDeathPrefab, toDieUnit.transform.position, toDieUnit.transform.rotation);
+                    FreePossession();
+                    Destroy(toDieUnit.gameObject);
                 }
             }
         }

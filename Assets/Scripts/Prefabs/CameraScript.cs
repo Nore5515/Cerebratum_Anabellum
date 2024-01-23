@@ -14,6 +14,10 @@ public class CameraScript : MonoBehaviour
     private float SHIFT_SPEED = 25.0f;
     private float BASE_SPEED = 10.0f;
 
+    bool possessing = false;
+
+    Vector3 lastPos = new Vector3();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +46,11 @@ public class CameraScript : MonoBehaviour
     {
         if (followObj == null)
         {
+            if (possessing)
+            {
+                anchor.transform.position = new Vector3(lastPos.x, lastPos.y, anchor.transform.position.z);
+                possessing = false;
+            }
             // mainCam.fieldOfView = 80;
             mainCam.transform.position = anchor.transform.position;
             float zMovement = Input.GetAxis("Vertical");
@@ -58,6 +67,8 @@ public class CameraScript : MonoBehaviour
             Vector3 newPos = followObj.transform.position;
             newPos.z = -10;
             mainCam.transform.position = newPos;
+            possessing = true;
+            lastPos = followObj.transform.position;
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
