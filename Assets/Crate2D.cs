@@ -14,6 +14,9 @@ public class Crate2D : MonoBehaviour
     [SerializeField]
     float chanceToReactivatePerSecond = 0.05f;
 
+    [SerializeField]
+    bool suspendedOnStart = false;
+
     int redProgress = 0;
     int blueProgress = 0;
 
@@ -24,8 +27,17 @@ public class Crate2D : MonoBehaviour
     bool crateSuspended = false;
     int crateRespawnTimer = 0;
 
+    Color redColor = new Color(1.0f, 0.8f, 0.8f);
+    Color neutralColor = new Color(1.0f, 1.0f, 1.0f);
+    Color blueColor = new Color(0.8f, 0.8f, 1.0f);
+
+
     private void Start()
     {
+        if (suspendedOnStart)
+        {
+            SuspendCrate();
+        }
         InvokeRepeating("OutputTime", 1f, 0.25f);  //1s delay, repeat every 1s
     }
 
@@ -81,6 +93,10 @@ public class Crate2D : MonoBehaviour
         {
             CalculateUnitCaptureRate();
         }
+        else
+        {
+            crateSprite.color = neutralColor;
+        }
     }
 
     private void CalculateUnitCaptureRate()
@@ -103,6 +119,7 @@ public class Crate2D : MonoBehaviour
 
         if (redCount > blueCount)
         {
+            crateSprite.color = redColor;
             differenceBetweenTeams = redCount - blueCount;
             if (blueProgress > 0)
             {
@@ -123,6 +140,7 @@ public class Crate2D : MonoBehaviour
         }
         else
         {
+            crateSprite.color = blueColor;
             differenceBetweenTeams = blueCount - redCount;
             blueProgress += differenceBetweenTeams;
             if (redProgress > 0)
