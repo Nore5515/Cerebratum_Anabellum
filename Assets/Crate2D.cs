@@ -11,12 +11,18 @@ public class Crate2D : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI progressText;
 
+    [SerializeField]
+    float chanceToReactivatePerSecond = 0.05f;
+
     int redProgress = 0;
     int blueProgress = 0;
 
     public List<Unit> capturingUnits = new List<Unit>();
 
     int MAX_CAPTURE = 500;
+
+    bool crateSuspended = false;
+    int crateRespawnTimer = 0;
 
     private void Start()
     {
@@ -25,8 +31,28 @@ public class Crate2D : MonoBehaviour
 
     void OutputTime()
     {
-        progressText.text = (redProgress - blueProgress).ToString();
-        CheckUnitCapture();
+        if (!crateSuspended)
+        {
+            progressText.text = (redProgress - blueProgress).ToString();
+            CheckUnitCapture();
+        }
+        else
+        {
+            if (crateRespawnTimer >= 4)
+            {
+                crateRespawnTimer = 0;
+                float result = Random.Range(0.0f, 1.0f);
+                if (result < chanceToReactivatePerSecond)
+                {
+                    crateSuspended = true;
+                    crateSprite.gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                crateRespawnTimer++;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -35,8 +61,22 @@ public class Crate2D : MonoBehaviour
         crateSprite.transform.Rotate(new Vector3(0.0f, 0.0f, 0.1f));
     }
 
+    private void RemoveNullUnits()
+    {
+        List<Unit> newUnits = new List<Unit>();
+        foreach (Unit u in capturingUnits)
+        {
+            if (u != null)
+            {
+                newUnits.Add(u);
+            }
+        }
+        capturingUnits = newUnits;
+    }
+
     private void CheckUnitCapture()
     {
+        RemoveNullUnits();
         if (capturingUnits.Count > 0)
         {
             CalculateUnitCaptureRate();
@@ -77,7 +117,7 @@ public class Crate2D : MonoBehaviour
                 redProgress += differenceBetweenTeams;
                 if (redProgress > MAX_CAPTURE)
                 {
-                    Destroy(gameObject);
+                    SuspendCrate();
                 }
             }
         }
@@ -98,10 +138,20 @@ public class Crate2D : MonoBehaviour
                 blueProgress += differenceBetweenTeams;
                 if (blueProgress > MAX_CAPTURE)
                 {
-                    Destroy(gameObject);
+                    SuspendCrate();
                 }
             }
         }
+    }
+
+    private void SuspendCrate()
+    {
+        crateSprite.gameObject.SetActive(false);
+        crateSuspended = true;
+        redProgress = 0;
+        blueProgress = 0;
+        capturingUnits = new List<Unit>();
+        progressText.text = "";
     }
 
     private void OnTriggerEnter(Collider other)
