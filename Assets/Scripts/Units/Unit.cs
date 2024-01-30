@@ -153,6 +153,19 @@ public class Unit : MonoBehaviour
         return hp;
     }
 
+    public void ReceiveDamage(int damage)
+    {
+        hp -= damage;
+        if (hpSlider != null)
+        {
+            hpSlider.value = hp;
+        }
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // CALLED WHEN POSSESSED
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {

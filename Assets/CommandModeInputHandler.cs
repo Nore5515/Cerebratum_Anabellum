@@ -75,10 +75,19 @@ public class CommandModeInputHandler : MonoBehaviour
         {
             MouseUpFuncs();
         }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            AltMouseUpFuncs();
+        }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             MouseDownFuncs();
         }
+    }
+
+    void AltMouseUpFuncs()
+    {
+        posHandler.ReleasedMouse();
     }
 
     void MouseUpFuncs()

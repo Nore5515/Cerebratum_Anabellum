@@ -23,6 +23,13 @@ public class GrenadeInstance : MonoBehaviour
     bool released = false;
     float count = 0.0f;
 
+    Vector3 detonationExtents;
+
+    private void Start()
+    {
+        detonationExtents = new Vector3(Constants.GRENADE_LOCAL_SCALE, Constants.GRENADE_LOCAL_SCALE * 0.5f, Constants.GRENADE_LOCAL_SCALE);
+    }
+
     void CalculateBezierPoint()
     {
         float bezierX = startingPoint.x + ((endingPoint.x - startingPoint.x) / 2);
@@ -78,8 +85,43 @@ public class GrenadeInstance : MonoBehaviour
     IEnumerator BeginDetonationSequence()
     {
         yield return new WaitForSeconds(grenadeLifetime);
+        DamageEnemies();
         Destroy(grenadeProjectileInstance);
         Destroy(gameObject);
     }
 
+    void DamageEnemies()
+    {
+        Collider[] hitColliders = Physics.OverlapBox(gameObject.transform.position, detonationExtents / 2, Quaternion.identity);
+
+        foreach (Collider c in hitColliders)
+        {
+            Debug.Log(c.name);
+            Unit u = GetUnitFromCollider(c);
+            if (u != null)
+            {
+                u.ReceiveDamage(1);
+            }
+        }
+    }
+
+    Unit GetUnitFromCollider(Collider c)
+    {
+        if (c.name == "UnitCollisionDetector")
+        {
+            Unit detectedUnit = c.transform.parent.gameObject.GetComponent<Unit>();
+            if (detectedUnit != null)
+            {
+                return detectedUnit;
+            }
+        }
+        return null;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
+        Gizmos.DrawWireCube(transform.position, detonationExtents);
+    }
 }

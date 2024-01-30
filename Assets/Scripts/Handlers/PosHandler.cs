@@ -137,7 +137,7 @@ public class PosHandler : MonoBehaviour
         {
             Destroy(grenadeInstance);
         }
-        if (grenadeInstance != null)
+        else if (grenadeInstance != null)
         {
             if (grenadeInstance.transform.localScale.x >= Constants.GRENADE_LOCAL_SCALE * Constants.GRENADE_MINIMUM_RELEASE_SCALE)
             {
