@@ -39,6 +39,12 @@ public static class Constants
     public static float INF_MAX_RANGE = 6.0f;
     public static float INF_MAX_SPAWN_DELAY = 1.0f;
 
+    // --
+
+    public static float GRENADE_LOCAL_SCALE = 2.0f;
+    public static float GRENADE_INITIAL_SCALE = 0.25f;
+    public static float GRENADE_MINIMUM_RELEASE_SCALE = 1.0f;
+
     // Spider
     public static int SPIDER_DMG => 2;
     public static int SPIDER_HP => 20;

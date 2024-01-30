@@ -46,6 +46,11 @@ public class PosHandler : MonoBehaviour
     [SerializeField]
     GameObject unitFallingDeathPrefab;
 
+    [SerializeField]
+    GameObject grenadeInstancePrefab;
+
+    GameObject grenadeInstance;
+
     public void Start()
     {
         posInputHandler = new PossessionInputHandler(this, tilemap);
@@ -90,6 +95,41 @@ public class PosHandler : MonoBehaviour
                     Destroy(toDieUnit.gameObject);
                 }
             }
+        }
+    }
+
+    public void HeldMouse(Vector2 locationOfGrenadeShadow)
+    {
+        Vector3 grenadePos = new Vector3(locationOfGrenadeShadow.x, locationOfGrenadeShadow.y, Constants.ZED_OFFSET);
+        if (grenadeInstance == null)
+        {
+            grenadeInstance = Instantiate(grenadeInstancePrefab, grenadePos, controlledUnits[0].transform.rotation);
+            grenadeInstance.transform.localScale = new Vector3(Constants.GRENADE_INITIAL_SCALE, Constants.GRENADE_INITIAL_SCALE, Constants.GRENADE_INITIAL_SCALE);
+        }
+        else
+        {
+            grenadeInstance.transform.position = grenadePos;
+            if (grenadeInstance.transform.localScale.x < Constants.GRENADE_LOCAL_SCALE)
+            {
+                grenadeInstance.transform.localScale = grenadeInstance.transform.localScale * 1.01f;
+            }
+        }
+    }
+
+    public void ReleasedMouse()
+    {
+        if (grenadeInstance != null)
+        {
+            if (grenadeInstance.transform.localScale.x >= Constants.GRENADE_LOCAL_SCALE * Constants.GRENADE_MINIMUM_RELEASE_SCALE
+                && controlledUnits[0] != null)
+            {
+                grenadeInstance.GetComponent<GrenadeInstance>().ReleasedFromPlayer(controlledUnits[0].transform.position);
+            }
+            else
+            {
+                Destroy(grenadeInstance);
+            }
+            grenadeInstance = null;
         }
     }
 

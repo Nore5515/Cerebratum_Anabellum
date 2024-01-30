@@ -14,6 +14,8 @@ public class Economy : MonoBehaviour
     public int redNaniteBoost = 0;
     public int blueNaniteBoost = 0;
 
+    int cycleLength = 60;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,7 @@ public class Economy : MonoBehaviour
 
         // TODO: make better cyclemax parse too lasy
         // Starting Conds
-        TeamStats.CycleLength = 15;
+        TeamStats.CycleLength = cycleLength;
         TeamStats.RedNaniteGain = 1;
         TeamStats.BlueNaniteGain = 1;
         TeamStats.RedPoints = redNaniteBoost;

@@ -23,6 +23,7 @@ public class Crate2D : MonoBehaviour
     public List<Unit> capturingUnits = new List<Unit>();
 
     int MAX_CAPTURE = 500;
+    int MAX_CAPTURE_GROWTH_RATE = 500;
 
     bool crateSuspended = false;
     int crateRespawnTimer = 0;
@@ -56,8 +57,8 @@ public class Crate2D : MonoBehaviour
                 float result = Random.Range(0.0f, 1.0f);
                 if (result < chanceToReactivatePerSecond)
                 {
-                    crateSuspended = true;
-                    crateSprite.gameObject.SetActive(true);
+                    UnsuspendCrate();
+                    MAX_CAPTURE = MAX_CAPTURE + MAX_CAPTURE_GROWTH_RATE;
                 }
             }
             else
@@ -107,7 +108,14 @@ public class Crate2D : MonoBehaviour
         {
             if (u.unitTeam == "RED")
             {
-                redCount++;
+                if (u.beingControlled)
+                {
+                    redCount += 4;
+                }
+                else
+                {
+                    redCount++;
+                }
             }
             else
             {
@@ -134,6 +142,7 @@ public class Crate2D : MonoBehaviour
                 redProgress += differenceBetweenTeams;
                 if (redProgress > MAX_CAPTURE)
                 {
+                    TeamStats.RedPoints++;
                     SuspendCrate();
                 }
             }
@@ -156,6 +165,7 @@ public class Crate2D : MonoBehaviour
                 blueProgress += differenceBetweenTeams;
                 if (blueProgress > MAX_CAPTURE)
                 {
+                    TeamStats.BluePoints++;
                     SuspendCrate();
                 }
             }
@@ -170,6 +180,14 @@ public class Crate2D : MonoBehaviour
         blueProgress = 0;
         capturingUnits = new List<Unit>();
         progressText.text = "";
+    }
+
+    private void UnsuspendCrate()
+    {
+        crateSuspended = false;
+        crateSprite.gameObject.SetActive(true);
+        redProgress = 0;
+        blueProgress = 0;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -69,9 +69,17 @@ class PossessionInputHandler
         {
             MouseHeldFuncs();
         }
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            AltMouseHeldFuncs();
+        }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             MouseUpFuncs();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            AltMouseUpFuncs();
         }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -81,12 +89,19 @@ class PossessionInputHandler
 
     void MouseUpFuncs()
     {
-        //isDrawingPathFromSpawner = false;
+    }
 
-        //if (pathHandler.pathDrawingMode)
-        //{
-        //    pathHandler.StopDrawingPath();
-        //}
+    void AltMouseUpFuncs()
+    {
+        posHandler.ReleasedMouse();
+    }
+
+    void AltMouseHeldFuncs()
+    {
+        if (hit2D.point != null)
+        {
+            posHandler.HeldMouse(hit2D.point);
+        }
     }
 
     void MouseHeldFuncs()
@@ -105,6 +120,9 @@ class PossessionInputHandler
 
     void MouseDownFuncs()
     {
-        posHandler.PossessedMouseDown(hit2D.point);
+        if (hit2D.point != null)
+        {
+            posHandler.PossessedMouseDown(hit2D.point);
+        }
     }
 }
