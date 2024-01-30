@@ -51,6 +51,9 @@ public class PosHandler : MonoBehaviour
 
     GameObject grenadeInstance;
 
+    int nullCheck = 0;
+    int maxNullCheck = 100;
+
     public void Start()
     {
         posInputHandler = new PossessionInputHandler(this, tilemap);
@@ -63,6 +66,14 @@ public class PosHandler : MonoBehaviour
         if (controlledUnits.Count > 0)
         {
             if (controlledUnits[0] == null)
+            {
+                Debug.Log("What");
+                FreePossession();
+            }
+        }
+        else
+        {
+            if (!CommandModeInputHandler.commandLoopEnabled)
             {
                 FreePossession();
             }
@@ -101,6 +112,10 @@ public class PosHandler : MonoBehaviour
     public void HeldMouse(Vector2 locationOfGrenadeShadow)
     {
         Vector3 grenadePos = new Vector3(locationOfGrenadeShadow.x, locationOfGrenadeShadow.y, Constants.ZED_OFFSET);
+        if (!UnitSanityCheck())
+        {
+            return;
+        }
         if (grenadeInstance == null)
         {
             grenadeInstance = Instantiate(grenadeInstancePrefab, grenadePos, controlledUnits[0].transform.rotation);
@@ -118,10 +133,13 @@ public class PosHandler : MonoBehaviour
 
     public void ReleasedMouse()
     {
+        if (!UnitSanityCheck())
+        {
+            Destroy(grenadeInstance);
+        }
         if (grenadeInstance != null)
         {
-            if (grenadeInstance.transform.localScale.x >= Constants.GRENADE_LOCAL_SCALE * Constants.GRENADE_MINIMUM_RELEASE_SCALE
-                && controlledUnits[0] != null)
+            if (grenadeInstance.transform.localScale.x >= Constants.GRENADE_LOCAL_SCALE * Constants.GRENADE_MINIMUM_RELEASE_SCALE)
             {
                 grenadeInstance.GetComponent<GrenadeInstance>().ReleasedFromPlayer(controlledUnits[0].transform.position);
             }
@@ -133,8 +151,21 @@ public class PosHandler : MonoBehaviour
         }
     }
 
+    public bool UnitSanityCheck()
+    {
+        if (controlledUnits.Count > 0)
+        {
+            if (controlledUnits[0] != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void PossessedMouseDown(Vector2 locationToShootAt)
     {
+        if (!UnitSanityCheck()) return;
         controlledUnits[0].PosAttemptShotAtPosition(new Vector3(locationToShootAt.x, locationToShootAt.y, Constants.ZED_OFFSET));
     }
 
