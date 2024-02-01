@@ -60,8 +60,8 @@ public static class Constants
 
     // Scouts
     public static int SCOUT_DMG => 1;
-    public static int SCOUT_HP => 1;
-    public static int SCOUT_SPEED => 8;
+    public static int SCOUT_HP => 8;
+    public static float SCOUT_SPEED => 4.0f;
 
     public static float SCOUT_INIT_FIRE_DELAY = 2.0f;
     public static float SCOUT_INIT_RANGE = 3.0f;

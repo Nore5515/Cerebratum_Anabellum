@@ -78,6 +78,15 @@ public class Unit : MonoBehaviour
 
     public bool testMode_noPossession = false;
 
+    private void Start()
+    {
+        SpecializedInitialization();
+    }
+
+    public virtual void SpecializedInitialization()
+    {
+    }
+
     // TODO: There is an error within spawner initializing this, and the start function within the
     // classes that extend Unit.
     //
@@ -371,6 +380,7 @@ public class Unit : MonoBehaviour
         {
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
+            Debug.Log(speed);
             Vector3 zedZeroedMovement = transform.position;
             zedZeroedMovement.z = Constants.ZED_OFFSET;
             this.transform.position = zedZeroedMovement;

@@ -9,6 +9,7 @@ public class Scout : Unit
     public float survivalTime = 15.0f;
     public PathHandler cm;
     public Animation anim;
+    public bool debugMode = false;
 
     public void CScout()
     {
@@ -24,9 +25,18 @@ public class Scout : Unit
         rof = Constants.SCOUT_INIT_FIRE_DELAY;
         threatLevel = 3;
         unitType = "Scout";
+
+        if (debugMode)
+        {
+            SpawnedUnitStats debugSpawnedUnitStats = new SpawnedUnitStats();
+            debugSpawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
+            debugSpawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
+            debugSpawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
+            Initalize(new List<GameObject>(), "RED", debugSpawnedUnitStats);
+        }
     }
 
-    void Start()
+    public override void SpecializedInitialization()
     {
         CScout();
         hp = maxHP;
@@ -34,11 +44,6 @@ public class Scout : Unit
         {
             hpSlider.maxValue = maxHP;
             hpSlider.value = hp;
-        }
-        if (survivalTime > 0)
-        {
-            IEnumerator coroutine = SelfDestruct();
-            StartCoroutine(coroutine);
         }
     }
 
