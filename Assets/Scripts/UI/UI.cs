@@ -21,6 +21,9 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject spawnerPrefab;
     [SerializeField] GameObject ai_spawnerPrefab;
 
+    // Environmental Stuff
+    [SerializeField] GameObject env_scoutSpawning;
+
     int startingRedHP;
 
     bool spawnerInRange = false;
@@ -46,6 +49,20 @@ public class UI : MonoBehaviour
         if (econObj != null)
         {
             sceneEcon = econObj.GetComponent<Economy>();
+        }
+    }
+
+    public void PlaceScoutClicked()
+    {
+        ScoutSpawning scoutSpawner = FindObjectOfType<ScoutSpawning>();
+        if (scoutSpawner != null)
+        {
+            scoutSpawner.ScoutSpawnButtonClicked();
+        }
+        else
+        {
+            Instantiate(env_scoutSpawning, transform.position, transform.rotation);
+            PlaceScoutClicked();
         }
     }
 

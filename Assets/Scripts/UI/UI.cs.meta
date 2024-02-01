@@ -3,7 +3,17 @@ guid: 0a92610689cf146a2bedaf903f009cbb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthText: {instanceID: 0}
+  - nanitesText: {instanceID: 0}
+  - nanitesPerMinuteText: {instanceID: 0}
+  - gameOverText: {instanceID: 0}
+  - gameoverBGImage: {instanceID: 0}
+  - placeSpawner: {instanceID: 0}
+  - spawnerGhost: {instanceID: 0}
+  - spawnerPrefab: {instanceID: 0}
+  - ai_spawnerPrefab: {instanceID: 0}
+  - env_scoutSpawning: {fileID: 1085228544875543901, guid: 301216395bc2f49d9a0ec6c2658d6aa3, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

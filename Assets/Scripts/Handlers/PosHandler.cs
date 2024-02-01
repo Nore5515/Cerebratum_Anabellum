@@ -187,6 +187,8 @@ public class PosHandler : MonoBehaviour
         SharedPosessionLogic.static_possessedUnit = null;
 
         CommandModeInputHandler.commandLoopEnabled = true;
+
+        line.SetActive(false);
     }
 
     // Attempt to possess a unit, going through the various checks and what not.
@@ -263,6 +265,8 @@ public class PosHandler : MonoBehaviour
         camScript.followObj = unit.unitObj;
 
         SharedPosessionLogic.static_possessedUnit = unit;
+
+        line.SetActive(true);
     }
 
     // Creates instance
