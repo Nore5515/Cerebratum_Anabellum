@@ -11,9 +11,9 @@ public class SpawnerStatsHandler : MonoBehaviour
         unitType = _unitType;
     }
 
-	public bool IsMaxedFireRate(SpawnedUnitStats spawnedUnitStats)
-	{
-        if (unitType == "Infantry")
+    public bool IsMaxedFireRate(SpawnedUnitStats spawnedUnitStats)
+    {
+        if (unitType == Constants.INF_TYPE)
         {
             if (spawnedUnitStats.fireDelay < Constants.INF_MAX_FIRE_DELAY) return true;
         }
@@ -22,7 +22,7 @@ public class SpawnerStatsHandler : MonoBehaviour
 
     public bool IsMaxedRange(SpawnedUnitStats spawnedUnitStats)
     {
-        if (unitType == "Infantry")
+        if (unitType == Constants.INF_TYPE)
         {
             if (spawnedUnitStats.unitRange > Constants.INF_MAX_RANGE) return true;
         }
@@ -31,7 +31,7 @@ public class SpawnerStatsHandler : MonoBehaviour
 
     public bool IsMaxedSpawnRate(SpawnedUnitStats spawnedUnitStats)
     {
-        if (unitType == "Infantry")
+        if (unitType == Constants.INF_TYPE)
         {
             if (spawnedUnitStats.spawnDelay < Constants.INF_MAX_SPAWN_DELAY) return true;
         }

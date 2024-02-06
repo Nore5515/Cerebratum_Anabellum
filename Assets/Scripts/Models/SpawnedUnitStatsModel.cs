@@ -6,7 +6,7 @@ public class SpawnedUnitStats
 
     public void ResetToStartingStats(string unitType)
     {
-        if (unitType == "Infantry")
+        if (unitType == Constants.INF_TYPE)
         {
             fireDelay = Constants.INF_INIT_FIRE_DELAY;
             unitRange = Constants.INF_INIT_RANGE;
@@ -18,7 +18,7 @@ public class SpawnedUnitStats
             unitRange = Constants.SPIDER_INIT_RANGE;
             spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
         }
-        else if (unitType == "Scout")
+        else if (unitType == Constants.SCOUT_TYPE)
         {
             fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
             unitRange = Constants.SCOUT_INIT_SPAWN_DELAY;
@@ -27,8 +27,8 @@ public class SpawnedUnitStats
         else
         {
             // Just default to infantry for now.
-            fireDelay  = Constants.INF_INIT_FIRE_DELAY;
-            unitRange  = Constants.INF_INIT_SPAWN_DELAY;
+            fireDelay = Constants.INF_INIT_FIRE_DELAY;
+            unitRange = Constants.INF_INIT_SPAWN_DELAY;
             spawnDelay = Constants.INF_INIT_RANGE;
         }
     }

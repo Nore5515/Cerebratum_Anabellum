@@ -34,7 +34,7 @@ public class NeutralSpawner : Structure
 
     public int maxPathLength;
 
-    public string unitType = "Infantry";
+    public string unitType = Constants.INF_TYPE;
 
     bool spawningIsValid = false;
 
@@ -61,7 +61,7 @@ public class NeutralSpawner : Structure
             //Debug.Log("ON");
             spawningIsValid = true;
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 255, 0);
-            
+
         }
         else
         {
@@ -70,7 +70,7 @@ public class NeutralSpawner : Structure
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(255, 255, 255);
         }
 
-        
+
     }
 
     void InitializeUnitType(string newUnitType)
@@ -85,11 +85,11 @@ public class NeutralSpawner : Structure
 
     GameObject GetPrefabFromUnitString(string unitTypeString)
     {
-        if (unitTypeString == "Infantry")
+        if (unitTypeString == Constants.INF_TYPE)
         {
             return infantryPrefab;
         }
-        else if (unitTypeString == "Scout")
+        else if (unitTypeString == Constants.SCOUT_TYPE)
         {
             return scoutPrefab;
         }
@@ -147,7 +147,7 @@ public class NeutralSpawner : Structure
         {
             UndimHut();
         }
-        
+
     }
 
     private void DimHut()
@@ -216,13 +216,13 @@ public class NeutralSpawner : Structure
             spawnedUnitStats.spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
             spawnedUnitStats.unitRange = Constants.SPIDER_INIT_RANGE;
         }
-        else if (unitType == "Infantry")
+        else if (unitType == Constants.INF_TYPE)
         {
             spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
             spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
             spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
         }
-        else if (unitType == "Scout")
+        else if (unitType == Constants.SCOUT_TYPE)
         {
             spawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
             spawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;

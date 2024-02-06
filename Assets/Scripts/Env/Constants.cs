@@ -27,6 +27,8 @@ public static class Constants
     // UNIT STATS
 
     // Infantry
+    public static string INF_TYPE => "Infantry";
+
     public static int INF_DMG => 1;
     public static int INF_HP => 2;
     public static float INF_SPEED => 0.75f;
@@ -59,6 +61,8 @@ public static class Constants
     public static float SPIDER_MAX_SPAWN_DELAY = 4.0f;
 
     // Scouts
+    public static string SCOUT_TYPE => "Scout";
+
     public static int SCOUT_DMG => 1;
     public static int SCOUT_HP => 8;
     public static float SCOUT_SPEED => 4.0f;

@@ -24,7 +24,7 @@ public class Infantry : Unit
         speed = Constants.INF_SPEED;
         rof = Constants.INF_INIT_FIRE_DELAY;
         threatLevel = 3;
-        unitType = "Infantry";
+        unitType = Constants.INF_TYPE;
 
         if (debugMode)
         {

@@ -407,7 +407,10 @@ public class Unit : MonoBehaviour
                 {
                     if (unitPointHandler.pointVectors.Count <= 0)
                     {
-                        Destroy(gameObject);
+                        if (unitType != "Scout")
+                        {
+                            Destroy(gameObject);
+                        }
                     }
                 }
             }

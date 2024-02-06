@@ -54,6 +54,9 @@ public class PosHandler : MonoBehaviour
     int nullCheck = 0;
     int maxNullCheck = 100;
 
+    // TELEPORT -- SCOUT
+    bool teleportLocked = false;
+
     public void Start()
     {
         posInputHandler = new PossessionInputHandler(this, tilemap);
@@ -109,13 +112,35 @@ public class PosHandler : MonoBehaviour
         }
     }
 
-    public void HeldMouse(Vector2 locationOfGrenadeShadow)
+    public void HeldMouse(Vector2 locationOfMouseCursor)
     {
-        Vector3 grenadePos = new Vector3(locationOfGrenadeShadow.x, locationOfGrenadeShadow.y, Constants.ZED_OFFSET);
         if (!UnitSanityCheck())
         {
             return;
         }
+        if (IsPossessedUnitInfantry())
+        {
+            HeldMouseInfantry(locationOfMouseCursor);
+        }
+        else if (IsPossessedUnitScout())
+        {
+            HeldMouseScout(locationOfMouseCursor);
+        }
+    }
+
+    void HeldMouseScout(Vector2 locationOfMouseCursor)
+    {
+        if (!teleportLocked)
+        {
+            Vector3 teleportPos = new Vector3(locationOfMouseCursor.x, locationOfMouseCursor.y, Constants.ZED_OFFSET);
+            controlledUnits[0].transform.position = teleportPos;
+            teleportLocked = true;
+        }
+    }
+
+    void HeldMouseInfantry(Vector2 locationOfMouseCursor)
+    {
+        Vector3 grenadePos = new Vector3(locationOfMouseCursor.x, locationOfMouseCursor.y, Constants.ZED_OFFSET);
         if (grenadeInstance == null)
         {
             grenadeInstance = Instantiate(grenadeInstancePrefab, grenadePos, controlledUnits[0].transform.rotation);
@@ -149,6 +174,11 @@ public class PosHandler : MonoBehaviour
             }
             grenadeInstance = null;
         }
+
+        if (teleportLocked)
+        {
+            teleportLocked = false;
+        }
     }
 
     public bool UnitSanityCheck()
@@ -159,6 +189,24 @@ public class PosHandler : MonoBehaviour
             {
                 return true;
             }
+        }
+        return false;
+    }
+
+    bool IsPossessedUnitScout()
+    {
+        if (controlledUnits[0].unitType == Constants.SCOUT_TYPE)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsPossessedUnitInfantry()
+    {
+        if (controlledUnits[0].unitType == Constants.INF_TYPE)
+        {
+            return true;
         }
         return false;
     }

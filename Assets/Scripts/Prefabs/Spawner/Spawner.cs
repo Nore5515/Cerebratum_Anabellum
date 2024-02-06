@@ -36,7 +36,7 @@ public class Spawner : Structure
 
     public int maxPathLength;
 
-    public string unitType = "Infantry";
+    public string unitType = Constants.INF_TYPE;
 
     public bool testMode_noPossession = false;
 
@@ -204,13 +204,13 @@ public class Spawner : Structure
             spawnedUnitStats.spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
             spawnedUnitStats.unitRange = Constants.SPIDER_INIT_RANGE;
         }
-        else if (unitType == "Infantry")
+        else if (unitType == Constants.INF_TYPE)
         {
             spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
             spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
             spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
         }
-        else if (unitType == "Scout")
+        else if (unitType == Constants.SCOUT_TYPE)
         {
             spawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
             spawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
