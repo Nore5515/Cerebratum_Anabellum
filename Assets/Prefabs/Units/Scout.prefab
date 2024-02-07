@@ -318,7 +318,7 @@ MonoBehaviour:
   survivalTime: -1
   cm: {fileID: 0}
   anim: {fileID: 0}
-  debugMode: 0
+  debugMode: 1
 --- !u!65 &7805139605555616395
 BoxCollider:
   m_ObjectHideFlags: 0

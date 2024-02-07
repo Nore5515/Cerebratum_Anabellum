@@ -17,7 +17,6 @@ public class ScoutSpawning : MonoBehaviour
     public void ScoutSpawnButtonClicked()
     {
         spawnerButtonClicked = !spawnerButtonClicked;
-        Debug.Log("Scout");
     }
 
     private void Update()
@@ -43,6 +42,7 @@ public class ScoutSpawning : MonoBehaviour
                         newScout.transform.position = scoutGhostInstance.transform.position;
                         newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                         scoutsSpawned.Add(newScout.GetComponent<Unit>());
+                        spawnerButtonClicked = false;
                     }
                 }
             }

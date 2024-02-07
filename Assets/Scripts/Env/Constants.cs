@@ -24,6 +24,9 @@ public static class Constants
 
     public static float ZED_OFFSET = -0.1f;
 
+    public static string RED_TEAM = "RED";
+    public static string BLUE_TEAM = "BLUE";
+
     // UNIT STATS
 
     // Infantry

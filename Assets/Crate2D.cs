@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class Crate2D : MonoBehaviour
 {
+    class CaptureProgress
+    {
+        public string team;
+        public int progress;
+
+        public CaptureProgress(string _team, int _progress)
+        {
+            team = _team;
+            progress = _progress;
+        }
+    }
+
     [SerializeField]
     SpriteRenderer crateSprite;
 
@@ -19,6 +32,7 @@ public class Crate2D : MonoBehaviour
 
     int redProgress = 0;
     int blueProgress = 0;
+    CaptureProgress captureProgress = new CaptureProgress(Constants.RED_TEAM, 0);
 
     public List<Unit> capturingUnits = new List<Unit>();
 
@@ -46,7 +60,14 @@ public class Crate2D : MonoBehaviour
     {
         if (!crateSuspended)
         {
-            progressText.text = (redProgress - blueProgress).ToString();
+            if (captureProgress.progress != 0)
+            {
+                progressText.text = (captureProgress.team + ": " + captureProgress.progress).ToString();
+            }
+            else
+            {
+                progressText.text = "";
+            }
             CheckUnitCapture();
         }
         else
@@ -92,7 +113,7 @@ public class Crate2D : MonoBehaviour
         RemoveNullUnits();
         if (capturingUnits.Count > 0)
         {
-            CalculateUnitCaptureRate();
+            CalculateTotalCaptureRate();
         }
         else
         {
@@ -100,75 +121,108 @@ public class Crate2D : MonoBehaviour
         }
     }
 
-    private void CalculateUnitCaptureRate()
+    private int CalculateUnitCaptureRate(Unit u)
     {
-        int redCount = 0;
-        int blueCount = 0;
+        int captureRate = 0;
+        if (u.unitType == Constants.SCOUT_TYPE)
+        {
+            captureRate = 10;
+        }
+        else
+        {
+            captureRate = 1;
+        }
+        if (u.beingControlled)
+        {
+            captureRate *= 2;
+        }
+        return captureRate;
+    }
+
+    private Dictionary<string, int> GetCaptureRates()
+    {
+        Dictionary<string, int> teamCaptureRates = new Dictionary<string, int>();
+
         foreach (Unit u in capturingUnits)
         {
-            if (u.unitTeam == "RED")
+            if (!teamCaptureRates.ContainsKey(u.unitTeam))
             {
-                if (u.beingControlled)
-                {
-                    redCount += 4;
-                }
-                else
-                {
-                    redCount++;
-                }
+                teamCaptureRates.Add(u.unitTeam, 0);
             }
-            else
-            {
-                blueCount++;
-            }
+            teamCaptureRates[u.unitTeam] += CalculateUnitCaptureRate(u);
+
         }
+        return teamCaptureRates;
+    }
 
-        int differenceBetweenTeams;
-
-        if (redCount > blueCount)
+    private void SetCrateColor(string teamColor)
+    {
+        if (teamColor == Constants.RED_TEAM)
         {
             crateSprite.color = redColor;
-            differenceBetweenTeams = redCount - blueCount;
-            if (blueProgress > 0)
-            {
-                blueProgress -= differenceBetweenTeams;
-                if (blueProgress < 0)
-                {
-                    blueProgress = 0;
-                }
-            }
-            else
-            {
-                redProgress += differenceBetweenTeams;
-                if (redProgress > MAX_CAPTURE)
-                {
-                    TeamStats.RedPoints++;
-                    SuspendCrate();
-                }
-            }
         }
         else
         {
             crateSprite.color = blueColor;
-            differenceBetweenTeams = blueCount - redCount;
-            blueProgress += differenceBetweenTeams;
-            if (redProgress > 0)
+        }
+    }
+
+    private void UnpackCrateForTeam(string team)
+    {
+        if (team == Constants.RED_TEAM)
+        {
+            TeamStats.RedPoints++;
+        }
+        else
+        {
+            TeamStats.BluePoints++;
+        }
+        SuspendCrate();
+    }
+
+    private void CalculateTotalCaptureRate()
+    {
+        Dictionary<string, int> teamCaptureRates = GetCaptureRates();
+        KeyValuePair<string, int> highestTeamCount = new KeyValuePair<string, int>("", -1);
+        KeyValuePair<string, int> secondHighestTeamCount = new KeyValuePair<string, int>("", -1);
+        foreach (KeyValuePair<string, int> kvp in teamCaptureRates)
+        {
+            if (kvp.Value > highestTeamCount.Value)
             {
-                redProgress -= differenceBetweenTeams;
-                if (redProgress < 0)
-                {
-                    redProgress = 0;
-                }
+                KeyValuePair<string, int> temp = highestTeamCount;
+                highestTeamCount = kvp;
+                secondHighestTeamCount = temp;
+            }
+        }
+
+        if (highestTeamCount.Value > secondHighestTeamCount.Value)
+        {
+            SetCrateColor(highestTeamCount.Key);
+            int teamValueDifference = highestTeamCount.Value - secondHighestTeamCount.Value;
+
+            if (captureProgress.team == highestTeamCount.Key)
+            {
+                captureProgress.progress += teamValueDifference;
             }
             else
             {
-                blueProgress += differenceBetweenTeams;
-                if (blueProgress > MAX_CAPTURE)
-                {
-                    TeamStats.BluePoints++;
-                    SuspendCrate();
-                }
+                captureProgress.progress -= teamValueDifference;
             }
+
+            if (captureProgress.progress > MAX_CAPTURE)
+            {
+                UnpackCrateForTeam(captureProgress.team);
+            }
+            else if (captureProgress.progress < 0)
+            {
+                captureProgress.progress = -captureProgress.progress;
+                captureProgress.team = highestTeamCount.Key;
+            }
+
+        }
+        else
+        {
+            // Neutral.
         }
     }
 
@@ -176,8 +230,7 @@ public class Crate2D : MonoBehaviour
     {
         crateSprite.gameObject.SetActive(false);
         crateSuspended = true;
-        redProgress = 0;
-        blueProgress = 0;
+        captureProgress = new CaptureProgress(Constants.RED_TEAM, 0);
         capturingUnits = new List<Unit>();
         progressText.text = "";
     }
@@ -186,8 +239,7 @@ public class Crate2D : MonoBehaviour
     {
         crateSuspended = false;
         crateSprite.gameObject.SetActive(true);
-        redProgress = 0;
-        blueProgress = 0;
+        captureProgress = new CaptureProgress(Constants.RED_TEAM, 0);
     }
 
     private void OnTriggerEnter(Collider other)
