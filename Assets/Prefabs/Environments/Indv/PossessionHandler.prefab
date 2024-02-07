@@ -60,3 +60,4 @@ MonoBehaviour:
   tilemap: {fileID: 0}
   unitFallingDeathPrefab: {fileID: 1965369830691972299, guid: ec4afe2eef83242fba3411f2875760cc, type: 3}
   grenadeInstancePrefab: {fileID: 5144539841539942445, guid: 9eacfc6570d8847239bce4d6c66b1925, type: 3}
+  scoutAfterimagePrefab: {fileID: 52219840099866377, guid: 29ac146aac3f7463cbc8402d5a9eeaa4, type: 3}

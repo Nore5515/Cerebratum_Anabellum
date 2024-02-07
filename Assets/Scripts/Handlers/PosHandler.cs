@@ -56,6 +56,8 @@ public class PosHandler : MonoBehaviour
 
     // TELEPORT -- SCOUT
     bool teleportLocked = false;
+    [SerializeField]
+    GameObject scoutAfterimagePrefab;
 
     public void Start()
     {
@@ -132,6 +134,7 @@ public class PosHandler : MonoBehaviour
     {
         if (!teleportLocked)
         {
+            Instantiate(scoutAfterimagePrefab, controlledUnits[0].transform.position, controlledUnits[0].transform.rotation);
             Vector3 teleportPos = new Vector3(locationOfMouseCursor.x, locationOfMouseCursor.y, Constants.ZED_OFFSET);
             controlledUnits[0].transform.position = teleportPos;
             teleportLocked = true;
