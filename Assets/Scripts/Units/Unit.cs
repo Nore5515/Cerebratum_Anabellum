@@ -380,7 +380,7 @@ public class Unit : MonoBehaviour
         {
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
-            Debug.Log(speed);
+            //Debug.Log(speed);
             Vector3 zedZeroedMovement = transform.position;
             zedZeroedMovement.z = Constants.ZED_OFFSET;
             this.transform.position = zedZeroedMovement;
