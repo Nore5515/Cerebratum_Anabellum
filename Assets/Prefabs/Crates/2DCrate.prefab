@@ -236,6 +236,7 @@ MonoBehaviour:
   crateSprite: {fileID: 7798495626124586956}
   progressText: {fileID: 8429856810603509933}
   chanceToReactivatePerSecond: 0.05
+  suspendedOnStart: 0
   capturingUnits: []
 --- !u!135 &6578444397489993949
 SphereCollider:
@@ -427,8 +428,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2.4
-  m_fontSizeBase: 2.4
+  m_fontSize: 1.5
+  m_fontSizeBase: 1.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
