@@ -18,7 +18,7 @@ public static class Constants
 
     public static float PATH_FOLLOW_DIVERGENCE = 0.0f;
 
-    public static int CYCLE_MAX = 30;
+    public static int CYCLE_MAX = 100;
 
     public static float PLACEMENT_RANGE = 5.0f;
 

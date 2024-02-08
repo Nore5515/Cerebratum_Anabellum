@@ -51,6 +51,9 @@ public class PosHandler : MonoBehaviour
 
     GameObject grenadeInstance;
 
+    [SerializeField]
+    float grenadeChargeSpeedInSeconds = 0.6f;
+
     int nullCheck = 0;
     int maxNullCheck = 100;
 
@@ -154,8 +157,9 @@ public class PosHandler : MonoBehaviour
             grenadeInstance.transform.position = grenadePos;
             if (grenadeInstance.transform.localScale.x < Constants.GRENADE_LOCAL_SCALE)
             {
-                grenadeInstance.transform.localScale = grenadeInstance.transform.localScale * 1.01f;
+                grenadeInstance.transform.localScale = grenadeInstance.transform.localScale * (1.0f + (Constants.GRENADE_LOCAL_SCALE / grenadeChargeSpeedInSeconds) * Time.deltaTime);
             }
+
         }
     }
 
