@@ -2578,6 +2578,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RadstormSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 6685122762302515971, guid: c0d2102b7cce5488c8b689b136d5964f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0d2102b7cce5488c8b689b136d5964f, type: 3}
 --- !u!1 &1489929725 stripped

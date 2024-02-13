@@ -25,9 +25,20 @@ public class RadstormSpawner : MonoBehaviour
     [SerializeField]
     float stormSpeed;
 
+    GameObject radstormWarning;
+
     // Start is called before the first frame update
     void Start()
     {
+        GameObject[] radstormWarnings = GameObject.FindGameObjectsWithTag("radstorm_warning");
+        if (radstormWarnings.Length <= 0)
+        {
+
+        }
+        else
+        {
+            radstormWarning = radstormWarnings[0];
+        }
         InvokeRepeating("SpawnTick", gracePeriod, tickSpeed);  //0.25 delay, repeat every 0.25s
     }
 
