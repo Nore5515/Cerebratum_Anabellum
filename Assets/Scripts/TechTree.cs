@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class TechTree : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    GameObject techTreeScreen;
+
+    public void SetScreen(GameObject techTreeInstance)
     {
-        
+        techTreeScreen = techTreeInstance;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ClickButton()
     {
-        
+        Debug.Log("Hello, world!");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            techTreeScreen.SetActive(!techTreeScreen.activeSelf);
+        }
     }
 }

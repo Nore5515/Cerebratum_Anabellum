@@ -32,6 +32,9 @@ public class UI : MonoBehaviour
 
     Economy sceneEcon;
 
+    [SerializeField]
+    GameObject techTreePrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +52,18 @@ public class UI : MonoBehaviour
         if (econObj != null)
         {
             sceneEcon = econObj.GetComponent<Economy>();
+        }
+
+        InitializeTechTree();
+    }
+
+    void InitializeTechTree()
+    {
+        if (FindObjectOfType<TechTree>() == null)
+        {
+            GameObject instance = Instantiate(techTreePrefab, transform.position, transform.rotation);
+            instance.transform.SetParent(transform);
+            instance.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
     }
 
