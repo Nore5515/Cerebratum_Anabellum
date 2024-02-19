@@ -219,17 +219,6 @@ public class Spawner : MonoBehaviour
         return nullUnitList;
     }
 
-    private void InstantiateUnit(GameObject reqPrefab)
-    {
-        GameObject obj = Instantiate(reqPrefab, transform.position, Quaternion.identity);
-        unitList.Add(obj);
-
-        spawnedUnitStats.ResetToStartingStats(unitType);
-        obj.GetComponent<Unit>().testMode_noPossession = testMode_noPossession;
-        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
-        obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
-    }
-
     private IEnumerator SpawnPrefab(GameObject prefabToSpawn)
     {
         yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
@@ -237,8 +226,6 @@ public class Spawner : MonoBehaviour
 
         GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.pathSpheres, spawnerTeam, transform);
         unitList.Add(unitInstance);
-
-        //InstantiateUnit(prefabToSpawn);
 
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
