@@ -3,10 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// This class will hold two subclasses; UnitStats and UnitLogic.
+
+// Only Unit will be public, and it will primarily just parse requests.
+// If someone asks for a Unit type, it will fetch it.
+// If someone wants to make the Unit move, Unit will call the correct
+// function in Unit Logic.
+
+// This will also hold whatever prefabs are needed.
+
+// Ideally, this will be extended by whatever custom units we design moving forwards.
 
 public class Unit : MonoBehaviour
 {
     public UnitStats unitStats = new UnitStats();
+    public UnitLogic unitLogic = new UnitLogic();
     public bool isUnitInitialized { get; set; }
 
     // Movement
@@ -65,6 +76,7 @@ public class Unit : MonoBehaviour
 
     public Vector3 lastAimedTarget;
 
+    // TEST CODE
     public bool testMode_noPossession = false;
 
     private void Start()
@@ -76,22 +88,14 @@ public class Unit : MonoBehaviour
     {
     }
 
-    // TODO: There is an error within spawner initializing this, and the start function within the
-    // classes that extend Unit.
-    //
-    // This error is that the START function of the extended unit happens the frame AFTER
-    // initialization is called.
-    //
-    // This results in unit-specific variables that are initialized in start being lost.
-    //
-    // SOLUTIONS:
-    // - Constants file, with each unit types stats and such.
     public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
+        // TEST CODE
         if (!testMode_noPossession)
         {
             unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
         }
+
         bulletPrefab = Resources.Load(path) as GameObject;
         unitStats.unitTeam = newTeam;
         threatState = "WALK";
