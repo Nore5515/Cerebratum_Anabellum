@@ -19,10 +19,13 @@ public class Spawner : MonoBehaviour
     [SerializeField] GameObject infantryPrefab;
     [SerializeField] GameObject spiderPrefab;
     [SerializeField] GameObject drawButtonCube;
+    [SerializeField] GameObject unitFactoryPrefab;
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
     public Material spawnTeamMat;
+
+    UnitFactory uf;
 
     [SerializeField]
     GameObject selectCircle;
@@ -56,6 +59,27 @@ public class Spawner : MonoBehaviour
 
         selectCircle.SetActive(false);
         drawButtonCube.SetActive(false);
+
+        FetchUnitFactory();
+    }
+
+    void FetchUnitFactory()
+    {
+        uf = GetSceneUnitFactory();
+    }
+
+    UnitFactory GetSceneUnitFactory()
+    {
+        UnitFactory uf = FindObjectOfType<UnitFactory>();
+        if (uf == null)
+        {
+            // Create Unit Factory and add it to the scene!
+            GameObject instance = Instantiate(unitFactoryPrefab, transform.position, transform.rotation);
+            instance.transform.SetParent(transform);
+            instance.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            return GetSceneUnitFactory();
+        }
+        return uf;
     }
 
     void InitializeTeam()
@@ -200,28 +224,7 @@ public class Spawner : MonoBehaviour
         GameObject obj = Instantiate(reqPrefab, transform.position, Quaternion.identity);
         unitList.Add(obj);
 
-        if (unitType == "Spider")
-        {
-            spawnedUnitStats.fireDelay = Constants.SPIDER_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.SPIDER_INIT_RANGE;
-        }
-        else if (unitType == Constants.INF_TYPE)
-        {
-            spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
-        }
-        else if (unitType == Constants.SCOUT_TYPE)
-        {
-            spawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
-        }
-        else
-        {
-            Debug.LogError("Unit not recognized.");
-        }
+        spawnedUnitStats.ResetToStartingStats(unitType);
         obj.GetComponent<Unit>().testMode_noPossession = testMode_noPossession;
         obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
         obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
@@ -232,7 +235,10 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
         ClearNullInstances();
 
-        InstantiateUnit(prefabToSpawn);
+        GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.pathSpheres, spawnerTeam, transform);
+        unitList.Add(unitInstance);
+
+        //InstantiateUnit(prefabToSpawn);
 
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
