@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,12 +19,12 @@ public class Scout : Unit
         MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
-        hp = Constants.SCOUT_HP;
-        maxHP = hp;
-        dmg = Constants.SCOUT_DMG;
-        speed = Constants.SCOUT_SPEED;
-        rof = Constants.SCOUT_INIT_FIRE_DELAY;
-        threatLevel = 3;
+        unitStats.hp = Constants.SCOUT_HP;
+        unitStats.maxHP = unitStats.hp;
+        unitStats.dmg = Constants.SCOUT_DMG;
+        unitStats.speed = Constants.SCOUT_SPEED;
+        unitStats.rof = Constants.SCOUT_INIT_FIRE_DELAY;
+        unitStats.threatLevel = 3;
         unitType = "Scout";
 
         if (debugMode)
@@ -39,11 +40,11 @@ public class Scout : Unit
     public override void SpecializedInitialization()
     {
         CScout();
-        hp = maxHP;
+        unitStats.hp = unitStats.maxHP;
         if (hpSlider != null)
         {
-            hpSlider.maxValue = maxHP;
-            hpSlider.value = hp;
+            hpSlider.maxValue = unitStats.maxHP;
+            hpSlider.value = unitStats.hp;
         }
     }
 

@@ -18,12 +18,12 @@ public class Infantry : Unit
         MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
-        hp = Constants.INF_HP;
-        maxHP = hp;
-        dmg = Constants.INF_DMG;
-        speed = Constants.INF_SPEED;
-        rof = Constants.INF_INIT_FIRE_DELAY;
-        threatLevel = 3;
+        unitStats.hp = Constants.INF_HP;
+        unitStats.maxHP = unitStats.hp;
+        unitStats.dmg = Constants.INF_DMG;
+        unitStats.speed = Constants.INF_SPEED;
+        unitStats.rof = Constants.INF_INIT_FIRE_DELAY;
+        unitStats.threatLevel = 3;
         unitType = Constants.INF_TYPE;
 
         if (debugMode)
@@ -39,11 +39,11 @@ public class Infantry : Unit
     void Start()
     {
         CInfantry();
-        hp = maxHP;
+        unitStats.hp = unitStats.maxHP;
         if (hpSlider != null)
         {
-            hpSlider.maxValue = maxHP;
-            hpSlider.value = hp;
+            hpSlider.maxValue = unitStats.maxHP;
+            hpSlider.value = unitStats.hp;
         }
         if (survivalTime > 0)
         {

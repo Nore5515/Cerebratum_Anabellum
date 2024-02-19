@@ -6,15 +6,7 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
-
-    // Core unit stats
-    public int hp { get; set; }
-    public int maxHP { get; set; }
-    public int dmg { get; set; }
-    public float speed { get; set; }
-    public float rof { get; set; }
-    public int threatLevel { get; set; }
-
+    public UnitStats unitStats = new UnitStats();
     public bool isUnitInitialized { get; set; }
 
     // Movement
@@ -116,10 +108,10 @@ public class Unit : MonoBehaviour
             glow.color = BLUE;
         }
 
-        rof = newStats.fireDelay;
+        unitStats.rof = newStats.fireDelay;
 
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
-        unitFiringHandler.Initialize(rof, bulletPrefab, unitTeam, dmg);
+        unitFiringHandler.Initialize(unitStats.rof, bulletPrefab, unitTeam, unitStats.dmg);
 
         //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
 
@@ -154,22 +146,22 @@ public class Unit : MonoBehaviour
     // Health and Damage Logic
     public int DealDamage(int damage)
     {
-        hp -= damage;
+        unitStats.hp -= damage;
         if (hpSlider != null)
         {
-            hpSlider.value = hp;
+            hpSlider.value = unitStats.hp;
         }
-        return hp;
+        return unitStats.hp;
     }
 
     public void ReceiveDamage(int damage)
     {
-        hp -= damage;
+        unitStats.hp -= damage;
         if (hpSlider != null)
         {
-            hpSlider.value = hp;
+            hpSlider.value = unitStats.hp;
         }
-        if (hp <= 0)
+        if (unitStats.hp <= 0)
         {
             Destroy(gameObject);
         }
@@ -230,9 +222,9 @@ public class Unit : MonoBehaviour
         {
             if (target.GetComponent<Unit>() != null)
             {
-                if (target.GetComponent<Unit>().threatLevel > highestThreat)
+                if (target.GetComponent<Unit>().unitStats.threatLevel > highestThreat)
                 {
-                    highestThreat = target.GetComponent<Unit>().threatLevel;
+                    highestThreat = target.GetComponent<Unit>().unitStats.threatLevel;
                 }
             }
         }
@@ -241,11 +233,11 @@ public class Unit : MonoBehaviour
 
     private string DetermineThreatState(int highestInRangeThreatLevel)
     {
-        if (highestInRangeThreatLevel < threatLevel)
+        if (highestInRangeThreatLevel < unitStats.threatLevel)
         {
             return "WALK";
         }
-        else if (highestInRangeThreatLevel == threatLevel)
+        else if (highestInRangeThreatLevel == unitStats.threatLevel)
         {
             return "STAND";
         }
@@ -367,7 +359,7 @@ public class Unit : MonoBehaviour
         }
         if (this != null)
         {
-            transform.Translate(newDir * speed * Time.deltaTime);
+            transform.Translate(newDir * unitStats.speed * Time.deltaTime);
             Vector3 zedZeroedMovement = transform.position;
             zedZeroedMovement.z = Constants.ZED_OFFSET;
             this.transform.position = zedZeroedMovement;
@@ -379,7 +371,7 @@ public class Unit : MonoBehaviour
         if (controlDirection != new Vector3(0, 0, 0))
         {
             // When controlled, move 50% faster.
-            transform.Translate(controlDirection * (speed * 1.5f) * Time.deltaTime);
+            transform.Translate(controlDirection * (unitStats.speed * 1.5f) * Time.deltaTime);
             //Debug.Log(speed);
             Vector3 zedZeroedMovement = transform.position;
             zedZeroedMovement.z = Constants.ZED_OFFSET;

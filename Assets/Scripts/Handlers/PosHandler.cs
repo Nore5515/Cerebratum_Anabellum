@@ -383,7 +383,7 @@ public class PosHandler : MonoBehaviour
             if (justFired == false)
             {
                 justFired = true;
-                countdown = unit.rof;
+                countdown = unit.unitStats.rof;
             }
         }
         else
