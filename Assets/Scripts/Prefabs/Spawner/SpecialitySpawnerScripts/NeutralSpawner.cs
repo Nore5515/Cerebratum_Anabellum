@@ -10,9 +10,11 @@ using TMPro;
 // Child Scripts:
 //      SpawnerUI.cs
 
-public class NeutralSpawner : Structure
+public class NeutralSpawner : MonoBehaviour
 {
     public SpawnerPathManager spawnerPathManager;
+
+    public string type;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;

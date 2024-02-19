@@ -9,9 +9,11 @@ using UnityEngine.UI;
 // Child Scripts:
 //      SpawnerUI.cs
 
-public class Spawner : Structure
+public class Spawner : MonoBehaviour
 {
     public SpawnerPathManager spawnerPathManager;
+
+    public string type;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;

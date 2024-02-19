@@ -14,6 +14,9 @@ public class UI : MonoBehaviour
     public Image gameoverBGImage;
     bool gameEnding = false;
 
+    [SerializeField]
+    bool debugMode = false;
+
     [SerializeField] Button placeSpawner;
     bool placingSpawner = false;
     [SerializeField] GameObject spawnerGhost;
@@ -160,7 +163,10 @@ public class UI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Blue HQ not found -> UI");
+            if (!debugMode)
+            {
+                Debug.LogError("Blue HQ not found -> UI");
+            }
         }
     }
 
