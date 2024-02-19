@@ -14,7 +14,7 @@ public class DetectorSphere : MonoBehaviour
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))
             {
-                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
+                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitStats.unitTeam == "RED")
                 {
                     unitsInRange++;
                     UpdateUnitInRange();
@@ -30,7 +30,7 @@ public class DetectorSphere : MonoBehaviour
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))
             {
-                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitTeam == "RED")
+                if (other.gameObject.transform.parent.gameObject.GetComponent<Unit>().unitStats.unitTeam == "RED")
                 {
                     unitsInRange--;
                     UpdateUnitInRange();

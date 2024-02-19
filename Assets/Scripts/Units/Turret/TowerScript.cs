@@ -19,7 +19,7 @@ public class TowerScript : Unit
         unitStats.speed = 0;
         unitStats.rof = 0.5f;
         unitStats.threatLevel = 0;
-        unitType = "Tower";
+        unitStats.unitType = "Tower";
         towerStats = new SpawnedUnitStats();
         towerStats.fireDelay = unitStats.rof;
         towerStats.unitRange = 3.0f;

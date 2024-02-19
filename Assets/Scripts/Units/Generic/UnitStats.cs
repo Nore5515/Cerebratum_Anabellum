@@ -6,5 +6,9 @@
     public float speed { get; set; }
     public float rof { get; set; }
     public int threatLevel { get; set; }
+
+    public string unitTeam { get; set; }
+    public string unitType { get; set; }
+    public float unitRange { get; set; }
 }
 

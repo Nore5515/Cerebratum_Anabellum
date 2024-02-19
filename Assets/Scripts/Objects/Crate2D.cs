@@ -124,7 +124,7 @@ public class Crate2D : MonoBehaviour
     private int CalculateUnitCaptureRate(Unit u)
     {
         int captureRate = 0;
-        if (u.unitType == Constants.SCOUT_TYPE)
+        if (u.unitStats.unitType == Constants.SCOUT_TYPE)
         {
             captureRate = 10;
         }
@@ -145,11 +145,11 @@ public class Crate2D : MonoBehaviour
 
         foreach (Unit u in capturingUnits)
         {
-            if (!teamCaptureRates.ContainsKey(u.unitTeam))
+            if (!teamCaptureRates.ContainsKey(u.unitStats.unitTeam))
             {
-                teamCaptureRates.Add(u.unitTeam, 0);
+                teamCaptureRates.Add(u.unitStats.unitTeam, 0);
             }
-            teamCaptureRates[u.unitTeam] += CalculateUnitCaptureRate(u);
+            teamCaptureRates[u.unitStats.unitTeam] += CalculateUnitCaptureRate(u);
 
         }
         return teamCaptureRates;

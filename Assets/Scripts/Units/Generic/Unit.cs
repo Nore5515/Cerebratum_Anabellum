@@ -15,9 +15,6 @@ public class Unit : MonoBehaviour
     // UI
     public Slider hpSlider;
 
-    public virtual string unitTeam { get; set; }
-    public string unitType { get; set; }
-    public float unitRange { get; set; }
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
     public GameObject bulletPrefab { get; set; }
@@ -96,10 +93,10 @@ public class Unit : MonoBehaviour
             unitPossessionHandler = GameObject.Find("PossessionHandler").GetComponent<PosHandler>();
         }
         bulletPrefab = Resources.Load(path) as GameObject;
-        unitTeam = newTeam;
+        unitStats.unitTeam = newTeam;
         threatState = "WALK";
 
-        if (unitTeam == "RED")
+        if (unitStats.unitTeam == "RED")
         {
             glow.color = RED;
         }
@@ -111,17 +108,17 @@ public class Unit : MonoBehaviour
         unitStats.rof = newStats.fireDelay;
 
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
-        unitFiringHandler.Initialize(unitStats.rof, bulletPrefab, unitTeam, unitStats.dmg);
+        unitFiringHandler.Initialize(unitStats.rof, bulletPrefab, unitStats.unitTeam, unitStats.dmg);
 
         //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
 
-        detectionSphere.alliedTeam = unitTeam;
-        engagementSphere.alliedTeam = unitTeam;
+        detectionSphere.alliedTeam = unitStats.unitTeam;
+        engagementSphere.alliedTeam = unitStats.unitTeam;
 
         detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
         engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + 2;
 
-        unitRange = newStats.unitRange;
+        unitStats.unitRange = newStats.unitRange;
 
         if (newPoints.Count == 0)
         {
@@ -399,7 +396,7 @@ public class Unit : MonoBehaviour
                 {
                     if (unitPointHandler.pointVectors.Count <= 0)
                     {
-                        if (unitType != "Scout")
+                        if (unitStats.unitType != "Scout")
                         {
                             Destroy(gameObject);
                         }

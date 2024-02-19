@@ -25,7 +25,7 @@ public class Scout : Unit
         unitStats.speed = Constants.SCOUT_SPEED;
         unitStats.rof = Constants.SCOUT_INIT_FIRE_DELAY;
         unitStats.threatLevel = 3;
-        unitType = "Scout";
+        unitStats.unitType = "Scout";
 
         if (debugMode)
         {
