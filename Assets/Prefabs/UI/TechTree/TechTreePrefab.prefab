@@ -130,7 +130,7 @@ PrefabInstance:
       objectReference: {fileID: 7882962536222700108}
     - target: {fileID: 2078808744005023408, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClickButton
+      value: Button_SpawnRate
       objectReference: {fileID: 0}
     - target: {fileID: 2078808744005023408, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -144,13 +144,78 @@ PrefabInstance:
       propertyPath: m_Name
       value: TechTreeScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5332792782673970818, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
+    - target: {fileID: 5332792782673970818, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Button_Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332792782673970818, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TechTree, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332792782673970818, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411551256176472447, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
+    - target: {fileID: 8411551256176472447, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Button_RateOfFire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411551256176472447, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TechTree, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411551256176472447, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+--- !u!114 &3018732567109670645 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5761137299351501483, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+  m_PrefabInstance: {fileID: 7356377786675686494}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3360169108718707173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5239554021719248315, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+  m_PrefabInstance: {fileID: 7356377786675686494}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6601352109868710138 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4434827767898379428, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
   m_PrefabInstance: {fileID: 7356377786675686494}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7017681462500480594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 537276927460751884, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
+  m_PrefabInstance: {fileID: 7356377786675686494}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7319207984124715345 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 253352213531069711, guid: 88994f630210b498cbc6784fc3d56117, type: 3}
@@ -164,9 +229,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 3888376761192168886}
     m_Modifications:
     - target: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
+      propertyPath: text_range
+      value: 
+      objectReference: {fileID: 7017681462500480594}
+    - target: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
       propertyPath: techTreeScreen
       value: 
       objectReference: {fileID: 6601352109868710138}
+    - target: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
+      propertyPath: text_spawnRate
+      value: 
+      objectReference: {fileID: 3018732567109670645}
+    - target: {fileID: 298803996213078325, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
+      propertyPath: text_rateOfFire
+      value: 
+      objectReference: {fileID: 3360169108718707173}
     - target: {fileID: 5506559563384095251, guid: dfbcc8823a94b4672b16cf3ee40afa3a, type: 3}
       propertyPath: m_Name
       value: TechTreeHandler
