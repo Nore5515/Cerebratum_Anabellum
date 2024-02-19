@@ -37,6 +37,8 @@ public static class Constants
     public static float MAX_IDLE_SECONDS = 10.0f;
     public static float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
 
+    public static int ENGAGEMENT_SPHERE_RADIUS_MODIFIER = 2;
+
     // UNIT STATS
 
     // Infantry

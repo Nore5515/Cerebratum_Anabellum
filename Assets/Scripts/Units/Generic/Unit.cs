@@ -105,9 +105,7 @@ public class Unit : MonoBehaviour
         unitFiringHandler.Initialize(unitStats.rof, bulletPrefab, unitStats.unitTeam, unitStats.dmg);
 
         SetSphereTeams();
-
-        detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
-        engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + 2;
+        SetSpheresRadius(newStats);
 
         unitStats.unitRange = newStats.unitRange;
 
@@ -121,6 +119,12 @@ public class Unit : MonoBehaviour
         }
     }
 
+    void SetSpheresRadius(SpawnedUnitStats newStats)
+    {
+        detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
+        engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + Constants.ENGAGEMENT_SPHERE_RADIUS_MODIFIER;
+    }
+
     void SetGlowColor()
     {
         if (unitStats.unitTeam == Constants.RED_TEAM)
@@ -131,7 +135,6 @@ public class Unit : MonoBehaviour
         {
             glow.color = Constants.BLUE_GLOW_COLOR;
         }
-
     }
 
     void SetSphereTeams()
