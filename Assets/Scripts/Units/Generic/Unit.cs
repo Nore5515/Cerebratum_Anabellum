@@ -66,9 +66,7 @@ public class Unit : MonoBehaviour
     UnitPointHandler unitPointHandler = new UnitPointHandler();
 
     // Consts
-    const int MINIMUM_FRAMES_TO_BE_IDLE = 60;
-    const float MAX_IDLE_SECONDS = 10.0f;
-    public float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
+
 
     int idle_frames = 0;
     float idle_time = 0;
@@ -328,7 +326,7 @@ public class Unit : MonoBehaviour
         float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
 
         // If you are not close enough to your dest, keep moving towards it.
-        if (distToDest >= MIN_DIST_TO_MOVEMENT_DEST)
+        if (distToDest >= Constants.MIN_DIST_TO_MOVEMENT_DEST)
         {
             // Translate movement.
             MoveInDirection(direction);
@@ -392,11 +390,11 @@ public class Unit : MonoBehaviour
         if (lastPos == transform.position)
         {
             idle_frames++;
-            if (idle_frames > MINIMUM_FRAMES_TO_BE_IDLE)
+            if (idle_frames > Constants.MINIMUM_FRAMES_TO_BE_IDLE)
             {
                 idle_time += Time.deltaTime;
                 AnimState = "Idle";
-                if (idle_time >= MAX_IDLE_SECONDS)
+                if (idle_time >= Constants.MAX_IDLE_SECONDS)
                 {
                     if (unitPointHandler.pointVectors.Count <= 0)
                     {

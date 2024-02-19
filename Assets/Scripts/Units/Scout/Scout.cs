@@ -16,7 +16,7 @@ public class Scout : Unit
     {
         unitObj = gameObject;
         controlDirection = new Vector3(0, 0, 0);
-        MIN_DIST_TO_MOVEMENT_DEST = 1;
+        Constants.MIN_DIST_TO_MOVEMENT_DEST = 1;
 
         // Core stat initialization
         unitStats.hp = Constants.SCOUT_HP;

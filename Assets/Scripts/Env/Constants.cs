@@ -27,6 +27,10 @@ public static class Constants
     public static string RED_TEAM = "RED";
     public static string BLUE_TEAM = "BLUE";
 
+    public static int MINIMUM_FRAMES_TO_BE_IDLE = 60;
+    public static float MAX_IDLE_SECONDS = 10.0f;
+    public static float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
+
     // UNIT STATS
 
     // Infantry
