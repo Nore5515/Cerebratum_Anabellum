@@ -59,8 +59,7 @@ public class Unit : MonoBehaviour
     public EngagementSphere engagementSphere;
 
     // COLORS
-    Color RED = new Color(255, 0, 0, 0.3f);
-    Color BLUE = new Color(0, 0, 255, 0.3f);
+
 
     // Point Stuff
     UnitPointHandler unitPointHandler = new UnitPointHandler();
@@ -98,24 +97,14 @@ public class Unit : MonoBehaviour
         unitStats.unitTeam = newTeam;
         threatState = "WALK";
 
-        if (unitStats.unitTeam == "RED")
-        {
-            glow.color = RED;
-        }
-        else
-        {
-            glow.color = BLUE;
-        }
+        SetGlowColor();
 
         unitStats.rof = newStats.fireDelay;
 
         unitFiringHandler = gameObject.AddComponent<UnitFiringHandler>();
         unitFiringHandler.Initialize(unitStats.rof, bulletPrefab, unitStats.unitTeam, unitStats.dmg);
 
-        //KillSphere unitKillSphere = GetComponentInChildren(typeof(KillSphere)) as KillSphere;
-
-        detectionSphere.alliedTeam = unitStats.unitTeam;
-        engagementSphere.alliedTeam = unitStats.unitTeam;
+        SetSphereTeams();
 
         detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
         engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + 2;
@@ -132,6 +121,24 @@ public class Unit : MonoBehaviour
         }
     }
 
+    void SetGlowColor()
+    {
+        if (unitStats.unitTeam == Constants.RED_TEAM)
+        {
+            glow.color = Constants.RED_GLOW_COLOR;
+        }
+        else
+        {
+            glow.color = Constants.BLUE_GLOW_COLOR;
+        }
+
+    }
+
+    void SetSphereTeams()
+    {
+        detectionSphere.alliedTeam = unitStats.unitTeam;
+        engagementSphere.alliedTeam = unitStats.unitTeam;
+    }
     private void InitializePoints(List<GameObject> newPoints)
     {
         unitPointHandler.InitializePoints(newPoints);
@@ -335,7 +342,6 @@ public class Unit : MonoBehaviour
         // Once you get too close to your destination, remove it from your movement path and go towards the next one.
         else
         {
-            //Debug.Log(name + "Next Position");
             unitPointHandler.AttemptRemoveNextDestPoint();
         }
     }

@@ -1,3 +1,6 @@
+using UnityEngine;
+using UnityEngine.UI;
+
 public static class Constants
 {
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
@@ -26,6 +29,9 @@ public static class Constants
 
     public static string RED_TEAM = "RED";
     public static string BLUE_TEAM = "BLUE";
+
+    public static Color RED_GLOW_COLOR = new Color(255, 0, 0, 0.3f);
+    public static Color BLUE_GLOW_COLOR = new Color(0, 0, 255, 0.3f);
 
     public static int MINIMUM_FRAMES_TO_BE_IDLE = 60;
     public static float MAX_IDLE_SECONDS = 10.0f;
