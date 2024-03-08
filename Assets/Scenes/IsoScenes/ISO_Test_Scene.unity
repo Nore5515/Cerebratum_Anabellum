@@ -3443,6 +3443,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI_Controlled_Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7575600747995610609, guid: 4d88632fe28664011898751c3c3fa38d, type: 3}
+      propertyPath: spawnDelay
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575600747995610609, guid: 4d88632fe28664011898751c3c3fa38d, type: 3}
+      propertyPath: unitFactoryPrefab
+      value: 
+      objectReference: {fileID: 8028530544237903672, guid: f5e67e698c30347c4808cde7f461d5e8, type: 3}
     - target: {fileID: 7798158772839395644, guid: 4d88632fe28664011898751c3c3fa38d, type: 3}
       propertyPath: m_RootOrder
       value: 3

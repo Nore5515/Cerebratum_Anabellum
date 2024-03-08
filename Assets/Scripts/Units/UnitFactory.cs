@@ -19,6 +19,8 @@ public class UnitFactory : MonoBehaviour
     public Material redMat;
     public Material blueMat;
 
+    const float OFFSET_MAX = 3;
+
     GameObject GetPrefabFromUnitString(string unitTypeString)
     {
         switch (unitTypeString)
@@ -33,6 +35,19 @@ public class UnitFactory : MonoBehaviour
         }
     }
 
+    private List<GameObject> OffsetUnitPathPoints(List<GameObject> pathPoints, float x, float y)
+    {
+        List<GameObject> offsetPoints = new List<GameObject>();
+        GameObject offsetPoint;
+        foreach (GameObject pathPoint in pathPoints)
+        {
+            offsetPoint = pathPoint;
+            offsetPoint.transform.position = new Vector3(pathPoint.transform.position.x + x, pathPoint.transform.position.y, pathPoint.transform.position.z);
+            offsetPoints.Add(offsetPoint);
+        }
+        return offsetPoints;
+    }
+
     // Given a blueprint/requirements, return a Unit of said blueprint.
     public GameObject CreateUnit(string unitType, List<GameObject> unitPathPoints, string unitTeam, Transform spawnerTransform)
     {
@@ -42,7 +57,10 @@ public class UnitFactory : MonoBehaviour
         spawnedUnitStats.ResetToStartingStats(unitType);
 
         unitInstance.GetComponent<Unit>().testMode_noPossession = false;
-        unitInstance.GetComponent<Unit>().Initalize(unitPathPoints, unitTeam, spawnedUnitStats);
+
+        float randomOffsetX = Random.Range(-OFFSET_MAX, OFFSET_MAX);
+        float randomOffsetY = Random.Range(-OFFSET_MAX, OFFSET_MAX);
+        unitInstance.GetComponent<Unit>().Initalize(OffsetUnitPathPoints(unitPathPoints, randomOffsetX, randomOffsetY), unitTeam, spawnedUnitStats);
         unitInstance.GetComponent<MeshRenderer>().material = GetTeamMaterial(unitTeam);
 
         return unitInstance;

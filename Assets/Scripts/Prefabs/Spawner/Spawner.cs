@@ -45,6 +45,10 @@ public class Spawner : MonoBehaviour
 
     public bool testMode_noPossession = false;
 
+    [SerializeField]
+    public int spawnSquadSize = 10;
+    public float spawnDelay = 30.0f;
+
     void Start()
     {
         InitializeUnitType(unitType);
@@ -221,11 +225,14 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnPrefab(GameObject prefabToSpawn)
     {
-        yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
+        yield return new WaitForSeconds(spawnDelay);
         ClearNullInstances();
 
-        GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.pathSpheres, spawnerTeam, transform);
-        unitList.Add(unitInstance);
+        for (int x = 0; x < spawnSquadSize; x++)
+        {
+            GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.pathSpheres, spawnerTeam, transform);
+            unitList.Add(unitInstance);
+        }
 
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
