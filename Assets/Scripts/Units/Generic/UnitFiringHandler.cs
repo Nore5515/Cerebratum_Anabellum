@@ -86,7 +86,7 @@ public class UnitFiringHandler : MonoBehaviour
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            StartCoroutine(EnableFiring());
+            StartCoroutine(EnableFiring(rof * Constants.CONTROLLED_FIRE_DELAY_MODIFIER));
         }
     }
 
@@ -108,7 +108,7 @@ public class UnitFiringHandler : MonoBehaviour
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            StartCoroutine(EnableFiring());
+            StartCoroutine(EnableFiring(rof * Constants.CONTROLLED_FIRE_DELAY_MODIFIER));
         }
         float missRange = Constants.CONTROLLED_MISS_RADIUS;
         //Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
@@ -121,27 +121,27 @@ public class UnitFiringHandler : MonoBehaviour
         if (canFireDelay == false)
         {
             canFireDelay = true;
-            StartCoroutine(EnableFiring());
+            StartCoroutine(EnableFiring(rof));
         }
     }
 
-    public IEnumerator EnableFiring()
+    public IEnumerator EnableFiring(float fireDelay)
     {
-        yield return FireDelay();
+        yield return FireDelay(fireDelay);
         canFire = true;
         canFireDelay = false;
     }
 
-    private WaitForSeconds FireDelay()
+    private WaitForSeconds FireDelay(float fireDelay)
     {
         if (firstFire)
         {
             firstFire = false;
-            return new WaitForSeconds(rof * Constants.FIRST_FIRE_DELAY);
+            return new WaitForSeconds(fireDelay * Constants.FIRST_FIRE_DELAY);
         }
         else
         {
-            return new WaitForSeconds(rof);
+            return new WaitForSeconds(fireDelay);
         }
     }
 

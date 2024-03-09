@@ -7,20 +7,22 @@ public class UnitAudio : MonoBehaviour
     [SerializeField]
     AudioSource audioSource;
 
-    public void PlayGunshotEffect()
-    {
-        audioSource.Play();
-    }
+    [SerializeField]
+    const float pitchOffset = 0.2f;
+
+    float originalPitch = 0.0f;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-
+        originalPitch = audioSource.pitch;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayGunshotEffect()
     {
-
+        audioSource.pitch = originalPitch + (originalPitch * Random.Range(-pitchOffset, pitchOffset));
+        audioSource.Play();
     }
 }

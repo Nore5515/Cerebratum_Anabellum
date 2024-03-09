@@ -17,7 +17,10 @@ public static class Constants
 
     public static float FIRST_FIRE_DELAY = 0.15f;
     public static float MISS_RANGE_RADIUS = 0.25f;
+
     public static float CONTROLLED_MISS_RADIUS = 0.0f;
+    public static float CONTROLLED_MOVEMENT_MODIFIER = 2.5f;
+    public static float CONTROLLED_FIRE_DELAY_MODIFIER = 0.3f;
 
     public static float PATH_FOLLOW_DIVERGENCE = 0.0f;
 

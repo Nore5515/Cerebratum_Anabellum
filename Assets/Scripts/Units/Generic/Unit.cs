@@ -147,10 +147,10 @@ public class Unit : MonoBehaviour
         unitPointHandler.InitializePoints(newPoints);
     }
 
-    public IEnumerator EnableFiring()
-    {
-        return unitFiringHandler.EnableFiring();
-    }
+    //public IEnumerator EnableFiring()
+    //{
+    //    return unitFiringHandler.EnableFiring();
+    //}
 
     // Health and Damage Logic
     public int DealDamage(int damage)
@@ -374,7 +374,7 @@ public class Unit : MonoBehaviour
         if (controlDirection != new Vector3(0, 0, 0))
         {
             // When controlled, move 50% faster.
-            transform.Translate(controlDirection * (unitStats.speed * 1.5f) * Time.deltaTime);
+            transform.Translate(controlDirection * (unitStats.speed * Constants.CONTROLLED_MOVEMENT_MODIFIER) * Time.deltaTime);
             //Debug.Log(speed);
             Vector3 zedZeroedMovement = transform.position;
             zedZeroedMovement.z = Constants.ZED_OFFSET;
