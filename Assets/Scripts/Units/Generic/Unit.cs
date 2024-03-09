@@ -85,7 +85,7 @@ public class Unit : MonoBehaviour
     {
     }
 
-    public void Initalize(List<GameObject> newPoints, string newTeam, SpawnedUnitStats newStats)
+    public void Initalize(List<Vector3> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
         // TEST CODE
         if (!testMode_noPossession)
@@ -142,7 +142,7 @@ public class Unit : MonoBehaviour
         detectionSphere.alliedTeam = unitStats.unitTeam;
         engagementSphere.alliedTeam = unitStats.unitTeam;
     }
-    private void InitializePoints(List<GameObject> newPoints)
+    private void InitializePoints(List<Vector3> newPoints)
     {
         unitPointHandler.InitializePoints(newPoints);
     }
@@ -285,19 +285,14 @@ public class Unit : MonoBehaviour
     // ╚══════════════════════════════════════════════════╝
     //   ╚══════════════════════════════════════════════╝
     //
-    public void AddPoint(GameObject point)
+    public void AddPoint(Vector3 point)
     {
         unitPointHandler.AddPoint(point);
     }
 
-    public void RemovePoint(GameObject point)
-    {
-        unitPointHandler.RemovePoint(point, this.transform.position);
-    }
-
     public void RemovePoint(Vector3 point)
     {
-        unitPointHandler.RemovePoint(point);
+        unitPointHandler.RemovePoint(point, this.transform.position);
     }
 
     //

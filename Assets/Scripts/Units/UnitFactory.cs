@@ -35,21 +35,24 @@ public class UnitFactory : MonoBehaviour
         }
     }
 
-    private List<GameObject> OffsetUnitPathPoints(List<GameObject> pathPoints, float x, float y)
+    private List<Vector3> OffsetUnitPathPoints(List<Vector3> pathPoints)
     {
-        List<GameObject> offsetPoints = new List<GameObject>();
-        GameObject offsetPoint;
-        foreach (GameObject pathPoint in pathPoints)
+        List<Vector3> offsetPoints = new List<Vector3>();
+        Vector3 offsetPoint;
+
+        float xOffset = Random.Range(-OFFSET_MAX, OFFSET_MAX);
+        float yOffset = Random.Range(-OFFSET_MAX, OFFSET_MAX);
+
+        foreach (Vector3 pathPoint in pathPoints)
         {
-            offsetPoint = pathPoint;
-            offsetPoint.transform.position = new Vector3(pathPoint.transform.position.x + x, pathPoint.transform.position.y, pathPoint.transform.position.z);
+            offsetPoint = new Vector3(pathPoint.x + xOffset, pathPoint.y + yOffset, pathPoint.z);
             offsetPoints.Add(offsetPoint);
         }
         return offsetPoints;
     }
 
     // Given a blueprint/requirements, return a Unit of said blueprint.
-    public GameObject CreateUnit(string unitType, List<GameObject> unitPathPoints, string unitTeam, Transform spawnerTransform)
+    public GameObject CreateUnit(string unitType, List<Vector3> unitPathPoints, string unitTeam, Transform spawnerTransform)
     {
         GameObject unitPrefab = GetPrefabFromUnitString(unitType);
         GameObject unitInstance = Instantiate(unitPrefab, spawnerTransform.transform.position, spawnerTransform.rotation);
@@ -58,9 +61,7 @@ public class UnitFactory : MonoBehaviour
 
         unitInstance.GetComponent<Unit>().testMode_noPossession = false;
 
-        float randomOffsetX = Random.Range(-OFFSET_MAX, OFFSET_MAX);
-        float randomOffsetY = Random.Range(-OFFSET_MAX, OFFSET_MAX);
-        unitInstance.GetComponent<Unit>().Initalize(OffsetUnitPathPoints(unitPathPoints, randomOffsetX, randomOffsetY), unitTeam, spawnedUnitStats);
+        unitInstance.GetComponent<Unit>().Initalize(OffsetUnitPathPoints(unitPathPoints), unitTeam, spawnedUnitStats);
         unitInstance.GetComponent<MeshRenderer>().material = GetTeamMaterial(unitTeam);
 
         return unitInstance;

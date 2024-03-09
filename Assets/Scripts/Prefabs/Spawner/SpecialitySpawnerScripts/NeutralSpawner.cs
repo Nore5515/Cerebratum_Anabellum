@@ -40,7 +40,7 @@ public class NeutralSpawner : MonoBehaviour
 
     bool spawningIsValid = false;
 
-    public List<GameObject> neutralPath;
+    public List<Vector3> neutralPath;
 
     void Start()
     {

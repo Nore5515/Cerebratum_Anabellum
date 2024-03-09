@@ -8,11 +8,11 @@ public class UnitPointHandler
     public List<Vector3> pointVectors = new();
     public bool removing = false;
 
-    public void InitializePoints(List<GameObject> newPoints)
+    public void InitializePoints(List<Vector3> newPoints)
     {
-        foreach (GameObject newPoint in newPoints)
+        foreach (Vector3 newPoint in newPoints)
         {
-            pointVectors.Add(GetNearbyPoint(newPoint.transform.position, Constants.PATH_FOLLOW_DIVERGENCE));
+            pointVectors.Add(GetNearbyPoint(newPoint, Constants.PATH_FOLLOW_DIVERGENCE));
         }
         if (pointVectors.Count > 0)
         {
@@ -29,10 +29,10 @@ public class UnitPointHandler
         }
     }
 
-    public void AddPoint(GameObject point)
+    public void AddPoint(Vector3 point)
     {
         //pointVectors.Add(DuplicateVector(point.transform.position));
-        pointVectors.Add(GetNearbyPoint(point.transform.position, Constants.PATH_FOLLOW_DIVERGENCE));
+        pointVectors.Add(GetNearbyPoint(point, Constants.PATH_FOLLOW_DIVERGENCE));
         if (pointVectors.Count == 1)
         {
             DestVector = pointVectors[0];
@@ -47,9 +47,9 @@ public class UnitPointHandler
         return nearbyPoint;
     }
 
-    public void RemovePoint(GameObject point, Vector3 currentUnitPos)
+    public void RemovePoint(Vector3 point, Vector3 currentUnitPos)
     {
-        pointVectors.Remove(point.transform.position);
+        pointVectors.Remove(point);
         removing = false;
         if (pointVectors.Count == 0)
         {

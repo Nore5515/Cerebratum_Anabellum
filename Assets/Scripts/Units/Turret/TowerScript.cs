@@ -29,7 +29,7 @@ public class TowerScript : Unit
 
         unitObj = this.gameObject;
 
-        Initalize(new List<GameObject>(), towerTeam, towerStats);
+        Initalize(new List<Vector3>(), towerTeam, towerStats);
     }
 
     // Update is called once per frame

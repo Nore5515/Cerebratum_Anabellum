@@ -32,7 +32,7 @@ public class Infantry : Unit
             debugSpawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
             debugSpawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
             debugSpawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
-            Initalize(new List<GameObject>(), "RED", debugSpawnedUnitStats);
+            Initalize(new List<Vector3>(), "RED", debugSpawnedUnitStats);
         }
     }
 

@@ -230,7 +230,7 @@ public class Spawner : MonoBehaviour
 
         for (int x = 0; x < spawnSquadSize; x++)
         {
-            GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.pathSpheres, spawnerTeam, transform);
+            GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.GetPathPoints(), spawnerTeam, transform);
             unitList.Add(unitInstance);
         }
 

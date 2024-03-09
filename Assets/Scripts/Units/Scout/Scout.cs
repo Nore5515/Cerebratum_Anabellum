@@ -33,7 +33,7 @@ public class Scout : Unit
             debugSpawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
             debugSpawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
             debugSpawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
-            Initalize(new List<GameObject>(), "RED", debugSpawnedUnitStats);
+            Initalize(new List<Vector3>(), "RED", debugSpawnedUnitStats);
         }
     }
 

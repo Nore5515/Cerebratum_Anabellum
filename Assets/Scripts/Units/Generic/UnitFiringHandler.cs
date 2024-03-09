@@ -12,6 +12,8 @@ public class UnitFiringHandler : MonoBehaviour
     string unitTeam;
     int dmg;
 
+    UnitAudio unitAudio;
+
     public void Initialize(float _rof, GameObject _bulletPrefab, string _unitTeam, int _dmg)
     {
         firstFire = true;
@@ -23,6 +25,12 @@ public class UnitFiringHandler : MonoBehaviour
         // TODO: See Unit.cs
         // I hate doing this. So annoying.
         dmg = Constants.INF_DMG;
+
+        unitAudio = gameObject.GetComponentInChildren<UnitAudio>();
+        if (unitAudio == null)
+        {
+            Debug.LogError("AUDIO NOT FOUND");
+        }
     }
 
     // [PARAMS]: Vector3 targetPosition
@@ -49,6 +57,7 @@ public class UnitFiringHandler : MonoBehaviour
 
     public virtual void FireAtPosition(Vector3 position, float missRange)
     {
+        unitAudio.PlayGunshotEffect();
         GameObject bulletInstance = GenerateNewBulletPrefab();
         Vector3 zeroedTarget = position;
         zeroedTarget.z = Constants.ZED_OFFSET;
