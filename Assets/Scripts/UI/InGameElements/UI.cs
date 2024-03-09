@@ -57,7 +57,7 @@ public class UI : MonoBehaviour
             sceneEcon = econObj.GetComponent<Economy>();
         }
 
-        InitializeTechTree();
+        //InitializeTechTree();
     }
 
     void InitializeTechTree()

@@ -38,7 +38,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/IsoScenes/MapEditor.unity
     guid: 24db477027ff54f2ab011d670f2caad8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/IsoScenes/ISO_Test_Scene.unity
     guid: 80c70c27b3b434e2491328fd11f4cdba
+  - enabled: 1
+    path: Assets/Scenes/UnitTests/UltimateTest.unity
+    guid: 36ffd70f4ee0247d1a30c780939b307f
   m_configObjects: {}
