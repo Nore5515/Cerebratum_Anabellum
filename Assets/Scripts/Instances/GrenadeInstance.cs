@@ -6,6 +6,7 @@ using static Projectile;
 public class GrenadeInstance : MonoBehaviour
 {
     public float grenadeLifetime = 1.0f;
+    const float GRENADE_EXPLOSION_DELAY = 0.35f;
     Vector3 playerPos;
 
     Vector3 startingPoint;
@@ -24,6 +25,9 @@ public class GrenadeInstance : MonoBehaviour
     float count = 0.0f;
 
     Vector3 detonationExtents;
+
+    [SerializeField]
+    GameObject grenadeExplosionPrefab;
 
     private void Start()
     {
@@ -85,9 +89,16 @@ public class GrenadeInstance : MonoBehaviour
     IEnumerator BeginDetonationSequence()
     {
         yield return new WaitForSeconds(grenadeLifetime);
+        InstantiateExplosion();
+        yield return new WaitForSeconds(GRENADE_EXPLOSION_DELAY);
         DamageEnemies();
         Destroy(grenadeProjectileInstance);
         Destroy(gameObject);
+    }
+
+    void InstantiateExplosion()
+    {
+        Instantiate(grenadeExplosionPrefab, this.transform.position, this.transform.rotation);
     }
 
     void DamageEnemies()

@@ -133,6 +133,7 @@ MonoBehaviour:
   grenadeLifetime: 1
   bezierHeight: 3
   grenadeProjectilePrefab: {fileID: 8440011002380630977, guid: fde807159bcd74ebd9c87d356ff03c0d, type: 3}
+  grenadeExplosionPrefab: {fileID: 6820083607846801734, guid: 9e129a1fd01094c22b57e531622ff320, type: 3}
 --- !u!65 &752750002962078348
 BoxCollider:
   m_ObjectHideFlags: 0
