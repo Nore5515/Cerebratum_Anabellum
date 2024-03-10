@@ -22,7 +22,10 @@ public class UnitAudio : MonoBehaviour
 
     public void PlayGunshotEffect()
     {
-        audioSource.pitch = originalPitch + (originalPitch * Random.Range(-pitchOffset, pitchOffset));
-        audioSource.Play();
+        if (audioSource != null)
+        {
+            audioSource.pitch = originalPitch + (originalPitch * Random.Range(-pitchOffset, pitchOffset));
+            audioSource.Play();
+        }
     }
 }

@@ -120,7 +120,7 @@ class PossessionInputHandler
 
     void MouseDownFuncs()
     {
-        if (hit2D.point != null)
+        if (hit2D.point != null && posHandler != null)
         {
             posHandler.PossessedMouseDown(hit2D.point);
         }

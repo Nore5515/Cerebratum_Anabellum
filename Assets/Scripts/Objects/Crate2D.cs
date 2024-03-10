@@ -28,6 +28,9 @@ public class Crate2D : MonoBehaviour
     float chanceToReactivatePerSecond = 0.05f;
 
     [SerializeField]
+    LineRenderer lineRenderer;
+
+    [SerializeField]
     bool suspendedOnStart = false;
 
     int redProgress = 0;
@@ -47,13 +50,31 @@ public class Crate2D : MonoBehaviour
     Color blueColor = new Color(0.8f, 0.8f, 1.0f);
 
 
+    Dictionary<string, Vector3> hqLocations = new Dictionary<string, Vector3>();
+
     private void Start()
     {
+        PopulateHqLocations();
         if (suspendedOnStart)
         {
             SuspendCrate();
         }
         InvokeRepeating("OutputTime", 1f, 0.25f);  //1s delay, repeat every 1s
+
+
+    }
+
+    void PopulateHqLocations()
+    {
+        List<GameObject> hqObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
+        foreach (GameObject hq in hqObjects)
+        {
+            hqLocations.Add(hq.GetComponent<HQObject>().team, hq.transform.position);
+        }
+        if (hqLocations.Count <= 0)
+        {
+            Debug.LogError("No HQs found by crate!");
+        }
     }
 
     void OutputTime()
@@ -113,12 +134,47 @@ public class Crate2D : MonoBehaviour
         RemoveNullUnits();
         if (capturingUnits.Count > 0)
         {
-            CalculateTotalCaptureRate();
+            DrawLinesToAllUnits();
+            //CalculateTotalCaptureRate();
+            //TestDraw();
+            //DrawLineToUnit(capturingUnits[0]);
         }
         else
         {
+            lineRenderer.gameObject.SetActive(false);
             crateSprite.color = neutralColor;
         }
+    }
+
+    void MoveTowardsHQ(string hqTeam)
+    {
+        if (hqLocations[hqTeam] != null)
+        {
+            this.transform.Translate(Vector3.Angle(this.transform.position, hqLocations[hqTeam]));
+        }
+    }
+
+    private void DrawLinesToAllUnits()
+    {
+        int lineCount = 0;
+        foreach (Unit u in capturingUnits)
+        {
+            if (u != null)
+            {
+                DrawLineToUnit(u, lineCount);
+                lineCount += 2;
+            }
+        }
+    }
+
+    private void DrawLineToUnit(Unit u, int startIndex)
+    {
+        lineRenderer.gameObject.SetActive(true);
+        Vector3 startPoint = transform.position;
+        Vector3 endPoint = u.transform.position;
+        lineRenderer.positionCount = startIndex + 2;
+        lineRenderer.SetPosition(startIndex, startPoint);
+        lineRenderer.SetPosition(startIndex + 1, endPoint);
     }
 
     private int CalculateUnitCaptureRate(Unit u)
@@ -251,7 +307,10 @@ public class Crate2D : MonoBehaviour
             {
                 if (!capturingUnits.Contains(detectedUnit))
                 {
-                    capturingUnits.Add(detectedUnit);
+                    if (detectedUnit.unitStats.unitType == Constants.SCOUT_TYPE)
+                    {
+                        capturingUnits.Add(detectedUnit);
+                    }
                 }
             }
         }
