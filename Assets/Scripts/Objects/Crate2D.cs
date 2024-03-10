@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 
 
 public class Crate2D : MonoBehaviour
@@ -32,6 +33,12 @@ public class Crate2D : MonoBehaviour
 
     [SerializeField]
     bool suspendedOnStart = false;
+
+    [SerializeField]
+    float baseCrateMovespeed = 1.0f;
+
+    [SerializeField]
+    float minimumHQDistance = 2.0f;
 
     int redProgress = 0;
     int blueProgress = 0;
@@ -135,6 +142,7 @@ public class Crate2D : MonoBehaviour
         if (capturingUnits.Count > 0)
         {
             DrawLinesToAllUnits();
+            MoveTowardsHQ(Constants.RED_TEAM);
             //CalculateTotalCaptureRate();
             //TestDraw();
             //DrawLineToUnit(capturingUnits[0]);
@@ -146,11 +154,31 @@ public class Crate2D : MonoBehaviour
         }
     }
 
+    Vector3 GetDirectionVector(Vector3 start, Vector3 end)
+    {
+        Vector3 newDest = end;
+        Vector3 heading = newDest - start;
+        float distance = heading.magnitude;
+        return heading / distance;
+
+    }
+
     void MoveTowardsHQ(string hqTeam)
     {
         if (hqLocations[hqTeam] != null)
         {
-            this.transform.Translate(Vector3.Angle(this.transform.position, hqLocations[hqTeam]));
+            Vector3 direction = GetDirectionVector(this.transform.position, hqLocations[hqTeam]);
+
+            transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
+
+            if (Vector3.Distance(this.transform.position, hqLocations[hqTeam]) < minimumHQDistance)
+            {
+                UnpackCrateForTeam(hqTeam);
+            }
+        }
+        else
+        {
+            Debug.LogError("HQ Team not found in Crate2D");
         }
     }
 
