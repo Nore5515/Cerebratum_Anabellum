@@ -4,6 +4,10 @@ public static class TeamStats
     public static int BlueVP { get; set; }
     public static int RedVP { get; set; }
 
+    // Scout Count
+    public static int BlueScouts { get; set; }
+    public static int RedScouts { get; set; }
+
     public static int BlueInfSpawners { get; set; }
     public static int RedInfSpawners { get; set; }
 
@@ -25,6 +29,8 @@ public static class TeamStats
     {
         BlueVP = 0;
         RedVP = 0;
+        BlueScouts = 0;
+        RedScouts = 0;
         BlueInfSpawners = 1;
         RedInfSpawners = 1;
         BlueBuildingSlots = 3;
@@ -35,6 +41,8 @@ public static class TeamStats
     {
         BlueVP = 0;
         RedVP = 0;
+        BlueScouts = 0;
+        RedScouts = 0;
         BluePoints = 0;
         RedPoints = 0;
         BlueNaniteGain = 0;

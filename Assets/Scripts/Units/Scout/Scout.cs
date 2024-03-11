@@ -48,6 +48,18 @@ public class Scout : Unit
         }
     }
 
+    public override void Die()
+    {
+        if (unitStats.unitTeam == Constants.RED_TEAM)
+        {
+            TeamStats.RedScouts--;
+        }
+        else if (unitStats.unitTeam == Constants.BLUE_TEAM)
+        {
+            TeamStats.BlueScouts--;
+        }
+    }
+
     IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(survivalTime);

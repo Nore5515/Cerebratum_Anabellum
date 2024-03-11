@@ -81,6 +81,11 @@ public class Unit : MonoBehaviour
         SpecializedInitialization();
     }
 
+    public virtual void Die()
+    {
+        Debug.LogError("Die function not overriden!");
+    }
+
     public virtual void SpecializedInitialization()
     {
     }

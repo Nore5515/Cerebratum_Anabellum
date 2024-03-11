@@ -36,8 +36,9 @@ public class ScoutSpawning : MonoBehaviour
                 scoutGhostInstance.transform.position = MousePositionZeroZed();
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (GetCurrentScoutCount() < 1 && spawnerInRange)
+                    if (TeamStats.RedScouts < Constants.FREE_SCOUT_LIMIT && spawnerInRange)
                     {
+                        TeamStats.RedScouts++;
                         GameObject newScout = Instantiate(scoutPrefab);
                         newScout.transform.position = scoutGhostInstance.transform.position;
                         newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);

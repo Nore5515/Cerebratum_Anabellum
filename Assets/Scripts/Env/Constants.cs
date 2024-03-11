@@ -3,6 +3,10 @@ using UnityEngine.UI;
 
 public static class Constants
 {
+
+    // SCOUT STUFF
+    public static int FREE_SCOUT_LIMIT = 3;
+
     public static int VP_TO_VICTORY = 3;
 
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;

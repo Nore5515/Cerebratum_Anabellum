@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
+    [SerializeField] Text scoutText;
     public Text vpText;
 
     public Text gameOverText;
@@ -22,6 +23,7 @@ public class UI : MonoBehaviour
     GameObject newSpawnerGhost;
     [SerializeField] GameObject spawnerPrefab;
     [SerializeField] GameObject ai_spawnerPrefab;
+
 
     // Environmental Stuff
     [SerializeField] GameObject env_scoutSpawning;
@@ -213,6 +215,7 @@ public class UI : MonoBehaviour
         }
 
         vpText.text = TeamStats.BlueVP.ToString() + " vs " + TeamStats.RedVP.ToString();
+        scoutText.text = TeamStats.RedScouts.ToString() + "/3";
 
         if (TeamStats.BlueVP >= Constants.VP_TO_VICTORY || TeamStats.RedVP >= Constants.VP_TO_VICTORY)
         {
