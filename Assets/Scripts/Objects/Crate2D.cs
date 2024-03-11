@@ -67,8 +67,6 @@ public class Crate2D : MonoBehaviour
             SuspendCrate();
         }
         InvokeRepeating("OutputTime", 1f, 0.25f);  //1s delay, repeat every 1s
-
-
     }
 
     void PopulateHqLocations()
@@ -143,9 +141,6 @@ public class Crate2D : MonoBehaviour
         {
             DrawLinesToAllUnits();
             MoveTowardsHQ(Constants.RED_TEAM);
-            //CalculateTotalCaptureRate();
-            //TestDraw();
-            //DrawLineToUnit(capturingUnits[0]);
         }
         else
         {
@@ -167,13 +162,14 @@ public class Crate2D : MonoBehaviour
     {
         if (hqLocations[hqTeam] != null)
         {
-            Vector3 direction = GetDirectionVector(this.transform.position, hqLocations[hqTeam]);
+            Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);
 
             transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
 
-            if (Vector3.Distance(this.transform.position, hqLocations[hqTeam]) < minimumHQDistance)
+            if (Vector3.Distance(transform.position, hqLocations[hqTeam]) < minimumHQDistance)
             {
                 UnpackCrateForTeam(hqTeam);
+                Destroy(gameObject);
             }
         }
         else
@@ -255,11 +251,11 @@ public class Crate2D : MonoBehaviour
     {
         if (team == Constants.RED_TEAM)
         {
-            TeamStats.RedPoints++;
+            TeamStats.RedVP++;
         }
         else
         {
-            TeamStats.BluePoints++;
+            TeamStats.BlueVP++;
         }
         SuspendCrate();
     }

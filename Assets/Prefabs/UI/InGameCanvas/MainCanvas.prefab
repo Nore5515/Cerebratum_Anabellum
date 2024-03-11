@@ -404,11 +404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a92610689cf146a2bedaf903f009cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthText: {fileID: 2859066418058103072}
-  nanitesText: {fileID: 0}
-  nanitesPerMinuteText: {fileID: 0}
+  vpText: {fileID: 2859066417955918193}
   gameOverText: {fileID: 2859066418233894719}
   gameoverBGImage: {fileID: 2859066418008654316}
+  debugMode: 0
   placeSpawner: {fileID: 2859066416936132264}
   spawnerGhost: {fileID: 6988322716607527092, guid: 7f362df09d7ec49678f9f8fa9b6fa885, type: 3}
   spawnerPrefab: {fileID: 3723304060339295256, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
@@ -1111,6 +1110,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 1059446155738391475, guid: 8e6e65f48a06144c8b7b70388ab8d6a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1059446155738391485, guid: 8e6e65f48a06144c8b7b70388ab8d6a2, type: 3}
       propertyPath: m_Interactable
       value: 1
@@ -1153,6 +1156,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2859066416779690712}
     m_Modifications:
+    - target: {fileID: 972607415372128024, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
+      propertyPath: m_Name
+      value: VPValue
+      objectReference: {fileID: 0}
+    - target: {fileID: 972607415372128027, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 972607415513909817, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 972607415639402632, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -1251,9 +1266,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
---- !u!114 &2859066418058103072 stripped
+--- !u!114 &2859066417955918193 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 972607415613051497, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
+  m_CorrespondingSourceObject: {fileID: 972607415513909816, guid: 78a7a0bde6a9948eaa43e96b7598cf20, type: 3}
   m_PrefabInstance: {fileID: 3085551272340544329}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

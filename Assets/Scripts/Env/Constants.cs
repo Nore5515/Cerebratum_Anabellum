@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public static class Constants
 {
+    public static int VP_TO_VICTORY = 3;
+
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
     public static float BOT_CHANGE_SPAWNER_PATH_CHANCE => 0.25f;
     public static float BOT_UPGRADE_CHANCE => 0.75f;

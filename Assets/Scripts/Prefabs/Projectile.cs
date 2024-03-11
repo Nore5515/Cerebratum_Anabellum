@@ -42,7 +42,6 @@ public class Projectile : MonoBehaviour
     {
         checkUnit(other);
         checkTower(other);
-        checkHQ(other);
     }
 
     /// <summary>
@@ -86,28 +85,6 @@ public class Projectile : MonoBehaviour
         if (unit.DealDamage(damage) <= 0)
         {
             Destroy(other.gameObject);
-        }
-
-        projectileIsExhausted = true;
-
-        Destroy(gameObject);
-    }
-
-    private void checkHQ(Collider other)
-    {
-        if (projectileIsExhausted) return;
-        HQObject otherSpawn = other.gameObject.GetComponent<HQObject>();
-
-        if (otherSpawn == null) return;
-        if (otherSpawn.team == team) return;
-
-        if (otherSpawn.team == "RED")
-        {
-            TeamStats.RedHP -= 1;
-        }
-        else
-        {
-            TeamStats.BlueHP -= 1;
         }
 
         projectileIsExhausted = true;

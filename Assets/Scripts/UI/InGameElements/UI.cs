@@ -7,9 +7,8 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    public Text healthText;
-    public Text nanitesText;
-    public Text nanitesPerMinuteText;
+    public Text vpText;
+
     public Text gameOverText;
     public Image gameoverBGImage;
     bool gameEnding = false;
@@ -27,8 +26,6 @@ public class UI : MonoBehaviour
     // Environmental Stuff
     [SerializeField] GameObject env_scoutSpawning;
 
-    int startingRedHP;
-
     bool spawnerInRange = false;
 
     private GameObject blueHQ;
@@ -44,12 +41,9 @@ public class UI : MonoBehaviour
         gameObject.GetComponent<Canvas>().worldCamera = Camera.main;
 
         blueHQ = GetBlueHQ();
-        startingRedHP = TeamStats.RedHP;
-        nanitesText = GameObject.Find("NanitesText").GetComponent<Text>();
-        //nanitesPerMinuteText = GameObject.Find("NaniteGainText").GetComponent<Text>();
-        healthText.text = "RED: 10 --- BLUE: 10";
-        nanitesText.text = "RED: 0 --- BLUE: 0";
-        //nanitesPerMinuteText.text = "RED: 0 --- BLUE: 0";
+
+        vpText.text = "RED: 0 --- BLUE: 0";
+
         placeSpawner.onClick.AddListener(delegate { PlaceSpawnerClicked(); });
         GameObject econObj = GameObject.FindGameObjectWithTag("econ");
         if (econObj != null)
@@ -57,17 +51,6 @@ public class UI : MonoBehaviour
             sceneEcon = econObj.GetComponent<Economy>();
         }
 
-        //InitializeTechTree();
-    }
-
-    void InitializeTechTree()
-    {
-        if (FindObjectOfType<TechTree>() == null)
-        {
-            GameObject instance = Instantiate(techTreePrefab, transform.position, transform.rotation);
-            instance.transform.SetParent(transform);
-            instance.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        }
     }
 
     public void PlaceScoutClicked()
@@ -86,13 +69,11 @@ public class UI : MonoBehaviour
 
     void PlaceSpawnerClicked()
     {
-        //Debug.Log("Place Spawner!");
-
         // Toggles On/Off
         if (placingSpawner)
         {
             placingSpawner = false;
-            GameObject.Destroy(newSpawnerGhost);
+            Destroy(newSpawnerGhost);
             newSpawnerGhost = null;
         }
         else
@@ -223,13 +204,6 @@ public class UI : MonoBehaviour
         return zeroZed;
     }
 
-    double GetRedHPPercentage()
-    {
-        double result = (double)TeamStats.RedHP / (double)startingRedHP;
-        result *= 100;
-        return result;
-    }
-
     void Update()
     {
 
@@ -238,39 +212,31 @@ public class UI : MonoBehaviour
             PlaceSpawnerUpdateLoop();
         }
 
-        healthText.text = GetRedHPPercentage().ToString() + "%";
-        //healthText.text = "RED: " + TeamStats.RedHP.ToString() + " --- BLUE: " + TeamStats.BlueHP.ToString();
-        nanitesText.text = TeamStats.RedPoints.ToString();
-        //nanitesText.text = "RED: " + TeamStats.RedPoints.ToString() + " --- BLUE: " + TeamStats.BluePoints.ToString();
-        //nanitesPerMinuteText.text = "RED: " + TeamStats.RedNaniteGain.ToString() + " --- BLUE: " + TeamStats.BlueNaniteGain.ToString();
+        vpText.text = TeamStats.BlueVP.ToString() + " vs " + TeamStats.RedVP.ToString();
 
-        // if (TeamStats.GameStarted)
-        // {
-        if (TeamStats.BlueHP <= 0 || TeamStats.RedHP <= 0)
+        if (TeamStats.BlueVP >= Constants.VP_TO_VICTORY || TeamStats.RedVP >= Constants.VP_TO_VICTORY)
         {
             if (!gameEnding)
             {
                 gameEnding = true;
-                if (TeamStats.BlueHP > TeamStats.RedHP)
+                if (TeamStats.BlueVP > TeamStats.RedVP)
                 {
                     gameOverText.text = "Blue Victory!";
                 }
-                else
+                else if (TeamStats.BlueVP < TeamStats.RedVP)
                 {
                     gameOverText.text = "Red Victory!";
+                }
+                else
+                {
+                    gameOverText.text = "Tie?!";
+                    Debug.LogError("TIE?!");
                 }
                 gameoverBGImage.enabled = true;
                 IEnumerator coroutine = EndGame();
                 StartCoroutine(coroutine);
             }
         }
-
-        if (TeamStats.BluePoints > 0)
-        {
-            AI_Place_Spawner();
-            TeamStats.BluePoints -= 1;
-        }
-        // }
     }
 
     IEnumerator EndGame()
