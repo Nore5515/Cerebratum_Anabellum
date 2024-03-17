@@ -10,9 +10,11 @@ using TMPro;
 // Child Scripts:
 //      SpawnerUI.cs
 
-public class NeutralSpawner : Structure
+public class NeutralSpawner : MonoBehaviour
 {
     public SpawnerPathManager spawnerPathManager;
+
+    public string type;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;
@@ -38,7 +40,7 @@ public class NeutralSpawner : Structure
 
     bool spawningIsValid = false;
 
-    public List<GameObject> neutralPath;
+    public List<Vector3> neutralPath;
 
     void Start()
     {

@@ -196,7 +196,7 @@ public class SpawnerPathManager : MonoBehaviour
     {
         foreach (GameObject pathSphere in pathSpheres)
         {
-            unit.AddPoint(pathSphere);
+            unit.AddPoint(pathSphere.transform.position);
         }
     }
 
@@ -214,5 +214,15 @@ public class SpawnerPathManager : MonoBehaviour
     public void AddPathMarkerToPathSpheres(GameObject pathMarker)
     {
         pathSpheres.Add(pathMarker);
+    }
+
+    public List<Vector3> GetPathPoints()
+    {
+        List<Vector3> points = new List<Vector3>();
+        foreach (GameObject pathSphere in pathSpheres)
+        {
+            points.Add(pathSphere.transform.position);
+        }
+        return points;
     }
 }

@@ -12,7 +12,7 @@ public class KillSphere : MonoBehaviour
     {
         if (transform.parent.gameObject.GetComponent<Unit>() != null)
         {
-            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().unitTeam;
+            alliedTeam = transform.parent.gameObject.GetComponent<Unit>().unitStats.unitTeam;
             // Debug.Log("TEAM IS: " + alliedTeam);
             unit = transform.parent.gameObject.GetComponent<Unit>();
         }
@@ -30,8 +30,8 @@ public class KillSphere : MonoBehaviour
     void AttemptAddUnitInRange(Collider other)
     {
         if (other.gameObject.GetComponent<Unit>() == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitTeam == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitTeam == alliedTeam) return;
+        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == null) return;
+        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == alliedTeam) return;
 
         unit.AddTargetInRange(other.gameObject);
     }

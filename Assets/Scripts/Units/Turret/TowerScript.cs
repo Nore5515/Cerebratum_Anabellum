@@ -13,29 +13,29 @@ public class TowerScript : Unit
     void Start()
     {
         // Core stat initialization
-        hp = 20;
-        maxHP = hp;
-        dmg = 1;
-        speed = 0;
-        rof = 0.5f;
-        threatLevel = 0;
-        unitType = "Tower";
+        unitStats.hp = 20;
+        unitStats.maxHP = unitStats.hp;
+        unitStats.dmg = 1;
+        unitStats.speed = 0;
+        unitStats.rof = 0.5f;
+        unitStats.threatLevel = 0;
+        unitStats.unitType = "Tower";
         towerStats = new SpawnedUnitStats();
-        towerStats.fireDelay = rof;
+        towerStats.fireDelay = unitStats.rof;
         towerStats.unitRange = 3.0f;
 
-        HPBar.GetComponent<Slider>().value = hp;
-        HPBar.GetComponent<Slider>().maxValue = maxHP;
+        HPBar.GetComponent<Slider>().value = unitStats.hp;
+        HPBar.GetComponent<Slider>().maxValue = unitStats.maxHP;
 
         unitObj = this.gameObject;
 
-        Initalize(new List<GameObject>(), towerTeam, towerStats);
+        Initalize(new List<Vector3>(), towerTeam, towerStats);
     }
 
     // Update is called once per frame
     void Update()
     {
         MovementUpdate();
-        HPBar.GetComponent<Slider>().value = hp;
+        HPBar.GetComponent<Slider>().value = unitStats.hp;
     }
 }

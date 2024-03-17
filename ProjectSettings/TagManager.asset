@@ -15,6 +15,9 @@ TagManager:
   - ai_spawner
   - path
   - radstorm_warning
+  - spawn_scout_button
+  - main_canvas
+  - scout_spawner
   layers:
   - Default
   - TransparentFX

@@ -47,16 +47,16 @@ public class LevelTimer : MonoBehaviour
         }
         else
         {
-            TimerEnd();
+            //TimerEnd();
+            Debug.LogError("End Round");
         }
 
     }
 
-    public void TimerEnd()
-    {
-        //Debug.Log("WHY NOT WORKING");
-        TeamStats.BlueHP = 0;
-    }
+    //public void TimerEnd()
+    //{
+    //    TeamStats.BlueHP = 0;
+    //}
 
 
 }

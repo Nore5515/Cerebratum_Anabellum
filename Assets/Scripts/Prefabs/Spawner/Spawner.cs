@@ -9,18 +9,26 @@ using UnityEngine.UI;
 // Child Scripts:
 //      SpawnerUI.cs
 
-public class Spawner : Structure
+public class Spawner : MonoBehaviour
 {
     public SpawnerPathManager spawnerPathManager;
+
+    public string type;
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;
     [SerializeField] GameObject spiderPrefab;
     [SerializeField] GameObject drawButtonCube;
+    [SerializeField] GameObject spawnScoutButton;
+    [SerializeField] GameObject unitFactoryPrefab;
+    [SerializeField] GameObject env_scoutSpawning;
+    [SerializeField] GameObject scoutCooldownSlider;
     public GameObject prefab;
     public Material redMat;
     public Material blueMat;
     public Material spawnTeamMat;
+
+    UnitFactory uf;
 
     [SerializeField]
     GameObject selectCircle;
@@ -40,6 +48,13 @@ public class Spawner : Structure
 
     public bool testMode_noPossession = false;
 
+    [SerializeField]
+    public int spawnSquadSize = 10;
+    public float spawnDelay = 30.0f;
+
+    public float maxScoutSpawnDelay = 15.0f;
+    float scoutSpawnDelay = 15.0f;
+
     void Start()
     {
         InitializeUnitType(unitType);
@@ -54,6 +69,39 @@ public class Spawner : Structure
 
         selectCircle.SetActive(false);
         drawButtonCube.SetActive(false);
+        spawnScoutButton.SetActive(false);
+
+        FetchUnitFactory();
+
+        scoutCooldownSlider.GetComponent<Slider>().maxValue = maxScoutSpawnDelay;
+    }
+
+    private void Update()
+    {
+        if (scoutSpawnDelay > 0.0f)
+        {
+            scoutSpawnDelay -= Time.deltaTime;
+            scoutCooldownSlider.GetComponent<Slider>().value = scoutSpawnDelay;
+        }
+    }
+
+    void FetchUnitFactory()
+    {
+        uf = GetSceneUnitFactory();
+    }
+
+    UnitFactory GetSceneUnitFactory()
+    {
+        UnitFactory uf = FindObjectOfType<UnitFactory>();
+        if (uf == null)
+        {
+            // Create Unit Factory and add it to the scene!
+            GameObject instance = Instantiate(unitFactoryPrefab, transform.position, transform.rotation);
+            instance.transform.SetParent(transform);
+            instance.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            return GetSceneUnitFactory();
+        }
+        return uf;
     }
 
     void InitializeTeam()
@@ -110,6 +158,7 @@ public class Spawner : Structure
     {
         spawnerUI.SetUIVisible(isVis);
         drawButtonCube.SetActive(isVis);
+        spawnScoutButton.SetActive(isVis);
         selectCircle.SetActive(isVis);
     }
 
@@ -193,44 +242,16 @@ public class Spawner : Structure
         return nullUnitList;
     }
 
-    private void InstantiateUnit(GameObject reqPrefab)
-    {
-        GameObject obj = Instantiate(reqPrefab, transform.position, Quaternion.identity);
-        unitList.Add(obj);
-
-        if (unitType == "Spider")
-        {
-            spawnedUnitStats.fireDelay = Constants.SPIDER_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.SPIDER_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.SPIDER_INIT_RANGE;
-        }
-        else if (unitType == Constants.INF_TYPE)
-        {
-            spawnedUnitStats.fireDelay = Constants.INF_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.INF_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.INF_INIT_RANGE;
-        }
-        else if (unitType == Constants.SCOUT_TYPE)
-        {
-            spawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
-            spawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
-            spawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
-        }
-        else
-        {
-            Debug.LogError("Unit not recognized.");
-        }
-        obj.GetComponent<Unit>().testMode_noPossession = testMode_noPossession;
-        obj.GetComponent<Unit>().Initalize(spawnerPathManager.pathSpheres, spawnerTeam, spawnedUnitStats);
-        obj.GetComponent<MeshRenderer>().material = spawnTeamMat;
-    }
-
     private IEnumerator SpawnPrefab(GameObject prefabToSpawn)
     {
-        yield return new WaitForSeconds(spawnedUnitStats.spawnDelay);
+        yield return new WaitForSeconds(spawnDelay);
         ClearNullInstances();
 
-        InstantiateUnit(prefabToSpawn);
+        for (int x = 0; x < spawnSquadSize; x++)
+        {
+            GameObject unitInstance = uf.CreateUnit(unitType, spawnerPathManager.GetPathPoints(), spawnerTeam, transform);
+            unitList.Add(unitInstance);
+        }
 
         StartCoroutine(SpawnPrefab(prefabToSpawn));
     }
@@ -273,4 +294,28 @@ public class Spawner : Structure
     public bool DeductTeamPoints(int cost) { return TeamStats.AttemptPointDeductionFromTeam(cost, spawnerTeam); }
 
     public void UpdateAwaitingUnits() { spawnerPathManager.UpdatePathlessUnits(unitList); }
+
+    public void SpawnScout()
+    {
+        GameObject[] canvasObj = GameObject.FindGameObjectsWithTag("scout_spawner");
+        if (canvasObj.Length > 0)
+        {
+            if (scoutSpawnDelay <= 0.0f)
+            {
+                Debug.Log("Spawning Scout!");
+                Vector3 belowSpawner = transform.position;
+                belowSpawner = new Vector3(belowSpawner.x, belowSpawner.y - 1.0f, belowSpawner.z);
+                if (canvasObj[0].GetComponent<ScoutSpawning>().SpawnScout(belowSpawner))
+                {
+                    scoutSpawnDelay = maxScoutSpawnDelay;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Mkaing Env");
+            Instantiate(env_scoutSpawning, transform.position, transform.rotation);
+            SpawnScout();
+        }
+    }
 }

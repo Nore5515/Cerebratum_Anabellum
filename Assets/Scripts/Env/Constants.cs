@@ -1,5 +1,14 @@
+using UnityEngine;
+using UnityEngine.UI;
+
 public static class Constants
 {
+
+    // SCOUT STUFF
+    public static int FREE_SCOUT_LIMIT = 3;
+
+    public static int VP_TO_VICTORY = 3;
+
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
     public static float BOT_CHANGE_SPAWNER_PATH_CHANCE => 0.25f;
     public static float BOT_UPGRADE_CHANCE => 0.75f;
@@ -14,7 +23,10 @@ public static class Constants
 
     public static float FIRST_FIRE_DELAY = 0.15f;
     public static float MISS_RANGE_RADIUS = 0.25f;
+
     public static float CONTROLLED_MISS_RADIUS = 0.0f;
+    public static float CONTROLLED_MOVEMENT_MODIFIER = 2.5f;
+    public static float CONTROLLED_FIRE_DELAY_MODIFIER = 0.3f;
 
     public static float PATH_FOLLOW_DIVERGENCE = 0.0f;
 
@@ -26,6 +38,15 @@ public static class Constants
 
     public static string RED_TEAM = "RED";
     public static string BLUE_TEAM = "BLUE";
+
+    public static Color RED_GLOW_COLOR = new Color(255, 0, 0, 0.3f);
+    public static Color BLUE_GLOW_COLOR = new Color(0, 0, 255, 0.3f);
+
+    public static int MINIMUM_FRAMES_TO_BE_IDLE = 60;
+    public static float MAX_IDLE_SECONDS = 10.0f;
+    public static float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
+
+    public static int ENGAGEMENT_SPHERE_RADIUS_MODIFIER = 2;
 
     // UNIT STATS
 

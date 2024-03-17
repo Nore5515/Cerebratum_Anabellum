@@ -202,7 +202,7 @@ public class PosHandler : MonoBehaviour
 
     bool IsPossessedUnitScout()
     {
-        if (controlledUnits[0].unitType == Constants.SCOUT_TYPE)
+        if (controlledUnits[0].unitStats.unitType == Constants.SCOUT_TYPE)
         {
             return true;
         }
@@ -211,7 +211,7 @@ public class PosHandler : MonoBehaviour
 
     bool IsPossessedUnitInfantry()
     {
-        if (controlledUnits[0].unitType == Constants.INF_TYPE)
+        if (controlledUnits[0].unitStats.unitType == Constants.INF_TYPE)
         {
             return true;
         }
@@ -253,7 +253,7 @@ public class PosHandler : MonoBehaviour
         if (potentialUnit.GetComponent<Unit>() == null) return false;
 
         Unit unit = potentialUnit.GetComponent<Unit>();
-        if (unit.unitTeam != teamColor) return false;
+        if (unit.unitStats.unitTeam != teamColor) return false;
 
         if (controlledUnits.Count > 0)
         {
@@ -383,7 +383,7 @@ public class PosHandler : MonoBehaviour
             if (justFired == false)
             {
                 justFired = true;
-                countdown = unit.rof;
+                countdown = unit.unitStats.rof;
             }
         }
         else

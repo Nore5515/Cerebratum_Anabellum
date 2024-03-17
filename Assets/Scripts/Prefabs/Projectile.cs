@@ -7,12 +7,13 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// Properties of projectile class.
     /// </summary>
-    public class Props 
+    public class Props
     {
         public string team;
         public int damage;
 
-        public Props(string newTeam, int _damage) {
+        public Props(string newTeam, int _damage)
+        {
             team = newTeam;
             damage = _damage;
         }
@@ -41,7 +42,6 @@ public class Projectile : MonoBehaviour
     {
         checkUnit(other);
         checkTower(other);
-        checkHQ(other);
     }
 
     /// <summary>
@@ -79,34 +79,23 @@ public class Projectile : MonoBehaviour
         Unit unit = other.gameObject.GetComponent<Unit>();
 
         if (unit == null) return;
-        if (unit.unitTeam == "NIL") return;
-        if (unit.unitTeam == team) return;
+        if (unit.unitStats.unitTeam == "NIL") return;
+        if (unit.unitStats.unitTeam == team) return;
 
         if (unit.DealDamage(damage) <= 0)
         {
+            if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
+            {
+                if (unit.unitStats.unitTeam == Constants.RED_TEAM)
+                {
+                    TeamStats.RedScouts--;
+                }
+                else if (unit.unitStats.unitTeam == Constants.BLUE_TEAM)
+                {
+                    TeamStats.BlueScouts--;
+                }
+            }
             Destroy(other.gameObject);
-        }
-
-        projectileIsExhausted = true;
-
-        Destroy(gameObject);
-    }
-
-    private void checkHQ(Collider other)
-    {
-        if (projectileIsExhausted) return;
-        HQObject otherSpawn = other.gameObject.GetComponent<HQObject>();
-
-        if (otherSpawn == null) return;
-        if (otherSpawn.team == team) return;
-
-        if (otherSpawn.team == "RED")
-        {
-            TeamStats.RedHP -= 1;
-        }
-        else
-        {
-            TeamStats.BlueHP -= 1;
         }
 
         projectileIsExhausted = true;
@@ -118,14 +107,14 @@ public class Projectile : MonoBehaviour
     /// If a hostile projectile hits an allied tower, the tower will be dealt damage
     /// and the projectile will be destroyed.
     /// </summary>
-    private void checkTower(Collider other) 
+    private void checkTower(Collider other)
     {
         if (projectileIsExhausted) return;
         TowerScript tower = other.gameObject.GetComponent<TowerScript>();
 
         if (tower == null) return;
-        if (tower.unitTeam == team) return;
-            
+        if (tower.unitStats.unitTeam == team) return;
+
         tower.DealDamage(1);
 
         projectileIsExhausted = true;

@@ -128,6 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   survivalTime: 5
-  moveSpeed: 8
+  moveSpeed: 4
   damage: 1
   team: NIL
