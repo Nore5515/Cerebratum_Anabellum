@@ -15,6 +15,7 @@ public class SpawnerUI : MonoBehaviour
     public Button firerateButton;
     public Button rangeButton;
     public Button pathButton;
+    public Button scoutSpawnButton;
 
     public Image rangeFill;
     public Image fireRateFill;
@@ -50,6 +51,7 @@ public class SpawnerUI : MonoBehaviour
         firerateButton = upgrades.transform.Find("RFireRate").gameObject.GetComponent<Button>();
         rangeButton = upgrades.transform.Find("RRange").gameObject.GetComponent<Button>();
         pathButton = ui.transform.Find("RDraw").gameObject.GetComponent<Button>();
+
     }
 
     private void AddButtonListeners()

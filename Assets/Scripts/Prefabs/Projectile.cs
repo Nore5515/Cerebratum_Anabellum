@@ -84,6 +84,17 @@ public class Projectile : MonoBehaviour
 
         if (unit.DealDamage(damage) <= 0)
         {
+            if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
+            {
+                if (unit.unitStats.unitTeam == Constants.RED_TEAM)
+                {
+                    TeamStats.RedScouts--;
+                }
+                else if (unit.unitStats.unitTeam == Constants.BLUE_TEAM)
+                {
+                    TeamStats.BlueScouts--;
+                }
+            }
             Destroy(other.gameObject);
         }
 

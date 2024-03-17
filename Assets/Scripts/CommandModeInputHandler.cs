@@ -126,6 +126,10 @@ public class CommandModeInputHandler : MonoBehaviour
                 Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
                 spawnerClass.spawnerPathManager.ClearPoints(spawnerClass.unitList);
             }
+            else if (hit.collider.gameObject.tag == "spawn_scout_button")
+            {
+                Debug.Log("Spawn Scout pressed!");
+            }
         }
 
         CommandModeMouseDown();

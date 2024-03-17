@@ -36,15 +36,7 @@ public class ScoutSpawning : MonoBehaviour
                 scoutGhostInstance.transform.position = MousePositionZeroZed();
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (TeamStats.RedScouts < Constants.FREE_SCOUT_LIMIT && spawnerInRange)
-                    {
-                        TeamStats.RedScouts++;
-                        GameObject newScout = Instantiate(scoutPrefab);
-                        newScout.transform.position = scoutGhostInstance.transform.position;
-                        newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                        scoutsSpawned.Add(newScout.GetComponent<Unit>());
-                        spawnerButtonClicked = false;
-                    }
+                    SpawnScout(scoutGhostInstance.transform.position);
                 }
             }
         }
@@ -55,6 +47,32 @@ public class ScoutSpawning : MonoBehaviour
                 Destroy(scoutGhostInstance);
             }
         }
+    }
+
+    public bool SpawnScout(Vector3 scoutPos)
+    {
+        if (TeamStats.RedScouts < Constants.FREE_SCOUT_LIMIT)
+        {
+            TeamStats.RedScouts++;
+            GameObject newScout = Instantiate(scoutPrefab);
+            newScout.transform.position = scoutPos;
+            newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            scoutsSpawned.Add(newScout.GetComponent<Unit>());
+            spawnerButtonClicked = false;
+            return true;
+        }
+        else if (TeamStats.RedPoints >= TeamStats.RedScouts - 2)
+        {
+            TeamStats.RedPoints -= TeamStats.RedScouts - 2;
+            TeamStats.RedScouts++;
+            GameObject newScout = Instantiate(scoutPrefab);
+            newScout.transform.position = scoutPos;
+            newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            scoutsSpawned.Add(newScout.GetComponent<Unit>());
+            spawnerButtonClicked = false;
+            return true;
+        }
+        return false;
     }
 
     int GetCurrentScoutCount()
