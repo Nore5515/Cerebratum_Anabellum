@@ -34,10 +34,10 @@ public class ScoutSpawning : MonoBehaviour
             {
                 scoutGhostInstance.GetComponentInChildren<SpriteRenderer>().color = GetGhostColor();
                 scoutGhostInstance.transform.position = MousePositionZeroZed();
-                if (Input.GetMouseButtonDown(0))
-                {
-                    SpawnScout(scoutGhostInstance.transform.position);
-                }
+                //if (Input.GetMouseButtonDown(0))
+                //{
+                //    SpawnScout(scoutGhostInstance.transform.position);
+                //}
             }
         }
         else
@@ -49,31 +49,133 @@ public class ScoutSpawning : MonoBehaviour
         }
     }
 
-    public bool SpawnScout(Vector3 scoutPos)
+    public bool SpawnScoutByTeam(Vector3 scoutPos, string team)
     {
-        if (TeamStats.RedScouts < Constants.FREE_SCOUT_LIMIT)
+        int teamScouts = GetTeamScoutCount(team);
+        int teamPoints = GetTeamPoints(team);
+        if (teamScouts < Constants.FREE_SCOUT_LIMIT)
         {
-            TeamStats.RedScouts++;
-            GameObject newScout = Instantiate(scoutPrefab);
-            newScout.transform.position = scoutPos;
-            newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            scoutsSpawned.Add(newScout.GetComponent<Unit>());
-            spawnerButtonClicked = false;
+            SpawnNewScout(scoutPos, team);
             return true;
         }
-        else if (TeamStats.RedPoints >= TeamStats.RedScouts - 2)
+        else if (teamPoints >= (teamScouts - (Constants.FREE_SCOUT_LIMIT - 1)))
         {
-            TeamStats.RedPoints -= TeamStats.RedScouts - 2;
-            TeamStats.RedScouts++;
-            GameObject newScout = Instantiate(scoutPrefab);
-            newScout.transform.position = scoutPos;
-            newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            scoutsSpawned.Add(newScout.GetComponent<Unit>());
-            spawnerButtonClicked = false;
+            MakeTeamPayCost(team, (teamScouts - (Constants.FREE_SCOUT_LIMIT - 1)));
+            SpawnNewScout(scoutPos, team);
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
+
+    void MakeTeamPayCost(string team, int cost)
+    {
+        if (team == Constants.RED_TEAM)
+        {
+            TeamStats.RedPoints -= cost;
+        }
+        else if (team == Constants.BLUE_TEAM)
+        {
+            TeamStats.BluePoints -= cost;
+        }
+        else
+        {
+            Debug.LogError("TEAM NOT INCLUDED");
+        }
+    }
+
+    int GetTeamScoutCount(string team)
+    {
+        if (team == Constants.RED_TEAM)
+        {
+            return TeamStats.RedScouts;
+        }
+        else if (team == Constants.BLUE_TEAM)
+        {
+            return TeamStats.BlueScouts;
+        }
+        else
+        {
+            Debug.LogError("TEAM NOT INCLUDED");
+            return int.MinValue;
+        }
+    }
+
+    int GetTeamPoints(string team)
+    {
+        if (team == Constants.RED_TEAM)
+        {
+            return TeamStats.RedPoints;
+        }
+        else if (team == Constants.BLUE_TEAM)
+        {
+            return TeamStats.BluePoints;
+        }
+        else
+        {
+            Debug.LogError("TEAM NOT INCLUDED");
+            return int.MinValue;
+        }
+    }
+
+    void IncrementTeamScouts(string team)
+    {
+        if (team == Constants.RED_TEAM)
+        {
+            TeamStats.RedScouts++;
+        }
+        else if (team == Constants.BLUE_TEAM)
+        {
+            TeamStats.BlueScouts++;
+        }
+        else
+        {
+            Debug.LogError("TEAM NOT INCLUDED");
+        }
+    }
+
+    public void SpawnNewScout(Vector3 scoutPos, string team)
+    {
+        Debug.Log("Spawning new scout for team " + team);
+        IncrementTeamScouts(team);
+        GameObject newScout = Instantiate(scoutPrefab);
+        newScout.transform.position = scoutPos;
+        newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        newScout.GetComponent<Scout>().unitStats.unitTeam = team;
+        SpawnedUnitStats sus = new SpawnedUnitStats();
+        sus.ResetToStartingStats(Constants.SCOUT_TYPE);
+        newScout.GetComponent<Scout>().Initalize(new List<Vector3>(), team, sus);
+        scoutsSpawned.Add(newScout.GetComponent<Unit>());
+        spawnerButtonClicked = false;
+    }
+
+    //public bool SpawnScout(Vector3 scoutPos)
+    //{
+    //    if (TeamStats.RedScouts < Constants.FREE_SCOUT_LIMIT)
+    //    {
+    //        TeamStats.RedScouts++;
+    //        GameObject newScout = Instantiate(scoutPrefab);
+    //        newScout.transform.position = scoutPos;
+    //        newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+    //        scoutsSpawned.Add(newScout.GetComponent<Unit>());
+    //        spawnerButtonClicked = false;
+    //        return true;
+    //    }
+    //    else if (TeamStats.RedPoints >= TeamStats.RedScouts - 2)
+    //    {
+    //        TeamStats.RedPoints -= TeamStats.RedScouts - 2;
+    //        TeamStats.RedScouts++;
+    //        GameObject newScout = Instantiate(scoutPrefab);
+    //        newScout.transform.position = scoutPos;
+    //        newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+    //        scoutsSpawned.Add(newScout.GetComponent<Unit>());
+    //        spawnerButtonClicked = false;
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     int GetCurrentScoutCount()
     {

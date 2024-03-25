@@ -44,7 +44,6 @@ public class SpawnerPathManager : MonoBehaviour
                 if (waiter > 300)
                 {
                     List<GameObject> hqs = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
-                    Debug.Log(hqs.Count);
                     waiter = 0;
                     foreach (var spawner in hqs)
                     {

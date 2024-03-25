@@ -146,7 +146,7 @@ public class Crate2D : MonoBehaviour
 
             if (assignedScout != null)
             {
-                MoveTowardsHQ(Constants.RED_TEAM);
+                MoveTowardsHQ(assignedScout.GetComponent<Scout>().unitStats.unitTeam);
             }
         }
         else

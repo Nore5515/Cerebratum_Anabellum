@@ -44,7 +44,6 @@ public class Crate2DSpawner : MonoBehaviour
 
     void SpawnCheck()
     {
-        Debug.Log("Populating Crates!");
         foreach (GameObject pos in potentialCratePositions)
         {
             if (spawnedCrates[pos] == null)

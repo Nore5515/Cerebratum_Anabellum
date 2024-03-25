@@ -318,7 +318,8 @@ MonoBehaviour:
   survivalTime: -1
   cm: {fileID: 0}
   anim: {fileID: 0}
-  debugMode: 1
+  debugMode: 0
+  assignedCrate: {fileID: 0}
 --- !u!65 &7805139605555616395
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -629,6 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dadd3de4575c4e4baa3271b92a0599e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
 --- !u!1 &6419437950373733338
 GameObject:
   m_ObjectHideFlags: 0

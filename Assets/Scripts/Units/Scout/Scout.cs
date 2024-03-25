@@ -45,7 +45,7 @@ public class Scout : Unit
         return crates.Length;
     }
 
-    GameObject GetTeamHQ()
+    public GameObject GetTeamHQ()
     {
         GameObject[] hqs = GameObject.FindGameObjectsWithTag("hq");
         foreach (GameObject hq in hqs)

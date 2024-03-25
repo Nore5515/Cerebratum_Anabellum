@@ -92,6 +92,7 @@ public class Unit : MonoBehaviour
 
     public void Initalize(List<Vector3> newPoints, string newTeam, SpawnedUnitStats newStats)
     {
+        Debug.Log("INITIALIZING UNIT!");
         // TEST CODE
         if (!testMode_noPossession)
         {
@@ -102,6 +103,7 @@ public class Unit : MonoBehaviour
         unitStats.unitTeam = newTeam;
         threatState = "WALK";
 
+        Debug.Log("Setting new unit team " + newTeam);
         SetGlowColor();
 
         unitStats.rof = newStats.fireDelay;
