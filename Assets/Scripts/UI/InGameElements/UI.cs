@@ -215,7 +215,7 @@ public class UI : MonoBehaviour
         }
 
         vpText.text = TeamStats.BlueVP.ToString() + " vs " + TeamStats.RedVP.ToString();
-        scoutText.text = TeamStats.RedScouts.ToString() + "/" + Constants.VP_TO_VICTORY.ToString();
+        scoutText.text = TeamStats.RedVP.ToString() + "/" + Constants.VP_TO_VICTORY.ToString();
 
         if (TeamStats.BlueVP >= Constants.VP_TO_VICTORY || TeamStats.RedVP >= Constants.VP_TO_VICTORY)
         {
