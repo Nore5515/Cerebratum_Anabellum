@@ -141,8 +141,13 @@ public class Crate2D : MonoBehaviour
         RemoveNullUnits();
         if (capturingUnits.Count > 0)
         {
-            DrawLinesToAllUnits();
-            MoveTowardsHQ(Constants.RED_TEAM);
+            //DrawLinesToAllUnits();
+            DrawLineToAssignedScout();
+
+            if (assignedScout != null)
+            {
+                MoveTowardsHQ(Constants.RED_TEAM);
+            }
         }
         else
         {
@@ -166,7 +171,7 @@ public class Crate2D : MonoBehaviour
         {
             Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);
 
-            transform.Translate(direction * baseCrateMovespeed * capturingUnits.Count * Time.deltaTime);
+            transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, hqLocations[hqTeam]) < minimumHQDistance)
             {
@@ -177,6 +182,14 @@ public class Crate2D : MonoBehaviour
         else
         {
             Debug.LogError("HQ Team not found in Crate2D");
+        }
+    }
+
+    private void DrawLineToAssignedScout()
+    {
+        if (assignedScout != null)
+        {
+            DrawLineToUnit(assignedScout.GetComponent<Scout>(), 0);
         }
     }
 
