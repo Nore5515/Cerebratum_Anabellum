@@ -18489,7 +18489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: spawnDelay
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: spawnerTeam
@@ -19329,7 +19329,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: spawnDelay
-      value: 5
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
+      propertyPath: scoutSpawnDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
+      propertyPath: maxScoutSpawnDelay
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7575600747995610609, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}
       propertyPath: testMode_noPossession
@@ -20362,19 +20370,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6508300150143159610, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: m_ClearFlags
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6508300150143159610, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.7075472
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6508300150143159610, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.53418326
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6508300150143159610, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.42386082
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6508300150143159614, guid: e895c278ae1f8442fab09dc4877e5146, type: 3}
       propertyPath: pathBar

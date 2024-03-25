@@ -25,7 +25,6 @@ public class SpawnerPathManager : MonoBehaviour
             // TODO: Obviously not good long temr lol
             if (this.gameObject.GetComponent<Spawner>().spawnerTeam == "BLUE")
             {
-                Debug.Log("Blue!");
                 aiControlled = true;
             }
         }

@@ -37,6 +37,44 @@ public class Scout : Unit
         }
     }
 
+    int GetCrateCount()
+    {
+        GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
+        return crates.Length;
+    }
+
+    GameObject GetTeamHQ()
+    {
+        GameObject[] hqs = GameObject.FindGameObjectsWithTag("hq");
+        foreach (GameObject hq in hqs)
+        {
+            if (hq.GetComponent<HQObject>().team == unitStats.unitTeam)
+            {
+                return hq;
+            }
+        }
+        Debug.LogError("Could not find team hq");
+        return null;
+    }
+
+    GameObject GetNearestCrate()
+    {
+        GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
+        GameObject nearest = crates[0];
+        float shortestDist = int.MaxValue;
+        Vector3 hqPos = GetTeamHQ().transform.position;
+        foreach (GameObject crate in crates)
+        {
+            float newDist = Vector3.Distance(crate.transform.position, hqPos);
+            if (newDist < shortestDist)
+            {
+                nearest = crate;
+                shortestDist = newDist;
+            }
+        }
+        return nearest;
+    }
+
     public override void SpecializedInitialization()
     {
         CScout();
@@ -69,6 +107,15 @@ public class Scout : Unit
     // Update is called once per frame
     void Update()
     {
+        if (GetCrateCount() > 0)
+        {
+            Debug.Log("Crate Count is > 0!");
+            if (unitPointHandler.pointVectors.Count == 0)
+            {
+                Debug.Log("Adding point for scout!!");
+                AddPoint(GetNearestCrate().transform.position);
+            }
+        }
         MovementUpdate();
         IdleUpdate();
     }

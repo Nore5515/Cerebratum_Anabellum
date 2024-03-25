@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 6578444397489993949}
   m_Layer: 6
   m_Name: 2DCrate
-  m_TagString: Untagged
+  m_TagString: crate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

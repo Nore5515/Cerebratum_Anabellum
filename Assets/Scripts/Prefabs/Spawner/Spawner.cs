@@ -53,7 +53,7 @@ public class Spawner : MonoBehaviour
     public float spawnDelay = 30.0f;
 
     public float maxScoutSpawnDelay = 15.0f;
-    float scoutSpawnDelay = 15.0f;
+    public float scoutSpawnDelay = 15.0f;
 
     void Start()
     {
@@ -302,7 +302,6 @@ public class Spawner : MonoBehaviour
         {
             if (scoutSpawnDelay <= 0.0f)
             {
-                Debug.Log("Spawning Scout!");
                 Vector3 belowSpawner = transform.position;
                 belowSpawner = new Vector3(belowSpawner.x, belowSpawner.y - 1.0f, belowSpawner.z);
                 if (canvasObj[0].GetComponent<ScoutSpawning>().SpawnScout(belowSpawner))
@@ -313,7 +312,6 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("Mkaing Env");
             Instantiate(env_scoutSpawning, transform.position, transform.rotation);
             SpawnScout();
         }

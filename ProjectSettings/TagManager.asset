@@ -18,6 +18,7 @@ TagManager:
   - spawn_scout_button
   - main_canvas
   - scout_spawner
+  - crate
   layers:
   - Default
   - TransparentFX

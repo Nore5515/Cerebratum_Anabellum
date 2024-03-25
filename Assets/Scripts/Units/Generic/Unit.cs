@@ -62,7 +62,7 @@ public class Unit : MonoBehaviour
 
 
     // Point Stuff
-    UnitPointHandler unitPointHandler = new UnitPointHandler();
+    public UnitPointHandler unitPointHandler = new UnitPointHandler();
 
     // Consts
 
