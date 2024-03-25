@@ -12,6 +12,8 @@ public class Scout : Unit
     public Animation anim;
     public bool debugMode = false;
 
+    public GameObject assignedCrate = null;
+
     public void CScout()
     {
         unitObj = gameObject;
@@ -66,13 +68,29 @@ public class Scout : Unit
         foreach (GameObject crate in crates)
         {
             float newDist = Vector3.Distance(crate.transform.position, hqPos);
-            if (newDist < shortestDist)
+            if (crate.GetComponent<Crate2D>().assignedScout == null)
             {
-                nearest = crate;
-                shortestDist = newDist;
+                if (newDist < shortestDist)
+                {
+                    nearest = crate;
+                    shortestDist = newDist;
+                }
             }
         }
         return nearest;
+    }
+
+    bool NonOccupiedCrateExist()
+    {
+        GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
+        foreach (GameObject crate in crates)
+        {
+            if (crate.GetComponent<Crate2D>().assignedScout == null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public override void SpecializedInitialization()
@@ -104,16 +122,37 @@ public class Scout : Unit
         Destroy(gameObject);
     }
 
+    void SetCrateAsDest()
+    {
+        GameObject nearestCrate = GetNearestCrate();
+        nearestCrate.GetComponent<Crate2D>().assignedScout = gameObject;
+        assignedCrate = nearestCrate;
+        AddPoint(nearestCrate.transform.position);
+    }
+
+    void FollowAssignedCrate()
+    {
+        AddPoint(assignedCrate.transform.position);
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (GetCrateCount() > 0)
         {
-            Debug.Log("Crate Count is > 0!");
             if (unitPointHandler.pointVectors.Count == 0)
             {
-                Debug.Log("Adding point for scout!!");
-                AddPoint(GetNearestCrate().transform.position);
+                if (assignedCrate == null)
+                {
+                    if (NonOccupiedCrateExist())
+                    {
+                        SetCrateAsDest();
+                    }
+                }
+                else
+                {
+                    FollowAssignedCrate();
+                }
             }
         }
         MovementUpdate();

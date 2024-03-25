@@ -40,6 +40,8 @@ public class Crate2D : MonoBehaviour
     [SerializeField]
     float minimumHQDistance = 2.0f;
 
+    public GameObject assignedScout = null;
+
     int redProgress = 0;
     int blueProgress = 0;
     CaptureProgress captureProgress = new CaptureProgress(Constants.RED_TEAM, 0);

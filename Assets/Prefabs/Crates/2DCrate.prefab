@@ -239,8 +239,9 @@ MonoBehaviour:
   chanceToReactivatePerSecond: 0.05
   lineRenderer: {fileID: 3640389291493134925}
   suspendedOnStart: 0
-  baseCrateMovespeed: 25
+  baseCrateMovespeed: 100
   minimumHQDistance: 2
+  assignedScout: {fileID: 0}
   capturingUnits: []
 --- !u!135 &6578444397489993949
 SphereCollider:
