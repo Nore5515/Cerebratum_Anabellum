@@ -7,7 +7,7 @@ public static class Constants
     // SCOUT STUFF
     public static int FREE_SCOUT_LIMIT = 3;
 
-    public static int VP_TO_VICTORY = 3;
+    public static int VP_TO_VICTORY = 10;
 
     public static float BOT_CREATE_INF_SPAWNER_CHANCE => 0.5f;
     public static float BOT_CHANGE_SPAWNER_PATH_CHANCE => 0.25f;
