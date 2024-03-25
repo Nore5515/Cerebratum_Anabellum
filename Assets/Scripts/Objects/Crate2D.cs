@@ -35,7 +35,7 @@ public class Crate2D : MonoBehaviour
     bool suspendedOnStart = false;
 
     [SerializeField]
-    float baseCrateMovespeed = 1.0f;
+    float baseCrateMovespeed = 100.0f;
 
     [SerializeField]
     float minimumHQDistance = 2.0f;
@@ -164,7 +164,7 @@ public class Crate2D : MonoBehaviour
         {
             Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);
 
-            transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
+            transform.Translate(direction * baseCrateMovespeed * capturingUnits.Count * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, hqLocations[hqTeam]) < minimumHQDistance)
             {
