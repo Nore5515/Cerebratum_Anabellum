@@ -68,7 +68,7 @@ public class Crate2D : MonoBehaviour
         {
             SuspendCrate();
         }
-        InvokeRepeating("OutputTime", 1f, 0.25f);  //1s delay, repeat every 1s
+        InvokeRepeating("OutputTime", 1f, 0.05f);  //1s delay, repeat every 0.05s
     }
 
     void PopulateHqLocations()
