@@ -62,7 +62,7 @@ public class Spawner : MonoBehaviour
 
         spawnerUI.AttemptInitializeUI();
 
-        IEnumerator coroutine = SpawnPrefab(prefab);
+        IEnumerator coroutine = SpawnSquadOfPrefab(prefab);
         StartCoroutine(coroutine);
 
         SpawnDeclaration();
@@ -150,7 +150,7 @@ public class Spawner : MonoBehaviour
     {
         InitializeUnitType(newUnitType);
 
-        IEnumerator coroutine = SpawnPrefab(prefab);
+        IEnumerator coroutine = SpawnSquadOfPrefab(prefab);
         StartCoroutine(coroutine);
     }
 
@@ -242,7 +242,7 @@ public class Spawner : MonoBehaviour
         return nullUnitList;
     }
 
-    private IEnumerator SpawnPrefab(GameObject prefabToSpawn)
+    private IEnumerator SpawnSquadOfPrefab(GameObject prefabToSpawn)
     {
         yield return new WaitForSeconds(spawnDelay);
         ClearNullInstances();
@@ -253,7 +253,7 @@ public class Spawner : MonoBehaviour
             unitList.Add(unitInstance);
         }
 
-        StartCoroutine(SpawnPrefab(prefabToSpawn));
+        StartCoroutine(SpawnSquadOfPrefab(prefabToSpawn));
     }
 
     public void DEBUG_BreakEcon()
