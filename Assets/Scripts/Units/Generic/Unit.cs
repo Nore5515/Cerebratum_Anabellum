@@ -409,7 +409,7 @@ public class Unit : MonoBehaviour
                 {
                     if (unitPointHandler.pointVectors.Count <= 0)
                     {
-                        if (unitStats.unitType != Constants.SCOUT_TYPE && unitStats.unitType != Constants.TUR_TYPE)
+                        if (unitStats.unitType != Constants.SCOUT_TYPE && unitStats.unitType != Constants.TURRET_TYPE)
                         {
                             Destroy(gameObject);
                         }

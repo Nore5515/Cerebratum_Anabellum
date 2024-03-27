@@ -255,6 +255,14 @@ public class PosHandler : MonoBehaviour
         Unit unit = potentialUnit.GetComponent<Unit>();
         if (unit.unitStats.unitTeam != teamColor) return false;
 
+        foreach (string blackListedType in Constants.POS_BLACK_LIST)
+        {
+            if (blackListedType == unit.unitStats.unitTeam)
+            {
+                return false;
+            }
+        }
+
         if (controlledUnits.Count > 0)
         {
             controlledUnits[0].beingControlled = false;

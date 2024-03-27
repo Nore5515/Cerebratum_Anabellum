@@ -17,6 +17,9 @@ public class TurretUnit : Unit
     [SerializeField]
     bool isBlue;
 
+    [SerializeField]
+
+
 
     public void CTurret()
     {
@@ -31,7 +34,7 @@ public class TurretUnit : Unit
         unitStats.speed = Constants.TUR_SPEED;
         unitStats.rof = Constants.TUR_INIT_FIRE_DELAY;
         unitStats.threatLevel = 3;
-        unitStats.unitType = Constants.TUR_TYPE;
+        unitStats.unitType = Constants.TURRET_TYPE;
 
         if (debugMode)
         {

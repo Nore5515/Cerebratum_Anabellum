@@ -48,6 +48,9 @@ public static class Constants
 
     public static int ENGAGEMENT_SPHERE_RADIUS_MODIFIER = 2;
 
+    // Possession Black Listed Units
+    public static string[] POS_BLACK_LIST = { TURRET_TYPE };
+
     // UNIT STATS
 
     // Infantry
@@ -66,7 +69,7 @@ public static class Constants
     public static float INF_MAX_SPAWN_DELAY = 1.0f;
 
     // Turret
-    public static string TUR_TYPE => "Turret";
+    public static string TURRET_TYPE => "Turret";
 
     public static int TUR_DMG => 1;
     public static int TUR_HP => 999;
