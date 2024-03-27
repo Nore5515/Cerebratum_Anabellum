@@ -1269,7 +1269,7 @@ GameObject:
   - component: {fileID: 732885006890489367}
   - component: {fileID: 8646230950262295469}
   - component: {fileID: 8885089173988304938}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: DetectionRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1863,7 +1863,7 @@ GameObject:
   - component: {fileID: 8112762406356683945}
   - component: {fileID: 9191533770057270751}
   - component: {fileID: 1147403777599704448}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: EngagementRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}

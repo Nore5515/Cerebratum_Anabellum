@@ -257,7 +257,7 @@ public class PosHandler : MonoBehaviour
 
         foreach (string blackListedType in Constants.POS_BLACK_LIST)
         {
-            if (blackListedType == unit.unitStats.unitTeam)
+            if (blackListedType == unit.unitStats.unitType)
             {
                 return false;
             }
