@@ -65,6 +65,21 @@ public static class Constants
     public static float INF_MAX_RANGE = 6.0f;
     public static float INF_MAX_SPAWN_DELAY = 1.0f;
 
+    // Turret
+    public static string TUR_TYPE => "Turret";
+
+    public static int TUR_DMG => 1;
+    public static int TUR_HP => 999;
+    public static float TUR_SPEED => 0.0f;
+
+    public static float TUR_INIT_FIRE_DELAY = 0.3f;
+    public static float TUR_INIT_RANGE = 6.0f;
+    public static float TUR_INIT_SPAWN_DELAY = 999.0f;
+
+    public static float TUR_MAX_FIRE_DELAY = 0.3f;
+    public static float TUR_MAX_RANGE = 6.0f;
+    public static float TUR_MAX_SPAWN_DELAY = 999.0f;
+
     // --
 
     public static float GRENADE_LOCAL_SCALE = 2.0f;
@@ -89,7 +104,7 @@ public static class Constants
 
     public static int SCOUT_DMG => 1;
     public static int SCOUT_HP => 4;
-    public static float SCOUT_SPEED => 4.0f;
+    public static float SCOUT_SPEED => 2.5f;
 
     public static float SCOUT_INIT_FIRE_DELAY = 2.0f;
     public static float SCOUT_INIT_RANGE = 3.0f;
