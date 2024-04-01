@@ -22,6 +22,7 @@ public class Unit : MonoBehaviour
 
     // Movement
     public Vector3 direction;
+    public bool initialMove = true;
 
     // UI
     public Slider hpSlider;
@@ -316,17 +317,24 @@ public class Unit : MonoBehaviour
         // If dest exists, cus otherwise you're just stayin' still.
         if (unitPointHandler.DestVector == new Vector3(0.0f, 0.0f, 0.0f)) return;
 
-        switch (threatState)
+        if (initialMove)
         {
-            case ("STAND"):
-                break;
-            case ("FLEE"):
-                break;
-            case ("WALK"):
-                WalkingLogic();
-                break;
-            default:
-                break;
+            WalkingLogic();
+        }
+        else
+        {
+            switch (threatState)
+            {
+                case ("STAND"):
+                    break;
+                case ("FLEE"):
+                    break;
+                case ("WALK"):
+                    WalkingLogic();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -347,6 +355,10 @@ public class Unit : MonoBehaviour
         // Once you get too close to your destination, remove it from your movement path and go towards the next one.
         else
         {
+            if (initialMove)
+            {
+                initialMove = false;
+            }
             unitPointHandler.AttemptRemoveNextDestPoint();
         }
     }
