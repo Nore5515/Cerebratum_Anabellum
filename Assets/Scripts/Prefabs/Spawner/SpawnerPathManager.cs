@@ -146,18 +146,61 @@ public class SpawnerPathManager : MonoBehaviour
         return bluePathMarker;
     }
 
+    int GetCrateCount()
+    {
+        GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
+        Debug.Log("Crates" + crates.Length);
+        return crates.Length;
+    }
+
+    GameObject GetNearestCrate()
+    {
+        GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
+        GameObject nearest = crates[0];
+        float shortestDist = int.MaxValue;
+        Vector3 hqPos = transform.position;
+        foreach (GameObject crate in crates)
+        {
+            float newDist = Vector3.Distance(crate.transform.position, hqPos);
+            if (crate.GetComponent<Crate2D>().assignedScout == null)
+            {
+                if (newDist < shortestDist)
+                {
+                    nearest = crate;
+                    shortestDist = newDist;
+                }
+            }
+        }
+        return nearest;
+    }
+
     public void AI_DrawPath(Vector3 position)
     {
-        if (PathState.paths.Count > 0)
+        if (GetCrateCount() > 0 && false)
         {
-            PickAndCreateNewPath("BLUE");
-        }
-        else
-        {
+            Debug.Log("Get nearest crate place");
             GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
             obj.GetComponent<MeshRenderer>().material = pathMat;
             obj.GetComponent<MeshRenderer>().enabled = false;
+            obj.transform.position = GetNearestCrate().transform.position;
+            obj.transform.rotation = transform.rotation;
+            pathSpheres = new List<GameObject>();
             pathSpheres.Add(obj);
+        }
+        else
+        {
+            Debug.Log("No crates nearby");
+            if (PathState.paths.Count > 0)
+            {
+                PickAndCreateNewPath("BLUE");
+            }
+            else
+            {
+                GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
+                obj.GetComponent<MeshRenderer>().material = pathMat;
+                obj.GetComponent<MeshRenderer>().enabled = false;
+                pathSpheres.Add(obj);
+            }
         }
     }
 

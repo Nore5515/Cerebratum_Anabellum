@@ -1,17 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using System.Diagnostics;
+
+public class MyLogHandler : ILogHandler
+{
+    public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)
+    {
+        Debug.unityLogger.logHandler.LogFormat(logType, context, format, args);
+    }
+
+    public void LogException(Exception exception, UnityEngine.Object context)
+    {
+        Debug.unityLogger.LogException(exception, context);
+    }
+}
 
 public class EnemyCommander : MonoBehaviour
 {
     public List<GameObject> mySpawners = new List<GameObject>();
 
     public string myTeam = Constants.BLUE_TEAM;
+    private static string kTAG = "EnemyCommanderTag";
+    private Logger myLogger;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        myLogger = new Logger(new MyLogHandler());
         PopulateSpawners();
         InvokeRepeating("EnemyLogicTick", 5.0f, 5.0f);
     }
@@ -33,13 +51,11 @@ public class EnemyCommander : MonoBehaviour
 
     void EnemyLogicTick()
     {
-        string enemyThoughts = "";
-        enemyThoughts += "Enemy Brain Tick!";
         foreach (GameObject spawner in mySpawners)
         {
             spawner.GetComponent<Spawner>().SpawnScout();
-            enemyThoughts += "\n\tAttempting to spawn a scout!";
+            spawner.GetComponent<Spawner>().spawnerPathManager.AI_DrawPath(transform.position);
+            myLogger.Log(kTAG, "Attempting to spawn scout!");
         }
-        Debug.Log(enemyThoughts);
     }
 }

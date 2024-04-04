@@ -297,6 +297,7 @@ public class Spawner : MonoBehaviour
 
     public void SpawnScout()
     {
+        Debug.Log("What");
         GameObject[] canvasObj = GameObject.FindGameObjectsWithTag("scout_spawner");
         if (canvasObj.Length > 0)
         {
