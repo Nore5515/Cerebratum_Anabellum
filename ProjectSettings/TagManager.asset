@@ -19,6 +19,7 @@ TagManager:
   - main_canvas
   - scout_spawner
   - crate
+  - pause_menu
   layers:
   - Default
   - TransparentFX

@@ -54,9 +54,10 @@ public class CommandModeInputHandler : MonoBehaviour
 
     void HandleEscapeHeld()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("MainMenu");
+            Debug.Log("Nuke");
+            GameObject.FindGameObjectWithTag("pause_menu").GetComponent<PauseMenu>().ToggleActive();
         }
     }
 
