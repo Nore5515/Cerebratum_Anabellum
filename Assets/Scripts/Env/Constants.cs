@@ -32,6 +32,8 @@ public static class Constants
 
     public static int CYCLE_MAX = 100;
 
+    public static int SPAWNERS_PER_SIDE = 1;
+
     public static float PLACEMENT_RANGE = 5.0f;
 
     public static float ZED_OFFSET = -0.1f;
