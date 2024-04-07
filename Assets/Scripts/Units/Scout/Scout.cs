@@ -14,6 +14,9 @@ public class Scout : Unit
 
     public GameObject assignedCrate = null;
 
+    [SerializeField]
+    GameObject scoutDeathAnim;
+
     public void CScout()
     {
         unitObj = gameObject;
@@ -106,6 +109,7 @@ public class Scout : Unit
 
     public override void Die()
     {
+        Instantiate(scoutDeathAnim, transform.position, transform.rotation);
         if (unitStats.unitTeam == Constants.RED_TEAM)
         {
             TeamStats.RedScouts--;

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5045855868807901376}
   - component: {fileID: 8938654814763093556}
   - component: {fileID: 4912164195247683047}
+  - component: {fileID: 5251610408179146069}
   m_Layer: 0
   m_Name: InfantryGrenadeDeath
   m_TagString: Untagged
@@ -106,3 +107,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5251610408179146069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484742969692837339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0b499f8f93247bb95a3035469f69fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

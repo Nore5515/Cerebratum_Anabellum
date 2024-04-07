@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
+  initialMove: 1
   hpSlider: {fileID: 3613080002826693674}
   AnimState: Idle
   unitPossessionHandler: {fileID: 0}
@@ -1123,6 +1124,7 @@ MonoBehaviour:
   cm: {fileID: 0}
   anim: {fileID: 0}
   debugMode: 0
+  grenadeDeathAnim: {fileID: 6484742969692837339, guid: 1beb1888bf9fd40f9a0b0d585840922a, type: 3}
 --- !u!65 &7805139605555616395
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1752,7 +1754,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: f54c30487126e471cac7ebdca079c7a8, type: 2}
   m_audioClip: {fileID: 8300000, guid: 6504399e6a7dd4735958754e31c54c63, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.375
+  m_Volume: 0.71
   m_Pitch: 1
   Loop: 0
   Mute: 0

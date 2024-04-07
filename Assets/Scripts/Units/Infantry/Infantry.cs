@@ -11,6 +11,9 @@ public class Infantry : Unit
     public Animation anim;
     public bool debugMode = false;
 
+    [SerializeField]
+    public GameObject grenadeDeathAnim;
+
     public void CInfantry()
     {
         unitObj = gameObject;
@@ -50,6 +53,12 @@ public class Infantry : Unit
             IEnumerator coroutine = SelfDestruct();
             StartCoroutine(coroutine);
         }
+    }
+
+    override public void Die()
+    {
+        Instantiate(grenadeDeathAnim, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 
     IEnumerator SelfDestruct()

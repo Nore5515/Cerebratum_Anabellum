@@ -84,7 +84,7 @@ public class Unit : MonoBehaviour
 
     public virtual void Die()
     {
-        Debug.LogError("Die function not overriden!");
+        Destroy(gameObject);
     }
 
     public virtual void SpecializedInitialization()
@@ -180,7 +180,7 @@ public class Unit : MonoBehaviour
         }
         if (unitStats.hp <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
     }
 
