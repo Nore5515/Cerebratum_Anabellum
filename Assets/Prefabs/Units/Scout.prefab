@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
+  initialMove: 1
   hpSlider: {fileID: 0}
   AnimState: Idle
   unitPossessionHandler: {fileID: 0}
@@ -320,6 +321,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   debugMode: 0
   assignedCrate: {fileID: 0}
+  scoutDeathAnim: {fileID: 666474632740124492, guid: 28910f7b4dac74391b32d69ff23f27e3, type: 3}
 --- !u!65 &7805139605555616395
 BoxCollider:
   m_ObjectHideFlags: 0

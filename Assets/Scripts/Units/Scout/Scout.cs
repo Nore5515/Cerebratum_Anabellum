@@ -118,6 +118,7 @@ public class Scout : Unit
         {
             TeamStats.BlueScouts--;
         }
+        Destroy(gameObject);
     }
 
     IEnumerator SelfDestruct()
