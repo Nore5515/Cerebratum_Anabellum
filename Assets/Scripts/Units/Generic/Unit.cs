@@ -82,7 +82,7 @@ public class Unit : MonoBehaviour
         SpecializedInitialization();
     }
 
-    public virtual void Die()
+    public virtual void Die(string causeOfDeath)
     {
         Destroy(gameObject);
     }
@@ -171,7 +171,7 @@ public class Unit : MonoBehaviour
         return unitStats.hp;
     }
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage, string sourceOfDamage)
     {
         unitStats.hp -= damage;
         if (hpSlider != null)
@@ -180,7 +180,7 @@ public class Unit : MonoBehaviour
         }
         if (unitStats.hp <= 0)
         {
-            Die();
+            Die(sourceOfDamage);
         }
     }
 

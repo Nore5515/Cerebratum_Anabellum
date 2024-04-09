@@ -13,6 +13,8 @@ public class Infantry : Unit
 
     [SerializeField]
     public GameObject grenadeDeathAnim;
+    [SerializeField]
+    public GameObject gibDeathAnim;
 
     public void CInfantry()
     {
@@ -55,9 +57,16 @@ public class Infantry : Unit
         }
     }
 
-    override public void Die()
+    override public void Die(string causeOfDeath)
     {
-        Instantiate(grenadeDeathAnim, transform.position, transform.rotation);
+        if (causeOfDeath == Constants.DAMAGE_TYPE_GRENADE)
+        {
+            Instantiate(grenadeDeathAnim, transform.position, transform.rotation);
+        }
+        else
+        {
+            Instantiate(gibDeathAnim, transform.position, transform.rotation);
+        }
         Destroy(gameObject);
     }
 

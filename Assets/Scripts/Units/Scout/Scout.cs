@@ -107,7 +107,7 @@ public class Scout : Unit
         }
     }
 
-    public override void Die()
+    public override void Die(string causeOfDeath)
     {
         Instantiate(scoutDeathAnim, transform.position, transform.rotation);
         if (unitStats.unitTeam == Constants.RED_TEAM)

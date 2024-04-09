@@ -95,7 +95,7 @@ public class Projectile : MonoBehaviour
                     TeamStats.BlueScouts--;
                 }
             }
-            unit.Die();
+            unit.Die(Constants.DAMAGE_TYPE_GENERIC);
         }
 
         projectileIsExhausted = true;

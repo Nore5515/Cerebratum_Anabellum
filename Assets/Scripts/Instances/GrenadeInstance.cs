@@ -111,7 +111,7 @@ public class GrenadeInstance : MonoBehaviour
             Unit u = GetUnitFromCollider(c);
             if (u != null)
             {
-                u.ReceiveDamage(1);
+                u.ReceiveDamage(1, Constants.DAMAGE_TYPE_GRENADE);
             }
         }
     }

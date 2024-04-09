@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public static class Constants
 {
+    // DEATH STUFF
+    public static string DAMAGE_TYPE_GRENADE = "grenade";
+    public static string DAMAGE_TYPE_GENERIC = "generic";
 
     // SCOUT STUFF
     public static int FREE_SCOUT_LIMIT = 3;
