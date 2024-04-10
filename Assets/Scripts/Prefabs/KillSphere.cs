@@ -18,6 +18,15 @@ public class KillSphere : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (alliedTeam == null) return;
+
+        AttemptAddUnitInRange2D(other);
+
+        AttemptAddHQInRange2D(other);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (alliedTeam == null) return;
@@ -36,6 +45,15 @@ public class KillSphere : MonoBehaviour
         unit.AddTargetInRange(other.gameObject);
     }
 
+    void AttemptAddUnitInRange2D(Collider2D other)
+    {
+        if (other.gameObject.GetComponent<Unit>() == null) return;
+        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == null) return;
+        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == alliedTeam) return;
+
+        unit.AddTargetInRange(other.gameObject);
+    }
+
     void AttemptAddHQInRange(Collider other)
     {
         if (other.gameObject.GetComponent<HQObject>() == null) return;
@@ -43,7 +61,19 @@ public class KillSphere : MonoBehaviour
         unit.AddTargetInRange(other.gameObject);
     }
 
+    void AttemptAddHQInRange2D(Collider2D other)
+    {
+        if (other.gameObject.GetComponent<HQObject>() == null) return;
+        if (other.gameObject.GetComponent<HQObject>().team == alliedTeam) return;
+        unit.AddTargetInRange(other.gameObject);
+    }
+
     private void OnTriggerExit(Collider other)
+    {
+        unit.RemoveTargetInRange(other.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
     {
         unit.RemoveTargetInRange(other.gameObject);
     }

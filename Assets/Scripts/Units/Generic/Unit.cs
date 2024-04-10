@@ -129,8 +129,16 @@ public class Unit : MonoBehaviour
 
     void SetSpheresRadius(SpawnedUnitStats newStats)
     {
-        detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
-        engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + Constants.ENGAGEMENT_SPHERE_RADIUS_MODIFIER;
+        if (detectionSphere.GetComponent<SphereCollider>() != null)
+        {
+            detectionSphere.GetComponent<SphereCollider>().radius = newStats.unitRange;
+            engagementSphere.GetComponent<SphereCollider>().radius = newStats.unitRange + Constants.ENGAGEMENT_SPHERE_RADIUS_MODIFIER;
+        }
+        if (detectionSphere.GetComponent<CircleCollider2D>() != null)
+        {
+            detectionSphere.GetComponent<CircleCollider2D>().radius = newStats.unitRange;
+            engagementSphere.GetComponent<CircleCollider2D>().radius = newStats.unitRange + Constants.ENGAGEMENT_SPHERE_RADIUS_MODIFIER;
+        }
     }
 
     void SetGlowColor()

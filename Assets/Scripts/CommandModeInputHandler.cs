@@ -12,6 +12,7 @@ public class CommandModeInputHandler : MonoBehaviour
 {
     RayHandler rayHandler;
     RayObj rayObj = new RayObj();
+    RayObj2D rayObj2D = new RayObj2D();
 
     public PathHandler pathHandler;
 
@@ -177,21 +178,21 @@ public class CommandModeInputHandler : MonoBehaviour
 
     bool RayCheckUnit()
     {
-        rayObj = rayHandler.GenerateLayeredRayObj("Unit");
-        if (rayObj.hit.collider != null)
+        rayObj2D = rayHandler.GenerateLayered2DRayObj("UnitSelection");
+        if (rayObj2D.hit.collider != null)
         {
-            HitUnit(rayObj);
+            HitUnit(rayObj2D.hit.collider.gameObject);
             return true;
         }
         return false;
     }
 
-    void HitUnit(RayObj rayObj)
+    void HitUnit(GameObject unitObj)
     {
         if (!spaceHeld) return;
         if (posHandler != null)
         {
-            if (posHandler.TryPossessUnit(rayObj.hit.collider.gameObject))
+            if (posHandler.TryPossessUnit(unitObj))
             {
                 commandLoopEnabled = false;
             }

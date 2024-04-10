@@ -51,7 +51,6 @@ class PossessionInputHandler
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Nuke");
             GameObject.FindGameObjectWithTag("pause_menu").GetComponent<PauseMenu>().ToggleActive();
         }
     }
