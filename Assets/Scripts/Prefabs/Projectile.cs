@@ -20,6 +20,9 @@ public class Projectile : MonoBehaviour
     }
 
     [SerializeField]
+    bool is2D = false;
+
+    [SerializeField]
     private float survivalTime = 5f;
 
     [SerializeField]
@@ -32,8 +35,11 @@ public class Projectile : MonoBehaviour
 
     private bool projectileIsExhausted = false;
 
+    private float initialZ;
+
     void Start()
     {
+        initialZ = transform.position.z;
         IEnumerator coroutine = SelfDestruct();
         StartCoroutine(coroutine);
     }
@@ -42,6 +48,11 @@ public class Projectile : MonoBehaviour
     {
         checkUnit(other);
         checkTower(other);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        checkUnit2D(other);
     }
 
     /// <summary>
@@ -67,6 +78,11 @@ public class Projectile : MonoBehaviour
     /// </summary>
     void Update()
     {
+        Vector3 newTrans = transform.position + moveSpeed * Time.deltaTime * transform.forward;
+        if (is2D)
+        {
+            newTrans.z = initialZ;
+        }
         transform.position += moveSpeed * Time.deltaTime * transform.forward;
     }
 
@@ -74,6 +90,37 @@ public class Projectile : MonoBehaviour
     /// If projectile hits unit, deal damage.
     /// </summary>
     private void checkUnit(Collider other)
+    {
+        if (projectileIsExhausted) return;
+        Unit unit = other.gameObject.GetComponent<Unit>();
+
+        if (unit == null) return;
+        if (unit.unitStats.unitTeam == "NIL") return;
+        if (unit.unitStats.unitTeam == team) return;
+
+        if (unit.DealDamage(damage) <= 0)
+        {
+            if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
+            {
+                if (unit.unitStats.unitTeam == Constants.RED_TEAM)
+                {
+                    TeamStats.RedScouts--;
+                }
+                else if (unit.unitStats.unitTeam == Constants.BLUE_TEAM)
+                {
+                    TeamStats.BlueScouts--;
+                }
+            }
+            unit.Die(Constants.DAMAGE_TYPE_GENERIC);
+        }
+
+        projectileIsExhausted = true;
+
+        Destroy(gameObject);
+    }
+
+
+    private void checkUnit2D(Collider2D other)
     {
         if (projectileIsExhausted) return;
         Unit unit = other.gameObject.GetComponent<Unit>();

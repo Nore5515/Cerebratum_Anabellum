@@ -12,6 +12,9 @@ public class Infantry : Unit
     public bool debugMode = false;
 
     [SerializeField]
+    GameObject infBulletPrefab;
+
+    [SerializeField]
     public GameObject grenadeDeathAnim;
     [SerializeField]
     public GameObject gibDeathAnim;
@@ -43,6 +46,8 @@ public class Infantry : Unit
 
     void Start()
     {
+        bulletPrefab = infBulletPrefab;
+        UpdateUnitFiringHandler(infBulletPrefab);
         CInfantry();
         unitStats.hp = unitStats.maxHP;
         if (hpSlider != null)

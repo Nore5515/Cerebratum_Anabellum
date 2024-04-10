@@ -1279,6 +1279,7 @@ MonoBehaviour:
   cm: {fileID: 0}
   anim: {fileID: 0}
   debugMode: 0
+  infBulletPrefab: {fileID: 9172172192567566883, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
   grenadeDeathAnim: {fileID: 6484742969692837339, guid: 1beb1888bf9fd40f9a0b0d585840922a, type: 3}
   gibDeathAnim: {fileID: 3232663544374822735, guid: 7e38f4e9cf72d4b798e989b272bcb420, type: 3}
 --- !u!61 &1591708180260203587

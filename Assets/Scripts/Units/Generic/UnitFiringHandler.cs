@@ -8,7 +8,7 @@ public class UnitFiringHandler : MonoBehaviour
     public bool firstFire { get; set; }   // Their first shot should be almost fully charged! 15% normal speed.
 
     float rof;
-    GameObject bulletPrefab;
+    public GameObject bulletPrefab;
     string unitTeam;
     int dmg;
 

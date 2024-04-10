@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
 
     public bool beingControlled { get; set; }
     public GameObject unitObj { get; set; }
-    public GameObject bulletPrefab { get; set; }
+    public virtual GameObject bulletPrefab { get; set; }
     public Vector3 controlDirection { get; set; }
 
     // STATE
@@ -89,6 +89,11 @@ public class Unit : MonoBehaviour
 
     public virtual void SpecializedInitialization()
     {
+    }
+
+    public void UpdateUnitFiringHandler(GameObject newBullet)
+    {
+        unitFiringHandler.bulletPrefab = newBullet;
     }
 
     public void Initalize(List<Vector3> newPoints, string newTeam, SpawnedUnitStats newStats)
