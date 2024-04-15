@@ -60,8 +60,11 @@ public class UnitFiringHandler : MonoBehaviour
         unitAudio.PlayGunshotEffect();
         GameObject bulletInstance = GenerateNewBulletPrefab();
         Vector3 zeroedTarget = position;
-        zeroedTarget.z = Constants.ZED_OFFSET;
-        bulletInstance.transform.LookAt(GetRandomAdjacentPosition(zeroedTarget, missRange));
+        zeroedTarget.z = transform.position.z;
+        //bulletInstance.transform.LookAt(GetRandomAdjacentPosition(zeroedTarget, missRange));
+        Vector3 newRight = zeroedTarget - GetRandomAdjacentPosition(zeroedTarget, missRange);
+        bulletInstance.transform.right = newRight;
+        Debug.Log("New Right:" + newRight);
         bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
     }
 
@@ -71,8 +74,8 @@ public class UnitFiringHandler : MonoBehaviour
     public Vector3 GetRandomAdjacentPosition(Vector3 position, float randomness)
     {
         float randomX = position.x + Random.Range(-randomness, randomness);
-        float randomZ = position.z + Random.Range(-randomness, randomness);
-        Vector3 random = new Vector3(randomX, position.y, randomZ);
+        float randomY = position.y + Random.Range(-randomness, randomness);
+        Vector3 random = new Vector3(randomX, randomY, position.z);
         return random;
     }
 

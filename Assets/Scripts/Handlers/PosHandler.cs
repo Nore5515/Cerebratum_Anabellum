@@ -200,6 +200,11 @@ public class PosHandler : MonoBehaviour
         return false;
     }
 
+    float GetUnitZ()
+    {
+        return controlledUnits[0].transform.position.z;
+    }
+
     bool IsPossessedUnitScout()
     {
         if (controlledUnits[0].unitStats.unitType == Constants.SCOUT_TYPE)
@@ -221,7 +226,7 @@ public class PosHandler : MonoBehaviour
     public void PossessedMouseDown(Vector2 locationToShootAt)
     {
         if (!UnitSanityCheck()) return;
-        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(locationToShootAt.x, locationToShootAt.y, Constants.ZED_OFFSET));
+        controlledUnits[0].PosAttemptShotAtPosition(new Vector3(locationToShootAt.x, locationToShootAt.y, GetUnitZ()));
     }
 
     public void SetPossession(bool newPossession)

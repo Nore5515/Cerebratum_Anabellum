@@ -78,12 +78,16 @@ public class Projectile : MonoBehaviour
     /// </summary>
     void Update()
     {
-        Vector3 newTrans = transform.position + moveSpeed * Time.deltaTime * transform.forward;
+        Vector3 newTrans = transform.position + moveSpeed * Time.deltaTime * transform.right;
         if (is2D)
         {
             newTrans.z = initialZ;
+            transform.position = newTrans;
         }
-        transform.position += moveSpeed * Time.deltaTime * transform.forward;
+        else
+        {
+            transform.position += moveSpeed * Time.deltaTime * transform.right;
+        }
     }
 
     /// <summary>
