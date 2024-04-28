@@ -138,7 +138,6 @@ public class ScoutSpawning : MonoBehaviour
 
     public void SpawnNewScout(Vector3 scoutPos, string team)
     {
-        Debug.Log("Spawning new scout for team " + team);
         IncrementTeamScouts(team);
         GameObject newScout = Instantiate(scoutPrefab);
         newScout.transform.position = scoutPos;

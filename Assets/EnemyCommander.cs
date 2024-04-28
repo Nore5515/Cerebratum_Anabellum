@@ -55,7 +55,6 @@ public class EnemyCommander : MonoBehaviour
         {
             spawner.GetComponent<Spawner>().SpawnScout();
             spawner.GetComponent<Spawner>().spawnerPathManager.AI_DrawPath(transform.position);
-            myLogger.Log(kTAG, "Attempting to spawn scout!");
         }
     }
 }

@@ -25,7 +25,6 @@ public class DetectorSphere : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //Debug.Log(other.name);
         if (other.gameObject.transform.parent != null)
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("unit"))

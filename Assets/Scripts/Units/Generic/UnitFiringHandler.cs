@@ -61,10 +61,10 @@ public class UnitFiringHandler : MonoBehaviour
         GameObject bulletInstance = GenerateNewBulletPrefab();
         Vector3 zeroedTarget = position;
         zeroedTarget.z = transform.position.z;
-        //bulletInstance.transform.LookAt(GetRandomAdjacentPosition(zeroedTarget, missRange));
-        Vector3 newRight = zeroedTarget - GetRandomAdjacentPosition(zeroedTarget, missRange);
-        bulletInstance.transform.right = newRight;
-        Debug.Log("New Right:" + newRight);
+        bulletInstance.transform.rotation = Quaternion.LookRotation(Vector3.forward, zeroedTarget - bulletInstance.transform.position);
+        Vector3 eAngles = bulletInstance.transform.rotation.eulerAngles;
+        eAngles.z += 90;
+        bulletInstance.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
         bulletInstance.GetComponent<Projectile>().SetProps(new Projectile.Props(unitTeam, dmg));
     }
 

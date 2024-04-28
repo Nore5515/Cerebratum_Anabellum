@@ -21,7 +21,6 @@ public class InfantryGibExplosion : MonoBehaviour
         int gibCount = Random.Range(minGibs, maxGibs);
         while (gibCount > 0)
         {
-            Debug.Log("Count " + gibCount);
             GameObject gibObj = Instantiate(gibPrefab, transform.position, transform.rotation);
             gibObj.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = GetRandomGib();
             gibCount--;
