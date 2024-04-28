@@ -60,14 +60,11 @@ public class NeutralSpawner : MonoBehaviour
     {
         if (detectorSphere.unitInRange)
         {
-            //Debug.Log("ON");
             spawningIsValid = true;
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 255, 0);
-
         }
         else
         {
-            //Debug.Log("OFF");
             spawningIsValid = false;
             captureSlider.transform.GetChild(0).GetComponent<Image>().color = new Color(255, 255, 255);
         }

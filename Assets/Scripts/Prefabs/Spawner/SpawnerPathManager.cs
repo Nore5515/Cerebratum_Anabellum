@@ -51,7 +51,6 @@ public class SpawnerPathManager : MonoBehaviour
                         {
                             if (spawner.GetComponent<HQObject>().team != "BLUE")
                             {
-                                Debug.Log("GOOO HQ");
                                 GameObject marker = InstantiateBluePathMarkerAtPoint(spawner.gameObject.transform.position);
                                 AddPathMarkerToPathSpheres(marker);
                                 return;
@@ -60,7 +59,6 @@ public class SpawnerPathManager : MonoBehaviour
                     }
 
                     List<GameObject> spawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("spawner"));
-                    Debug.Log(spawners.Count);
                     waiter = 0;
                     foreach (var spawner in spawners)
                     {
@@ -68,7 +66,6 @@ public class SpawnerPathManager : MonoBehaviour
                         {
                             if (spawner.GetComponent<Spawner>().spawnerTeam != "BLUE")
                             {
-                                Debug.Log("GOOO");
                                 GameObject marker = InstantiateBluePathMarkerAtPoint(spawner.gameObject.transform.position);
                                 AddPathMarkerToPathSpheres(marker);
                                 return;
@@ -83,7 +80,6 @@ public class SpawnerPathManager : MonoBehaviour
             }
             else if (paths.Count > 0 && pathSpheres.Count == 0)
             {
-                Debug.Log("PATHS?");
                 int randomlySelectedPath = Random.Range(0, paths.Count);
                 foreach (Transform child in paths[randomlySelectedPath].transform)
                 {
@@ -149,7 +145,6 @@ public class SpawnerPathManager : MonoBehaviour
     int GetCrateCount()
     {
         GameObject[] crates = GameObject.FindGameObjectsWithTag("crate");
-        Debug.Log("Crates" + crates.Length);
         return crates.Length;
     }
 
@@ -178,7 +173,6 @@ public class SpawnerPathManager : MonoBehaviour
     {
         if (GetCrateCount() > 0 && false)
         {
-            Debug.Log("Get nearest crate place");
             GameObject obj = Instantiate(pathMarker, position, Quaternion.identity) as GameObject;
             obj.GetComponent<MeshRenderer>().material = pathMat;
             obj.GetComponent<MeshRenderer>().enabled = false;
@@ -189,7 +183,6 @@ public class SpawnerPathManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No crates nearby");
             if (PathState.paths.Count > 0)
             {
                 PickAndCreateNewPath("BLUE");

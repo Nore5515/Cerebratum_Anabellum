@@ -205,11 +205,7 @@ public class Spawner : MonoBehaviour
         GameObject newPathPoint = spawnerPathManager.CreatePathMarker(newMarkerModel);
 
         // Update various subclasses
-        //spawnerUI.UpdateSlider(ref pathBar, spawnerPathManager, maxPathLength);
         spawnerPathManager.AddPathMarkerToPathSpheres(newPathPoint);
-
-        Debug.Log("Drawing sphere!");
-
         return spawnerPathManager.pathSpheres.Count;
     }
 
@@ -297,7 +293,6 @@ public class Spawner : MonoBehaviour
 
     public void SpawnScout()
     {
-        Debug.Log("What");
         GameObject[] canvasObj = GameObject.FindGameObjectsWithTag("scout_spawner");
         if (canvasObj.Length > 0)
         {

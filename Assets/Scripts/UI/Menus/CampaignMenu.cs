@@ -80,13 +80,10 @@ public class CampaignMenu : MonoBehaviour
         {
             selectedLevel = buttonObj.name;
         }
-        Debug.Log(selectedLevel);
     }
 
     void UpdateLevelDetails(GameObject buttonObj)
     {
-        Debug.Log(levelNames.Keys.ToString());
-        Debug.Log(buttonObj.name);
         if (levelNames[buttonObj.name] != null && levelDetails[buttonObj.name] != null)
         {
             levelTitleObj.GetComponent<TextMeshProUGUI>().text = levelNames[buttonObj.name];
@@ -170,6 +167,6 @@ public class CampaignMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

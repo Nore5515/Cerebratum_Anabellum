@@ -75,7 +75,6 @@ public class PosHandler : MonoBehaviour
         {
             if (controlledUnits[0] == null)
             {
-                Debug.Log("What");
                 FreePossession();
             }
         }
@@ -107,7 +106,6 @@ public class PosHandler : MonoBehaviour
                 cellLocRightUp.z = 0;
                 if (tilemap.GetTile(cellLocLeft).name == "IndNotFloorTile" && tilemap.GetTile(cellLocRight).name == "IndNotFloorTile" && tilemap.GetTile(cellLocLeftUp).name == "IndNotFloorTile" && tilemap.GetTile(cellLocRightUp).name == "IndNotFloorTile")
                 {
-                    Debug.Log("DIE");
                     Unit toDieUnit = controlledUnits[0];
                     Instantiate(unitFallingDeathPrefab, toDieUnit.transform.position, toDieUnit.transform.rotation);
                     FreePossession();
@@ -352,7 +350,6 @@ public class PosHandler : MonoBehaviour
     // Update is called once per frame
     bool TimedUpdate()
     {
-        Debug.Log(unitDelay);
         unitDelay += Time.deltaTime;
         TryUpdateCooldownSlider();
         IterateUnitFireDelay();

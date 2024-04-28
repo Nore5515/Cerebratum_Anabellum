@@ -114,7 +114,6 @@ public class UnitFiringHandler : MonoBehaviour
             StartCoroutine(EnableFiring(rof * Constants.CONTROLLED_FIRE_DELAY_MODIFIER));
         }
         float missRange = Constants.CONTROLLED_MISS_RADIUS;
-        //Vector3 spriteOffset = new(0.0f, 0.0f, 2.0f);
         Vector3 spriteOffset = new(0.0f, 0.0f, 0.0f);
         FireAtPosition(targetPosition + spriteOffset, missRange);
     }
