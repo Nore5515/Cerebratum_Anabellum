@@ -404,10 +404,11 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                transform.Translate(newDir * unitStats.speed * Time.deltaTime);
-                Vector3 zedZeroedMovement = transform.position;
-                zedZeroedMovement.z = Constants.ZED_OFFSET;
-                this.transform.position = zedZeroedMovement;
+                Debug.LogError("NO RIGID BODY ON UNIT");
+                //transform.Translate(newDir * unitStats.speed * Time.deltaTime);
+                //Vector3 zedZeroedMovement = transform.position;
+                //zedZeroedMovement.z = Constants.ZED_OFFSET;
+                //this.transform.position = zedZeroedMovement;
             }
         }
     }
