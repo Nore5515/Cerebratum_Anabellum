@@ -396,6 +396,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   debugMode: 0
   assignedCrate: {fileID: 0}
+  scoutBulletPrefab: {fileID: 9172172192567566883, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
   scoutDeathAnim: {fileID: 666474632740124492, guid: 28910f7b4dac74391b32d69ff23f27e3, type: 3}
 --- !u!23 &7137931609026864231
 MeshRenderer:

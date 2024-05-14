@@ -15,6 +15,9 @@ public class Scout : Unit
     public GameObject assignedCrate = null;
 
     [SerializeField]
+    GameObject scoutBulletPrefab;
+
+    [SerializeField]
     GameObject scoutDeathAnim;
 
     public void CScout()
@@ -39,6 +42,24 @@ public class Scout : Unit
             debugSpawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
             debugSpawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
             Initalize(new List<Vector3>(), "RED", debugSpawnedUnitStats);
+        }
+    }
+
+    void Start()
+    {
+        bulletPrefab = scoutBulletPrefab;
+        UpdateUnitFiringHandler(scoutBulletPrefab);
+        CScout();
+        unitStats.hp = unitStats.maxHP;
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = unitStats.maxHP;
+            hpSlider.value = unitStats.hp;
+        }
+        if (survivalTime > 0)
+        {
+            IEnumerator coroutine = SelfDestruct();
+            StartCoroutine(coroutine);
         }
     }
 
