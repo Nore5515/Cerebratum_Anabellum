@@ -337,9 +337,9 @@ public class Crate2D : MonoBehaviour
         captureProgress = new CaptureProgress(Constants.RED_TEAM, 0);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "DetectionRadius")
+        if (other.name == "EngagementRadius2D")
         {
             Unit detectedUnit = other.transform.parent.gameObject.GetComponent<Unit>();
             if (detectedUnit != null)
@@ -355,9 +355,9 @@ public class Crate2D : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.name == "DetectionRadius")
+        if (other.name == "DetectionRadius2D")
         {
             Unit detectedUnit = other.transform.parent.gameObject.GetComponent<Unit>();
             if (detectedUnit != null)
