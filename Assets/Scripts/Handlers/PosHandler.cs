@@ -252,6 +252,7 @@ public class PosHandler : MonoBehaviour
     // Attempt to possess a unit, going through the various checks and what not.
     public bool TryPossessUnit(GameObject maybePos)
     {
+        Debug.Log("Try Possess " + maybePos);
         if (maybePos.transform.parent == null)
         {
             return false;
