@@ -314,7 +314,6 @@ GameObject:
   - component: {fileID: 4314665848443224282}
   - component: {fileID: 7704838733426160190}
   - component: {fileID: 1275485122507345162}
-  - component: {fileID: 5207202988734564536}
   m_Layer: 6
   m_Name: DetectionRadius2D
   m_TagString: Untagged
@@ -347,7 +346,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -367,27 +366,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alliedTeam: 
   unit: {fileID: 0}
---- !u!50 &5207202988734564536
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021334342642340125}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &2067806483721069456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,6 +1150,7 @@ GameObject:
   - component: {fileID: 4623804062567844899}
   - component: {fileID: 1591708180260203587}
   - component: {fileID: 3518144877434938995}
+  - component: {fileID: 559804810937254411}
   m_Layer: 6
   m_Name: Unit
   m_TagString: unit
@@ -1275,6 +1254,7 @@ MonoBehaviour:
   engagementSphere: {fileID: 3979007814827887517}
   lastAimedTarget: {x: 0, y: 0, z: 0}
   testMode_noPossession: 0
+  mod: 10
   survivalTime: -1
   cm: {fileID: 0}
   anim: {fileID: 0}
@@ -1334,6 +1314,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25}
   m_EdgeRadius: 0
+--- !u!50 &559804810937254411
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623804062567844888}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4809528376850382734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,7 +1719,6 @@ GameObject:
   m_Component:
   - component: {fileID: 838043113885825128}
   - component: {fileID: 8691976222511046388}
-  - component: {fileID: 8841317626520029433}
   - component: {fileID: 3979007814827887517}
   m_Layer: 6
   m_Name: EngagementRadius2D
@@ -1752,33 +1752,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.75
---- !u!50 &8841317626520029433
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616959766506496783}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &3979007814827887517
 MonoBehaviour:
   m_ObjectHideFlags: 0

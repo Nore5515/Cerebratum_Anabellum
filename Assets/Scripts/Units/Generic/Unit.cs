@@ -384,6 +384,8 @@ public class Unit : MonoBehaviour
         return heading / distance;
     }
 
+    [SerializeField]
+    float mod = 1.0f;
     private void MoveInDirection(Vector3 directionToMove)
     {
         Vector3 newDir = directionToMove;
@@ -394,10 +396,19 @@ public class Unit : MonoBehaviour
         }
         if (this != null)
         {
-            transform.Translate(newDir * unitStats.speed * Time.deltaTime);
-            Vector3 zedZeroedMovement = transform.position;
-            zedZeroedMovement.z = Constants.ZED_OFFSET;
-            this.transform.position = zedZeroedMovement;
+            if (this.GetComponent<Rigidbody2D>() != null)
+            {
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                Vector2 velo = newDir * unitStats.speed * Time.deltaTime * mod;
+                rb.MovePosition(rb.position + velo);
+            }
+            else
+            {
+                transform.Translate(newDir * unitStats.speed * Time.deltaTime);
+                Vector3 zedZeroedMovement = transform.position;
+                zedZeroedMovement.z = Constants.ZED_OFFSET;
+                this.transform.position = zedZeroedMovement;
+            }
         }
     }
 
