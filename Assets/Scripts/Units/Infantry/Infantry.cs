@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Infantry : Unit
@@ -46,6 +47,9 @@ public class Infantry : Unit
 
     void Start()
     {
+        var agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         bulletPrefab = infBulletPrefab;
         UpdateUnitFiringHandler(infBulletPrefab);
         CInfantry();

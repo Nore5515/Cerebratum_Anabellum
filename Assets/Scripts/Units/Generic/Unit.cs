@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 // This class will hold two subclasses; UnitStats and UnitLogic.
 
@@ -79,6 +80,9 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
+        var agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         SpecializedInitialization();
     }
 
@@ -332,7 +336,7 @@ public class Unit : MonoBehaviour
 
         if (initialMove)
         {
-            WalkingLogic();
+            AIWalkingLogic();
         }
         else
         {
@@ -351,13 +355,38 @@ public class Unit : MonoBehaviour
         }
     }
 
+    bool setDest = false;
+    void AIWalkingLogic()
+    {
+        if (!GetComponent<NavMeshAgent>().pathPending && setDest == false)
+        {
+            Debug.Log("Set Dest!");
+            List<GameObject> hqObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
+            List<GameObject> enemyHQs = new List<GameObject>();
+
+            foreach (GameObject hq in hqObjects)
+            {
+                if (hq.GetComponent<HQObject>().team != unitStats.unitTeam)
+                {
+                    enemyHQs.Add(hq);
+                }
+            }
+            if (enemyHQs.Count <= 0)
+            {
+                Debug.LogError("No HQs found by crate!");
+            }
+
+            GetComponent<NavMeshAgent>().SetDestination(enemyHQs[0].transform.position);
+            setDest = true;
+        }
+    }
+
     private void WalkingLogic()
     {
         // Get movement direction.
         direction = getNewMovementVector();
 
         float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
-
         // If you are not close enough to your dest, keep moving towards it.
         if (distToDest >= Constants.MIN_DIST_TO_MOVEMENT_DEST)
         {
@@ -394,6 +423,7 @@ public class Unit : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         if (this != null)
         {
             if (this.GetComponent<Rigidbody2D>() != null)

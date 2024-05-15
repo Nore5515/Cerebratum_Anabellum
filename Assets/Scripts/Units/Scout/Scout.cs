@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Scout : Unit
@@ -47,6 +48,9 @@ public class Scout : Unit
 
     void Start()
     {
+        var agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         bulletPrefab = scoutBulletPrefab;
         UpdateUnitFiringHandler(scoutBulletPrefab);
         CScout();
