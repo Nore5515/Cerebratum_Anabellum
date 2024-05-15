@@ -38,6 +38,7 @@ public class KillSphere : MonoBehaviour
 
     void AttemptAddUnitInRange(Collider other)
     {
+        Debug.Log("COLLISION:" + other.gameObject.name);
         if (other.gameObject.GetComponent<Unit>() == null) return;
         if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == null) return;
         if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == alliedTeam) return;
@@ -47,10 +48,16 @@ public class KillSphere : MonoBehaviour
 
     void AttemptAddUnitInRange2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<Unit>() == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == null) return;
-        if (other.gameObject.GetComponent<Unit>().unitStats.unitTeam == alliedTeam) return;
+        Debug.Log("COLLISION:" + other.gameObject.name);
 
+        Unit u = other.transform.parent.gameObject.GetComponent<Unit>();
+
+        if (u == null) return;
+        Debug.Log("1");
+        if (u.unitStats.unitTeam == null) return;
+        Debug.Log("2");
+        if (u.unitStats.unitTeam == alliedTeam) return;
+        Debug.Log("Target in range!");
         unit.AddTargetInRange(other.gameObject);
     }
 

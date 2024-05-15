@@ -229,6 +229,7 @@ public class Unit : MonoBehaviour
 
     public void AddTargetInRange(GameObject target)
     {
+        Debug.Log("Adding target");
         unitTargetHandler.targetsInRange.Add(target);
         ClearNullTargets();
         UpdateThreatState();
@@ -454,7 +455,6 @@ public class Unit : MonoBehaviour
             zedZeroedMovement.z = Constants.ZED_OFFSET;
             this.transform.position = zedZeroedMovement;
             direction = controlDirection;
-
         }
     }
 
@@ -494,7 +494,7 @@ public class Unit : MonoBehaviour
 
     public void MovementUpdate()
     {
-        if (beingControlled == false)
+        if (!beingControlled)
         {
             AIMovement();
 
@@ -506,6 +506,7 @@ public class Unit : MonoBehaviour
                 // Are there any targets left after the purge?
                 if (unitTargetHandler.targetsInRange.Count > 0)
                 {
+                    Debug.Log("Firing!");
                     AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position, beingControlled);
                 }
             }
