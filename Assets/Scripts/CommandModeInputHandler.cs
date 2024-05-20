@@ -18,6 +18,14 @@ public class CommandModeInputHandler : MonoBehaviour
 
     Tilemap tileMap;
 
+    bool holdingPath = false;
+
+    [SerializeField]
+    GameObject pathGhost;
+
+    [SerializeField]
+    GameObject pathGhostPrefab;
+
     // Also referenced in InputHandler (PossessionInputHandler)
     public static bool commandLoopEnabled = false;
 
@@ -32,6 +40,11 @@ public class CommandModeInputHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pathGhost = Instantiate(pathGhostPrefab, transform.position, transform.rotation);
+        pathGhost.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        Color c = pathGhost.GetComponent<Renderer>().material.color;
+        c.a = 0.5f;
+        pathGhost.GetComponent<Renderer>().material.color = c;
         rayHandler = new RayHandler();
         commandLoopEnabled = initCmdLoop;
     }
@@ -44,8 +57,14 @@ public class CommandModeInputHandler : MonoBehaviour
             rayObj = rayHandler.GenerateRayObj();
             HandleKeyboardInput();
             HandleMouseInput();
+
+            if (holdingPath)
+            {
+                pathGhost.transform.position = MousePositionZeroZed();
+            }
         }
     }
+
 
     public void HandleKeyboardInput()
     {
@@ -116,13 +135,16 @@ public class CommandModeInputHandler : MonoBehaviour
 
     void MouseDownFuncs()
     {
+        FloorClickCheck();
+
         RaycastHit hit = rayHandler.GenerateLayeredRayObj("SpawnerUI").hit;
 
         if (hit.collider != null)
         {
             if (hit.collider.gameObject.name == "SpawnerPathButton")
             {
-                isDrawingPathFromSpawner = true;
+                //isDrawingPathFromSpawner = true;
+                holdingPath = true;
 
                 Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
                 spawnerClass.spawnerPathManager.ClearPoints(spawnerClass.unitList);
@@ -136,6 +158,25 @@ public class CommandModeInputHandler : MonoBehaviour
         CommandModeMouseDown();
     }
 
+    void FloorClickCheck()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            if (holdingPath)
+            {
+                pathHandler.MouseHeldAndDraggedAtPosition(MousePositionZeroZed());
+                Debug.Log("Floor clicked!");
+                holdingPath = false;
+                if (pathHandler.pathDrawingMode)
+                {
+                    pathHandler.StopDrawingPath();
+                }
+            }
+        }
+    }
+
     void CommandModeMouseDown()
     {
         if (RayCheckSpawnerDraw()) return;
@@ -143,6 +184,7 @@ public class CommandModeInputHandler : MonoBehaviour
         if (RayCheckUnit()) return;
     }
 
+    // TODO: This could be a helper function. Used multiple files.
     Vector3 MousePositionZeroZed()
     {
         Vector3 zeroZed = new Vector3();

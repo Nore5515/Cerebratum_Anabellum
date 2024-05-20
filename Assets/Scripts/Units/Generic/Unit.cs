@@ -68,7 +68,6 @@ public class Unit : MonoBehaviour
 
     // Consts
 
-
     int idle_frames = 0;
     float idle_time = 0;
     Vector3 lastPos = new Vector3(0.0f, 0.0f, 0.0f);
@@ -348,7 +347,7 @@ public class Unit : MonoBehaviour
                 case ("FLEE"):
                     break;
                 case ("WALK"):
-                    WalkingLogic();
+                    AIWalkingLogic();
                     break;
                 default:
                     break;
@@ -359,8 +358,27 @@ public class Unit : MonoBehaviour
     bool setDest = false;
     void AIWalkingLogic()
     {
+        if (GetComponent<NavMeshAgent>().isStopped)
+        {
+            GetComponent<NavMeshAgent>().isStopped = false;
+        }
         if (!GetComponent<NavMeshAgent>().pathPending && setDest == false)
         {
+            if (unitPointHandler.pointVectors.Count > 0)
+            {
+                float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
+                if (distToDest <= Constants.MIN_DIST_TO_MOVEMENT_DEST)
+                {
+                    Debug.Log("Moving on to next dest");
+                    unitPointHandler.AttemptRemoveNextDestPoint();
+                }
+                else
+                {
+                    GetComponent<NavMeshAgent>().SetDestination(unitPointHandler.pointVectors[0]);
+                }
+                return;
+            }
+
             Debug.Log("Set Dest!");
             List<GameObject> hqObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
             List<GameObject> enemyHQs = new List<GameObject>();
@@ -379,30 +397,6 @@ public class Unit : MonoBehaviour
 
             GetComponent<NavMeshAgent>().SetDestination(enemyHQs[0].transform.position);
             setDest = true;
-        }
-    }
-
-    private void WalkingLogic()
-    {
-        // Get movement direction.
-        direction = getNewMovementVector();
-
-        float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
-        // If you are not close enough to your dest, keep moving towards it.
-        if (distToDest >= Constants.MIN_DIST_TO_MOVEMENT_DEST)
-        {
-            // Translate movement.
-            MoveInDirection(direction);
-            AnimState = "Walking";
-        }
-        // Once you get too close to your destination, remove it from your movement path and go towards the next one.
-        else
-        {
-            if (initialMove)
-            {
-                initialMove = false;
-            }
-            unitPointHandler.AttemptRemoveNextDestPoint();
         }
     }
 
@@ -446,8 +440,14 @@ public class Unit : MonoBehaviour
 
     public void PossessedMovement()
     {
+        if (!GetComponent<NavMeshAgent>().isStopped)
+        {
+            GetComponent<NavMeshAgent>().isStopped = true;
+        }
         if (controlDirection != new Vector3(0, 0, 0))
         {
+            Debug.Log(controlDirection);
+            //MoveInDirection(controlDirection);
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (unitStats.speed * Constants.CONTROLLED_MOVEMENT_MODIFIER) * Time.deltaTime);
             //Debug.Log(speed);
@@ -494,6 +494,7 @@ public class Unit : MonoBehaviour
 
     public void MovementUpdate()
     {
+        Debug.Log("Being Controlled: " + beingControlled);
         if (!beingControlled)
         {
             AIMovement();

@@ -114,6 +114,7 @@ public class PathHandler : MonoBehaviour
 
     void PlaceFollowObjOnPosition(Vector3 position)
     {
+        PlaceFollowSphere(position);
         if (distancePerSphere >= maxDistancePerSphere)
         {
             PlaceFollowSphere(position);

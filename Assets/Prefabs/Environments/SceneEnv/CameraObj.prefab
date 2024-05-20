@@ -171,8 +171,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathHandler: {fileID: 6508300150143159614}
+  pathGhost: {fileID: 0}
+  pathGhostPrefab: {fileID: 2822049802233959069, guid: a582d42ec67264cab8af68831b9091c5, type: 3}
   initCmdLoop: 1
   spaceHeld: 0
+  posHandler: {fileID: 0}
 --- !u!4 &6508300150143159608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 415603163519305962, guid: 0a9c755a5271b4fd1937de93b5054559, type: 3}

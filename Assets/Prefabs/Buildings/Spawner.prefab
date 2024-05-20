@@ -59,6 +59,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1540,6 +1541,8 @@ MonoBehaviour:
   testMode_noPossession: 0
   spawnSquadSize: 10
   spawnDelay: 30
+  maxScoutSpawnDelay: 15
+  scoutSpawnDelay: 15
 --- !u!135 &3360593358707628083
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2961,6 +2964,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
