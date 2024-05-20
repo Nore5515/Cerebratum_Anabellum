@@ -300,7 +300,8 @@ public class Spawner : MonoBehaviour
             {
                 Vector3 belowSpawner = transform.position;
                 belowSpawner = new Vector3(belowSpawner.x, belowSpawner.y - 1.0f, belowSpawner.z);
-                if (canvasObj[0].GetComponent<ScoutSpawning>().SpawnScoutByTeam(belowSpawner, spawnerTeam))
+                Debug.Log("spawner call Spawn!");
+                if (canvasObj[0].GetComponent<ScoutSpawning>().SpawnScoutByTeam(transform, spawnerTeam))
                 {
                     scoutSpawnDelay = maxScoutSpawnDelay;
                 }

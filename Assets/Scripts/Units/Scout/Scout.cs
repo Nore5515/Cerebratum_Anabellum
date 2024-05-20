@@ -38,16 +38,17 @@ public class Scout : Unit
 
         if (debugMode)
         {
-            SpawnedUnitStats debugSpawnedUnitStats = new SpawnedUnitStats();
-            debugSpawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
-            debugSpawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
-            debugSpawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
-            Initalize(new List<Vector3>(), "RED", debugSpawnedUnitStats);
+            //SpawnedUnitStats debugSpawnedUnitStats = new SpawnedUnitStats();
+            //debugSpawnedUnitStats.fireDelay = Constants.SCOUT_INIT_FIRE_DELAY;
+            //debugSpawnedUnitStats.spawnDelay = Constants.SCOUT_INIT_SPAWN_DELAY;
+            //debugSpawnedUnitStats.unitRange = Constants.SCOUT_INIT_RANGE;
+            //Initalize(new List<Vector3>(), "RED", debugSpawnedUnitStats);
         }
     }
 
     void Start()
     {
+        Debug.Log("start");
         var agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -168,6 +169,7 @@ public class Scout : Unit
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Update");
         if (GetCrateCount() > 0)
         {
             if (unitPointHandler.pointVectors.Count == 0)

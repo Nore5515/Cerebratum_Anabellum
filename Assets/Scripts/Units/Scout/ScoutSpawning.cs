@@ -21,47 +21,48 @@ public class ScoutSpawning : MonoBehaviour
 
     private void Update()
     {
-        if (spawnerButtonClicked)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if (hit.collider == null) return;
+        //if (spawnerButtonClicked)
+        //{
+        //    Debug.Log("Click!");
+        //    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        //    if (hit.collider == null) return;
 
-            if (scoutGhostInstance == null)
-            {
-                scoutGhostInstance = Instantiate(scoutGhostPrefab, transform.position, transform.rotation);
-            }
-            else
-            {
-                scoutGhostInstance.GetComponentInChildren<SpriteRenderer>().color = GetGhostColor();
-                scoutGhostInstance.transform.position = MousePositionZeroZed();
-                //if (Input.GetMouseButtonDown(0))
-                //{
-                //    SpawnScout(scoutGhostInstance.transform.position);
-                //}
-            }
-        }
-        else
-        {
-            if (scoutGhostInstance != null)
-            {
-                Destroy(scoutGhostInstance);
-            }
-        }
+        //    if (scoutGhostInstance == null)
+        //    {
+        //        scoutGhostInstance = Instantiate(scoutGhostPrefab, transform.position, transform.rotation);
+        //    }
+        //    else
+        //    {
+        //        scoutGhostInstance.GetComponentInChildren<SpriteRenderer>().color = GetGhostColor();
+        //        scoutGhostInstance.transform.position = MousePositionZeroZed();
+        //        //if (Input.GetMouseButtonDown(0))
+        //        //{
+        //        //    SpawnScout(scoutGhostInstance.transform.position);
+        //        //}
+        //    }
+        //}
+        //else
+        //{
+        //    if (scoutGhostInstance != null)
+        //    {
+        //        Destroy(scoutGhostInstance);
+        //    }
+        //}
     }
 
-    public bool SpawnScoutByTeam(Vector3 scoutPos, string team)
+    public bool SpawnScoutByTeam(Transform sourceTransform, string team)
     {
         int teamScouts = GetTeamScoutCount(team);
         int teamPoints = GetTeamPoints(team);
         if (teamScouts < Constants.FREE_SCOUT_LIMIT)
         {
-            SpawnNewScout(scoutPos, team);
+            SpawnNewScout(sourceTransform, team);
             return true;
         }
         else if (teamPoints >= (teamScouts - (Constants.FREE_SCOUT_LIMIT - 1)))
         {
             MakeTeamPayCost(team, (teamScouts - (Constants.FREE_SCOUT_LIMIT - 1)));
-            SpawnNewScout(scoutPos, team);
+            SpawnNewScout(sourceTransform, team);
             return true;
         }
         else
@@ -136,11 +137,12 @@ public class ScoutSpawning : MonoBehaviour
         }
     }
 
-    public void SpawnNewScout(Vector3 scoutPos, string team)
+    public void SpawnNewScout(Transform sourceTransform, string team)
     {
+        Debug.Log("Scout Spawner creating new scout");
         IncrementTeamScouts(team);
-        GameObject newScout = Instantiate(scoutPrefab);
-        newScout.transform.position = scoutPos;
+        GameObject newScout = Instantiate(scoutPrefab, sourceTransform.transform.position, sourceTransform.transform.rotation);
+        //newScout.transform.position = scoutPos;
         newScout.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         newScout.GetComponent<Scout>().unitStats.unitTeam = team;
         SpawnedUnitStats sus = new SpawnedUnitStats();
@@ -148,6 +150,7 @@ public class ScoutSpawning : MonoBehaviour
         newScout.GetComponent<Scout>().Initalize(new List<Vector3>(), team, sus);
         scoutsSpawned.Add(newScout.GetComponent<Unit>());
         spawnerButtonClicked = false;
+        Debug.Log("Finished making new scout");
     }
 
     //public bool SpawnScout(Vector3 scoutPos)

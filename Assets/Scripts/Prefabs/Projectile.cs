@@ -126,7 +126,6 @@ public class Projectile : MonoBehaviour
 
     private void checkUnit2D(Collider2D other)
     {
-        Debug.Log(other.gameObject.name);
         if (projectileIsExhausted) return;
         Unit unit = other.transform.parent.gameObject.GetComponent<Unit>();
 

@@ -313,9 +313,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4623804062567844892}
-  - component: {fileID: 221229942794910280}
-  - component: {fileID: 7137931609026864231}
   - component: {fileID: 2946018339766482474}
+  - component: {fileID: 7137931609026864231}
+  - component: {fileID: 221229942794910280}
   - component: {fileID: 6134393042983514174}
   - component: {fileID: 315920974323771040}
   - component: {fileID: 926857428236492388}
@@ -349,36 +349,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &221229942794910280
-MonoBehaviour:
+--- !u!33 &2946018339766482474
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4623804062567844888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e284c04698644d3b8c078f945e2ab7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: {x: 0, y: 0, z: 0}
-  initialMove: 1
-  hpSlider: {fileID: 0}
-  AnimState: Idle
-  unitPossessionHandler: {fileID: 0}
-  glow: {fileID: 4761643736141652774}
-  detectionSphere: {fileID: 6246555408483163372}
-  engagementSphere: {fileID: 5069030825748266025}
-  lastAimedTarget: {x: 0, y: 0, z: 0}
-  testMode_noPossession: 0
-  mod: 10
-  survivalTime: -1
-  cm: {fileID: 0}
-  anim: {fileID: 0}
-  debugMode: 0
-  assignedCrate: {fileID: 0}
-  scoutBulletPrefab: {fileID: 9172172192567566883, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
-  scoutDeathAnim: {fileID: 666474632740124492, guid: 28910f7b4dac74391b32d69ff23f27e3, type: 3}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &7137931609026864231
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -421,14 +399,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &2946018339766482474
-MeshFilter:
+--- !u!114 &221229942794910280
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4623804062567844888}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e284c04698644d3b8c078f945e2ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 0, y: 0, z: 0}
+  initialMove: 1
+  hpSlider: {fileID: 0}
+  AnimState: Idle
+  unitPossessionHandler: {fileID: 0}
+  glow: {fileID: 4761643736141652774}
+  detectionSphere: {fileID: 6246555408483163372}
+  engagementSphere: {fileID: 5069030825748266025}
+  lastAimedTarget: {x: 0, y: 0, z: 0}
+  testMode_noPossession: 0
+  mod: 10
+  survivalTime: -1
+  cm: {fileID: 0}
+  anim: {fileID: 0}
+  debugMode: 0
+  assignedCrate: {fileID: 0}
+  scoutBulletPrefab: {fileID: 9172172192567566883, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
+  scoutDeathAnim: {fileID: 666474632740124492, guid: 28910f7b4dac74391b32d69ff23f27e3, type: 3}
 --- !u!61 &6134393042983514174
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -511,7 +511,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4623804062567844888}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.22
+  m_Radius: 1.19
   m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -520,7 +520,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.46
+  m_Height: 3.45
   m_BaseOffset: 0.23
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

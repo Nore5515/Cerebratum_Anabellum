@@ -445,7 +445,6 @@ public class Unit : MonoBehaviour
         }
         if (controlDirection != new Vector3(0, 0, 0))
         {
-            Debug.Log(controlDirection);
             //MoveInDirection(controlDirection);
             // When controlled, move 50% faster.
             transform.Translate(controlDirection * (unitStats.speed * Constants.CONTROLLED_MOVEMENT_MODIFIER) * Time.deltaTime);

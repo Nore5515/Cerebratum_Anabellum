@@ -152,6 +152,8 @@ public class CommandModeInputHandler : MonoBehaviour
             else if (hit.collider.gameObject.tag == "spawn_scout_button")
             {
                 Debug.Log("Spawn Scout pressed!");
+                Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
+                spawnerClass.SpawnScout();
             }
         }
 
