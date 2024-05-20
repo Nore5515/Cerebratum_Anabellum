@@ -31645,6 +31645,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Projectile2D
       objectReference: {fileID: 0}
+    - target: {fileID: 9172172192567566883, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9172172192567566887, guid: ef832dd573444497aa20bdb5e88d51b6, type: 3}
       propertyPath: m_RootOrder
       value: 1
