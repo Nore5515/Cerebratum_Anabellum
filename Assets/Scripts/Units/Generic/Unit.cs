@@ -505,7 +505,6 @@ public class Unit : MonoBehaviour
                 // Are there any targets left after the purge?
                 if (unitTargetHandler.targetsInRange.Count > 0)
                 {
-                    Debug.Log("Firing!");
                     AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position, beingControlled);
                 }
             }

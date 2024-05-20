@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 4323117231067309275}
   - component: {fileID: 7161859603033638787}
   - component: {fileID: -1620545604974851189}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Projectile2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

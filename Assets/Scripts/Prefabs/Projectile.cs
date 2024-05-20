@@ -44,11 +44,11 @@ public class Projectile : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        checkUnit(other);
-        checkTower(other);
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    checkUnit(other);
+    //    checkTower(other);
+    //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -93,48 +93,49 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// If projectile hits unit, deal damage.
     /// </summary>
-    private void checkUnit(Collider other)
-    {
-        if (projectileIsExhausted) return;
-        Unit unit = other.gameObject.GetComponent<Unit>();
+    //private void checkUnit(Collider other)
+    //{
+    //    if (projectileIsExhausted) return;
+    //    Unit unit = other.gameObject.GetComponent<Unit>();
 
-        if (unit == null) return;
-        if (unit.unitStats.unitTeam == "NIL") return;
-        if (unit.unitStats.unitTeam == team) return;
+    //    if (unit == null) return;
+    //    if (unit.unitStats.unitTeam == "NIL") return;
+    //    if (unit.unitStats.unitTeam == team) return;
 
-        if (unit.DealDamage(damage) <= 0)
-        {
-            if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
-            {
-                if (unit.unitStats.unitTeam == Constants.RED_TEAM)
-                {
-                    TeamStats.RedScouts--;
-                }
-                else if (unit.unitStats.unitTeam == Constants.BLUE_TEAM)
-                {
-                    TeamStats.BlueScouts--;
-                }
-            }
-            unit.Die(Constants.DAMAGE_TYPE_GENERIC);
-        }
+    //    if (unit.DealDamage(damage) <= 0)
+    //    {
+    //        if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
+    //        {
+    //            if (unit.unitStats.unitTeam == Constants.RED_TEAM)
+    //            {
+    //                TeamStats.RedScouts--;
+    //            }
+    //            else if (unit.unitStats.unitTeam == Constants.BLUE_TEAM)
+    //            {
+    //                TeamStats.BlueScouts--;
+    //            }
+    //        }
+    //        unit.Die(Constants.DAMAGE_TYPE_GENERIC);
+    //    }
 
-        projectileIsExhausted = true;
+    //    projectileIsExhausted = true;
 
-        Destroy(gameObject);
-    }
+    //    Destroy(gameObject);
+    //}
 
 
     private void checkUnit2D(Collider2D other)
     {
+        Debug.Log(other.gameObject.name);
         if (projectileIsExhausted) return;
-        Unit unit = other.gameObject.GetComponent<Unit>();
+        Unit unit = other.transform.parent.gameObject.GetComponent<Unit>();
 
         if (unit == null) return;
         if (unit.unitStats.unitTeam == "NIL") return;
         if (unit.unitStats.unitTeam == team) return;
-
         if (unit.DealDamage(damage) <= 0)
         {
+            Debug.Log("Hit!");
             if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
             {
                 if (unit.unitStats.unitTeam == Constants.RED_TEAM)
@@ -158,18 +159,18 @@ public class Projectile : MonoBehaviour
     /// If a hostile projectile hits an allied tower, the tower will be dealt damage
     /// and the projectile will be destroyed.
     /// </summary>
-    private void checkTower(Collider other)
-    {
-        if (projectileIsExhausted) return;
-        TowerScript tower = other.gameObject.GetComponent<TowerScript>();
+    //private void checkTower(Collider other)
+    //{
+    //    if (projectileIsExhausted) return;
+    //    TowerScript tower = other.gameObject.GetComponent<TowerScript>();
 
-        if (tower == null) return;
-        if (tower.unitStats.unitTeam == team) return;
+    //    if (tower == null) return;
+    //    if (tower.unitStats.unitTeam == team) return;
 
-        tower.DealDamage(1);
+    //    tower.DealDamage(1);
 
-        projectileIsExhausted = true;
+    //    projectileIsExhausted = true;
 
-        Destroy(gameObject);
-    }
+    //    Destroy(gameObject);
+    //}
 }
