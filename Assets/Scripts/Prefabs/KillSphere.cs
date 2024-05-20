@@ -47,6 +47,15 @@ public class KillSphere : MonoBehaviour
 
     void AttemptAddUnitInRange2D(Collider2D other)
     {
+        if (other.gameObject.name.Contains("Projectile"))
+        {
+            return;
+        }
+        if (other.transform.parent.gameObject.GetComponent<Unit>() == null)
+        {
+            return;
+        }
+
         Unit u = other.transform.parent.gameObject.GetComponent<Unit>();
 
         if (u == null) return;

@@ -369,7 +369,6 @@ public class Unit : MonoBehaviour
                 float distToDest = Vector3.Distance(transform.position, unitPointHandler.DestVector);
                 if (distToDest <= Constants.MIN_DIST_TO_MOVEMENT_DEST)
                 {
-                    Debug.Log("Moving on to next dest");
                     unitPointHandler.AttemptRemoveNextDestPoint();
                 }
                 else
@@ -494,7 +493,6 @@ public class Unit : MonoBehaviour
 
     public void MovementUpdate()
     {
-        Debug.Log("Being Controlled: " + beingControlled);
         if (!beingControlled)
         {
             AIMovement();

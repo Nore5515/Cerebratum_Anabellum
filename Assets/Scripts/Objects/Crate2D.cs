@@ -339,7 +339,7 @@ public class Crate2D : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "EngagementRadius2D")
+        if (other.name == "UnitCollisionDetector2D")
         {
             Unit detectedUnit = other.transform.parent.gameObject.GetComponent<Unit>();
             if (detectedUnit != null)
@@ -357,7 +357,7 @@ public class Crate2D : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.name == "DetectionRadius2D")
+        if (other.name == "UnitCollisionDetector2D")
         {
             Unit detectedUnit = other.transform.parent.gameObject.GetComponent<Unit>();
             if (detectedUnit != null)
