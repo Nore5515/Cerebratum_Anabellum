@@ -228,7 +228,6 @@ public class Unit : MonoBehaviour
 
     public void AddTargetInRange(GameObject target)
     {
-        Debug.Log("Adding target");
         unitTargetHandler.targetsInRange.Add(target);
         ClearNullTargets();
         UpdateThreatState();

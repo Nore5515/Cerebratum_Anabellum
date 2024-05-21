@@ -134,7 +134,6 @@ public class Projectile : MonoBehaviour
         if (unit.unitStats.unitTeam == team) return;
         if (unit.DealDamage(damage) <= 0)
         {
-            Debug.Log("Hit!");
             if (unit.unitStats.unitType == Constants.SCOUT_TYPE)
             {
                 if (unit.unitStats.unitTeam == Constants.RED_TEAM)
