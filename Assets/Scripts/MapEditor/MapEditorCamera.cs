@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MapEditorCamera : MonoBehaviour {
+public class MapEditorCamera : MonoBehaviour
+{
 
     public float MoveSpeed = 5.0f;
 
@@ -24,6 +26,11 @@ public class MapEditorCamera : MonoBehaviour {
         else
         {
             MoveSpeed = BASE_SPEED;
+        }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
         ///////////////////////////////////////////////////

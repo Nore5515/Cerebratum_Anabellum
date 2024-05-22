@@ -169,7 +169,6 @@ public class Scout : Unit
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Update");
         if (GetCrateCount() > 0)
         {
             if (unitPointHandler.pointVectors.Count == 0)

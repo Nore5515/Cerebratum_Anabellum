@@ -8,34 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Menus_OLD/MainMenu.unity
     guid: 48d253a6478584d74b1e3a6befaa286c
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/IsoScenes/MapEditor.unity
     guid: 24db477027ff54f2ab011d670f2caad8
   - enabled: 0
@@ -47,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UnitTests/UltimateTest.unity
     guid: 36ffd70f4ee0247d1a30c780939b307f
+  - enabled: 1
+    path: Assets/Scenes/MapTesting/CustomMap.unity
+    guid: 14ca7e8c1571b48ec8640307a153bbe8
   m_configObjects: {}

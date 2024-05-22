@@ -21,7 +21,12 @@ public class TitleScript : MonoBehaviour
 
     public void MapTesting()
     {
+        SceneManager.LoadScene("CustomMap", LoadSceneMode.Single);
+    }
 
+    public void MapEditor()
+    {
+        SceneManager.LoadScene("MapEditor", LoadSceneMode.Single);
     }
 
     public void SubmitJSON()
