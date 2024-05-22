@@ -24,6 +24,9 @@ public class MapEditor : MonoBehaviour
     Tilemap wallTileMap;
 
     [SerializeField]
+    Tilemap ghostTiles;
+
+    [SerializeField]
     TileBase floorTile;
 
     [SerializeField]
@@ -50,6 +53,78 @@ public class MapEditor : MonoBehaviour
     void Start()
     {
         paletteTile = floorTile;
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
+        {
+            string validPos = "";
+            validPos += "X: " + mousePos.x;
+            validPos += " // Y: " + mousePos.y;
+            debugText.text = validPos;
+            Vector3Int gridPos = GetGridPos(mousePos);
+
+            InitGridPos(gridPos);
+
+            if (gridPos != oldGridPos)
+            {
+                ReplaceOldTileWithStoredTile();
+                ghostTiles.SetTile(oldGridPos, null);
+            }
+
+            if (storedTileFilled == false)
+            {
+                if (selectingWallMap)
+                {
+                    storedTile = wallTileMap.GetTile(gridPos);
+                }
+                else
+                {
+                    storedTile = tileMap.GetTile(gridPos);
+                }
+
+                storedTileFilled = true;
+            }
+
+            // Ghost tile view
+            ghostTiles.SetTile(gridPos, paletteTile);
+            if (symToggle)
+            {
+                ghostTiles.SetTile(GetSymPoint(gridPos), paletteTile);
+            }
+
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                TryDraw(gridPos);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                DrawTile(gridPos);
+                storedTile = paletteTile;
+            }
+
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                TryDrawEmpty(gridPos);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                HandleUndoPress(stashedTileActions);
+            }
+            oldGridPos = gridPos;
+        }
+        else
+        {
+            RevertTile();
+            debugText.text = "XXXXXX";
+        }
     }
 
     void RevertTile()
@@ -88,14 +163,10 @@ public class MapEditor : MonoBehaviour
 
     void ReplaceOldTileWithStoredTile()
     {
-        if (selectingWallMap)
-        {
-            wallTileMap.SetTile(oldGridPos, storedTile);
-        }
-        else
-        {
-            tileMap.SetTile(oldGridPos, storedTile);
-        }
+        ghostTiles.SetTile(oldGridPos, null);
+
+        ghostTiles.SetTile(GetSymPoint(oldGridPos), null);
+
         storedTile = null;
         storedTileFilled = false;
     }
@@ -195,44 +266,15 @@ public class MapEditor : MonoBehaviour
         }
     }
 
-    //void UndoTiles(List<TilePosObject> tileObjsToUndo)
-    //{
-    //    foreach (var tileObjToUndo in tileObjsToUndo)
-    //    {
-    //        if (tileObjToUndo.layer == "wall")
-    //        {
-    //            wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-    //        }
-    //        else
-    //        {
-    //            tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-    //        }
-    //    }
-    //}
-
-
-    //void UndoTile(TilePosObject tileObjToUndo)
-    //{
-    //    if (tileObjToUndo.layer == "wall")
-    //    {
-    //        wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-    //    }
-    //    else
-    //    {
-    //        tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-    //    }
-    //}
+    void TryDraw(Vector3Int gridPos)
+    {
+        if (oldGridPos == gridPos) return;
+        DrawTile(gridPos);
+        storedTile = paletteTile;
+    }
 
     void DrawTile(Vector3Int gridPos)
     {
-        //if (lastTilesPlaced.tilePosObjects.Count != 0)
-        //{
-        //    foreach (var tilePlacementAction in lastTilesPlaced.tilePosObjects)
-        //    {
-        //        Debug.Log(tilePlacementAction.x + "," + tilePlacementAction.y + "," + tilePlacementAction.tileBase.name + "," + tilePlacementAction.layer);
-        //    }
-        //}
-        //lastTilesPlaced.tilePosObjects.Clear();
         if (IsEmptyPaletteSprite())
         {
             wallTileMap.SetTile(gridPos, paletteTile);
@@ -273,92 +315,19 @@ public class MapEditor : MonoBehaviour
         }
     }
 
-    void TryDraw(Vector3Int gridPos)
+    void TryDrawEmpty(Vector3Int gridPos)
     {
         if (oldGridPos == gridPos) return;
-        DrawTile(gridPos);
-        storedTile = paletteTile;
+        DrawEmptyTile(gridPos);
     }
 
-    // Update is called once per frame
-    void Update()
+    void DrawEmptyTile(Vector3Int gridPos)
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Debug.Log(new Vector2(mousePos.x - Camera.main.gameObject.transform.position.x, mousePos.y - Camera.main.gameObject.transform.position.y));
-
-        if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
-        {
-
-            string validPos = "";
-            validPos += "X: " + mousePos.x;
-            validPos += " // Y: " + mousePos.y;
-            debugText.text = validPos;
-            Vector3Int gridPos = GetGridPos(mousePos);
-
-            InitGridPos(gridPos);
-
-            if (gridPos != oldGridPos)
-            {
-                ReplaceOldTileWithStoredTile();
-            }
-
-            //if (tileMap.HasTile(gridPos))
-            //{
-            if (storedTileFilled == false)
-            {
-                if (selectingWallMap)
-                {
-                    storedTile = wallTileMap.GetTile(gridPos);
-                }
-                else
-                {
-                    storedTile = tileMap.GetTile(gridPos);
-                }
-
-                storedTileFilled = true;
-            }
-
-            if (selectingWallMap)
-            {
-                wallTileMap.SetTile(gridPos, paletteTile);
-            }
-            else
-            {
-                tileMap.SetTile(gridPos, paletteTile);
-            }
-
-            //if (tileMap.GetTile(gridPos).name == "EmptyTile")
-            //{
-            //}
-            //}
-
-            if (Input.GetKey(KeyCode.Mouse0))
-            {
-                TryDraw(gridPos);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                DrawTile(gridPos);
-                storedTile = paletteTile;
-            }
-
-
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                //UndoTile(lastTilePlaced);
-                //UndoTiles(lastTilesPlaced);
-                //UndoLastTileAction(lastTilesPlaced);
-                HandleUndoPress(stashedTileActions);
-            }
-            oldGridPos = gridPos;
-        }
-        else
-        {
-            RevertTile();
-            debugText.text = "XXXXXX";
-        }
+        wallTileMap.SetTile(gridPos, null);
+        tileMap.SetTile(gridPos, null);
+        Debug.Log("Empty tiled!");
     }
+
 }
 
 
