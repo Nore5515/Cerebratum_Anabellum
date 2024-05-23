@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.EventSystems;
 
 // Contains a list of tile pos objects (i.e. sym placed both go in here)
 class TilePlacementAction
@@ -27,6 +29,9 @@ public class MapEditor : MonoBehaviour
     Tilemap ghostTiles;
 
     [SerializeField]
+    Tilemap buildingMap;
+
+    [SerializeField]
     TileBase floorTile;
 
     [SerializeField]
@@ -40,6 +45,7 @@ public class MapEditor : MonoBehaviour
 
     [SerializeField]
     TileBase eraserTile;
+
 
     bool storedTileFilled = false;
     TileBase storedTile;
@@ -66,7 +72,7 @@ public class MapEditor : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (!IsCoveringTilePalette(mousePos) && !IsCoveringPortUI(mousePos))
+        if (true)
         {
             string validPos = "";
             validPos += "X: " + mousePos.x;
@@ -99,15 +105,19 @@ public class MapEditor : MonoBehaviour
             // Ghost tile view
             DrawGhost(gridPos);
 
-            if (Input.GetKey(KeyCode.Mouse0))
-            {
-                TryDraw(gridPos);
-            }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (!IsPointerOverUIElement())
             {
-                DrawTile(gridPos);
-                storedTile = paletteTile;
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    TryDraw(gridPos);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    DrawTile(gridPos);
+                    storedTile = paletteTile;
+                }
             }
 
             if (Input.GetKey(KeyCode.Mouse1))
@@ -144,7 +154,7 @@ public class MapEditor : MonoBehaviour
             ghostTile = eraserTile;
         }
         ghostTiles.SetTile(gridPos, ghostTile);
-        if (symToggle)
+        if (symToggle.isOn)
         {
             ghostTiles.SetTile(GetSymPoint(gridPos), ghostTile);
         }
@@ -234,6 +244,15 @@ public class MapEditor : MonoBehaviour
         return false;
     }
 
+    bool IsBuildingPaletteSprite()
+    {
+        if (paletteTile.name.Contains("Building"))
+        {
+            return true;
+        }
+        return false;
+    }
+
     Vector3Int GetScreenGridCenter()
     {
         Vector2 centerPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0.0f));
@@ -302,12 +321,24 @@ public class MapEditor : MonoBehaviour
         {
             wallTileMap.SetTile(gridPos, null);
             tileMap.SetTile(gridPos, null);
+            buildingMap.SetTile(gridPos, null);
 
             if (symToggle.isOn)
             {
                 Vector3Int symGridPoint = GetSymPoint(gridPos);
                 wallTileMap.SetTile(symGridPoint, null);
                 tileMap.SetTile(symGridPoint, null);
+                buildingMap.SetTile(symGridPoint, null);
+            }
+        }
+        else if (IsBuildingPaletteSprite())
+        {
+            buildingMap.SetTile(gridPos, paletteTile);
+
+            if (symToggle.isOn)
+            {
+                Vector3Int symGridPoint = GetSymPoint(gridPos);
+                buildingMap.SetTile(symGridPoint, paletteTile);
             }
         }
         else
@@ -348,21 +379,51 @@ public class MapEditor : MonoBehaviour
     void TryDrawEmpty(Vector3Int gridPos)
     {
         if (oldGridPos == gridPos) return;
-        DrawEmptyTile(gridPos);
+        ClearAllTilesAtPoint(gridPos);
         if (symToggle.isOn)
         {
             Vector3Int symGridPoint = GetSymPoint(gridPos);
-            wallTileMap.SetTile(symGridPoint, null);
-            tileMap.SetTile(symGridPoint, null);
+            ClearAllTilesAtPoint(symGridPoint);
         }
     }
 
-    void DrawEmptyTile(Vector3Int gridPos)
+    void ClearAllTilesAtPoint(Vector3Int gridPos)
     {
         wallTileMap.SetTile(gridPos, null);
         tileMap.SetTile(gridPos, null);
+        buildingMap.SetTile(gridPos, null);
     }
 
+
+
+    public bool IsPointerOverUIElement()
+    {
+        return IsPointerOverUIElement(GetEventSystemRaycastResults());
+    }
+
+
+    //Returns 'true' if we touched or hovering on Unity UI element.
+    private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+    {
+        for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+        {
+            RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+            if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+                return true;
+        }
+        return false;
+    }
+
+
+    //Gets all event system raycast results of current mouse or touch position.
+    static List<RaycastResult> GetEventSystemRaycastResults()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> raysastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raysastResults);
+        return raysastResults;
+    }
 }
 
 
