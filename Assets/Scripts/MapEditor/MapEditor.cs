@@ -49,6 +49,8 @@ public class MapEditor : MonoBehaviour
 
     bool selectingWallMap = false;
 
+    bool rightClickHeld = false;
+
     TilePlacementAction lastTilesPlaced = new TilePlacementAction();
     List<TilePlacementAction> stashedTileActions = new List<TilePlacementAction>();
     //TilePosObject lastTilePlaced = null;
@@ -95,17 +97,7 @@ public class MapEditor : MonoBehaviour
             }
 
             // Ghost tile view
-            TileBase ghostTile = paletteTile;
-            if (IsEmptyPaletteSprite())
-            {
-                Debug.Log("eraseer ghost");
-                ghostTile = eraserTile;
-            }
-            ghostTiles.SetTile(gridPos, ghostTile);
-            if (symToggle)
-            {
-                ghostTiles.SetTile(GetSymPoint(gridPos), ghostTile);
-            }
+            DrawGhost(gridPos);
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
@@ -122,6 +114,14 @@ public class MapEditor : MonoBehaviour
             {
                 TryDrawEmpty(gridPos);
             }
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                rightClickHeld = true;
+            }
+            if (Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                rightClickHeld = false;
+            }
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
@@ -133,6 +133,20 @@ public class MapEditor : MonoBehaviour
         {
             RevertTile();
             debugText.text = "XXXXXX";
+        }
+    }
+
+    void DrawGhost(Vector3Int gridPos)
+    {
+        TileBase ghostTile = paletteTile;
+        if (IsEmptyPaletteSprite() || rightClickHeld)
+        {
+            ghostTile = eraserTile;
+        }
+        ghostTiles.SetTile(gridPos, ghostTile);
+        if (symToggle)
+        {
+            ghostTiles.SetTile(GetSymPoint(gridPos), ghostTile);
         }
     }
 
@@ -335,13 +349,18 @@ public class MapEditor : MonoBehaviour
     {
         if (oldGridPos == gridPos) return;
         DrawEmptyTile(gridPos);
+        if (symToggle.isOn)
+        {
+            Vector3Int symGridPoint = GetSymPoint(gridPos);
+            wallTileMap.SetTile(symGridPoint, null);
+            tileMap.SetTile(symGridPoint, null);
+        }
     }
 
     void DrawEmptyTile(Vector3Int gridPos)
     {
         wallTileMap.SetTile(gridPos, null);
         tileMap.SetTile(gridPos, null);
-        Debug.Log("Empty tiled!");
     }
 
 }
