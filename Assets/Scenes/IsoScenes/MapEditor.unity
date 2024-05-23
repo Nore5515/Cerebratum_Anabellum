@@ -558,8 +558,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 293863155
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -933,6 +933,7 @@ MonoBehaviour:
   emptyTile: {fileID: 11400000, guid: bb57b35166c754950a9aaabec085c969, type: 2}
   debugText: {fileID: 2116326091}
   symToggle: {fileID: 1253610403}
+  eraserTile: {fileID: 11400000, guid: b7622d9ba6eea4c92b38bb61d6d638f3, type: 2}
 --- !u!1 &593487306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,8 +2148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0493ff098fd24436d9e8e8b34eb4162b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSprite: {fileID: 21300000, guid: 97b16bb5d3bb84597b8676d533d88762, type: 3}
-  tile: {fileID: 11400000, guid: bb57b35166c754950a9aaabec085c969, type: 2}
+  tileSprite: {fileID: 21300000, guid: df526d9dd13d04382b59efc556686cb7, type: 3}
+  tile: {fileID: 11400000, guid: b7622d9ba6eea4c92b38bb61d6d638f3, type: 2}
 --- !u!114 &1915777433
 MonoBehaviour:
   m_ObjectHideFlags: 0

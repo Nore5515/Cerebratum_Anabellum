@@ -38,6 +38,9 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     Toggle symToggle;
 
+    [SerializeField]
+    TileBase eraserTile;
+
     bool storedTileFilled = false;
     TileBase storedTile;
     Vector3Int oldGridPos;
@@ -92,10 +95,16 @@ public class MapEditor : MonoBehaviour
             }
 
             // Ghost tile view
-            ghostTiles.SetTile(gridPos, paletteTile);
+            TileBase ghostTile = paletteTile;
+            if (IsEmptyPaletteSprite())
+            {
+                Debug.Log("eraseer ghost");
+                ghostTile = eraserTile;
+            }
+            ghostTiles.SetTile(gridPos, ghostTile);
             if (symToggle)
             {
-                ghostTiles.SetTile(GetSymPoint(gridPos), paletteTile);
+                ghostTiles.SetTile(GetSymPoint(gridPos), ghostTile);
             }
 
             if (Input.GetKey(KeyCode.Mouse0))
@@ -204,7 +213,7 @@ public class MapEditor : MonoBehaviour
 
     bool IsEmptyPaletteSprite()
     {
-        if (paletteTile.name.Contains("Empty"))
+        if (paletteTile.name.Contains("Empty") || paletteTile.name.Contains("Eraser"))
         {
             return true;
         }
@@ -277,8 +286,15 @@ public class MapEditor : MonoBehaviour
     {
         if (IsEmptyPaletteSprite())
         {
-            wallTileMap.SetTile(gridPos, paletteTile);
-            tileMap.SetTile(gridPos, paletteTile);
+            wallTileMap.SetTile(gridPos, null);
+            tileMap.SetTile(gridPos, null);
+
+            if (symToggle.isOn)
+            {
+                Vector3Int symGridPoint = GetSymPoint(gridPos);
+                wallTileMap.SetTile(symGridPoint, null);
+                tileMap.SetTile(symGridPoint, null);
+            }
         }
         else
         {
