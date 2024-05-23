@@ -28,6 +28,9 @@ public class TilemapLoader : MonoBehaviour
     Tilemap wallTileMap;
 
     [SerializeField]
+    Tilemap buildingTileMap;
+
+    [SerializeField]
     TMP_InputField importField;
 
     [SerializeField]
@@ -40,6 +43,8 @@ public class TilemapLoader : MonoBehaviour
         tilemapStateStr += GetStringifiedTilemap(GetComponent<Tilemap>());
         tilemapStateStr += "--WALLS--\n";
         tilemapStateStr += GetStringifiedTilemap(wallTileMap);
+        tilemapStateStr += "--OBJECTS--\n";
+        tilemapStateStr += GetStringifiedTilemap(buildingTileMap);
     }
 
     string GetStringifiedTilemap(Tilemap tilemap)
@@ -172,7 +177,7 @@ public class TilemapLoader : MonoBehaviour
 
         foreach (string line in wallStringLines)
         {
-            if (line != "--WALLS--" && line != "")
+            if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
             {
                 if (line != "Empty")
                 {

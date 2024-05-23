@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallTileMap: {fileID: 1229107739}
+  buildingTileMap: {fileID: 0}
   importField: {fileID: 2037891513}
   tileBases:
   - {fileID: 11400000, guid: d252d34ed9f98495aaed6b1f99af5fb4, type: 2}
@@ -3751,7 +3752,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4342951974695447438, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.size
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4342951974695447438, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.size
@@ -4899,7 +4900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4342951974695447438, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.size
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4342951974695447438, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[100].x
@@ -6953,5 +6954,25 @@ PrefabInstance:
       propertyPath: importField
       value: 
       objectReference: {fileID: 2037891513}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: buildingTileMap
+      value: 
+      objectReference: {fileID: 1874530070}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: tileBases.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: tileBases.Array.data[14]
+      value: 
+      objectReference: {fileID: 11400000, guid: d427cb87e864a48ff8ee6b4b7af5cda0, type: 2}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: tileBases.Array.data[15]
+      value: 
+      objectReference: {fileID: 11400000, guid: 03a1ed38d315a4bdd9fb258ba7448999, type: 2}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: tileBases.Array.data[16]
+      value: 
+      objectReference: {fileID: 11400000, guid: f5ac7ff4c13834192a5f2925ecab909a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
