@@ -75,53 +75,12 @@ public class TilemapLoader : MonoBehaviour
         GUIUtility.systemCopyBuffer = tilemapStateStr;
     }
 
-    //TileBase[] GetAllTilesFromTilemap(Tilemap tilemap)
-    //{
-    //    BoundsInt bounds = tilemap.cellBounds;
-    //    TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-    //    return allTiles;
-    //}
-
-    //List<TilePosObject> GenerateTilePosArray(TileBase[] tileBases, BoundsInt bounds)
-    //{
-    //    List<TilePosObject> nonNullTiles = new List<TilePosObject>();
-
-    //    for (int x = 0; x < bounds.size.x; x++)
-    //    {
-    //        for (int y = 0; y < bounds.size.y; y++)
-    //        {
-    //            TileBase tile = tileBases[x + y * bounds.size.x];
-    //            if (tile != null)
-    //            {
-    //                nonNullTiles.Add(new TilePosObject(x, y, tile));
-    //            }
-    //        }
-    //    }
-
-    //    return nonNullTiles;
-    //}
-
     void ClearAllTileMaps()
     {
         GetComponent<Tilemap>().ClearAllTiles();
         wallTileMap.ClearAllTiles();
+        buildingTileMap.ClearAllTiles();
     }
-
-    //    --FLOORS--
-    //x:13 y:13 tile:FloorTile
-    //x:14 y:13 tile:FloorTile
-    //x:15 y:13 tile:FloorTile
-    //x:16 y:13 tile:FloorTile
-    //x:16 y:14 tile:FloorTile
-    //x:17 y:14 tile:FloorTile
-    //x:19 y:8 tile:FloorTile
-    //x:20 y:8 tile:FloorTile
-    //x:20 y:9 tile:FloorTile
-    //x:21 y:9 tile:FloorTile
-    //x:22 y:9 tile:FloorTile
-    //x:23 y:9 tile:FloorTile
-    //--WALLS--
-
 
     List<TilePosObject> GetTileObjectsFromString(string inputString)
     {

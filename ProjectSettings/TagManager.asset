@@ -60,6 +60,9 @@ TagManager:
   - name: Terrain
     uniqueID: 273355481
     locked: 0
+  - name: Walls
+    uniqueID: 2614003255
+    locked: 0
   - name: Buildings
     uniqueID: 2984444037
     locked: 0
