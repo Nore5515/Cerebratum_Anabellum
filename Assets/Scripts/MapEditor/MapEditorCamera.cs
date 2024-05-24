@@ -11,6 +11,9 @@ public class MapEditorCamera : MonoBehaviour
     private float SHIFT_SPEED = 30.0f;
     private float BASE_SPEED = 10.0f;
 
+    [SerializeField]
+    GameObject menu;
+
     // Update is called once per frame
     void Update()
     {
@@ -28,9 +31,9 @@ public class MapEditorCamera : MonoBehaviour
             MoveSpeed = BASE_SPEED;
         }
 
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            menu.SetActive(!menu.activeSelf);
         }
 
         ///////////////////////////////////////////////////
@@ -52,5 +55,10 @@ public class MapEditorCamera : MonoBehaviour
                 Camera.main.orthographicSize -= 1;
             }
         }
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }
