@@ -9,6 +9,9 @@ public class TitleScript : MonoBehaviour
     [SerializeField]
     TMP_InputField jsonInput;
 
+    [SerializeField]
+    GameObject submitted;
+
     public void StartGame()
     {
         SceneManager.LoadScene("UltimateTest", LoadSceneMode.Single);
@@ -32,5 +35,13 @@ public class TitleScript : MonoBehaviour
     public void SubmitJSON()
     {
         MapJson.Instance.mapJson = jsonInput.text;
+        submitted.SetActive(true);
+        StartCoroutine(Fadeout());
+    }
+
+    IEnumerator Fadeout()
+    {
+        yield return new WaitForSeconds(2.0f);
+        submitted.SetActive(false);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using UnityEngine.EventSystems;
 
 // Contains a list of tile pos objects (i.e. sym placed both go in here)
@@ -16,6 +15,7 @@ class TilePlacementAction
         tilePosObjects = new List<TilePosObject>();
     }
 }
+
 
 public class MapEditor : MonoBehaviour
 {

@@ -31,7 +31,7 @@ public class TileButton : MonoBehaviour
     void CustomClick()
     {
         mapEditor.SetPaletteTile(tile);
-        Debug.Log(tileSprite.name);
+        //Debug.Log(tileSprite.name);
     }
 
 }

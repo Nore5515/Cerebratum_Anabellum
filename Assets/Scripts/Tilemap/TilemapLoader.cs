@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
+using NavMeshPlus;
 
 class TilePosObject
 {
@@ -25,6 +26,9 @@ public class TilemapLoader : MonoBehaviour
     string tilemapStateStr = "";
 
     [SerializeField]
+    Tilemap floorTileMap;
+
+    [SerializeField]
     Tilemap wallTileMap;
 
     [SerializeField]
@@ -36,11 +40,32 @@ public class TilemapLoader : MonoBehaviour
     [SerializeField]
     TileBase[] tileBases;
 
+    [SerializeField]
+    bool loadFromSave;
+
+    [SerializeField]
+    MapLoaderConstructor constructor;
+
+    [SerializeField]
+    NavMeshPlus.Components.NavMeshSurface surface;
+
+    string importJson;
+
+    private void Start()
+    {
+        if (loadFromSave)
+        {
+            ImportState();
+            surface.BuildNavMesh();
+            Debug.Log("Building nav mesh!");
+        }
+    }
+
     void UpdateStateStr()
     {
         tilemapStateStr = "";
         tilemapStateStr += "--FLOORS--\n";
-        tilemapStateStr += GetStringifiedTilemap(GetComponent<Tilemap>());
+        tilemapStateStr += GetStringifiedTilemap(floorTileMap);
         tilemapStateStr += "--WALLS--\n";
         tilemapStateStr += GetStringifiedTilemap(wallTileMap);
         tilemapStateStr += "--OBJECTS--\n";
@@ -77,7 +102,7 @@ public class TilemapLoader : MonoBehaviour
 
     void ClearAllTileMaps()
     {
-        GetComponent<Tilemap>().ClearAllTiles();
+        floorTileMap.ClearAllTiles();
         wallTileMap.ClearAllTiles();
         buildingTileMap.ClearAllTiles();
     }
@@ -91,10 +116,17 @@ public class TilemapLoader : MonoBehaviour
         string[] floorsAndWallsString = inputString.Split("--WALLS--");
 
         string floorTileStrings = floorsAndWallsString[0];
-        string wallTileStrings = floorsAndWallsString[1];
+
+        string wallsAndObjects = floorsAndWallsString[1];
+
+        string[] temp = wallsAndObjects.Split("--OBJECTS--");
+
+        string wallTileStrings = temp[0];
+        string objTileStrings = temp[1];
 
         floorObjs = GenerateFloorTilesFromString(floorTileStrings);
         wallObjs = GenerateWallTilesFromString(wallTileStrings);
+        ConstructObjectsFromString(objTileStrings);
 
         foreach (TilePosObject floorObj in floorObjs)
         {
@@ -124,9 +156,59 @@ public class TilemapLoader : MonoBehaviour
             }
         }
 
-        DisplayTilePosObjectList(floorObjs);
+        //DisplayTilePosObjectList(floorObjs);
 
         return floorObjs;
+    }
+
+    //x:20 y:12 tile:HQBuildingRed
+    //x:32 y:38 tile:HQBuildingRed
+    void ConstructObjectsFromString(string str)
+    {
+        string[] objStringLines = str.Split("\n");
+
+        foreach (string line in objStringLines)
+        {
+            if (line != "--OBJECTS--" && line != "")
+            {
+                if (line != "Empty")
+                {
+                    if (line.Contains("HQ"))
+                    {
+                        Debug.Log(line);
+                        Vector2Int coords = ExtractCoordinatesFromString(line);
+                        Vector3 worldLoc = floorTileMap.CellToWorld(new Vector3Int(coords.x, coords.y));
+                        constructor.PlaceHQAtLocation(worldLoc, GetTeamFromString(line));
+                        Debug.Log(coords);
+                    }
+                    else if (line.Contains("Spawner"))
+                    {
+                        Debug.Log(line);
+                        Vector2Int coords = ExtractCoordinatesFromString(line);
+                        Vector3 worldLoc = floorTileMap.CellToWorld(new Vector3Int(coords.x, coords.y));
+                        constructor.PlaceSpawnerAtLocation(worldLoc, GetTeamFromString(line));
+                        Debug.Log(coords);
+                    }
+                }
+            }
+        }
+    }
+
+    string GetTeamFromString(string str)
+    {
+        if (str.Contains("Red"))
+        {
+            return Constants.RED_TEAM;
+        }
+        else if (str.Contains("Blue"))
+        {
+            return Constants.BLUE_TEAM;
+        }
+        else
+        {
+            Debug.LogError("INVALID TEAM");
+            return null;
+        }
     }
 
     List<TilePosObject> GenerateWallTilesFromString(string str)
@@ -145,15 +227,23 @@ public class TilemapLoader : MonoBehaviour
             }
         }
 
-        DisplayTilePosObjectList(wallObjs);
+        //DisplayTilePosObjectList(wallObjs);
 
         return wallObjs;
     }
 
     TilePosObject TurnExportStringIntoObj(string str, string layer)
     {
-        Debug.Log(str);
+        Vector2Int coords = ExtractCoordinatesFromString(str);
+        TileBase tile = GetTileBaseFromString(ExtractTileTypeFromString(str));
 
+        TilePosObject newTileObj = new TilePosObject(coords.x, coords.y, tile, layer);
+        //Debug.Log(newTileObj.tileBase.name + ", (" + newTileObj.x + "," + newTileObj.y + ")");
+        return newTileObj;
+    }
+
+    Vector2Int ExtractCoordinatesFromString(string str)
+    {
         string xStr = str.Substring(0, str.IndexOf("y"));
         int xInt = GetXIntFromXString(xStr);
 
@@ -161,13 +251,15 @@ public class TilemapLoader : MonoBehaviour
         string yStr = str.Substring(xStr.Length, yStrLength);
         int yInt = GetYIntFromYString(yStr);
 
-        int tileStrLength = str.Length - str.IndexOf("tile");
-        string tileStr = str.Substring(xStr.Length + yStr.Length, tileStrLength);
-        TileBase tile = GetTileBaseFromString(tileStr);
+        Vector2Int coords = new Vector2Int(xInt, yInt);
+        return coords;
+    }
 
-        TilePosObject newTileObj = new TilePosObject(xInt, yInt, tile, layer);
-        Debug.Log(newTileObj.tileBase.name + ", (" + newTileObj.x + "," + newTileObj.y + ")");
-        return newTileObj;
+    string ExtractTileTypeFromString(string str)
+    {
+        int tileStrLength = str.Length - str.IndexOf("tile");
+        string tileStr = str.Substring(str.IndexOf("tile"), tileStrLength);
+        return tileStr;
     }
 
     TileBase GetTileBaseFromString(string tileStr)
@@ -223,31 +315,32 @@ public class TilemapLoader : MonoBehaviour
     public void ImportState()
     {
         Debug.Log("====IMPORT====");
-        if (importField.text == "")
+        if (loadFromSave)
+        {
+            importJson = MapJson.Instance.mapJson;
+        }
+        else
+        {
+            importJson = importField.text;
+        }
+
+        if (importJson == "")
         {
             return;
         }
 
-        List<TilePosObject> generatedTiles = GetTileObjectsFromString(importField.text);
+        List<TilePosObject> generatedTiles = GetTileObjectsFromString(importJson);
 
-        DisplayTilePosObjectList(generatedTiles);
+        //DisplayTilePosObjectList(generatedTiles);
 
-        //TileBase[] allTiles = GetAllTilesFromTilemap(this.GetComponent<Tilemap>());
-        //BoundsInt bounds = this.GetComponent<Tilemap>().cellBounds;
-
-        //List<TilePosObject> nonNullTiles = GenerateTilePosArray(allTiles, bounds);
-
-        //foreach (TilePosObject nonNullTile in nonNullTiles)
-        //{
-        //    Debug.Log(nonNullTile.tileBase.name + ", (" + nonNullTile.x + "," + nonNullTile.y + ")");
-        //    Vector3Int pos = new Vector3Int(nonNullTile.x, nonNullTile.y, 0);
-        //    GetComponent<Tilemap>().SetTile(pos, nonNullTile.tileBase)
-        //}
         ClearAllTileMaps();
 
         ImplementNewTiles(generatedTiles);
 
-        importField.text = "";
+        if (importField != null)
+        {
+            importField.text = "";
+        }
     }
 
     void ImplementNewTiles(List<TilePosObject> newTiles)
@@ -260,16 +353,8 @@ public class TilemapLoader : MonoBehaviour
             }
             else if (tileObj.layer == "floor")
             {
-                GetComponent<Tilemap>().SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
+                floorTileMap.SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
             }
-            Debug.Log("nice");
-            Debug.Log(tileObj.tileBase.name + ", (" + tileObj.x + "," + tileObj.y + ")");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

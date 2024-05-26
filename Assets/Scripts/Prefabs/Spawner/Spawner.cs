@@ -55,7 +55,10 @@ public class Spawner : MonoBehaviour
     public float maxScoutSpawnDelay = 15.0f;
     public float scoutSpawnDelay = 15.0f;
 
-    void Start()
+    [SerializeField]
+    bool preplaced = false;
+
+    public void LateStart()
     {
         InitializeUnitType(unitType);
         InitializeTeam();
@@ -74,6 +77,14 @@ public class Spawner : MonoBehaviour
         FetchUnitFactory();
 
         scoutCooldownSlider.GetComponent<Slider>().maxValue = maxScoutSpawnDelay;
+    }
+
+    void Start()
+    {
+        if (preplaced)
+        {
+            LateStart();
+        }
     }
 
     private void Update()

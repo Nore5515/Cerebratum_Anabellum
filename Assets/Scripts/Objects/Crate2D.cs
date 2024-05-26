@@ -76,7 +76,14 @@ public class Crate2D : MonoBehaviour
         List<GameObject> hqObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
         foreach (GameObject hq in hqObjects)
         {
-            hqLocations.Add(hq.GetComponent<HQObject>().team, hq.transform.position);
+            if (!hqLocations.ContainsKey(hq.GetComponent<HQObject>().team))
+            {
+                hqLocations.Add(hq.GetComponent<HQObject>().team, hq.transform.position);
+            }
+            //else
+            //{
+            //Debug.LogError("More than one HQ for key: " + hq.GetComponent<HQObject>().team);
+            //}
         }
         if (hqLocations.Count <= 0)
         {
