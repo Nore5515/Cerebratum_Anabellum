@@ -17,7 +17,10 @@ public class SpawnerPathManager : MonoBehaviour
     bool aiControlled = false;
     int waiter = 0;
 
-    public void Start()
+    [SerializeField]
+    bool preplaced = false;
+
+    public void LateStart()
     {
         PathState.paths = paths;
         if (this.gameObject.GetComponent<Spawner>() != null)
@@ -35,7 +38,15 @@ public class SpawnerPathManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Start()
+    {
+        if (preplaced)
+        {
+            LateStart();
+        }
+    }
+
+    void Update()
     {
         if (aiControlled)
         {

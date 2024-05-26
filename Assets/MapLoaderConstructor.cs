@@ -38,6 +38,7 @@ public class MapLoaderConstructor : MonoBehaviour
         Spawner spawn = obj.GetComponent<Spawner>();
         spawn.unitType = Constants.INF_TYPE;
         spawn.spawnerTeam = team;
+        spawn.LateStart();
         StageUtility.PlaceGameObjectInCurrentStage(obj);
         obj.transform.position = location;
     }

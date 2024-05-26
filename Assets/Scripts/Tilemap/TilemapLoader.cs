@@ -58,6 +58,7 @@ public class TilemapLoader : MonoBehaviour
             ImportState();
             surface.BuildNavMesh();
             Debug.Log("Building nav mesh!");
+            GameObject.FindGameObjectWithTag("spawner_loader").GetComponent<SpawnerLoader>().LateStart();
         }
     }
 

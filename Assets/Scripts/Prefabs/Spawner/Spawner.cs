@@ -59,6 +59,8 @@ public class Spawner : MonoBehaviour
 
     public void LateStart()
     {
+        InitializePathManager();
+
         InitializeUnitType(unitType);
         InitializeTeam();
 
@@ -93,6 +95,11 @@ public class Spawner : MonoBehaviour
             scoutSpawnDelay -= Time.deltaTime;
             scoutCooldownSlider.GetComponent<Slider>().value = scoutSpawnDelay;
         }
+    }
+
+    void InitializePathManager()
+    {
+        spawnerPathManager.LateStart();
     }
 
     void FetchUnitFactory()

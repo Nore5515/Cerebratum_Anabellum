@@ -5,12 +5,22 @@ using UnityEngine;
 public class SpawnerLoader : MonoBehaviour
 {
     GameObject[] spawners;
+    [SerializeField]
+    bool preset;
+
+    public void LateStart()
+    {
+        spawners = GameObject.FindGameObjectsWithTag("spawner");
+        ConfigureSpawnersFromConfig();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        spawners = GameObject.FindGameObjectsWithTag("spawner");
-        ConfigureSpawnersFromConfig();
+        if (preset)
+        {
+            LateStart();
+        }
     }
 
     void ConfigureSpawnersFromConfig()
