@@ -771,6 +771,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6ac701ea3cdef49d68f2cd95db28b569, type: 2}
   - {fileID: 11400000, guid: b952350b2c3b246cbb9bdf5b1f60045f, type: 2}
   loadFromSave: 0
+  constructor: {fileID: 0}
+  surface: {fileID: 0}
+  mapEditorLoader: 0
 --- !u!66 &235802634
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -9687,6 +9690,10 @@ PrefabInstance:
       propertyPath: buildingTileMap
       value: 
       objectReference: {fileID: 1874530070}
+    - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: mapEditorLoader
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4342951975105163322, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: tileBases.Array.size
       value: 22

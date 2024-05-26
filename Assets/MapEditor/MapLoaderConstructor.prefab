@@ -45,3 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hqPrefab: {fileID: 7587400009447083382, guid: 7b98f31a3fcff46f0817ba20ef9eeeb1, type: 3}
+  spawnerPrefab: {fileID: 5031275087909057229, guid: fd168d0b51ae746eaa4bdd1ef929ae35, type: 3}
+  cratePrefab: {fileID: 3723304060339295256, guid: d6a9074b58e8c4c7584d4f0c2f6b8a4f, type: 3}

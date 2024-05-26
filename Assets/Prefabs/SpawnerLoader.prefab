@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1936250978470349795}
   m_Layer: 0
   m_Name: SpawnerLoader
-  m_TagString: Untagged
+  m_TagString: spawner_loader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a60f112dcc584ed29f9714d3c603259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preset: 0

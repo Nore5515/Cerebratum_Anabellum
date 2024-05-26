@@ -61,7 +61,10 @@ public class Crate2D : MonoBehaviour
 
     Dictionary<string, Vector3> hqLocations = new Dictionary<string, Vector3>();
 
-    private void Start()
+    [SerializeField]
+    bool preplaced = false;
+
+    public void LateStart()
     {
         PopulateHqLocations();
         if (suspendedOnStart)
@@ -69,6 +72,14 @@ public class Crate2D : MonoBehaviour
             SuspendCrate();
         }
         InvokeRepeating("OutputTime", 1f, 0.05f);  //1s delay, repeat every 0.05s
+    }
+
+    private void Start()
+    {
+        if (preplaced)
+        {
+            LateStart();
+        }
     }
 
     void PopulateHqLocations()

@@ -51,6 +51,9 @@ public class TilemapLoader : MonoBehaviour
 
     string importJson;
 
+    [SerializeField]
+    bool mapEditorLoader = false;
+
     private void Start()
     {
         if (loadFromSave)
@@ -58,7 +61,10 @@ public class TilemapLoader : MonoBehaviour
             ImportState();
             surface.BuildNavMesh();
             Debug.Log("Building nav mesh!");
-            GameObject.FindGameObjectWithTag("spawner_loader").GetComponent<SpawnerLoader>().LateStart();
+            GameObject obj = GameObject.FindGameObjectWithTag("spawner_loader");
+            SpawnerLoader loader = obj.GetComponent<SpawnerLoader>();
+            loader.LateStart();
+            //GameObject.FindGameObjectWithTag("spawner_loader").GetComponent<SpawnerLoader>().LateStart();
         }
     }
 
@@ -113,6 +119,7 @@ public class TilemapLoader : MonoBehaviour
         List<TilePosObject> tileObjs = new List<TilePosObject>();
         List<TilePosObject> floorObjs;
         List<TilePosObject> wallObjs;
+        List<TilePosObject> objObjs;
 
         string[] floorsAndWallsString = inputString.Split("--WALLS--");
 
@@ -127,7 +134,10 @@ public class TilemapLoader : MonoBehaviour
 
         floorObjs = GenerateFloorTilesFromString(floorTileStrings);
         wallObjs = GenerateWallTilesFromString(wallTileStrings);
-        ConstructObjectsFromString(objTileStrings);
+        if (!mapEditorLoader)
+        {
+            ConstructObjectsFromString(objTileStrings);
+        }
 
         foreach (TilePosObject floorObj in floorObjs)
         {
@@ -136,6 +146,16 @@ public class TilemapLoader : MonoBehaviour
         foreach (TilePosObject wallObj in wallObjs)
         {
             tileObjs.Add(wallObj);
+        }
+        if (mapEditorLoader)
+        {
+            Debug.Log("Map Editor!");
+            objObjs = GenerateObjectTilesFromString(objTileStrings);
+            foreach (TilePosObject objObj in objObjs)
+            {
+                Debug.Log(objObj.layer + ", " + objObj.tileBase.name + ", (" + objObj.x + "," + objObj.y + ")");
+                tileObjs.Add(objObj);
+            }
         }
 
         return tileObjs;
@@ -190,6 +210,14 @@ public class TilemapLoader : MonoBehaviour
                         constructor.PlaceSpawnerAtLocation(worldLoc, GetTeamFromString(line));
                         Debug.Log(coords);
                     }
+                    else if (line.Contains("Crate"))
+                    {
+                        Debug.Log(line);
+                        Vector2Int coords = ExtractCoordinatesFromString(line);
+                        Vector3 worldLoc = floorTileMap.CellToWorld(new Vector3Int(coords.x, coords.y));
+                        constructor.PlaceCrateAtLocation(worldLoc);
+                        Debug.Log(coords);
+                    }
                 }
             }
         }
@@ -231,6 +259,25 @@ public class TilemapLoader : MonoBehaviour
         //DisplayTilePosObjectList(wallObjs);
 
         return wallObjs;
+    }
+
+    List<TilePosObject> GenerateObjectTilesFromString(string str)
+    {
+        List<TilePosObject> objObjs = new List<TilePosObject>();
+        string[] objStringLines = str.Split("\n");
+
+        foreach (string line in objStringLines)
+        {
+            if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
+            {
+                if (line != "Empty")
+                {
+                    objObjs.Add(TurnExportStringIntoObj(line, "obj"));
+                }
+            }
+        }
+
+        return objObjs;
     }
 
     TilePosObject TurnExportStringIntoObj(string str, string layer)
@@ -355,6 +402,10 @@ public class TilemapLoader : MonoBehaviour
             else if (tileObj.layer == "floor")
             {
                 floorTileMap.SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
+            }
+            else if (tileObj.layer == "obj")
+            {
+                buildingTileMap.SetTile(new Vector3Int(tileObj.x, tileObj.y, 0), tileObj.tileBase);
             }
         }
     }
