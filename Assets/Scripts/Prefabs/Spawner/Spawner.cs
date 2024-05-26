@@ -17,16 +17,15 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] GameObject scoutPrefab;
     [SerializeField] GameObject infantryPrefab;
-    [SerializeField] GameObject spiderPrefab;
     [SerializeField] GameObject drawButtonCube;
     [SerializeField] GameObject spawnScoutButton;
     [SerializeField] GameObject unitFactoryPrefab;
     [SerializeField] GameObject env_scoutSpawning;
     [SerializeField] GameObject scoutCooldownSlider;
-    public GameObject prefab;
+    GameObject prefab;
     public Material redMat;
     public Material blueMat;
-    public Material spawnTeamMat;
+    Material spawnTeamMat;
 
     UnitFactory uf;
 
@@ -140,8 +139,6 @@ public class Spawner : MonoBehaviour
                 return infantryPrefab;
             case ("Scout"):
                 return scoutPrefab;
-            case ("Spider"):
-                return spiderPrefab;
             default:
                 Debug.LogError("UNKNOWN UNIT TYPE STRING");
                 return null;

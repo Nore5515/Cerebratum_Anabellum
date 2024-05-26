@@ -1521,7 +1521,6 @@ MonoBehaviour:
   type: 
   scoutPrefab: {fileID: 4623804062567844888, guid: c8a8e8351d6ee4fb6a68900782ea1ea1, type: 3}
   infantryPrefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
-  spiderPrefab: {fileID: 4623804062567844888, guid: 43c089224c84544c38e9827433a91ace, type: 3}
   drawButtonCube: {fileID: 9051834552673691956}
   spawnScoutButton: {fileID: 1930945672270026657}
   unitFactoryPrefab: {fileID: 8028530544237903672, guid: f5e67e698c30347c4808cde7f461d5e8, type: 3}
@@ -1529,8 +1528,7 @@ MonoBehaviour:
   scoutCooldownSlider: {fileID: 4583836246230849271}
   prefab: {fileID: 4623804062567844888, guid: 669f30152bedb49599ed18e41fde34ea, type: 3}
   redMat: {fileID: 2100000, guid: 619d35543f16f440eabf034948818bff, type: 2}
-  blueMat: {fileID: 2100000, guid: ee47bd4f706831b4daa5d4c5a3a5be77, type: 2}
-  spawnTeamMat: {fileID: 0}
+  blueMat: {fileID: 2100000, guid: cc88918c2e04d4b9fa0a2af75c7ef1ba, type: 2}
   selectCircle: {fileID: 2666175473703802253}
   unitList: []
   spawnerTeam: RED
@@ -1542,6 +1540,7 @@ MonoBehaviour:
   spawnDelay: 30
   maxScoutSpawnDelay: 15
   scoutSpawnDelay: 15
+  preplaced: 0
 --- !u!135 &3360593358707628083
 SphereCollider:
   m_ObjectHideFlags: 0
