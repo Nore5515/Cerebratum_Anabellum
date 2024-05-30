@@ -18,8 +18,7 @@ public class Crate2DSpawner : MonoBehaviour
     // Crates we spawned already
     Dictionary<GameObject, GameObject> spawnedCrates = new Dictionary<GameObject, GameObject>();
 
-    // Start is called before the first frame update
-    void Start()
+    public void LateStart()
     {
         foreach (GameObject obj in potentialCratePositions)
         {
@@ -27,6 +26,12 @@ public class Crate2DSpawner : MonoBehaviour
         }
 
         InvokeRepeating("SpawnCheck", 5.0f, 5.0f);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        LateStart();
     }
 
     int GetNonNullCrateCount()
@@ -54,5 +59,10 @@ public class Crate2DSpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void AddNewCrateSpawn(GameObject obj)
+    {
+        spawnedCrates.Add(obj, null);
     }
 }

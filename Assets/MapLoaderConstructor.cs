@@ -15,6 +15,9 @@ public class MapLoaderConstructor : MonoBehaviour
     [SerializeField]
     GameObject cratePrefab;
 
+    [SerializeField]
+    Crate2DSpawner crateSpawner;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,5 +56,11 @@ public class MapLoaderConstructor : MonoBehaviour
         crate.LateStart();
         StageUtility.PlaceGameObjectInCurrentStage(obj);
         obj.transform.position = location;
+        AddNewCrateToSpawner(obj);
+    }
+
+    void AddNewCrateToSpawner(GameObject obj)
+    {
+        crateSpawner.AddNewCrateSpawn(obj);
     }
 }
