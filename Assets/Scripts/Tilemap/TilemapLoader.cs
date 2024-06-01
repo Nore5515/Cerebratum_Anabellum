@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 using NavMeshPlus;
+using static UnityEditor.ShaderData;
+using UnityEngine.WSA;
+using static UnityEngine.UI.Image;
 
 class TilePosObject
 {
@@ -79,23 +82,72 @@ public class TilemapLoader : MonoBehaviour
 
     string GetStringifiedTilemap(Tilemap tilemap)
     {
+        //tilemap.CompressBounds();
+
         BoundsInt bounds = tilemap.cellBounds;
         TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+        //tilemap.GetTiles
 
         string stateStr = "";
 
-        for (int x = 0; x < bounds.size.x; x++)
+        //foreach (Vector3Int position in bounds.allPositionsWithin)
+        //{
+        //    Debug.Log(position);
+        //    if (tilemap.GetTile(position) != null)
+        //    {
+        //        Vector3 cellPosition = tilemap.GetCellCenterLocal(position);
+        //        Debug.Log("x:" + (cellPosition.x) + " y:" + (cellPosition.y) + " tile:" + tilemap.GetTile(position).name + "\n");
+        //        stateStr += "x:" + (cellPosition.x) + " y:" + (cellPosition.y) + " tile:" + tilemap.GetTile(position).name + "\n";
+        //    }
+        //}
+
+        Debug.Log(bounds);
+
+        //tilemap.CompressBounds();
+        //for (int x = tilemap.bounds.min.x; x < tilemap.bounds.max.x; x++)
+        //{
+        //    for (int y = tilemap.bounds.min.y; y < tilemap.bounds.max.y; y++)
+        //    {
+        //        for (int z = tilemap.bounds.min.z; z < tilemap.bounds.max.z; z++)
+        //        {
+
+        //            tilemap.GetTile(new vector3Int(x, y, z));
+        //        }
+        //    }
+
+        //}
+
+        Debug.Log(bounds.size);
+        Vector3Int origin = tilemap.origin;
+        for (int y = 0; y < bounds.size.y; y++)
         {
-            for (int y = 0; y < bounds.size.y; y++)
+            for (int x = 0; x < bounds.size.x; x++)
             {
-                //TileBase tile = allTiles[x + y * bounds.size.x];
                 TileBase tile = allTiles[x + y * bounds.size.x];
+                //TileBase tile = allTiles[y + x * bounds.size.y];
                 if (tile != null)
                 {
-                    stateStr += "x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n";
+                    Debug.Log("x:" + (x + origin.x) + " y:" + (y + origin.y) + " tile:" + tile.name + "\n");
+                    stateStr += "x:" + (x + origin.x) + " y:" + (y + origin.y) + " tile:" + tile.name + "\n";
                 }
             }
         }
+
+
+        //for (int x = 0; x < bounds.size.x; x++)
+        //{
+        //    for (int y = 0; y < bounds.size.y; y++)
+        //    {
+        //        TileBase tile = allTiles[x + y * bounds.size.x];
+        //        //TileBase tile = allTiles[y + x * bounds.size.y];
+        //        if (tile != null)
+        //        {
+        //            Debug.Log("x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n");
+        //            stateStr += "x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n";
+        //        }
+        //    }
+        //}
+
         return stateStr;
     }
 
@@ -147,7 +199,7 @@ public class TilemapLoader : MonoBehaviour
         }
         if (mapEditorLoader)
         {
-            Debug.Log("Map Editor!");
+            //Debug.Log("Map Editor!");
             objObjs = GenerateObjectTilesFromString(objTileStrings);
             foreach (TilePosObject objObj in objObjs)
             {
@@ -395,7 +447,10 @@ public class TilemapLoader : MonoBehaviour
     public void RebuildNavMesh()
     {
         Debug.Log("Building nav mesh!");
-        surface.BuildNavMeshAsync();
+        if (surface != null)
+        {
+            surface.BuildNavMeshAsync();
+        }
     }
 
     void ImplementNewTiles(List<TilePosObject> newTiles)

@@ -66,7 +66,6 @@ public class MapEditor : MonoBehaviour
         paletteTile = floorTile;
     }
 
-
     // Update is called once per frame
     void Update()
     {
@@ -74,11 +73,13 @@ public class MapEditor : MonoBehaviour
 
         if (true)
         {
+            Vector3Int gridPos = GetGridPos(mousePos);
             string validPos = "";
             validPos += "X: " + mousePos.x;
             validPos += " // Y: " + mousePos.y;
+            validPos += "\n\nX: " + gridPos.x;
+            validPos += " // Y: " + gridPos.y;
             debugText.text = validPos;
-            Vector3Int gridPos = GetGridPos(mousePos);
 
             InitGridPos(gridPos);
 
@@ -139,11 +140,11 @@ public class MapEditor : MonoBehaviour
             }
             oldGridPos = gridPos;
         }
-        else
-        {
-            RevertTile();
-            debugText.text = "XXXXXX";
-        }
+        //else
+        //{
+        //    RevertTile();
+        //    debugText.text = "XXXXXX";
+        //}
     }
 
     void DrawGhost(Vector3Int gridPos)
@@ -207,6 +208,7 @@ public class MapEditor : MonoBehaviour
     Vector3Int GetGridPos(Vector2 mousePos)
     {
         Vector3Int gridPos;
+
         if (wallTileMap)
         {
             gridPos = wallTileMap.WorldToCell(mousePos);
