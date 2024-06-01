@@ -82,6 +82,7 @@ public class Crate2D : MonoBehaviour
         }
     }
 
+    bool delayedAttempt = false;
     void PopulateHqLocations()
     {
         List<GameObject> hqObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("hq"));
@@ -91,15 +92,28 @@ public class Crate2D : MonoBehaviour
             {
                 hqLocations.Add(hq.GetComponent<HQObject>().team, hq.transform.position);
             }
-            //else
-            //{
-            //Debug.LogError("More than one HQ for key: " + hq.GetComponent<HQObject>().team);
-            //}
         }
-        if (hqLocations.Count <= 0)
+        if (hqLocations.Count <= 0 && !delayedAttempt)
         {
+            delayedAttempt = true;
             Debug.LogError("No HQs found by crate!");
+            DelayedHQScan();
         }
+        else if (hqLocations.Count <= 0 && delayedAttempt)
+        {
+            Debug.LogError("Second HQ Crate Scan Failed!!");
+        }
+        else
+        {
+            Debug.LogError("Found HQ on second pass");
+        }
+    }
+
+    IEnumerator DelayedHQScan()
+    {
+        yield return new WaitForSeconds(0.05f);
+        Debug.Log("Attempting again!");
+        PopulateHqLocations();
     }
 
     void OutputTime()
@@ -185,6 +199,10 @@ public class Crate2D : MonoBehaviour
 
     void MoveTowardsHQ(string hqTeam)
     {
+        if (!hqLocations.ContainsKey(hqTeam))
+        {
+            Debug.LogError("No HQ Found for " + hqTeam);
+        }
         if (hqLocations[hqTeam] != null)
         {
             Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);

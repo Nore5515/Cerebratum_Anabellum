@@ -59,8 +59,6 @@ public class TilemapLoader : MonoBehaviour
         if (loadFromSave)
         {
             ImportState();
-            surface.BuildNavMesh();
-            Debug.Log("Building nav mesh!");
             GameObject obj = GameObject.FindGameObjectWithTag("spawner_loader");
             SpawnerLoader loader = obj.GetComponent<SpawnerLoader>();
             loader.LateStart();
@@ -389,6 +387,15 @@ public class TilemapLoader : MonoBehaviour
         {
             importField.text = "";
         }
+
+        RebuildNavMesh();
+
+    }
+
+    public void RebuildNavMesh()
+    {
+        Debug.Log("Building nav mesh!");
+        surface.BuildNavMeshAsync();
     }
 
     void ImplementNewTiles(List<TilePosObject> newTiles)
