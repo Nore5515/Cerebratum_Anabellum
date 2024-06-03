@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
-using NavMeshPlus;
-using static UnityEditor.ShaderData;
-using UnityEngine.WSA;
-using static UnityEngine.UI.Image;
+
 
 class TilePosObject
 {
@@ -66,7 +63,15 @@ public class TilemapLoader : MonoBehaviour
             SpawnerLoader loader = obj.GetComponent<SpawnerLoader>();
             loader.LateStart();
             //GameObject.FindGameObjectWithTag("spawner_loader").GetComponent<SpawnerLoader>().LateStart();
+            StartCoroutine("DelayedBake");
         }
+    }
+
+    IEnumerator DelayedBake()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("Baking!");
+        RebuildNavMesh();
     }
 
     void UpdateStateStr()

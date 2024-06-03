@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class MapLoaderConstructor : MonoBehaviour
@@ -34,7 +33,7 @@ public class MapLoaderConstructor : MonoBehaviour
     {
         GameObject obj = Instantiate(hqPrefab);
         obj.GetComponent<HQObject>().team = team;
-        StageUtility.PlaceGameObjectInCurrentStage(obj);
+        //StageUtility.PlaceGameObjectInCurrentStage(obj);
         obj.transform.position = location;
     }
 
@@ -45,7 +44,7 @@ public class MapLoaderConstructor : MonoBehaviour
         spawn.unitType = Constants.INF_TYPE;
         spawn.spawnerTeam = team;
         spawn.LateStart();
-        StageUtility.PlaceGameObjectInCurrentStage(obj);
+        //StageUtility.PlaceGameObjectInCurrentStage(obj);
         obj.transform.position = location;
     }
 
@@ -54,7 +53,7 @@ public class MapLoaderConstructor : MonoBehaviour
         GameObject obj = Instantiate(cratePrefab);
         Crate2D crate = obj.GetComponent<Crate2D>();
         crate.LateStart();
-        StageUtility.PlaceGameObjectInCurrentStage(obj);
+        //StageUtility.PlaceGameObjectInCurrentStage(obj);
         obj.transform.position = location;
         AddNewCrateToSpawner(obj);
     }
