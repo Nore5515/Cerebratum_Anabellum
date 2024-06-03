@@ -493,11 +493,10 @@ public class Unit : MonoBehaviour
     {
         if (!beingControlled)
         {
-            AIMovement();
-
             // If there's a valid target within range!
             if (unitTargetHandler.targetsInRange.Count > 0)
             {
+                GetComponent<NavMeshAgent>().isStopped = true;
                 ClearNullTargets();
 
                 // Are there any targets left after the purge?
@@ -505,6 +504,11 @@ public class Unit : MonoBehaviour
                 {
                     AttemptShotAtPosition(unitTargetHandler.targetsInRange[0].gameObject.transform.position, beingControlled);
                 }
+            }
+            else
+            {
+                GetComponent<NavMeshAgent>().isStopped = false;
+                AIMovement();
             }
         }
         else if (beingControlled)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
-
+using UnityEngine.AI;
 
 public class Crate2D : MonoBehaviour
 {
@@ -66,6 +66,10 @@ public class Crate2D : MonoBehaviour
 
     public void LateStart()
     {
+        var agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
         PopulateHqLocations();
         if (suspendedOnStart)
         {
@@ -179,10 +183,12 @@ public class Crate2D : MonoBehaviour
             if (assignedScout != null)
             {
                 MoveTowardsHQ(assignedScout.GetComponent<Scout>().unitStats.unitTeam);
+                GetComponent<NavMeshAgent>().isStopped = false;
             }
         }
         else
         {
+            GetComponent<NavMeshAgent>().isStopped = true;
             lineRenderer.gameObject.SetActive(false);
             crateSprite.color = neutralColor;
         }
@@ -202,12 +208,16 @@ public class Crate2D : MonoBehaviour
         if (!hqLocations.ContainsKey(hqTeam))
         {
             Debug.LogError("No HQ Found for " + hqTeam);
+            PopulateHqLocations();
         }
-        if (hqLocations[hqTeam] != null)
+        else if (hqLocations[hqTeam] != null)
         {
-            Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);
+            NavMeshMoveTo(hqLocations[hqTeam]);
+            //GetComponent<NavMeshAgent>().isStopped = false;
 
-            transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
+            //Vector3 direction = GetDirectionVector(transform.position, hqLocations[hqTeam]);
+
+            //transform.Translate(direction * baseCrateMovespeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, hqLocations[hqTeam]) < minimumHQDistance)
             {
@@ -219,6 +229,11 @@ public class Crate2D : MonoBehaviour
         {
             Debug.LogError("HQ Team not found in Crate2D");
         }
+    }
+
+    void NavMeshMoveTo(Vector3 dest)
+    {
+        GetComponent<NavMeshAgent>().SetDestination(dest);
     }
 
     private void DrawLineToAssignedScout()

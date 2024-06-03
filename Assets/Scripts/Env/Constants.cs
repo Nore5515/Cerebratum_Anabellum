@@ -47,7 +47,7 @@ public static class Constants
     public static Color RED_GLOW_COLOR = new Color(255, 0, 0, 0.3f);
     public static Color BLUE_GLOW_COLOR = new Color(0, 0, 255, 0.3f);
 
-    public static int MINIMUM_FRAMES_TO_BE_IDLE = 60;
+    public static int MINIMUM_FRAMES_TO_BE_IDLE = 600;
     public static float MAX_IDLE_SECONDS = 10.0f;
     public static float MIN_DIST_TO_MOVEMENT_DEST = 0.3f;
 
