@@ -3348,8 +3348,9 @@ MonoBehaviour:
     - Right click to erase.
 
     -
+    Press 1-4 to change size.
 
-    -
+    - Undo is limited to size 1 (for now).
 
     -
 
@@ -3382,7 +3383,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.6
+  m_fontSize: 22.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

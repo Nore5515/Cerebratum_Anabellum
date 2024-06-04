@@ -4,22 +4,55 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
-
+using System;
+using System.Xml.Linq;
 
 class TilePosObject
 {
-    public int x, y;
+    public int x, y, paintSize;
     public TileBase tileBase;
     public string layer;
 
-    public TilePosObject(int x, int y, TileBase tileBase, string layer)
+    public TilePosObject(int x, int y, int paintSize, TileBase tileBase, string layer)
     {
         this.tileBase = tileBase;
         this.x = x;
         this.y = y;
+        this.paintSize = paintSize;
         this.layer = layer;
     }
 }
+
+[Serializable]
+public class SaveJSON
+{
+    //public string saveFile;
+    public List<TileSaveObj> floorTilemap;
+    public List<TileSaveObj> wallTilemap;
+    public List<TileSaveObj> objTilemap;
+
+    public SaveJSON()
+    {
+        floorTilemap = new List<TileSaveObj>();
+        wallTilemap = new List<TileSaveObj>();
+        objTilemap = new List<TileSaveObj>();
+    }
+}
+
+[Serializable]
+public struct TileSaveObj
+{
+    public int x, y;
+    public string name;
+
+    public TileSaveObj(int x, int y, string name)
+    {
+        this.x = x;
+        this.y = y;
+        this.name = name;
+    }
+}
+
 
 public class TilemapLoader : MonoBehaviour
 {
@@ -74,92 +107,47 @@ public class TilemapLoader : MonoBehaviour
         RebuildNavMesh();
     }
 
-    void UpdateStateStr()
+    public void CopyToClipboard()
     {
-        tilemapStateStr = "";
-        tilemapStateStr += "--FLOORS--\n";
-        tilemapStateStr += GetStringifiedTilemap(floorTileMap);
-        tilemapStateStr += "--WALLS--\n";
-        tilemapStateStr += GetStringifiedTilemap(wallTileMap);
-        tilemapStateStr += "--OBJECTS--\n";
-        tilemapStateStr += GetStringifiedTilemap(buildingTileMap);
+        SaveJSON save = GetSaveJson();
+        string json = JsonUtility.ToJson(save);
+        Debug.Log(json);
+
+        GUIUtility.systemCopyBuffer = json;
     }
 
-    string GetStringifiedTilemap(Tilemap tilemap)
+    SaveJSON GetSaveJson()
     {
-        //tilemap.CompressBounds();
+        SaveJSON save = new SaveJSON();
+        save.floorTilemap = GetTilemapSaveData(floorTileMap);
+        save.wallTilemap = GetTilemapSaveData(wallTileMap);
+        save.objTilemap = GetTilemapSaveData(buildingTileMap);
+        return save;
+    }
 
+    List<TileSaveObj> GetTilemapSaveData(Tilemap tilemap)
+    {
         BoundsInt bounds = tilemap.cellBounds;
         TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-        //tilemap.GetTiles
 
-        string stateStr = "";
+        List<TileSaveObj> saveObjs = new List<TileSaveObj>();
 
-        //foreach (Vector3Int position in bounds.allPositionsWithin)
-        //{
-        //    Debug.Log(position);
-        //    if (tilemap.GetTile(position) != null)
-        //    {
-        //        Vector3 cellPosition = tilemap.GetCellCenterLocal(position);
-        //        Debug.Log("x:" + (cellPosition.x) + " y:" + (cellPosition.y) + " tile:" + tilemap.GetTile(position).name + "\n");
-        //        stateStr += "x:" + (cellPosition.x) + " y:" + (cellPosition.y) + " tile:" + tilemap.GetTile(position).name + "\n";
-        //    }
-        //}
-
-        Debug.Log(bounds);
-
-        //tilemap.CompressBounds();
-        //for (int x = tilemap.bounds.min.x; x < tilemap.bounds.max.x; x++)
-        //{
-        //    for (int y = tilemap.bounds.min.y; y < tilemap.bounds.max.y; y++)
-        //    {
-        //        for (int z = tilemap.bounds.min.z; z < tilemap.bounds.max.z; z++)
-        //        {
-
-        //            tilemap.GetTile(new vector3Int(x, y, z));
-        //        }
-        //    }
-
-        //}
-
-        Debug.Log(bounds.size);
         Vector3Int origin = tilemap.origin;
         for (int y = 0; y < bounds.size.y; y++)
         {
             for (int x = 0; x < bounds.size.x; x++)
             {
                 TileBase tile = allTiles[x + y * bounds.size.x];
-                //TileBase tile = allTiles[y + x * bounds.size.y];
                 if (tile != null)
                 {
-                    Debug.Log("x:" + (x + origin.x) + " y:" + (y + origin.y) + " tile:" + tile.name + "\n");
-                    stateStr += "x:" + (x + origin.x) + " y:" + (y + origin.y) + " tile:" + tile.name + "\n";
+                    //Debug.Log("x:" + (x + origin.x) + " y:" + (y + origin.y) + " tile:" + tile.name + "\n");
+                    TileSaveObj obj = new TileSaveObj(x + origin.x, y + origin.y, tile.name);
+                    saveObjs.Add(obj);
                 }
             }
         }
 
-
-        //for (int x = 0; x < bounds.size.x; x++)
-        //{
-        //    for (int y = 0; y < bounds.size.y; y++)
-        //    {
-        //        TileBase tile = allTiles[x + y * bounds.size.x];
-        //        //TileBase tile = allTiles[y + x * bounds.size.y];
-        //        if (tile != null)
-        //        {
-        //            Debug.Log("x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n");
-        //            stateStr += "x:" + (x) + " y:" + (y) + " tile:" + tile.name + "\n";
-        //        }
-        //    }
-        //}
-
-        return stateStr;
-    }
-
-    public void CopyToClipboard()
-    {
-        UpdateStateStr();
-        GUIUtility.systemCopyBuffer = tilemapStateStr;
+        return saveObjs;
     }
 
     void ClearAllTileMaps()
@@ -340,7 +328,7 @@ public class TilemapLoader : MonoBehaviour
         Vector2Int coords = ExtractCoordinatesFromString(str);
         TileBase tile = GetTileBaseFromString(ExtractTileTypeFromString(str));
 
-        TilePosObject newTileObj = new TilePosObject(coords.x, coords.y, tile, layer);
+        TilePosObject newTileObj = new TilePosObject(coords.x, coords.y, 1, tile, layer);
         //Debug.Log(newTileObj.tileBase.name + ", (" + newTileObj.x + "," + newTileObj.y + ")");
         return newTileObj;
     }

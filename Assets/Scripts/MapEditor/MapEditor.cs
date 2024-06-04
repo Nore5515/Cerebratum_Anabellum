@@ -75,14 +75,17 @@ public class MapEditor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            PaintTileOnTilemaps(oldGridPos, null, new List<Tilemap> { ghostTiles });
             paintSize = 1;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            PaintTileOnTilemaps(oldGridPos, null, new List<Tilemap> { ghostTiles });
             paintSize = 2;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            PaintTileOnTilemaps(oldGridPos, null, new List<Tilemap> { ghostTiles });
             paintSize = 3;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -227,7 +230,12 @@ public class MapEditor : MonoBehaviour
 
     bool IsEmptyPaletteSprite()
     {
-        if (paletteTile.name.Contains("Empty") || paletteTile.name.Contains("Eraser"))
+        return IsEmptyTile(paletteTile);
+    }
+
+    bool IsEmptyTile(TileBase tile)
+    {
+        if (tile.name.Contains("Empty") || tile.name.Contains("Eraser"))
         {
             return true;
         }
@@ -272,7 +280,7 @@ public class MapEditor : MonoBehaviour
     {
         if (stashedActions.Count > 0)
         {
-            UndoLastTileAction(stashedActions[stashedActions.Count - 1]);
+            //UndoLastTileAction(stashedActions[stashedActions.Count - 1]);
             stashedActions.RemoveAt(stashedActions.Count - 1);
         }
         else
@@ -281,20 +289,40 @@ public class MapEditor : MonoBehaviour
         }
     }
 
-    void UndoLastTileAction(TilePlacementAction tilePlacementAction)
-    {
-        foreach (var tileObjToUndo in tilePlacementAction.tilePosObjects)
-        {
-            if (tileObjToUndo.layer == "wall")
-            {
-                wallTileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-            }
-            else
-            {
-                tileMap.SetTile(new Vector3Int(tileObjToUndo.x, tileObjToUndo.y, 0), null);
-            }
-        }
-    }
+    //class TilePosObject
+    //{
+    //    public int x, y, paintsize;
+    //    public TileBase tileBase;
+    //    public string layer;
+
+    //    public TilePosObject(int x, int y, TileBase tileBase, string layer)
+    //    {
+    //        this.tileBase = tileBase;
+    //        this.x = x;
+    //        this.y = y;
+    //        this.layer = layer;
+    //    }
+    //}
+
+
+    //void UndoLastTileAction(TilePlacementAction tilePlacementAction)
+    //{
+    //    foreach (TilePosObject obj in tilePlacementAction.tilePosObjects)
+    //    {
+    //        if (IsEmptyTile(obj.tileBase))
+    //        {
+
+    //        }
+    //        if (tileObj.layer == "wall")
+    //            {
+    //                wallTileMap.SetTile(new Vector3Int(obj.x, obj.y, 0), null);
+    //            }
+    //            else
+    //            {
+    //                tileMap.SetTile(new Vector3Int(tileobjObj.x, obj.y, 0), null);
+    //            }
+    //    }
+    //}
 
     void TryDraw(Vector3Int gridPos)
     {
@@ -327,61 +355,62 @@ public class MapEditor : MonoBehaviour
         if (IsEmptyPaletteSprite())
         {
 
+            PaintTileOnTilemaps(gridPos, null, new List<Tilemap> { wallTileMap, tileMap, buildingMap });
 
+            //wallTileMap.SetTile(gridPos, null);
+            //tileMap.SetTile(gridPos, null);
+            //buildingMap.SetTile(gridPos, null);
 
-            wallTileMap.SetTile(gridPos, null);
-            tileMap.SetTile(gridPos, null);
-            buildingMap.SetTile(gridPos, null);
-
-            if (symToggle.isOn)
-            {
-                Vector3Int symGridPoint = GetSymPoint(gridPos);
-                wallTileMap.SetTile(symGridPoint, null);
-                tileMap.SetTile(symGridPoint, null);
-                buildingMap.SetTile(symGridPoint, null);
-            }
+            //if (symToggle.isOn)
+            //{
+            //    Vector3Int symGridPoint = GetSymPoint(gridPos);
+            //    wallTileMap.SetTile(symGridPoint, null);
+            //    tileMap.SetTile(symGridPoint, null);
+            //    buildingMap.SetTile(symGridPoint, null);
+            //}
         }
         else if (IsBuildingPaletteSprite())
         {
-            buildingMap.SetTile(gridPos, paletteTile);
+            PaintTileOnTilemaps(gridPos, paletteTile, new List<Tilemap> { buildingMap });
+            //buildingMap.SetTile(gridPos, paletteTile);
 
-            if (symToggle.isOn)
-            {
-                Vector3Int symGridPoint = GetSymPoint(gridPos);
-                buildingMap.SetTile(symGridPoint, paletteTile);
-            }
+            //if (symToggle.isOn)
+            //{
+            //    Vector3Int symGridPoint = GetSymPoint(gridPos);
+            //    buildingMap.SetTile(symGridPoint, paletteTile);
+            //}
         }
         else
         {
             if (selectingWallMap)
             {
+                PaintTileOnTilemaps(gridPos, paletteTile, new List<Tilemap> { wallTileMap });
+                PaintTileOnTilemaps(gridPos, null, new List<Tilemap> { tileMap });
+
+                // TODO: Move tilepos objects into the PaintTileOnTilemaps function
                 TilePlacementAction tileAction = new TilePlacementAction();
+                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paintSize, paletteTile, "wall"));
+                stashedTileActions.Add(tileAction);
                 if (symToggle.isOn)
                 {
                     Vector3Int symGridPoint = GetSymPoint(gridPos);
-                    wallTileMap.SetTile(symGridPoint, paletteTile);
-                    tileMap.SetTile(symGridPoint, null);
-                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "wall"));
+                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paintSize, paletteTile, "wall"));
                 }
-                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "wall"));
-                wallTileMap.SetTile(gridPos, paletteTile);
-                tileMap.SetTile(gridPos, null);
-                stashedTileActions.Add(tileAction);
             }
             else
             {
+                PaintTileOnTilemaps(gridPos, paletteTile, new List<Tilemap> { tileMap });
+                PaintTileOnTilemaps(gridPos, null, new List<Tilemap> { wallTileMap });
+
+
                 TilePlacementAction tileAction = new TilePlacementAction();
+                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paintSize, paletteTile, "floor"));
+                stashedTileActions.Add(tileAction);
                 if (symToggle.isOn)
                 {
                     Vector3Int symGridPoint = GetSymPoint(gridPos);
-                    tileMap.SetTile(symGridPoint, paletteTile);
-                    wallTileMap.SetTile(symGridPoint, null);
-                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paletteTile, "floor"));
+                    tileAction.tilePosObjects.Add(new TilePosObject(symGridPoint.x, symGridPoint.y, paintSize, paletteTile, "floor"));
                 }
-                tileAction.tilePosObjects.Add(new TilePosObject(gridPos.x, gridPos.y, paletteTile, "floor"));
-                tileMap.SetTile(gridPos, paletteTile);
-                wallTileMap.SetTile(gridPos, null);
-                stashedTileActions.Add(tileAction);
             }
         }
     }
@@ -389,22 +418,8 @@ public class MapEditor : MonoBehaviour
     void TryDrawEmpty(Vector3Int gridPos)
     {
         if (oldGridPos == gridPos) return;
-        ClearAllTilesAtPoint(gridPos);
-        if (symToggle.isOn)
-        {
-            Vector3Int symGridPoint = GetSymPoint(gridPos);
-            ClearAllTilesAtPoint(symGridPoint);
-        }
+        PaintTileOnTilemaps(gridPos, null, new List<Tilemap> { wallTileMap, tileMap, buildingMap });
     }
-
-    void ClearAllTilesAtPoint(Vector3Int gridPos)
-    {
-        wallTileMap.SetTile(gridPos, null);
-        tileMap.SetTile(gridPos, null);
-        buildingMap.SetTile(gridPos, null);
-    }
-
-
 
     public bool IsPointerOverUIElement()
     {
