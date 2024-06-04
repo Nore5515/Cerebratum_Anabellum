@@ -37,7 +37,8 @@ public class SpawnerLoader : MonoBehaviour
                 teamSpawners.Add(spawnerClass.spawnerTeam, 0);
             }
 
-            if (teamSpawners[spawnerClass.spawnerTeam] < Constants.SPAWNERS_PER_SIDE)
+            // TODO: Relic of old way
+            if (teamSpawners[spawnerClass.spawnerTeam] < Constants.SPAWNERS_PER_SIDE || true)
             {
                 spawner.SetActive(true);
                 teamSpawners[spawnerClass.spawnerTeam]++;
