@@ -46,6 +46,8 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     TileBase eraserTile;
 
+    int paintSize = 1;
+
 
     bool storedTileFilled = false;
     TileBase storedTile;
@@ -71,6 +73,23 @@ public class MapEditor : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            paintSize = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            paintSize = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            paintSize = 3;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            paintSize = 4;
+        }
+
         if (true)
         {
             Vector3Int gridPos = GetGridPos(mousePos);
@@ -86,7 +105,7 @@ public class MapEditor : MonoBehaviour
             if (gridPos != oldGridPos)
             {
                 ReplaceOldTileWithStoredTile();
-                ghostTiles.SetTile(oldGridPos, null);
+                PaintTileOnTilemaps(oldGridPos, null, new List<Tilemap> { ghostTiles });
             }
 
             if (storedTileFilled == false)
@@ -103,9 +122,13 @@ public class MapEditor : MonoBehaviour
                 storedTileFilled = true;
             }
 
-            // Ghost tile view
-            DrawGhost(gridPos);
 
+            TileBase ghostTile = paletteTile;
+            if (IsEmptyPaletteSprite() || rightClickHeld)
+            {
+                ghostTile = eraserTile;
+            }
+            PaintTileOnTilemaps(gridPos, ghostTile, new List<Tilemap> { ghostTiles });
 
             if (!IsPointerOverUIElement())
             {
@@ -140,11 +163,6 @@ public class MapEditor : MonoBehaviour
             }
             oldGridPos = gridPos;
         }
-        //else
-        //{
-        //    RevertTile();
-        //    debugText.text = "XXXXXX";
-        //}
     }
 
     void DrawGhost(Vector3Int gridPos)
@@ -161,17 +179,9 @@ public class MapEditor : MonoBehaviour
         }
     }
 
-    void RevertTile()
-    {
-        wallTileMap.SetTile(oldGridPos, storedTile);
-        tileMap.SetTile(oldGridPos, storedTile);
-    }
-
     public void SetPaletteTile(TileBase newTile)
     {
-        //RevertTile();
         paletteTile = newTile;
-        //Debug.Log(paletteTile.name);
         if (paletteTile.name.Contains("Wall"))
         {
             selectingWallMap = true;
@@ -188,11 +198,6 @@ public class MapEditor : MonoBehaviour
         {
             oldGridPos = gridPos;
         }
-    }
-
-    void StoreNewTile(TileBase tile)
-    {
-        storedTile = tile;
     }
 
     void ReplaceOldTileWithStoredTile()
@@ -220,23 +225,6 @@ public class MapEditor : MonoBehaviour
         return gridPos;
     }
 
-    bool IsCoveringPortUI(Vector2 mousePos)
-    {
-        if (mousePos.x - Camera.main.gameObject.transform.position.x <= -7.25f)
-        {
-            if (mousePos.y - Camera.main.gameObject.transform.position.y >= 3.25f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool IsCoveringTilePalette(Vector2 mousePos)
-    {
-        return mousePos.y - Camera.main.gameObject.transform.position.y <= -3.0f;
-    }
-
     bool IsEmptyPaletteSprite()
     {
         if (paletteTile.name.Contains("Empty") || paletteTile.name.Contains("Eraser"))
@@ -259,11 +247,9 @@ public class MapEditor : MonoBehaviour
     {
         Vector2 centerPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0.0f));
 
-        Vector3Int gridPos = GetGridPos(centerPos);
-
         Vector3Int actualCenter = new Vector3Int(0, 0, 0);
 
-        gridPos = actualCenter;
+        Vector3Int gridPos = actualCenter;
 
         return gridPos;
     }
@@ -317,10 +303,32 @@ public class MapEditor : MonoBehaviour
         storedTile = paletteTile;
     }
 
+    void PaintTileOnTilemaps(Vector3Int gridPos, TileBase tile, List<Tilemap> tilemaps)
+    {
+        for (int x = 0; x < paintSize; x++)
+        {
+            for (int y = 0; y < paintSize; y++)
+            {
+                Vector3Int pos = new Vector3Int(gridPos.x + x, gridPos.y + y, gridPos.z);
+                foreach (Tilemap tilemap in tilemaps)
+                {
+                    tilemap.SetTile(pos, tile);
+                    if (symToggle)
+                    {
+                        tilemap.SetTile(GetSymPoint(pos), tile);
+                    }
+                }
+            }
+        }
+    }
+
     void DrawTile(Vector3Int gridPos)
     {
         if (IsEmptyPaletteSprite())
         {
+
+
+
             wallTileMap.SetTile(gridPos, null);
             tileMap.SetTile(gridPos, null);
             buildingMap.SetTile(gridPos, null);
