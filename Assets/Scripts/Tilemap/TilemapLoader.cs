@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 using TMPro;
 using System;
 using System.Xml.Linq;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 class TilePosObject
 {
@@ -157,29 +158,25 @@ public class TilemapLoader : MonoBehaviour
         buildingTileMap.ClearAllTiles();
     }
 
-    List<TilePosObject> GetTileObjectsFromString(string inputString)
+    List<TilePosObject> GetTileObjectsFromJSON(string inputJSON)
     {
         List<TilePosObject> tileObjs = new List<TilePosObject>();
         List<TilePosObject> floorObjs;
         List<TilePosObject> wallObjs;
         List<TilePosObject> objObjs;
 
-        string[] floorsAndWallsString = inputString.Split("--WALLS--");
 
-        string floorTileStrings = floorsAndWallsString[0];
+        SaveJSON loadedJSON = JsonUtility.FromJson<SaveJSON>(inputJSON);
 
-        string wallsAndObjects = floorsAndWallsString[1];
+        // TODO: Constantify the layer names
+        floorObjs = GenerateTilesFromSave(loadedJSON.floorTilemap, "floor");
+        wallObjs = GenerateTilesFromSave(loadedJSON.wallTilemap, "wall");
+        objObjs = GenerateTilesFromSave(loadedJSON.objTilemap, "obj");
 
-        string[] temp = wallsAndObjects.Split("--OBJECTS--");
-
-        string wallTileStrings = temp[0];
-        string objTileStrings = temp[1];
-
-        floorObjs = GenerateFloorTilesFromString(floorTileStrings);
-        wallObjs = GenerateWallTilesFromString(wallTileStrings);
         if (!mapEditorLoader)
         {
-            ConstructObjectsFromString(objTileStrings);
+            //ConstructObjectsFromString(objTileStrings);
+            ConstructObjectsFromJSON(loadedJSON.objTilemap);
         }
 
         foreach (TilePosObject floorObj in floorObjs)
@@ -192,8 +189,6 @@ public class TilemapLoader : MonoBehaviour
         }
         if (mapEditorLoader)
         {
-            //Debug.Log("Map Editor!");
-            objObjs = GenerateObjectTilesFromString(objTileStrings);
             foreach (TilePosObject objObj in objObjs)
             {
                 Debug.Log(objObj.layer + ", " + objObj.tileBase.name + ", (" + objObj.x + "," + objObj.y + ")");
@@ -204,29 +199,160 @@ public class TilemapLoader : MonoBehaviour
         return tileObjs;
     }
 
-    List<TilePosObject> GenerateFloorTilesFromString(string str)
-    {
-        List<TilePosObject> floorObjs = new List<TilePosObject>();
-        string[] floorStringLines = str.Split("\n");
+    //List<TilePosObject> GetTileObjectsFromString(string inputString)
+    //{
+    //    List<TilePosObject> tileObjs = new List<TilePosObject>();
+    //    List<TilePosObject> floorObjs;
+    //    List<TilePosObject> wallObjs;
+    //    List<TilePosObject> objObjs;
 
-        foreach (string line in floorStringLines)
+    //    string[] floorsAndWallsString = inputString.Split("--WALLS--");
+
+    //    string floorTileStrings = floorsAndWallsString[0];
+
+    //    string wallsAndObjects = floorsAndWallsString[1];
+
+    //    string[] temp = wallsAndObjects.Split("--OBJECTS--");
+
+    //    string wallTileStrings = temp[0];
+    //    string objTileStrings = temp[1];
+
+    //    floorObjs = GenerateFloorTilesFromString(floorTileStrings);
+    //    wallObjs = GenerateWallTilesFromString(wallTileStrings);
+    //    if (!mapEditorLoader)
+    //    {
+    //        ConstructObjectsFromString(objTileStrings);
+    //    }
+
+    //    foreach (TilePosObject floorObj in floorObjs)
+    //    {
+    //        tileObjs.Add(floorObj);
+    //    }
+    //    foreach (TilePosObject wallObj in wallObjs)
+    //    {
+    //        tileObjs.Add(wallObj);
+    //    }
+    //    if (mapEditorLoader)
+    //    {
+    //        //Debug.Log("Map Editor!");
+    //        objObjs = GenerateObjectTilesFromString(objTileStrings);
+    //        foreach (TilePosObject objObj in objObjs)
+    //        {
+    //            Debug.Log(objObj.layer + ", " + objObj.tileBase.name + ", (" + objObj.x + "," + objObj.y + ")");
+    //            tileObjs.Add(objObj);
+    //        }
+    //    }
+
+    //    return tileObjs;
+    //}
+
+
+    List<TilePosObject> GenerateTilesFromSave(List<TileSaveObj> savedObjs, string layer)
+    {
+        List<TilePosObject> objs = new List<TilePosObject>();
+
+        foreach (TileSaveObj obj in savedObjs)
         {
-            if (line != "--FLOORS--" && line != "")
-            {
-                if (line != "Empty")
-                {
-                    floorObjs.Add(TurnExportStringIntoObj(line, "floor"));
-                }
-            }
+            objs.Add(TurnSaveObjIntoObj(obj, layer));
         }
 
-        //DisplayTilePosObjectList(floorObjs);
-
-        return floorObjs;
+        return objs;
     }
 
-    //x:20 y:12 tile:HQBuildingRed
-    //x:32 y:38 tile:HQBuildingRed
+
+    //List<TilePosObject> GenerateFloorTilesFromSave(List<TileSaveObj> savedObjs, string layer)
+    //{
+    //    List<TilePosObject> floorObjs = new List<TilePosObject>();
+
+    //    foreach (TileSaveObj obj in savedObjs)
+    //    {
+    //        floorObjs.Add(TurnSaveObjIntoObj(obj, layer));
+    //    }
+
+    //    return floorObjs;
+    //}
+
+    //List<TilePosObject> GenerateFloorTilesFromString(string str)
+    //{
+    //    List<TilePosObject> floorObjs = new List<TilePosObject>();
+    //    string[] floorStringLines = str.Split("\n");
+
+    //    foreach (string line in floorStringLines)
+    //    {
+    //        if (line != "--FLOORS--" && line != "")
+    //        {
+    //            if (line != "Empty")
+    //            {
+    //                floorObjs.Add(TurnExportStringIntoObj(line, "floor"));
+    //            }
+    //        }
+    //    }
+    //    return floorObjs;
+    //}
+
+    //List<TilePosObject> GenerateWallTilesFromString(string str)
+    //{
+    //    List<TilePosObject> wallObjs = new List<TilePosObject>();
+    //    string[] wallStringLines = str.Split("\n");
+
+    //    foreach (string line in wallStringLines)
+    //    {
+    //        if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
+    //        {
+    //            if (line != "Empty")
+    //            {
+    //                wallObjs.Add(TurnExportStringIntoObj(line, "wall"));
+    //            }
+    //        }
+    //    }
+    //    return wallObjs;
+    //}
+
+    //List<TilePosObject> GenerateObjectTilesFromString(string str)
+    //{
+    //    List<TilePosObject> objObjs = new List<TilePosObject>();
+    //    string[] objStringLines = str.Split("\n");
+
+    //    foreach (string line in objStringLines)
+    //    {
+    //        if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
+    //        {
+    //            if (line != "Empty")
+    //            {
+    //                objObjs.Add(TurnExportStringIntoObj(line, "obj"));
+    //            }
+    //        }
+    //    }
+
+    //    return objObjs;
+    //}
+
+    void ConstructObjectsFromJSON(List<TileSaveObj> objs)
+    {
+        foreach (TileSaveObj obj in objs)
+        {
+            Vector2Int coords = new Vector2Int(obj.x, obj.y);
+            Vector3 worldLoc = floorTileMap.CellToWorld(new Vector3Int(coords.x, coords.y));
+            Debug.Log(obj);
+            if (obj.name.Contains("HQ"))
+            {
+                constructor.PlaceHQAtLocation(worldLoc, GetTeamFromString(obj.name));
+            }
+            else if (obj.name.Contains("Spawner"))
+            {
+                constructor.PlaceSpawnerAtLocation(worldLoc, GetTeamFromString(obj.name));
+            }
+            else if (obj.name.Contains("Crate"))
+            {
+                constructor.PlaceCrateAtLocation(worldLoc);
+            }
+            else
+            {
+                Debug.LogError("UNKNWON OBJECT: " + obj);
+            }
+        }
+    }
+
     void ConstructObjectsFromString(string str)
     {
         string[] objStringLines = str.Split("\n");
@@ -283,50 +409,18 @@ public class TilemapLoader : MonoBehaviour
         }
     }
 
-    List<TilePosObject> GenerateWallTilesFromString(string str)
+    TilePosObject TurnSaveObjIntoObj(TileSaveObj obj, string layer)
     {
-        List<TilePosObject> wallObjs = new List<TilePosObject>();
-        string[] wallStringLines = str.Split("\n");
-
-        foreach (string line in wallStringLines)
-        {
-            if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
-            {
-                if (line != "Empty")
-                {
-                    wallObjs.Add(TurnExportStringIntoObj(line, "wall"));
-                }
-            }
-        }
-
-        //DisplayTilePosObjectList(wallObjs);
-
-        return wallObjs;
-    }
-
-    List<TilePosObject> GenerateObjectTilesFromString(string str)
-    {
-        List<TilePosObject> objObjs = new List<TilePosObject>();
-        string[] objStringLines = str.Split("\n");
-
-        foreach (string line in objStringLines)
-        {
-            if (line != "--WALLS--" && line != "" && line != "--OBJECTS--")
-            {
-                if (line != "Empty")
-                {
-                    objObjs.Add(TurnExportStringIntoObj(line, "obj"));
-                }
-            }
-        }
-
-        return objObjs;
+        Vector2Int coords = new Vector2Int(obj.x, obj.y);
+        TileBase tile = GetTileBaseFromString(obj.name);
+        TilePosObject newTileObj = new TilePosObject(coords.x, coords.y, 1, tile, layer);
+        return newTileObj;
     }
 
     TilePosObject TurnExportStringIntoObj(string str, string layer)
     {
         Vector2Int coords = ExtractCoordinatesFromString(str);
-        TileBase tile = GetTileBaseFromString(ExtractTileTypeFromString(str));
+        TileBase tile = GetTileBaseFromString(ExtractTileTypeFromString(str.Substring(5)));
 
         TilePosObject newTileObj = new TilePosObject(coords.x, coords.y, 1, tile, layer);
         //Debug.Log(newTileObj.tileBase.name + ", (" + newTileObj.x + "," + newTileObj.y + ")");
@@ -355,15 +449,13 @@ public class TilemapLoader : MonoBehaviour
 
     TileBase GetTileBaseFromString(string tileStr)
     {
-        string cleanedUpStr = tileStr.Substring(5);
         foreach (var tile in tileBases)
         {
-            if (tile.name == cleanedUpStr)
+            if (tile.name == tileStr)
             {
                 return tile;
             }
         }
-
         return null;
     }
 
@@ -420,7 +512,8 @@ public class TilemapLoader : MonoBehaviour
             return;
         }
 
-        List<TilePosObject> generatedTiles = GetTileObjectsFromString(importJson);
+        //List<TilePosObject> generatedTiles = GetTileObjectsFromString(importJson);
+        List<TilePosObject> generatedTiles = GetTileObjectsFromJSON(importJson);
 
         //DisplayTilePosObjectList(generatedTiles);
 

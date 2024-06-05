@@ -4856,7 +4856,7 @@ GameObject:
   - component: {fileID: 1874530067}
   - component: {fileID: 1874530066}
   m_Layer: 0
-  m_Name: Buildings
+  m_Name: obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6965,6 +6965,10 @@ PrefabInstance:
     - target: {fileID: 4342951974695447427, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_SortingLayerID
       value: -1680964041
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342951974695447437, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: m_Name
+      value: wall
       objectReference: {fileID: 0}
     - target: {fileID: 4342951974695447438, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.size
@@ -10173,6 +10177,10 @@ PrefabInstance:
     - target: {fileID: 4342951975105163268, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342951975105163269, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
+      propertyPath: m_Name
+      value: floor
       objectReference: {fileID: 0}
     - target: {fileID: 4342951975105163270, guid: 0f31289a2bd91434fb4f17f436525c83, type: 3}
       propertyPath: m_TileOrientation

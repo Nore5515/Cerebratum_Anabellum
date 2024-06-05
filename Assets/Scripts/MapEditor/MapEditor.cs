@@ -168,20 +168,6 @@ public class MapEditor : MonoBehaviour
         }
     }
 
-    void DrawGhost(Vector3Int gridPos)
-    {
-        TileBase ghostTile = paletteTile;
-        if (IsEmptyPaletteSprite() || rightClickHeld)
-        {
-            ghostTile = eraserTile;
-        }
-        ghostTiles.SetTile(gridPos, ghostTile);
-        if (symToggle.isOn)
-        {
-            ghostTiles.SetTile(GetSymPoint(gridPos), ghostTile);
-        }
-    }
-
     public void SetPaletteTile(TileBase newTile)
     {
         paletteTile = newTile;
@@ -341,7 +327,7 @@ public class MapEditor : MonoBehaviour
                 foreach (Tilemap tilemap in tilemaps)
                 {
                     tilemap.SetTile(pos, tile);
-                    if (symToggle)
+                    if (symToggle.isOn)
                     {
                         tilemap.SetTile(GetSymPoint(pos), tile);
                     }
@@ -354,31 +340,11 @@ public class MapEditor : MonoBehaviour
     {
         if (IsEmptyPaletteSprite())
         {
-
             PaintTileOnTilemaps(gridPos, null, new List<Tilemap> { wallTileMap, tileMap, buildingMap });
-
-            //wallTileMap.SetTile(gridPos, null);
-            //tileMap.SetTile(gridPos, null);
-            //buildingMap.SetTile(gridPos, null);
-
-            //if (symToggle.isOn)
-            //{
-            //    Vector3Int symGridPoint = GetSymPoint(gridPos);
-            //    wallTileMap.SetTile(symGridPoint, null);
-            //    tileMap.SetTile(symGridPoint, null);
-            //    buildingMap.SetTile(symGridPoint, null);
-            //}
         }
         else if (IsBuildingPaletteSprite())
         {
             PaintTileOnTilemaps(gridPos, paletteTile, new List<Tilemap> { buildingMap });
-            //buildingMap.SetTile(gridPos, paletteTile);
-
-            //if (symToggle.isOn)
-            //{
-            //    Vector3Int symGridPoint = GetSymPoint(gridPos);
-            //    buildingMap.SetTile(symGridPoint, paletteTile);
-            //}
         }
         else
         {
