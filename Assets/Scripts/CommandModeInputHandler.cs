@@ -144,9 +144,17 @@ public class CommandModeInputHandler : MonoBehaviour
             if (hit.collider.gameObject.name == "SpawnerPathButton")
             {
                 //isDrawingPathFromSpawner = true;
-                holdingPath = true;
+
 
                 Spawner spawnerClass = pathHandler.spawnerSource.GetComponent<Spawner>();
+                if (spawnerClass.spawnerTeam == Constants.RED_TEAM)
+                {
+                    holdingPath = true;
+                }
+                else
+                {
+                    holdingPath = false;
+                }
                 spawnerClass.spawnerPathManager.ClearPoints(spawnerClass.unitList);
             }
             else if (hit.collider.gameObject.tag == "spawn_scout_button")
