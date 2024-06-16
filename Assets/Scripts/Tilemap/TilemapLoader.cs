@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 using System;
-using System.Xml.Linq;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using System.IO;
 
 class TilePosObject
 {
@@ -115,6 +113,16 @@ public class TilemapLoader : MonoBehaviour
         Debug.Log(json);
 
         GUIUtility.systemCopyBuffer = json;
+        CreateTextFile(json);
+
+    }
+
+    void CreateTextFile(string data)
+    {
+        //Path of the file
+        string path = Application.dataPath + "/Log.txt";
+        Debug.Log(path);
+        File.WriteAllText(path, data);
     }
 
     SaveJSON GetSaveJson()

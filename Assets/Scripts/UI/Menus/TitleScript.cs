@@ -32,6 +32,11 @@ public class TitleScript : MonoBehaviour
         SceneManager.LoadScene("MapEditor", LoadSceneMode.Single);
     }
 
+    public void UnitEditor()
+    {
+        SceneManager.LoadScene("UnitEditor", LoadSceneMode.Single);
+    }
+
     public void SubmitJSON()
     {
         MapJson.Instance.mapJson = jsonInput.text;
