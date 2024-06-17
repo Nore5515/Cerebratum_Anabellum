@@ -9,6 +9,9 @@ public class CampaignScene : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI bestTime;
 
+    [SerializeField]
+    TextMeshProUGUI levelTitle;
+
     string selectedLevel = "";
     // first value is screen level
     // second value is actual level name
@@ -23,6 +26,7 @@ public class CampaignScene : MonoBehaviour
     void UpdateLevelPreview()
     {
         bestTime.text = GetBestTime().ToString();
+        levelTitle.text = selectedLevel;
     }
 
     public void StartLevel()
