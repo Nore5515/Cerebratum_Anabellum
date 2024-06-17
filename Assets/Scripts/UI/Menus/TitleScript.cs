@@ -14,7 +14,7 @@ public class TitleScript : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("UltimateTest", LoadSceneMode.Single);
+        SceneManager.LoadScene("CampaignMenu", LoadSceneMode.Single);
     }
 
     public void Quit()

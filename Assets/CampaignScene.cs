@@ -15,7 +15,22 @@ public class CampaignScene : MonoBehaviour
     string selectedLevel = "";
     // first value is screen level
     // second value is actual level name
+    // the reason for this is if we want fun screen level names but in reality
+    //  are storing them under a different title
     Dictionary<string, string> visualToActualNamePairs = new();
+
+    private void Start()
+    {
+        visualToActualNamePairs.Add("Level1", "Level1");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        }
+    }
 
     public void SelectLevel(string newLevel)
     {

@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UnitEditing/UnitEditingMap.unity
     guid: 0c0947537f694434cb51b956dcee1103
+  - enabled: 1
+    path: Assets/Scenes/CampaignLevels/Level1.unity
+    guid: e1aff6a6b94e34f398440cb96761d042
+  - enabled: 1
+    path: Assets/Scenes/Menus/CampaignMenu.unity
+    guid: 0c6462dbe9437445b8b7d21cd776d301
   m_configObjects: {}

@@ -76,6 +76,9 @@ public class TilemapLoader : MonoBehaviour
     bool loadFromSave;
 
     [SerializeField]
+    string levelTitle;
+
+    [SerializeField]
     MapLoaderConstructor constructor;
 
     [SerializeField]
@@ -508,7 +511,14 @@ public class TilemapLoader : MonoBehaviour
         Debug.Log("====IMPORT====");
         if (loadFromSave)
         {
-            importJson = MapJson.Instance.mapJson;
+            if (MapJson.Instance.jsons.ContainsKey(levelTitle))
+            {
+                importJson = MapJson.Instance.jsons[levelTitle];
+            }
+            else
+            {
+                importJson = MapJson.Instance.mapJson;
+            }
         }
         else
         {
