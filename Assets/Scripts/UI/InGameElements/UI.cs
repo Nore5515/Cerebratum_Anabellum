@@ -250,10 +250,12 @@ public class UI : MonoBehaviour
 
     IEnumerator EndGame()
     {
+        Debug.Log("Waiting 5");
         yield return new WaitForSeconds(5.0f);
         //SpawnerTracker.NewGame();
         TeamStats.ResetGame();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("MainMenu");
     }
 
 }

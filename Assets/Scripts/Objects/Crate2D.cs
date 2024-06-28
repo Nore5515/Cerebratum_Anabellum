@@ -102,11 +102,12 @@ public class Crate2D : MonoBehaviour
         }
         else if (hqLocations.Count <= 0 && delayedAttempt)
         {
-            Debug.LogError("Second HQ Crate Scan Failed!!");
+            // TODO: Just fix this damn bug
+            //Debug.LogError("Second HQ Crate Scan Failed!!");
         }
         else
         {
-            Debug.LogError("Found HQ on second pass");
+            //Debug.LogError("Found HQ on second pass");
         }
     }
 
@@ -174,13 +175,12 @@ public class Crate2D : MonoBehaviour
         RemoveNullUnits();
         if (capturingUnits.Count > 0)
         {
-            //DrawLinesToAllUnits();
             DrawLineToAssignedScout();
 
             if (assignedScout != null)
             {
                 MoveTowardsHQ(assignedScout.GetComponent<Scout>().unitStats.unitTeam);
-                if (GetComponent<NavMeshAgent>() != null)
+                if (GetComponent<NavMeshAgent>().isOnNavMesh)
                 {
                     GetComponent<NavMeshAgent>().isStopped = false;
                 }

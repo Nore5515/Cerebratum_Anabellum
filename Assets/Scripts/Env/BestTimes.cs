@@ -10,7 +10,7 @@ public static class BestTimes
 
     public static void InitializeTimes()
     {
-        times.Add("Level1", 0.0f);
+        times.Add("Level1", 1234.12345f);
         times.Add("Level2", 0.0f);
         times.Add("Level3", 0.0f);
         times.Add("Level4", 0.0f);

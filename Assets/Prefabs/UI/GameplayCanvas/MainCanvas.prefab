@@ -673,7 +673,7 @@ MonoBehaviour:
   vpText: {fileID: 2859066417955918193}
   gameOverText: {fileID: 2859066418233894719}
   gameoverBGImage: {fileID: 2859066418008654316}
-  levelTime: {fileID: 0}
+  levelTime: {fileID: 4548177576032995731}
   debugMode: 0
   placeSpawner: {fileID: 2859066416936132264}
   spawnerGhost: {fileID: 6988322716607527092, guid: 7f362df09d7ec49678f9f8fa9b6fa885, type: 3}

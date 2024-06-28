@@ -40,7 +40,7 @@ public class CampaignScene : MonoBehaviour
 
     void UpdateLevelPreview()
     {
-        bestTime.text = string.Format(GetBestTime().ToString() + ".00");
+        bestTime.text = string.Format("{0:##.000}", GetBestTime());
         levelTitle.text = selectedLevel;
     }
 
