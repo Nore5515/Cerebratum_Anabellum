@@ -80,10 +80,7 @@ public class Crate2D : MonoBehaviour
 
     private void Start()
     {
-        if (preplaced)
-        {
-            LateStart();
-        }
+        LateStart();
     }
 
     bool delayedAttempt = false;
@@ -183,7 +180,10 @@ public class Crate2D : MonoBehaviour
             if (assignedScout != null)
             {
                 MoveTowardsHQ(assignedScout.GetComponent<Scout>().unitStats.unitTeam);
-                GetComponent<NavMeshAgent>().isStopped = false;
+                if (GetComponent<NavMeshAgent>() != null)
+                {
+                    GetComponent<NavMeshAgent>().isStopped = false;
+                }
             }
         }
         else

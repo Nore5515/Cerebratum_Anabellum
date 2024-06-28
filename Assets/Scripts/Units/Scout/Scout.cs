@@ -166,24 +166,27 @@ public class Scout : Unit
         AddPoint(assignedCrate.transform.position);
     }
 
+    bool NoMovementOrdersAndCratesOnField()
+    {
+        return (GetCrateCount() > 0 && unitPointHandler.pointVectors.Count == 0);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (GetCrateCount() > 0)
+        if (NoMovementOrdersAndCratesOnField())
         {
-            if (unitPointHandler.pointVectors.Count == 0)
+            if (assignedCrate == null)
             {
-                if (assignedCrate == null)
+                /// TODO: Test set crate without this check
+                if (NonOccupiedCrateExist())
                 {
-                    if (NonOccupiedCrateExist())
-                    {
-                        SetCrateAsDest();
-                    }
+                    SetCrateAsDest();
                 }
-                else
-                {
-                    FollowAssignedCrate();
-                }
+            }
+            else
+            {
+                FollowAssignedCrate();
             }
         }
         MovementUpdate();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Crate2DSpawner : MonoBehaviour
 {
@@ -12,23 +13,25 @@ public class Crate2DSpawner : MonoBehaviour
     [SerializeField]
     float respawnOddReductionPerCrate = 0.025f;
 
-    // Just place empty game objects in here
-    public List<GameObject> potentialCratePositions = new List<GameObject>();
+    // Just place empty game objects in here, we parse into vectors
+    public List<GameObject> preplacedCrates = new List<GameObject>();
+    public List<Vector3> potentialCrateVectors = new List<Vector3>();
 
     // Crates we spawned already
-    Dictionary<GameObject, GameObject> spawnedCrates = new Dictionary<GameObject, GameObject>();
+    Dictionary<Vector3, GameObject> spawnedCrates = new Dictionary<Vector3, GameObject>();
 
     public void LateStart()
     {
-        foreach (GameObject obj in potentialCratePositions)
+        foreach (GameObject obj in preplacedCrates)
         {
-            spawnedCrates.Add(obj, null);
+            Vector3 pos = obj.transform.position;
+            spawnedCrates.Add(pos, obj);
+            potentialCrateVectors.Add(pos);
         }
 
         InvokeRepeating("SpawnCheck", 5.0f, 5.0f);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         LateStart();
@@ -37,7 +40,7 @@ public class Crate2DSpawner : MonoBehaviour
     int GetNonNullCrateCount()
     {
         int total = 0;
-        foreach (GameObject pos in spawnedCrates.Keys)
+        foreach (Vector3 pos in spawnedCrates.Keys)
         {
             if (spawnedCrates[pos] != null)
             {
@@ -49,13 +52,17 @@ public class Crate2DSpawner : MonoBehaviour
 
     void SpawnCheck()
     {
-        foreach (GameObject pos in potentialCratePositions)
+        foreach (Vector3 cratePos in potentialCrateVectors)
         {
-            if (spawnedCrates[pos] == null)
+            if (!spawnedCrates.ContainsKey(cratePos))
+            {
+                spawnedCrates[cratePos] = null;
+            }
+            if (spawnedCrates[cratePos] == null)
             {
                 if (Random.Range(0.0f, 1.0f) < (respawnOdds - (GetNonNullCrateCount() * respawnOddReductionPerCrate)))
                 {
-                    spawnedCrates[pos] = Instantiate(cratePrefab, pos.transform.position, pos.transform.rotation);
+                    spawnedCrates[cratePos] = Instantiate(cratePrefab, cratePos, Quaternion.Euler(0.0f, 0.0f, 0.0f));
                 }
             }
         }
@@ -63,6 +70,8 @@ public class Crate2DSpawner : MonoBehaviour
 
     public void AddNewCrateSpawn(GameObject obj)
     {
-        spawnedCrates.Add(obj, null);
+        preplacedCrates.Add(obj);
+        potentialCrateVectors.Add(obj.transform.position);
+        spawnedCrates[obj.transform.position] = obj;
     }
 }

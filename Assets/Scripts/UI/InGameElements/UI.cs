@@ -15,6 +15,9 @@ public class UI : MonoBehaviour
     bool gameEnding = false;
 
     [SerializeField]
+    LevelTime levelTime;
+
+    [SerializeField]
     bool debugMode = false;
 
     [SerializeField] Button placeSpawner;
@@ -236,6 +239,9 @@ public class UI : MonoBehaviour
                     Debug.LogError("TIE?!");
                 }
                 gameoverBGImage.enabled = true;
+                levelTime.running = false;
+                BestTimes.GetTimes()[SceneManager.GetActiveScene().name] = levelTime.time;
+                Debug.Log(BestTimes.GetTimes()[SceneManager.GetActiveScene().name]);
                 IEnumerator coroutine = EndGame();
                 StartCoroutine(coroutine);
             }

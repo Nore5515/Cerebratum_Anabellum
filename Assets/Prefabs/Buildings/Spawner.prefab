@@ -1537,8 +1537,8 @@ MonoBehaviour:
   testMode_noPossession: 0
   spawnSquadSize: 10
   spawnDelay: 30
-  maxScoutSpawnDelay: 15
-  scoutSpawnDelay: 15
+  maxScoutSpawnDelay: 5
+  scoutSpawnDelay: 5
   preplaced: 0
 --- !u!135 &3360593358707628083
 SphereCollider:

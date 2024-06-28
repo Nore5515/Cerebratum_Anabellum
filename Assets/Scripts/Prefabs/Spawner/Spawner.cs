@@ -306,26 +306,31 @@ public class Spawner : MonoBehaviour
 
     public void UpdateAwaitingUnits() { spawnerPathManager.UpdatePathlessUnits(unitList); }
 
-    public void SpawnScout()
+    GameObject GetScoutSpawnerOrCreate()
     {
-        GameObject[] canvasObj = GameObject.FindGameObjectsWithTag("scout_spawner");
-        if (canvasObj.Length > 0)
+        GameObject[] scoutSpawners = GameObject.FindGameObjectsWithTag("scout_spawner");
+        if (scoutSpawners.Length > 0)
         {
-            if (scoutSpawnDelay <= 0.0f)
-            {
-                Vector3 belowSpawner = transform.position;
-                belowSpawner = new Vector3(belowSpawner.x, belowSpawner.y - 1.0f, belowSpawner.z);
-                Debug.Log("spawner call Spawn!");
-                if (canvasObj[0].GetComponent<ScoutSpawning>().SpawnScoutByTeam(transform, spawnerTeam))
-                {
-                    scoutSpawnDelay = maxScoutSpawnDelay;
-                }
-            }
+            return scoutSpawners[0];
         }
         else
         {
             Instantiate(env_scoutSpawning, transform.position, transform.rotation);
-            SpawnScout();
+            return GetScoutSpawnerOrCreate();
+        }
+    }
+
+    public void SpawnScout()
+    {
+        GameObject scoutSpawner = GetScoutSpawnerOrCreate();
+        if (scoutSpawnDelay <= 0.0f)
+        {
+            Vector3 belowSpawner = transform.position;
+            belowSpawner = new Vector3(belowSpawner.x, belowSpawner.y - 1.0f, belowSpawner.z);
+            if (scoutSpawner.GetComponent<ScoutSpawning>().SpawnScoutByTeam(transform, spawnerTeam))
+            {
+                scoutSpawnDelay = maxScoutSpawnDelay;
+            }
         }
     }
 }

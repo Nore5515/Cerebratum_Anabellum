@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2781340361842231316}
   m_Layer: 0
   m_Name: 2DCrateSpawner
-  m_TagString: Untagged
+  m_TagString: crate_spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
