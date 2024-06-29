@@ -22,6 +22,7 @@ TagManager:
   - pause_menu
   - spawner_loader
   - crate_spawner
+  - custom_level_rules
   layers:
   - Default
   - TransparentFX

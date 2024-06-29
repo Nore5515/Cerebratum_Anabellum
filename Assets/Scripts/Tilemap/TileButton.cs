@@ -12,6 +12,9 @@ public class TileButton : MonoBehaviour
     [SerializeField]
     TileBase tile;
 
+    [SerializeField]
+    bool isGearbox;
+
     MapEditor mapEditor;
 
 
@@ -30,8 +33,14 @@ public class TileButton : MonoBehaviour
 
     void CustomClick()
     {
-        mapEditor.SetPaletteTile(tile);
-        //Debug.Log(tileSprite.name);
+        if (isGearbox)
+        {
+            mapEditor.settingsMode = !mapEditor.settingsMode;
+        }
+        else
+        {
+            mapEditor.SetPaletteTile(tile);
+        }
     }
 
 }

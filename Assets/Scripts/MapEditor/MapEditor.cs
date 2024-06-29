@@ -46,6 +46,12 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     TileBase eraserTile;
 
+    [SerializeField]
+    SettingOptionsLoader optionLoader;
+
+    [SerializeField]
+    GameObject settingsMenu;
+
     int paintSize = 1;
 
 
@@ -58,6 +64,8 @@ public class MapEditor : MonoBehaviour
     bool selectingWallMap = false;
 
     bool rightClickHeld = false;
+
+    public bool settingsMode = false;
 
     TilePlacementAction lastTilesPlaced = new TilePlacementAction();
     List<TilePlacementAction> stashedTileActions = new List<TilePlacementAction>();
@@ -125,31 +133,47 @@ public class MapEditor : MonoBehaviour
                 storedTileFilled = true;
             }
 
-
-            TileBase ghostTile = paletteTile;
-            if (IsEmptyPaletteSprite() || rightClickHeld)
+            TileBase ghostTile = null;
+            if (!settingsMode)
             {
-                ghostTile = eraserTile;
+                ghostTile = paletteTile;
+                if (IsEmptyPaletteSprite() || rightClickHeld)
+                {
+                    ghostTile = eraserTile;
+                }
+                PaintTileOnTilemaps(gridPos, ghostTile, new List<Tilemap> { ghostTiles });
             }
-            PaintTileOnTilemaps(gridPos, ghostTile, new List<Tilemap> { ghostTiles });
 
             if (!IsPointerOverUIElement())
             {
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    TryDraw(gridPos);
+                    if (!settingsMode)
+                    {
+                        TryDraw(gridPos);
+                    }
                 }
 
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    DrawTile(gridPos);
-                    storedTile = paletteTile;
+                    if (settingsMode)
+                    {
+                        SettingsClick(gridPos);
+                    }
+                    else
+                    {
+                        DrawTile(gridPos);
+                        storedTile = paletteTile;
+                    }
                 }
             }
 
             if (Input.GetKey(KeyCode.Mouse1))
             {
-                TryDrawEmpty(gridPos);
+                if (!settingsMode)
+                {
+                    TryDrawEmpty(gridPos);
+                }
             }
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
@@ -168,8 +192,21 @@ public class MapEditor : MonoBehaviour
         }
     }
 
+    void SettingsClick(Vector3Int gridPos)
+    {
+
+    }
+
+    public void SetSettingsMode(bool newSettingsMode)
+    {
+        settingsMode = newSettingsMode;
+        settingsMenu.SetActive(settingsMode);
+    }
+
     public void SetPaletteTile(TileBase newTile)
     {
+        settingsMode = false;
+        settingsMenu.SetActive(false);
         paletteTile = newTile;
         if (paletteTile.name.Contains("Wall"))
         {
