@@ -17,18 +17,6 @@ public class MapLoaderConstructor : MonoBehaviour
     [SerializeField]
     Crate2DSpawner crateSpawner;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void PlaceHQAtLocation(Vector3 location, string team)
     {
         GameObject obj = Instantiate(hqPrefab);

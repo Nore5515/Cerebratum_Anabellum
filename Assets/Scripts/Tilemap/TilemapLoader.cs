@@ -210,54 +210,6 @@ public class TilemapLoader : MonoBehaviour
         return tileObjs;
     }
 
-    //List<TilePosObject> GetTileObjectsFromString(string inputString)
-    //{
-    //    List<TilePosObject> tileObjs = new List<TilePosObject>();
-    //    List<TilePosObject> floorObjs;
-    //    List<TilePosObject> wallObjs;
-    //    List<TilePosObject> objObjs;
-
-    //    string[] floorsAndWallsString = inputString.Split("--WALLS--");
-
-    //    string floorTileStrings = floorsAndWallsString[0];
-
-    //    string wallsAndObjects = floorsAndWallsString[1];
-
-    //    string[] temp = wallsAndObjects.Split("--OBJECTS--");
-
-    //    string wallTileStrings = temp[0];
-    //    string objTileStrings = temp[1];
-
-    //    floorObjs = GenerateFloorTilesFromString(floorTileStrings);
-    //    wallObjs = GenerateWallTilesFromString(wallTileStrings);
-    //    if (!mapEditorLoader)
-    //    {
-    //        ConstructObjectsFromString(objTileStrings);
-    //    }
-
-    //    foreach (TilePosObject floorObj in floorObjs)
-    //    {
-    //        tileObjs.Add(floorObj);
-    //    }
-    //    foreach (TilePosObject wallObj in wallObjs)
-    //    {
-    //        tileObjs.Add(wallObj);
-    //    }
-    //    if (mapEditorLoader)
-    //    {
-    //        //Debug.Log("Map Editor!");
-    //        objObjs = GenerateObjectTilesFromString(objTileStrings);
-    //        foreach (TilePosObject objObj in objObjs)
-    //        {
-    //            Debug.Log(objObj.layer + ", " + objObj.tileBase.name + ", (" + objObj.x + "," + objObj.y + ")");
-    //            tileObjs.Add(objObj);
-    //        }
-    //    }
-
-    //    return tileObjs;
-    //}
-
-
     List<TilePosObject> GenerateTilesFromSave(List<TileSaveObj> savedObjs, string layer)
     {
         List<TilePosObject> objs = new List<TilePosObject>();
@@ -511,12 +463,16 @@ public class TilemapLoader : MonoBehaviour
         Debug.Log("====IMPORT====");
         if (loadFromSave)
         {
+            Debug.Log("loading from save");
+            Debug.Log(levelTitle);
             if (MapJson.Instance.jsons.ContainsKey(levelTitle))
             {
+                Debug.Log(levelTitle);
                 importJson = MapJson.Instance.jsons[levelTitle];
             }
             else
             {
+                Debug.LogError("Could not find level JSON");
                 importJson = MapJson.Instance.mapJson;
             }
         }
