@@ -52,6 +52,9 @@ public class MapEditor : MonoBehaviour
     [SerializeField]
     GameObject settingsMenu;
 
+    [SerializeField]
+    GameObject selectionArrow;
+
     int paintSize = 1;
 
 
@@ -194,19 +197,27 @@ public class MapEditor : MonoBehaviour
 
     void SettingsClick(Vector3Int gridPos)
     {
-
+        Debug.Log(buildingMap.GetTile(gridPos));
+        if (buildingMap.GetTile(gridPos) != null)
+        {
+            selectionArrow.SetActive(true);
+            Vector3 arrowPos = buildingMap.CellToWorld(gridPos);
+            arrowPos.x = arrowPos.x - 0.25f;
+            arrowPos.y = arrowPos.y + 1.25f;
+            selectionArrow.transform.position = arrowPos;
+        }
     }
 
     public void SetSettingsMode(bool newSettingsMode)
     {
         settingsMode = newSettingsMode;
         settingsMenu.SetActive(settingsMode);
+        selectionArrow.SetActive(settingsMode);
     }
 
     public void SetPaletteTile(TileBase newTile)
     {
-        settingsMode = false;
-        settingsMenu.SetActive(false);
+        SetSettingsMode(false);
         paletteTile = newTile;
         if (paletteTile.name.Contains("Wall"))
         {
