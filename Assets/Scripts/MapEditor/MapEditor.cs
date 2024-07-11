@@ -200,12 +200,18 @@ public class MapEditor : MonoBehaviour
         Debug.Log(buildingMap.GetTile(gridPos));
         if (buildingMap.GetTile(gridPos) != null)
         {
-            selectionArrow.SetActive(true);
-            Vector3 arrowPos = buildingMap.CellToWorld(gridPos);
-            arrowPos.x = arrowPos.x - 0.25f;
-            arrowPos.y = arrowPos.y + 1.25f;
-            selectionArrow.transform.position = arrowPos;
+            SetSettingsMode(true);
+            ArrowConfig(gridPos);
         }
+    }
+
+    void ArrowConfig(Vector3Int gridPos)
+    {
+        selectionArrow.SetActive(true);
+        Vector3 arrowPos = buildingMap.CellToWorld(gridPos);
+        arrowPos.x = arrowPos.x - 0.25f;
+        arrowPos.y = arrowPos.y + 1.25f;
+        selectionArrow.transform.position = arrowPos;
     }
 
     public void SetSettingsMode(bool newSettingsMode)
@@ -322,41 +328,6 @@ public class MapEditor : MonoBehaviour
             return;
         }
     }
-
-    //class TilePosObject
-    //{
-    //    public int x, y, paintsize;
-    //    public TileBase tileBase;
-    //    public string layer;
-
-    //    public TilePosObject(int x, int y, TileBase tileBase, string layer)
-    //    {
-    //        this.tileBase = tileBase;
-    //        this.x = x;
-    //        this.y = y;
-    //        this.layer = layer;
-    //    }
-    //}
-
-
-    //void UndoLastTileAction(TilePlacementAction tilePlacementAction)
-    //{
-    //    foreach (TilePosObject obj in tilePlacementAction.tilePosObjects)
-    //    {
-    //        if (IsEmptyTile(obj.tileBase))
-    //        {
-
-    //        }
-    //        if (tileObj.layer == "wall")
-    //            {
-    //                wallTileMap.SetTile(new Vector3Int(obj.x, obj.y, 0), null);
-    //            }
-    //            else
-    //            {
-    //                tileMap.SetTile(new Vector3Int(tileobjObj.x, obj.y, 0), null);
-    //            }
-    //    }
-    //}
 
     void TryDraw(Vector3Int gridPos)
     {
